@@ -149,7 +149,7 @@ expoMoveFocusViewport (CompScreen *s,
   es->selectedVY = MIN (s->vsize - 1, es->selectedVY);
   es->selectedVY = MAX (0, es->selectedVY);
 
-  //damageScreen (s);
+  damageScreen (s);
 }
 
 static Bool
@@ -1221,8 +1221,8 @@ expoDonePaintScreen (CompScreen * s)
     break;
   }
 
-  //if ((es->expoCam > 0.0f && es->expoCam < 1.0f) || es->dndState != DnDNone)
-  //	damageScreen (s);
+  if ((es->expoCam > 0.0f && es->expoCam < 1.0f) || es->dndState != DnDNone)
+    damageScreen (s);
 
   if (es->grabIndex && es->expoCam <= 0.0f && !es->expoMode)
     {
