@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ecomp>
-    <plugin name="inotify">
-	<short>Inotify</short>
-	<long>File change notification plugin</long>
-    </plugin>
-</ecomp>

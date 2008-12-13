@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ecomp>
-    <plugin name="regex">
-	<short>Regex Matching</short>
-	<short xml:lang="sv">Reguljär uttrycksmatchning</short>
-	<long>Regex window matching</long>
-    </plugin>
-</ecomp>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ecomp>
-    <plugin name="dbus">
-	<short>Dbus</short>
-	<short xml:lang="sv">Dbus</short>
-	<long>Dbus Control Backend</long>
-    </plugin>
-</ecomp>
