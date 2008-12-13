@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="water">
+	<short>Water Effect</short>
+	<short xml:lang="ca">Efecte d'aigua</short>
+	<short xml:lang="cs">Vodní efekt</short>
+	<short xml:lang="da">Vandeffekt</short>
+	<short xml:lang="de">Wassereffekt</short>
+	<short xml:lang="es">Efecto acuático</short>
+	<short xml:lang="fi">Vesitehoste</short>
+	<short xml:lang="fr">Effet d'eau</short>
+	<short xml:lang="hu">Víz effektus</short>
+	<short xml:lang="it">Effetto acqua</short>
+	<short xml:lang="ja">水効果</short>
+	<short xml:lang="pl">Efekt wodny</short>
+	<short xml:lang="pt">Efeito Aquático</short>
+	<short xml:lang="pt_BR">Efeito Aquático</short>
+	<short xml:lang="ru">Эффект воды</short>
+	<short xml:lang="sv">Vatteneffekt</short>
+	<short xml:lang="zh_CN">水纹效果</short>
+	<short xml:lang="zh_TW">水波特效</short>
+	<long>Adds water effects to different desktop actions</long>
+	<long xml:lang="ca">Afegeix efectes d'aigua a diferents accions de l'escriptori</long>
+	<long xml:lang="cs">Do různých akcí plochy přidává efekt vody</long>
+	<long xml:lang="da">Tilføjer vandeffekter til forskellige skrivebordshandlinger</long>
+	<long xml:lang="de">Wassereffekte zu verschiedenen Aktionen des Desktops hinzufügen</long>
+	<long xml:lang="es">Añadir efecto acuático a distintas acciones de escritorio</long>
+	<long xml:lang="fi">Lisää vesitehosteen erilaisille työpöydän toiminnoille</long>
+	<long xml:lang="fr">Ajoute des effets d'eau à différentes opérations du bureau</long>
+	<long xml:lang="hu">Víz effektus hozzáadása a különböző munkaasztal-műveletekhez</long>
+	<long xml:lang="it">Aggiunge effetti acqua a diverse azioni desktop</long>
+	<long xml:lang="ja">異なるデスクトップアクションに水効果を追加する</long>
+	<long xml:lang="pl">Dodaje efekty wodne do różnych operacji na pulpicie</long>
+	<long xml:lang="pt">Adiciona efeitos aquáticos a diferentes ações da área de trabalho</long>
+	<long xml:lang="pt_BR">Adiciona efeitos aquáticos a diferentes ações da área de trabalho</long>
+	<long xml:lang="ru">Добавление эффектов воды к различным действиям рабочего стола</long>
+	<long xml:lang="sv">Lägger till vatteneffekter till olika skrivbordsåtgärder</long>
+	<long xml:lang="zh_CN">将水纹效果添加到不同的桌面操作</long>
+	<long xml:lang="zh_TW">新增水波特效到不同的桌面動作</long>
+	<deps>
+	    <relation type="before">
+		<plugin>blur</plugin>
+		<plugin>video</plugin>
+	    </relation>
+	</deps>
+	<display>
+	    <option type="action" name="initiate">
+		<short>Initiate</short>
+		<short xml:lang="ca">Inicia</short>
+		<short xml:lang="cs">Iniciovat</short>
+		<short xml:lang="da">Start</short>
+		<short xml:lang="de">Initiieren</short>
+		<short xml:lang="es">Iniciar</short>
+		<short xml:lang="fi">Aktivoi</short>
+		<short xml:lang="fr">Lancer</short>
+		<short xml:lang="hu">Indítás</short>
+		<short xml:lang="it">Avvia</short>
+		<short xml:lang="ja">開始</short>
+		<short xml:lang="pl">Inicjuj</short>
+		<short xml:lang="pt">Iniciar</short>
+		<short xml:lang="pt_BR">Iniciar</short>
+		<short xml:lang="ru">Инициировать</short>
+		<short xml:lang="sv">Initiera</short>
+		<short xml:lang="zh_CN">启动</short>
+		<short xml:lang="zh_TW">起始化</short>
+		<long>Enable pointer water effects</long>
+		<long xml:lang="ca">Habilita els efectes d'aigua del punter</long>
+		<long xml:lang="cs">Povolit vodní efekty ukazatele</long>
+		<long xml:lang="da">Aktiver markørvandeffekter</long>
+		<long xml:lang="de">Wassereffekte für Mauszeiger aktivieren</long>
+		<long xml:lang="es">Habilitar efectos acuáticos del puntero</long>
+		<long xml:lang="fi">Ota käyttöön osoittimen vesitehosteet</long>
+		<long xml:lang="fr">Activer les effets d'eau du pointeur</long>
+		<long xml:lang="hu">Mutató víz effektus bekapcsolása</long>
+		<long xml:lang="it">Abilita effetti acqua puntatore</long>
+		<long xml:lang="ja">ポインタの水効果を有効にする</long>
+		<long xml:lang="pl">Włącz wodne efekty wskaźnika</long>
+		<long xml:lang="pt">Habilitar ponteiro de efeitos aquáticos</long>
+		<long xml:lang="pt_BR">Habilitar ponteiro de efeitos aquáticos</long>
+		<long xml:lang="ru">Включить для курсора эффекты воды</long>
+		<long xml:lang="sv">Aktivera vatteneffekt för muspekare</long>
+		<long xml:lang="zh_CN">启用指针水纹效果</long>
+		<long xml:lang="zh_TW">啟用指標水波特效</long>
+		<allowed key="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Super&gt;</key>
+		</default>
+	    </option>
+	    <option type="action" name="toggle_rain">
+		<short>Toggle rain</short>
+		<short xml:lang="ca">Commuta la pluja</short>
+		<short xml:lang="cs">Přepnout déšť</short>
+		<short xml:lang="da">Regn til/fra</short>
+		<short xml:lang="de">Regen ein/aus</short>
+		<short xml:lang="es">Activa o desactiva la lluvia</short>
+		<short xml:lang="fi">Ota käyttöön sade</short>
+		<short xml:lang="fr">Basculer la pluie</short>
+		<short xml:lang="hu">"Eső" kapcsoló</short>
+		<short xml:lang="it">Alterna piogge</short>
+		<short xml:lang="ja">雨の切り替え</short>
+		<short xml:lang="pl">Przełącz deszcz</short>
+		<short xml:lang="pt">Alternar chuva</short>
+		<short xml:lang="pt_BR">Alternar chuva</short>
+		<short xml:lang="ru">Переключить дождь</short>
+		<short xml:lang="sv">Växla regn</short>
+		<short xml:lang="zh_CN">转换电子流</short>
+		<short xml:lang="zh_TW">切換下雨</short>
+		<long>Toggle rain effect</long>
+		<long xml:lang="ca">Commuta l'efecte de pluja</long>
+		<long xml:lang="cs">Přepnout efekt deště</long>
+		<long xml:lang="da">Slå regneffekten til/fra</long>
+		<long xml:lang="de">Regeneffekt ein/aus</long>
+		<long xml:lang="es">Activa o desactiva el efecto de lluvia</long>
+		<long xml:lang="fi">Ota käyttöön sadetehoste</long>
+		<long xml:lang="fr">Basculer l'effet de pluie</long>
+		<long xml:lang="hu">"Eső" effektus kapcsoló</long>
+		<long xml:lang="it">Alterna effetto pioggia</long>
+		<long xml:lang="ja">雨効果の切り替え</long>
+		<long xml:lang="pl">Przełącz efekt deszczu</long>
+		<long xml:lang="pt">Alternar efeito de chuva</long>
+		<long xml:lang="pt_BR">Alternar efeito de chuva</long>
+		<long xml:lang="ru">Включение или отключение эффекта дождя</long>
+		<long xml:lang="sv">Växla regneffekt</long>
+		<long xml:lang="zh_CN">转换电子流效果</long>
+		<long xml:lang="zh_TW">切換下雨特效</long>
+		<allowed key="true"/>
+		<default>
+		    <key>&lt;Shift&gt;F9</key>
+		</default>
+	    </option>
+	    <option type="action" name="toggle_wiper">
+		<short>Toggle wiper</short>
+		<short xml:lang="ca">Commuta l'eixugaparabrises</short>
+		<short xml:lang="cs">Přepnout stěrač</short>
+		<short xml:lang="da">Visker til/fra</short>
+		<short xml:lang="de">Wischer ein-/ausschalten</short>
+		<short xml:lang="es">Alternar limpiaparabrisas</short>
+		<short xml:lang="fi">Ota käyttöön pyyhkijä</short>
+		<short xml:lang="fr">Activer/désactiver l'essuie-glace</short>
+		<short xml:lang="hu">"Ablaktörlő" kapcsoló</short>
+		<short xml:lang="it">Attiva/Disattiva cursore</short>
+		<short xml:lang="ja">ワイパーの切り替え</short>
+		<short xml:lang="pl">Przełącz wycieraczkę</short>
+		<short xml:lang="pt_BR">Alternar limpador</short>
+		<short xml:lang="ru">Переключить стеклоочиститель</short>
+		<short xml:lang="sv">Växla vindrutetorkare</short>
+		<short xml:lang="zh_CN">转换擦拭器</short>
+		<short xml:lang="zh_TW">切換雨刷</short>
+		<long>Toggle wiper effect</long>
+		<long xml:lang="ca">Commuta l'efecte de l'eixugaparabrises</long>
+		<long xml:lang="cs">Přepnout efekt stěrače</long>
+		<long xml:lang="da">Slå viskereffekten til/fra</long>
+		<long xml:lang="de">Wischereffekt ein-/ausschalten</long>
+		<long xml:lang="es">Alternar efecto de limpiaparabrisas</long>
+		<long xml:lang="fi">Ota käyttöön pyyhkijätehoste</long>
+		<long xml:lang="fr">Activer/désactiver l'effet d'essuie-glace</long>
+		<long xml:lang="hu">"Ablaktörlő" effektus kapcsoló</long>
+		<long xml:lang="it">Attiva/Disattiva effetto cursore</long>
+		<long xml:lang="ja">ワイパー効果の切り替え</long>
+		<long xml:lang="pl">Przełącza efekt wycieraczki</long>
+		<long xml:lang="pt_BR">Alternar efeito limpador</long>
+		<long xml:lang="ru">Включение или отключение эффекта стеклоочистителя</long>
+		<long xml:lang="sv">Växla torkareffekt</long>
+		<long xml:lang="zh_CN">转换擦拭器效果</long>
+		<long xml:lang="zh_TW">切換雨刷效果</long>
+		<allowed key="true"/>
+		<default>
+		    <key>&lt;Shift&gt;F8</key>
+		</default>
+	    </option>
+	    <option type="float" name="offset_scale">
+		<short>Offset Scale</short>
+		<short xml:lang="ca">Escala de desplaçament</short>
+		<short xml:lang="cs">Offset Scale</short>
+		<short xml:lang="da">Forskydningsstørrelse</short>
+		<short xml:lang="de">Versatz-Skalierung</short>
+		<short xml:lang="es">Escala de desplazamiento</short>
+		<short xml:lang="fi">Siirtymän skaala</short>
+		<short xml:lang="fr">Échelle de décalage</short>
+		<short xml:lang="hu">Eltolás skálája</short>
+		<short xml:lang="it">Scala offset</short>
+		<short xml:lang="ja">オフセットスケール</short>
+		<short xml:lang="pl">Skala przesunięcia</short>
+		<short xml:lang="pt">Escala de Deslocamento</short>
+		<short xml:lang="pt_BR">Escala de Deslocamento</short>
+		<short xml:lang="ru">Масштаб смещения</short>
+		<short xml:lang="sv">Positionsskala</short>
+		<short xml:lang="zh_CN">偏移比例</short>
+		<short xml:lang="zh_TW">偏移比例</short>
+		<long>Water offset scale</long>
+		<long xml:lang="ca">Escala de desplaçament d'aigua</long>
+		<long xml:lang="cs">Měřítko odsazení vody</long>
+		<long xml:lang="da">Størrelse på vandforskydning</long>
+		<long xml:lang="de">Wasser-Versatz-Skalierung</long>
+		<long xml:lang="es">Escala de desplazamiento de agua</long>
+		<long xml:lang="fi">Vesisiirtymän skaala</long>
+		<long xml:lang="fr">Échelle de décalage d'eau</long>
+		<long xml:lang="hu">Víz eltolás mértéke</long>
+		<long xml:lang="it">Proporzioni offset acqua</long>
+		<long xml:lang="ja">水オフセットスケール</long>
+		<long xml:lang="pl">Skala przesunięcia wody</long>
+		<long xml:lang="pt_BR">Escala de deslocamento da água</long>
+		<long xml:lang="ru">Масштаб смещения воды</long>
+		<long xml:lang="zh_CN">水纹偏移比例</long>
+		<long xml:lang="zh_TW">水波偏移比例</long>
+		<default>1</default>
+		<min>0</min>
+		<max>10</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="int" name="rain_delay">
+		<short>Rain Delay</short>
+		<short xml:lang="ca">Retard de pluja</short>
+		<short xml:lang="cs">Zpoždění deště</short>
+		<short xml:lang="da">Regnforsinkelse</short>
+		<short xml:lang="de">Regenverzögerung</short>
+		<short xml:lang="es">Retraso de lluvia</short>
+		<short xml:lang="fi">Sateen viive</short>
+		<short xml:lang="fr">Délai de pluie</short>
+		<short xml:lang="hu">Eső késleltetése</short>
+		<short xml:lang="it">Ritardo pioggia</short>
+		<short xml:lang="ja">雨の待ち時間</short>
+		<short xml:lang="pl">Opóźnienie deszczu</short>
+		<short xml:lang="pt">Atraso da Chuva</short>
+		<short xml:lang="pt_BR">Atraso da Chuva</short>
+		<short xml:lang="ru">Задержка дождя</short>
+		<short xml:lang="sv">Regnfördröjning</short>
+		<short xml:lang="zh_CN">电子流延迟</short>
+		<short xml:lang="zh_TW">下雨延遲</short>
+		<long>Delay (in ms) between each rain-drop</long>
+		<long xml:lang="ca">Retard (en ms) entre cada gota de pluja</long>
+		<long xml:lang="cs">Zpoždění (v ms) mezi jednotlivými kapkami</long>
+		<long xml:lang="da">Forsinkelse (i ms) mellem hver regndråbe</long>
+		<long xml:lang="de">Verzögerung (in ms) zwischen den einzelnen Regentropfen</long>
+		<long xml:lang="es">Retraso (en milisegundos) entre gotas de lluvia</long>
+		<long xml:lang="fi">Kunkin sadepisaran välinen viive (ms)</long>
+		<long xml:lang="fr">Délai (en ms) en chaque goutte de pluie</long>
+		<long xml:lang="hu">Esőcseppek közötti késleltetés (0-3600000 ms)</long>
+		<long xml:lang="it">Ritardo (in ms) tra due gocce di pioggia</long>
+		<long xml:lang="ja">各水滴間の遅延時間(ms)</long>
+		<long xml:lang="pl">Opóźnienie (w ms) pomiędzy każdą kroplą deszczu</long>
+		<long xml:lang="pt_BR">Atraso (em ms) entre cada pingo de chuva</long>
+		<long xml:lang="ru">Задержка (в мс) между каплями дождя</long>
+		<long xml:lang="zh_CN">每次降雨效果之间的延时（以毫秒为单位）</long>
+		<long xml:lang="zh_TW">每滴雨之間的延遲 (毫秒)</long>
+		<default>250</default>
+		<min>1</min>
+		<max>3600000</max>
+	    </option>
+	    <option type="action" name="title_wave">
+		<short>Title wave</short>
+		<short xml:lang="ca">Títol en onada</short>
+		<short xml:lang="cs">Vlna v nadpisu</short>
+		<short xml:lang="da">Titelbølge</short>
+		<short xml:lang="de">Titelwelle</short>
+		<short xml:lang="es">Ola en el título</short>
+		<short xml:lang="fi">Otsikon aalto</short>
+		<short xml:lang="fr">Vague sur le titre</short>
+		<short xml:lang="hu">Címhullám</short>
+		<short xml:lang="it">Onda titolo</short>
+		<short xml:lang="ja">タイトルウェーブ</short>
+		<short xml:lang="pl">Fala tytułu</short>
+		<short xml:lang="pt_BR">Ondas no título</short>
+		<short xml:lang="ru">Волны заголовка</short>
+		<short xml:lang="sv">Titelvåg</short>
+		<short xml:lang="zh_CN">标题波纹效果</short>
+		<short xml:lang="zh_TW">標題波紋</short>
+		<long>Wave effect from window title</long>
+		<long xml:lang="ca">Efecte d'onada del títol de la finestra</long>
+		<long xml:lang="cs">Efekt vlny v nadpisu okna</long>
+		<long xml:lang="da">Bølgeeffekt til vinduestitel</long>
+		<long xml:lang="de">Welleneffekt aus Fenstertitel</long>
+		<long xml:lang="es">Efecto de ola desde el título de la ventana</long>
+		<long xml:lang="fi">Aaltotehoste ikkunan otsikosta</long>
+		<long xml:lang="fr">Effet de vague sur le titre de la fenêtre</long>
+		<long xml:lang="hu">Hullám effektus az ablakcímből</long>
+		<long xml:lang="it">Effetto onda del titolo della finestra</long>
+		<long xml:lang="ja">ウィンドウタイトルからウェーブ効果</long>
+		<long xml:lang="pl">Efekt fali os tytułu okna</long>
+		<long xml:lang="pt_BR">Efeito de onda no título da janela</long>
+		<long xml:lang="ru">Эффект волн в заголовке окна</long>
+		<long xml:lang="sv">Vågeffekt från fönstrets titellist</long>
+		<long xml:lang="zh_CN">窗口标题波纹效果</long>
+		<long xml:lang="zh_TW">視窗標題的波紋效果</long>
+		<allowed bell="true"/>
+		<default>
+		    <bell>false</bell>
+		</default>
+	    </option>
+	    <option type="action" name="point">
+		<short>Point</short>
+		<short xml:lang="ca">Punt</short>
+		<short xml:lang="cs">Bod</short>
+		<short xml:lang="da">Punkt</short>
+		<short xml:lang="de">Punkt</short>
+		<short xml:lang="es">Punto</short>
+		<short xml:lang="fi">Piste</short>
+		<short xml:lang="fr">Point</short>
+		<short xml:lang="hu">Pont</short>
+		<short xml:lang="it">Punto</short>
+		<short xml:lang="ja">点</short>
+		<short xml:lang="pl">Punkt</short>
+		<short xml:lang="pt_BR">Ponto</short>
+		<short xml:lang="ru">Точка</short>
+		<short xml:lang="sv">Punkt</short>
+		<short xml:lang="zh_CN">点</short>
+		<short xml:lang="zh_TW">點</short>
+		<long>Add point</long>
+		<long xml:lang="ca">Afegeix un punt</long>
+		<long xml:lang="cs">Přidat bod</long>
+		<long xml:lang="da">Tilføj punkt</long>
+		<long xml:lang="de">Punkt hinzufügen</long>
+		<long xml:lang="es">Añadir punto</long>
+		<long xml:lang="fi">Lisää piste</long>
+		<long xml:lang="fr">Ajouter un point</long>
+		<long xml:lang="hu">Pont hozzáadása</long>
+		<long xml:lang="it">Aggiungi punto</long>
+		<long xml:lang="ja">点を追加</long>
+		<long xml:lang="pl">Dodaj punkt</long>
+		<long xml:lang="pt_BR">Adicionar ponto</long>
+		<long xml:lang="ru">Добавить точку</long>
+		<long xml:lang="sv">Lägg till punkt</long>
+		<long xml:lang="zh_CN">增加点</long>
+		<long xml:lang="zh_TW">新增點</long>
+		<allowed/>
+		<default>
+		</default>
+	    </option>
+	    <option type="action" name="line">
+		<short>Line</short>
+		<short xml:lang="ca">Línia</short>
+		<short xml:lang="cs">Čára</short>
+		<short xml:lang="da">Line</short>
+		<short xml:lang="de">Linie</short>
+		<short xml:lang="es">Línea</short>
+		<short xml:lang="fi">Viiva</short>
+		<short xml:lang="fr">Ligne</short>
+		<short xml:lang="hu">Vonal</short>
+		<short xml:lang="it">Linea</short>
+		<short xml:lang="ja">線</short>
+		<short xml:lang="pl">Linia</short>
+		<short xml:lang="pt_BR">Linha</short>
+		<short xml:lang="ru">Линия</short>
+		<short xml:lang="sv">Rad</short>
+		<short xml:lang="zh_CN">线</short>
+		<short xml:lang="zh_TW">線</short>
+		<long>Add line</long>
+		<long xml:lang="ca">Afegeix una línia</long>
+		<long xml:lang="cs">Přidat čáru</long>
+		<long xml:lang="da">Tilføj linje</long>
+		<long xml:lang="de">Linie hinzufügen</long>
+		<long xml:lang="es">Añadir línea</long>
+		<long xml:lang="fi">Lisää viiva</long>
+		<long xml:lang="fr">Ajouter une ligne</long>
+		<long xml:lang="hu">Vonal hozzáadása</long>
+		<long xml:lang="it">Aggiungi linea</long>
+		<long xml:lang="ja">線を追加</long>
+		<long xml:lang="pl">Dodaj linię</long>
+		<long xml:lang="pt_BR">Adicionar linha</long>
+		<long xml:lang="ru">Добавить линию</long>
+		<long xml:lang="sv">Lägg till rad</long>
+		<long xml:lang="zh_CN">增加线</long>
+		<long xml:lang="zh_TW">新增線</long>
+		<allowed/>
+		<default>
+		</default>
+	    </option>
+	</display>
+    </plugin>
+</ecomp>

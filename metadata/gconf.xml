@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="gconf">
+	<short>GConf</short>
+	<short xml:lang="sv">GConf</short>
+	<long>GConf Control Backend</long>
+	<deps>
+	    <relation type="after">
+		<plugin>glib</plugin>
+	    </relation>
+	    <relation type="before">
+		<plugin>decoration</plugin>
+		<plugin>wobbly</plugin>
+		<plugin>fade</plugin>
+		<plugin>cube</plugin>
+		<plugin>scale</plugin>
+	    </relation>
+	</deps>
+    </plugin>
+</ecomp>

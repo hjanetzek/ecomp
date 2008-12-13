@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="cube">
+	<short>Desktop Cube</short>
+	<short xml:lang="ca">Cub de l'escriptori</short>
+	<short xml:lang="cs">Kostka plochy</short>
+	<short xml:lang="da">Skrivebordskubus</short>
+	<short xml:lang="de">Desktop-Würfel</short>
+	<short xml:lang="es">Cubo de escritorio</short>
+	<short xml:lang="fi">Työpöytäkuutio</short>
+	<short xml:lang="fr">Cube du bureau</short>
+	<short xml:lang="hu">Munkaasztal kocka</short>
+	<short xml:lang="it">Cubo desktop</short>
+	<short xml:lang="ja">デスクトップキューブ</short>
+	<short xml:lang="pl">Kostka pulpitu</short>
+	<short xml:lang="pt">Cubo da Área de Trabalho</short>
+	<short xml:lang="pt_BR">Cubo da Área de Trabalho</short>
+	<short xml:lang="ru">Куб рабочего стола</short>
+	<short xml:lang="sv">Skrivbordskub</short>
+	<short xml:lang="zh_CN">桌面立方体</short>
+	<short xml:lang="zh_TW">桌面立方體</short>
+	<long>Place windows on cube</long>
+	<long xml:lang="ca">Situa les finestres al cub</long>
+	<long xml:lang="cs">Rozmístit okna na kostku</long>
+	<long xml:lang="da">Placer vinduer på kubus</long>
+	<long xml:lang="de">Fenster auf Würfel platzieren</long>
+	<long xml:lang="es">Coloca las ventanas en un cubo</long>
+	<long xml:lang="fi">Asettele ikkunat työpöytäkuution pinnalle</long>
+	<long xml:lang="fr">Placer des fenêtres sur le cube</long>
+	<long xml:lang="hu">Ablakok elhelyezése a kockán</long>
+	<long xml:lang="it">Posiziona finestre sul cubo</long>
+	<long xml:lang="ja">ウィンドウをキューブに配置する</long>
+	<long xml:lang="pl">Umieszczaj okna na kostce</long>
+	<long xml:lang="pt">Colocar janelas no cubo</long>
+	<long xml:lang="pt_BR">Colocar janelas no cubo</long>
+	<long xml:lang="ru">Размещение окон на кубе</long>
+	<long xml:lang="sv">Placera fönster på kuben</long>
+	<long xml:lang="zh_CN">将窗口放置在立方体上</long>
+	<long xml:lang="zh_TW">將視窗放到立方體</long>
+	<feature>largedesktop</feature>
+	<deps>
+	    <relation type="before">
+		<plugin>switcher</plugin>
+		<plugin>scale</plugin>
+	    </relation>
+	</deps>
+	<display>
+	    <option type="int" read_only="true" name="abi"/>
+	    <option type="int" read_only="true" name="index"/>
+	    <option type="action" name="unfold">
+		<short>Unfold</short>
+		<short xml:lang="ca">Desplega</short>
+		<short xml:lang="cs">Rozbalit</short>
+		<short xml:lang="da">Fold ud</short>
+		<short xml:lang="de">Auffalten</short>
+		<short xml:lang="es">Desplegar</short>
+		<short xml:lang="fi">Levitä</short>
+		<short xml:lang="fr">Déplier</short>
+		<short xml:lang="hu">Kibontás</short>
+		<short xml:lang="it">Apri</short>
+		<short xml:lang="ja">開く</short>
+		<short xml:lang="pl">Odsłoń</short>
+		<short xml:lang="pt">Desdobrar</short>
+		<short xml:lang="pt_BR">Desdobrar</short>
+		<short xml:lang="ru">Развертывание</short>
+		<short xml:lang="sv">Vik ut</short>
+		<short xml:lang="zh_CN">展开</short>
+		<short xml:lang="zh_TW">展開</short>
+		<long>Unfold cube</long>
+		<long xml:lang="ca">Desplega el cub</long>
+		<long xml:lang="cs">Rozbalit kostku</long>
+		<long xml:lang="da">Fold kubussen ud</long>
+		<long xml:lang="de">Würfel auffalten</long>
+		<long xml:lang="es">Despliega el cubo</long>
+		<long xml:lang="fi">Levitä kuutio</long>
+		<long xml:lang="fr">Déplier le cube</long>
+		<long xml:lang="hu">Kocka kibontása</long>
+		<long xml:lang="it">Apri cubo</long>
+		<long xml:lang="ja">キューブを開く</long>
+		<long xml:lang="pl">Odsłoń kostkę</long>
+		<long xml:lang="pt">Desdobrar cubo</long>
+		<long xml:lang="pt_BR">Desdobrar cubo</long>
+		<long xml:lang="ru">Развертывание куба</long>
+		<long xml:lang="sv">Vik ut kub</long>
+		<long xml:lang="zh_CN">展开立方体</long>
+		<long xml:lang="zh_TW">展開立方體</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;Down</key>
+		</default>
+	    </option>
+	    <option type="action" name="next_slide">
+		<short>Next Slide</short>
+		<short xml:lang="ca">Diapositiva següent</short>
+		<short xml:lang="cs">Další snímek</short>
+		<short xml:lang="da">Næste dias</short>
+		<short xml:lang="de">Nächstes Dia</short>
+		<short xml:lang="es">Diapositiva siguiente</short>
+		<short xml:lang="fi">Seuraava dia</short>
+		<short xml:lang="fr">Diapositive suivante</short>
+		<short xml:lang="hu">Következő dia</short>
+		<short xml:lang="it">Diapositiva successiva</short>
+		<short xml:lang="ja">次のスライド</short>
+		<short xml:lang="pl">Następna klatka</short>
+		<short xml:lang="pt">Próximo Slide</short>
+		<short xml:lang="pt_BR">Próximo Slide</short>
+		<short xml:lang="ru">Следующий слайд</short>
+		<short xml:lang="sv">Nästa diabild</short>
+		<short xml:lang="zh_CN">下一个滑块</short>
+		<short xml:lang="zh_TW">下一張投影片</short>
+		<long>Advance to next slide</long>
+		<long xml:lang="ca">Avança cap a la diapositiva següent</long>
+		<long xml:lang="cs">Postoupit k dalšímu snímku</long>
+		<long xml:lang="da">Gå til næste dias</long>
+		<long xml:lang="de">Nächstes Dia anzeigen</long>
+		<long xml:lang="es">Avanza a la siguiente diapositiva</long>
+		<long xml:lang="fi">Etene seuraavaan diaan</long>
+		<long xml:lang="fr">Passer à la diapositive suivante</long>
+		<long xml:lang="hu">Továbblépés a következő diára</long>
+		<long xml:lang="it">Avanza a diapositiva successiva</long>
+		<long xml:lang="ja">次のスライドに進む</long>
+		<long xml:lang="pl">Przejdź do następnej klatki</long>
+		<long xml:lang="pt">Avançar para o slide seguinte</long>
+		<long xml:lang="pt_BR">Avançar para o slide seguinte</long>
+		<long xml:lang="ru">Переход к следующему слайду</long>
+		<long xml:lang="sv">Fortsätt till nästa bild</long>
+		<long xml:lang="zh_CN">前进到下一个滑块</long>
+		<long xml:lang="zh_TW">換至下一張投影片</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>space</key>
+		</default>
+	    </option>
+	    <option type="action" name="prev_slide">
+		<short>Prev Slide</short>
+		<short xml:lang="sv">Föregående diabild</short>
+		<long>Go back to previous slide</long>
+		<long xml:lang="ca">Torna a la diapositiva anterior</long>
+		<long xml:lang="cs">Jít zpět na předchozí snímek</long>
+		<long xml:lang="da">Gå tilbage til forrige dias</long>
+		<long xml:lang="de">Zurück zum vorherigen Dia</long>
+		<long xml:lang="es">Vuelve a la diapositiva anterior</long>
+		<long xml:lang="fi">Takaisin edelliseen diaan</long>
+		<long xml:lang="fr">Revenir à la diapositive précédente</long>
+		<long xml:lang="hu">Visszatérés az előző diára</long>
+		<long xml:lang="it">Torna a diapositiva precedente</long>
+		<long xml:lang="ja">前のスライドに戻る</long>
+		<long xml:lang="pl">Przejdź do poprzedniej klatki</long>
+		<long xml:lang="pt">Voltar ao slide anterior</long>
+		<long xml:lang="pt_BR">Voltar ao slide anterior</long>
+		<long xml:lang="ru">Возврат к предыдущему слайду</long>
+		<long xml:lang="sv">Gå tillbaka till föregående diabild</long>
+		<long xml:lang="zh_CN">返回上一个滑块</long>
+		<long xml:lang="zh_TW">返回上一張投影片</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>Backspace</key>
+		</default>
+	    </option>
+	</display>
+	<screen>
+	    <option type="color" name="color">
+		<short>Cube Color</short>
+		<short xml:lang="ca">Color del cub</short>
+		<short xml:lang="cs">Barva kostky</short>
+		<short xml:lang="da">Kubusfarve</short>
+		<short xml:lang="de">Würfelfarbe</short>
+		<short xml:lang="es">Color del cubo</short>
+		<short xml:lang="fi">Kuution väri</short>
+		<short xml:lang="fr">Couleur du cube</short>
+		<short xml:lang="hu">Kocka színe</short>
+		<short xml:lang="it">Colore cubo</short>
+		<short xml:lang="ja">キューブの色</short>
+		<short xml:lang="pl">Kolor kostki</short>
+		<short xml:lang="pt">Cor do Cubo</short>
+		<short xml:lang="pt_BR">Cor do Cubo</short>
+		<short xml:lang="ru">Цвета куба</short>
+		<short xml:lang="sv">Kubfärg</short>
+		<short xml:lang="zh_CN">立方体颜色</short>
+		<short xml:lang="zh_TW">立方體色彩</short>
+		<long>Color of top and bottom sides of the cube</long>
+		<long xml:lang="ca">Color de les cares superior i inferior del cub</long>
+		<long xml:lang="cs">Barva vrchní a spodní strany kostky</long>
+		<long xml:lang="da">Farve til kubussens top og bund</long>
+		<long xml:lang="de">Farbe der Ober- und Unterseite des Würfels</long>
+		<long xml:lang="es">El color de los lados superior e inferior del cubo</long>
+		<long xml:lang="fi">Kuution pohjan ja kannen väri</long>
+		<long xml:lang="fr">Couleur des côtés supérieur et inférieur du cube</long>
+		<long xml:lang="hu">A kocka alsó és felső oldalának színe</long>
+		<long xml:lang="it">Colore dei lati superiore e inferiore del cubo</long>
+		<long xml:lang="ja">キューブの上部および下部の面のカラー</long>
+		<long xml:lang="pl">Kolor górnej i dolnej ściany kostki</long>
+		<long xml:lang="pt">Cor dos lados superior e inferior do cubo</long>
+		<long xml:lang="pt_BR">Cor dos lados superior e inferior do cubo</long>
+		<long xml:lang="ru">Цвет верхней и нижней сторон куба</long>
+		<long xml:lang="sv">Färg på över- och undersidorna av kuben</long>
+		<long xml:lang="zh_CN">立方体顶边和底边的颜色</long>
+		<long xml:lang="zh_TW">立方體的頂面和底面顏色</long>
+		<default>
+		    <red>0xfefe</red>
+		    <green>0xffff</green>
+		    <blue>0xc7c7</blue>
+		</default>
+	    </option>
+	    <option type="bool" name="in">
+		<short>Inside Cube</short>
+		<short xml:lang="ca">Interior del cub</short>
+		<short xml:lang="cs">Uvnitř kostky</short>
+		<short xml:lang="da">Kubus indvendig</short>
+		<short xml:lang="de">In Würfel</short>
+		<short xml:lang="es">Cubo interior</short>
+		<short xml:lang="fi">Kuution sisäpinta</short>
+		<short xml:lang="fr">À l'intérieur du cube</short>
+		<short xml:lang="hu">A kocka belseje</short>
+		<short xml:lang="it">Nel cubo</short>
+		<short xml:lang="ja">キューブ内部</short>
+		<short xml:lang="pl">Wewnątrz kostki</short>
+		<short xml:lang="pt">Dentro do Cubo</short>
+		<short xml:lang="pt_BR">Dentro do Cubo</short>
+		<short xml:lang="ru">Внутренняя поверхность куба</short>
+		<short xml:lang="sv">I kuben</short>
+		<short xml:lang="zh_CN">立方体内</short>
+		<short xml:lang="zh_TW">立方體內部</short>
+		<long>Inside cube</long>
+		<long xml:lang="ca">Interior del cub</long>
+		<long xml:lang="cs">V kostce</long>
+		<long xml:lang="da">Kubus indvendig</long>
+		<long xml:lang="de">In Würfel</long>
+		<long xml:lang="es">Cubo interior</long>
+		<long xml:lang="fi">Kuution sisäpinta</long>
+		<long xml:lang="fr">À l'intérieur du cube</long>
+		<long xml:lang="hu">A kocka belseje</long>
+		<long xml:lang="it">Nel cubo</long>
+		<long xml:lang="ja">キューブ内部</long>
+		<long xml:lang="pl">Wewnątrz kostki</long>
+		<long xml:lang="pt">Dentro do cubo</long>
+		<long xml:lang="pt_BR">Dentro do cubo</long>
+		<long xml:lang="ru">Внутренняя поверхность куба</long>
+		<long xml:lang="sv">I kuben</long>
+		<long xml:lang="zh_CN">立方体内</long>
+		<long xml:lang="zh_TW">立方體內部</long>
+		<default>false</default>
+	    </option>
+	    <option type="bool" name="scale_image">
+		<short>Scale image</short>
+		<short xml:lang="ca">Canvia la mida de la imatge</short>
+		<short xml:lang="cs">Škálovat obrázek</short>
+		<short xml:lang="da">Tilpas billede</short>
+		<short xml:lang="de">Bild skalieren</short>
+		<short xml:lang="es">Escalar imagen</short>
+		<short xml:lang="fi">Skaalaa kuvaa</short>
+		<short xml:lang="fr">Mettre l'image à l'échelle</short>
+		<short xml:lang="hu">Kép méretezése</short>
+		<short xml:lang="it">Ridimensiona immagine</short>
+		<short xml:lang="ja">スケールイメージ</short>
+		<short xml:lang="pl">Skaluj obrazek</short>
+		<short xml:lang="pt">Dimensionar imagem</short>
+		<short xml:lang="pt_BR">Dimensionar imagem</short>
+		<short xml:lang="ru">Масштабировать изображение</short>
+		<short xml:lang="sv">Skala bild</short>
+		<short xml:lang="zh_CN">调整图像大小</short>
+		<short xml:lang="zh_TW">調整影像比例</short>
+		<long>Scale images to cover top face of cube</long>
+		<long xml:lang="ca">Canvia la mida de les imatges per a cobrir la cara superior del cub</long>
+		<long xml:lang="cs">Změnit velikost obrázků podle vrchu kostky</long>
+		<long xml:lang="da">Tilpas billederne, så de dækker toppen af kubussen</long>
+		<long xml:lang="de">Fenstergröße an Oberseite des Würfels anpassen</long>
+		<long xml:lang="es">Escala las imágenes para que cubran la cara superior del cubo</long>
+		<long xml:lang="fi">Skaalaa kuva kuution katon kokoiseksi</long>
+		<long xml:lang="fr">Mettre les images à l'échelle pour couvrir la face supérieure du cube</long>
+		<long xml:lang="hu">Kép méretezése a kocka tetejének lefedésére</long>
+		<long xml:lang="it">Ridimensiona immagini per coprire faccia superiore del cubo</long>
+		<long xml:lang="ja">キューブの上面を覆うスケールイメージ</long>
+		<long xml:lang="pl">Skaluj obrazki przykrywające górną ścianę kostki</long>
+		<long xml:lang="pt">Dimensionar imagens para cobertura da face superior do cubo</long>
+		<long xml:lang="pt_BR">Dimensionar imagens para cobertura da face superior do cubo</long>
+		<long xml:lang="ru">Масштабировать изображения для покрытия верхней грани куба</long>
+		<long xml:lang="sv">Skala bilder för att täcka övre ytan på kuben</long>
+		<long xml:lang="zh_CN">调整图像大小以覆盖立方体的顶面</long>
+		<long xml:lang="zh_TW">調整影像比例以覆蓋立方體頂面</long>
+		<default>false</default>
+	    </option>
+	    <option type="list" name="images">
+		<short>Image files</short>
+		<short xml:lang="ca">Fitxers d'imatge</short>
+		<short xml:lang="cs">Obrázkové soubory</short>
+		<short xml:lang="da">Billedfiler</short>
+		<short xml:lang="de">Bilddateien</short>
+		<short xml:lang="es">Archivos de imagen</short>
+		<short xml:lang="fi">Kuvatiedostot</short>
+		<short xml:lang="fr">Fichiers image</short>
+		<short xml:lang="hu">Képfájlok</short>
+		<short xml:lang="it">File immagine</short>
+		<short xml:lang="ja">イメージファイル</short>
+		<short xml:lang="pl">Pliki obrazków</short>
+		<short xml:lang="pt">Arquivos de imagem</short>
+		<short xml:lang="pt_BR">Arquivos de imagem</short>
+		<short xml:lang="ru">Файлы изображений</short>
+		<short xml:lang="sv">Bildfiler</short>
+		<short xml:lang="zh_CN">图像文件</short>
+		<short xml:lang="zh_TW">影像檔</short>
+		<long>List of PNG and SVG files that should be rendered on top face of cube</long>
+		<long xml:lang="ca">Llista de fitxers PNG i SVG que s'hauran de representar a la cara superior del cub</long>
+		<long xml:lang="cs">Seznam PNG a SVG souborů, které mají být vykresleny na vrchu kostky</long>
+		<long xml:lang="da">Liste over PNG- og SVG-filer, der skal gengives på toppen af kubussen</long>
+		<long xml:lang="de">Liste der PNG- und SVG-Dateien, die auf der Oberseite des Würfels angezeigt werden sollen</long>
+		<long xml:lang="es">Lista de archivos PNG y SVG que se deben procesar en la cara superior del cubo</long>
+		<long xml:lang="fi">Lista kuution päälle asetettavista PNG- ja SVG-tiedostoista</long>
+		<long xml:lang="fr">Liste de fichiers PNG et SVG à afficher sur la face supérieure du cube</long>
+		<long xml:lang="hu">A kocka tetejére kerülő PNG és SVG fájlok listája</long>
+		<long xml:lang="it">Elenco dei file PNG e SVG da sottoporre a rendering sulla faccia superiore del cubo</long>
+		<long xml:lang="ja">キューブの上面にレンダリングするPNGおよびSVGファイルのリスト</long>
+		<long xml:lang="pl">Lista plików PNG i SVG, które mają być wyświetlane na górnej ścianie kostki</long>
+		<long xml:lang="pt">Lista de arquivos PNG e SVG que devem ser renderizados na face superior do cubo</long>
+		<long xml:lang="pt_BR">Lista de arquivos PNG e SVG que devem ser renderizados na face superior do cubo</long>
+		<long xml:lang="ru">Список PNG- и SVG-файлов, которые следует отобразить на верхней грани куба</long>
+		<long xml:lang="sv">Lista över PNG- och SVG-filer som ska ritas ut på översta ytan av kuben</long>
+		<long xml:lang="zh_CN">应在立方体顶面显示的 PNG 和 SVG 文件列表</long>
+		<long xml:lang="zh_TW">應該要描繪至立方體頂面的 PNG 和 SVG 檔案清單</long>
+		<type>string</type>
+		<default>
+		    <value>freedesktop</value>
+		</default>
+	    </option>
+	    <option type="bool" name="skydome">
+		<short>Skydome</short>
+		<short xml:lang="ca">Cúpula</short>
+		<short xml:lang="cs">Nebeská báň</short>
+		<short xml:lang="da">Himmelkuppel</short>
+		<short xml:lang="de">Skydome</short>
+		<short xml:lang="es">Cúpula</short>
+		<short xml:lang="fi">Taivas</short>
+		<short xml:lang="fr">Skydome</short>
+		<short xml:lang="hu">Kupola</short>
+		<short xml:lang="it">Skydome</short>
+		<short xml:lang="ja">スカイドーム</short>
+		<short xml:lang="pl">Tło dla kostki</short>
+		<short xml:lang="pt">Skydome</short>
+		<short xml:lang="pt_BR">Skydome</short>
+		<short xml:lang="ru">Фон</short>
+		<short xml:lang="sv">Skydome</short>
+		<short xml:lang="zh_CN">背景</short>
+		<short xml:lang="zh_TW">天空頂</short>
+		<long>Render skydome</long>
+		<long xml:lang="ca">Renderitza la cúpula</long>
+		<long xml:lang="cs">Vykreslit nebeskou báň</long>
+		<long xml:lang="da">Vis himmelkuppel</long>
+		<long xml:lang="de">Skydome anzeigen</long>
+		<long xml:lang="es">Procesar cúpula</long>
+		<long xml:lang="fi">Näytä taivas</long>
+		<long xml:lang="fr">Afficher le skydome</long>
+		<long xml:lang="hu">Kupola renderelése</long>
+		<long xml:lang="it">Rendering skydome</long>
+		<long xml:lang="ja">スカイドームのレンダリング</long>
+		<long xml:lang="pl">Wyświetlaj tło dla kostki</long>
+		<long xml:lang="pt">Renderizar skydome</long>
+		<long xml:lang="pt_BR">Renderizar skydome</long>
+		<long xml:lang="ru">Отрисовка фона</long>
+		<long xml:lang="sv">Rita ut skydome</long>
+		<long xml:lang="zh_CN">呈现背景</long>
+		<long xml:lang="zh_TW">描繪天空頂</long>
+		<default>false</default>
+	    </option>
+	    <option type="string" name="skydome_image">
+		<short>Skydome Image</short>
+		<short xml:lang="ca">Imatge de la cúpula</short>
+		<short xml:lang="cs">Obrázek nebeské báně</short>
+		<short xml:lang="da">Billede til himmelkuppel</short>
+		<short xml:lang="de">Skydome-Bild</short>
+		<short xml:lang="es">Imagen de cúpula</short>
+		<short xml:lang="fi">Taivaan kuva</short>
+		<short xml:lang="fr">Image du skydome</short>
+		<short xml:lang="hu">Kupola képe</short>
+		<short xml:lang="it">Immagine skydome</short>
+		<short xml:lang="ja">スカイドームイメージ</short>
+		<short xml:lang="pl">Obrazek tła dla kostki</short>
+		<short xml:lang="pt">Imagem do Skydome</short>
+		<short xml:lang="pt_BR">Imagem do Skydome</short>
+		<short xml:lang="ru">Изображение для фона</short>
+		<short xml:lang="sv">Skydome-bild</short>
+		<short xml:lang="zh_CN">背景图像</short>
+		<short xml:lang="zh_TW">天空頂影像</short>
+		<long>Image to use as texture for the skydome</long>
+		<long xml:lang="ca">Imatge que s'utilitzarà com a textura per a la cúpula</long>
+		<long xml:lang="cs">Obrázek pro texturu nebeské báně</long>
+		<long xml:lang="da">Billede, der skal bruges som tekstur til himmelkuplen</long>
+		<long xml:lang="de">Bild für die Struktur des Skydome</long>
+		<long xml:lang="es">Imagen que se usará como textura de la cúpula</long>
+		<long xml:lang="fi">Taivaana käytettävä kuva</long>
+		<long xml:lang="fr">Image à utiliser comme texture pour le skydome</long>
+		<long xml:lang="hu">A kupola textúrájaként használt kép</long>
+		<long xml:lang="it">Immagine da utilizzare come texture per lo skydome</long>
+		<long xml:lang="ja">スカイドームのテクスチャとして使用するイメージ</long>
+		<long xml:lang="pl">Obrazek, który ma być używany jako tekstura tła dla kostki</long>
+		<long xml:lang="pt">Imagem a usar como textura no skydome</long>
+		<long xml:lang="pt_BR">Imagem a usar como textura no skydome</long>
+		<long xml:lang="ru">Изображение, используемое в качестве текстуры для фона</long>
+		<long xml:lang="sv">Bild att använda som textur för skydome</long>
+		<long xml:lang="zh_CN">要用作背景纹理的图像</long>
+		<long xml:lang="zh_TW">用來作為天空頂材質的影像</long>
+	    </option>
+	    <option type="bool" name="skydome_animated">
+		<short>Animate Skydome</short>
+		<short xml:lang="ca">Cúpula animada</short>
+		<short xml:lang="cs">Animovat nebeskou báň</short>
+		<short xml:lang="da">Animer himmelkuppel</short>
+		<short xml:lang="de">Skydome animieren</short>
+		<short xml:lang="es">Cúpula animada</short>
+		<short xml:lang="fi">Animoi taivas</short>
+		<short xml:lang="fr">Animer le skydome</short>
+		<short xml:lang="hu">Kupola animálása</short>
+		<short xml:lang="it">Anima skydome</short>
+		<short xml:lang="ja">スカイドームをアニメーション化する</short>
+		<short xml:lang="pl">Animacja tła dla kostki</short>
+		<short xml:lang="pt">Animar Skydome</short>
+		<short xml:lang="pt_BR">Animar Skydome</short>
+		<short xml:lang="ru">Анимировать фон</short>
+		<short xml:lang="sv">Animera Skydome</short>
+		<short xml:lang="zh_CN">动画背景</short>
+		<short xml:lang="zh_TW">顯示天空頂動畫</short>
+		<long>Animate skydome when rotating cube</long>
+		<long xml:lang="ca">Representació animada de la cúpula en girar el cub</long>
+		<long xml:lang="cs">Animovat nebeskou báň při rotaci kostky</long>
+		<long xml:lang="da">Animer himmelkuplen, når kubussen roteres</long>
+		<long xml:lang="de">Beim Drehen von Würfel Skydome animieren</long>
+		<long xml:lang="es">Anima la cúpula cuando se gira el cubo</long>
+		<long xml:lang="fi">Animoi taivas työpöytäkuutiota käännettäessä</long>
+		<long xml:lang="fr">Animer le skydome lors de la rotation de cube</long>
+		<long xml:lang="hu">Kupola animálása a kocka forgatásánál</long>
+		<long xml:lang="it">Anima skydome alla rotazione del cubo</long>
+		<long xml:lang="ja">キューブの回転時にスカイドームをアニメーション化する</long>
+		<long xml:lang="pl">Animacja tła dla kostki podczas jej obracania</long>
+		<long xml:lang="pt">Animar Skydome ao girar o cubo</long>
+		<long xml:lang="pt_BR">Animar Skydome ao girar o cubo</long>
+		<long xml:lang="ru">Анимирование фона при вращении куба</long>
+		<long xml:lang="sv">Animera skydome när kub roterar</long>
+		<long xml:lang="zh_CN">旋转立方体时的动画背景</long>
+		<long xml:lang="zh_TW">旋轉立方體時顯示天空頂動畫</long>
+		<default>false</default>
+	    </option>
+	    <option type="color" name="skydome_gradient_start_color">
+		<short>Skydome Gradient Start Color</short>
+		<short xml:lang="ca">Color inicial del degradat de la cúpula</short>
+		<short xml:lang="cs">Počáteční barva gradientu nebeské báně</short>
+		<short xml:lang="da">Startfarve til himmelkuplens farvegraduering</short>
+		<short xml:lang="de">Anfangsfarbe für Skydome-Verlauf</short>
+		<short xml:lang="es">Color de inicio del degradado de cúpula</short>
+		<short xml:lang="fi">Taivasliukuvärin aloitusväri</short>
+		<short xml:lang="fr">Couleur de début du gradient de skydome</short>
+		<short xml:lang="hu">Kupola színátmenetének induló színe</short>
+		<short xml:lang="it">Colore sfumato inizio skydome</short>
+		<short xml:lang="ja">スカイドームグラデーション開始色</short>
+		<short xml:lang="pl">Początkowy kolor gradientu tła kostki</short>
+		<short xml:lang="pt_BR">Cor Inicial do Gradiente do Skydome</short>
+		<short xml:lang="ru">Начальный цвет градиента для фона</short>
+		<short xml:lang="zh_CN">背景渐变起始颜色</short>
+		<short xml:lang="zh_TW">天空頂漸層開始色彩</short>
+		<long>Color to use for the top color-stop of the skydome-fallback gradient</long>
+		<long xml:lang="ca">Color que s'utilitzarà com color superior del degradat alternatiu de la cúpula</long>
+		<long xml:lang="cs">Barva, která se použije na horní část gradientu nebeské báně.</long>
+		<long xml:lang="da">Farve til det øverste farvestop i himmelkuplens aftagende farveforløb</long>
+		<long xml:lang="de">Farbe, die oben im Skydome-Fallback-Verlauf verwendet werden soll</long>
+		<long xml:lang="es">Color utilizado para la parada de color superior del degradado de vuelta atrás de la cúpula</long>
+		<long xml:lang="fi">Väri, jota käytetään ylimpänä värinä taivaan liukuvärissä</long>
+		<long xml:lang="fr">Couleur à utiliser pour l'arrêt de couleur supérieure du gradient de rappel de skydome</long>
+		<long xml:lang="hu">A kupola tartalék színátmenet felső színállomásához használandó szín</long>
+		<long xml:lang="it">Colore da utilizzare per l'interruzione del colore superiore della sfumatura in uscita skydome</long>
+		<long xml:lang="ja">スカイドームフォールバックグラデーションの上部カラーストップに使用する色</long>
+		<long xml:lang="pl">Góny kolor przejścia tonalnego w tle kostki pulpitów</long>
+		<long xml:lang="pt_BR">Cor a ser usada na parte superior do gradiente de fallback do skydome</long>
+		<long xml:lang="ru">Цвет, используемый для верхней границы градиента фона</long>
+		<long xml:lang="zh_CN">背景降色渐变使用的顶部结束颜色</long>
+		<long xml:lang="zh_TW">要使用的天空頂後援漸層之頂部色彩停止點</long>
+		<default>
+		    <red>0x0d0d</red>
+		    <green>0xb1b1</green>
+		    <blue>0xfdfd</blue>
+		</default>
+	    </option>
+	    <option type="color" name="skydome_gradient_end_color">
+		<short>Skydome Gradient End Color</short>
+		<short xml:lang="ca">Color final del degradat de la cúpula</short>
+		<short xml:lang="cs">Konečná barva gradientu nebeské báně</short>
+		<short xml:lang="da">Slutfarve til himmelkuplens farvegraduering</short>
+		<short xml:lang="de">Endfarbe für Skydome-Verlauf</short>
+		<short xml:lang="es">Color de fin del degradado de cúpula</short>
+		<short xml:lang="fi">Taivasliukuvärin lopetusväri</short>
+		<short xml:lang="fr">Couleur de fin du gradient de skydome</short>
+		<short xml:lang="hu">Kupola színátmenetének záró színe</short>
+		<short xml:lang="it">Colore sfumato fine skydome</short>
+		<short xml:lang="ja">スカイドームグラデーション終了色</short>
+		<short xml:lang="pl">Końcowy kolor gradientu tła kostki</short>
+		<short xml:lang="pt_BR">Cor Final do Gradiente do Skydome</short>
+		<short xml:lang="ru">Конечный цвет градиента для фона</short>
+		<short xml:lang="zh_CN">背景渐变结束颜色</short>
+		<short xml:lang="zh_TW">天空頂漸層結束色彩</short>
+		<long>Color to use for the bottom color-stop of the skydome-fallback gradient</long>
+		<long xml:lang="ca">Color que s'utilitzarà com a color inferior del degradat alternatiu de la cúpula</long>
+		<long xml:lang="cs">Barva, která se použije na dolní část gradientu nebeské báně.</long>
+		<long xml:lang="da">Farve til det nederste farvestop i himmelkuplens aftagende farveforløb</long>
+		<long xml:lang="de">Farbe, die unten im Skydome-Fallback-Verlauf verwendet werden soll</long>
+		<long xml:lang="es">Color utilizado para la parada de color inferior del degradado de vuelta atrás de la cúpula</long>
+		<long xml:lang="fi">Väri, jota käytetään alimpana värinä taivaan liukuvärissä</long>
+		<long xml:lang="fr">Couleur à utiliser pour l'arrêt de couleur inférieure du gradient de rappel de skydome</long>
+		<long xml:lang="hu">A kupola tartalék színátmenet alsó színállomásához használandó szín</long>
+		<long xml:lang="it">Colore da utilizzare per l'interruzione del colore inferiore della sfumatura in uscita skydome</long>
+		<long xml:lang="ja">スカイドームフォールバックグラデーションの下部カラーストップに使用する色</long>
+		<long xml:lang="pl">Dolny kolor przejścia tonalnego w tle kostki pulpitów</long>
+		<long xml:lang="pt_BR">Cor a ser usada na parte inferior do gradiente de fallback do skydome</long>
+		<long xml:lang="ru">Цвет, используемый для нижней границы градиента фона</long>
+		<long xml:lang="zh_CN">背景降色渐变使用的底部结束颜色</long>
+		<long xml:lang="zh_TW">要使用的天空頂後援漸層之底部色彩停止點</long>
+		<default>
+		    <red>0xfefe</red>
+		    <green>0xffff</green>
+		    <blue>0xc7c7</blue>
+		</default>
+	    </option>
+	    <option type="float" name="acceleration">
+		<short>Acceleration</short>
+		<short xml:lang="ca">Acceleració</short>
+		<short xml:lang="cs">Akcelerace</short>
+		<short xml:lang="da">Acceleration</short>
+		<short xml:lang="de">Beschleunigung</short>
+		<short xml:lang="es">Aceleración</short>
+		<short xml:lang="fi">Kiihdytys</short>
+		<short xml:lang="fr">Accélération</short>
+		<short xml:lang="hu">Gyorsítás</short>
+		<short xml:lang="it">Accelerazione</short>
+		<short xml:lang="ja">アクセラレーション</short>
+		<short xml:lang="pl">Akceleracja</short>
+		<short xml:lang="pt">Aceleração</short>
+		<short xml:lang="pt_BR">Aceleração</short>
+		<short xml:lang="ru">Ускорение</short>
+		<short xml:lang="sv">Accelerering</short>
+		<short xml:lang="zh_CN">加速</short>
+		<short xml:lang="zh_TW">加速</short>
+		<long>Fold Acceleration</long>
+		<long xml:lang="ca">Acceleració de plegament</long>
+		<long xml:lang="cs">Zrychlení sbalení</long>
+		<long xml:lang="da">Foldeaccelaration</long>
+		<long xml:lang="de">Beschleunigung beim Falten</long>
+		<long xml:lang="es">Aceleración del pliegue</long>
+		<long xml:lang="fi">Kiihdytyskerroin</long>
+		<long xml:lang="fr">Accélération de pliage</long>
+		<long xml:lang="hu">Hajtás gyorsulása</long>
+		<long xml:lang="it">Accelerazione chiusura</long>
+		<long xml:lang="ja">アクセラレーションをフォールド</long>
+		<long xml:lang="pl">Przyspieszenie zwijania</long>
+		<long xml:lang="pt_BR">Dobrar a Aceleração</long>
+		<long xml:lang="ru">Ускорение свертывания</long>
+		<long xml:lang="sv">Vikningsaccelerering</long>
+		<long xml:lang="zh_CN">折叠加速</long>
+		<long xml:lang="zh_TW">摺疊加速</long>
+		<default>4.0</default>
+		<min>1.0</min>
+		<max>20.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="float" name="speed">
+		<short>Speed</short>
+		<short xml:lang="ca">Velocitat</short>
+		<short xml:lang="cs">Rychlost</short>
+		<short xml:lang="da">Hastighed</short>
+		<short xml:lang="de">Geschwindigkeit</short>
+		<short xml:lang="es">Velocidad</short>
+		<short xml:lang="fi">Nopeus</short>
+		<short xml:lang="fr">Vitesse</short>
+		<short xml:lang="hu">Sebesség</short>
+		<short xml:lang="it">Velocità</short>
+		<short xml:lang="ja">速度</short>
+		<short xml:lang="pl">Szybkość</short>
+		<short xml:lang="pt">Velocidade</short>
+		<short xml:lang="pt_BR">Velocidade</short>
+		<short xml:lang="ru">Скорость</short>
+		<short xml:lang="sv">Hastighet</short>
+		<short xml:lang="zh_CN">速度</short>
+		<short xml:lang="zh_TW">速度</short>
+		<long>Fold Speed</long>
+		<long xml:lang="ca">Velocitat de plegament</long>
+		<long xml:lang="cs">Rychlost sbalení</long>
+		<long xml:lang="da">Foldehastighed</long>
+		<long xml:lang="de">Faltgeschwindigkeit</long>
+		<long xml:lang="es">Velocidad del pliegue</long>
+		<long xml:lang="fi">Nopeuskerroin</long>
+		<long xml:lang="fr">Vitesse de pliage</long>
+		<long xml:lang="hu">Hajtás sebessége</long>
+		<long xml:lang="it">Velocità chiusura</long>
+		<long xml:lang="ja">速度をフォールド</long>
+		<long xml:lang="pl">Szybkość zwijania</long>
+		<long xml:lang="pt_BR">Dobrar a Velocidade</long>
+		<long xml:lang="ru">Скорость свертывания</long>
+		<long xml:lang="sv">Vikningshastighet</long>
+		<long xml:lang="zh_CN">折叠速度</long>
+		<long xml:lang="zh_TW">摺疊速度</long>
+		<default>1.5</default>
+		<min>0.1</min>
+		<max>50.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="float" name="timestep">
+		<short>Timestep</short>
+		<short xml:lang="ca">Etapa</short>
+		<short xml:lang="cs">Časový krok</short>
+		<short xml:lang="da">Tidstrin</short>
+		<short xml:lang="de">Zeitintervall</short>
+		<short xml:lang="es">PAso</short>
+		<short xml:lang="fi">Aikaviive</short>
+		<short xml:lang="fr">Intervalle</short>
+		<short xml:lang="hu">Időköz</short>
+		<short xml:lang="it">Intervallo</short>
+		<short xml:lang="ja">タイムステップ</short>
+		<short xml:lang="pl">Opóźnienie</short>
+		<short xml:lang="pt">Timestep</short>
+		<short xml:lang="pt_BR">Timestep</short>
+		<short xml:lang="ru">Квант времени </short>
+		<short xml:lang="sv">Tidsintervall</short>
+		<short xml:lang="zh_CN">时间区间</short>
+		<short xml:lang="zh_TW">時間間隔</short>
+		<long>Fold Timestep</long>
+		<long xml:lang="ca">Etapa de plegament</long>
+		<long xml:lang="cs">Časový krok sbalení</long>
+		<long xml:lang="da">Tidstrin for foldning</long>
+		<long xml:lang="de">Faltzeitintervall</long>
+		<long xml:lang="es">Paso del pliegue</long>
+		<long xml:lang="fi">Aikavälikerroin</long>
+		<long xml:lang="fr">Intervalle de pliage</long>
+		<long xml:lang="hu">Hajtás időköz</long>
+		<long xml:lang="it">Intervallo chiusura</long>
+		<long xml:lang="ja">タイムステップをフォールド</long>
+		<long xml:lang="pl">Opóźnienie zwijania</long>
+		<long xml:lang="pt_BR">Dobrar o Timestep</long>
+		<long xml:lang="ru">Квант времени для свертывания</long>
+		<long xml:lang="sv">Tidsintervall för vikning</long>
+		<long xml:lang="zh_CN">折叠时间区间</long>
+		<long xml:lang="zh_TW">摺疊時間間隔</long>
+		<default>1.2</default>
+		<min>0.1</min>
+		<max>50.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="bool" name="mipmap">
+		<short>Mipmap</short>
+		<short xml:lang="ca">Mipmap</short>
+		<short xml:lang="cs">Mipmap</short>
+		<short xml:lang="da">Mipmap</short>
+		<short xml:lang="de">Mipmap</short>
+		<short xml:lang="es">Mipmap</short>
+		<short xml:lang="fi">Mipmap</short>
+		<short xml:lang="fr">Mipmap</short>
+		<short xml:lang="hu">MIP térkép</short>
+		<short xml:lang="it">Mipmap</short>
+		<short xml:lang="ja">ミップマップ</short>
+		<short xml:lang="pl">Mipmapa</short>
+		<short xml:lang="pt">Mapa</short>
+		<short xml:lang="pt_BR">Mapa</short>
+		<short xml:lang="ru">Mipmap</short>
+		<short xml:lang="sv">Mipmap</short>
+		<short xml:lang="zh_CN">Mipmap</short>
+		<short xml:lang="zh_TW">Mipmap</short>
+		<long>Generate mipmaps when possible for higher quality scaling</long>
+		<long xml:lang="ca">Genera mipmaps sempre que sigui possible per a un canvi de mida de millor qualitat</long>
+		<long xml:lang="cs">Jeli to možné, vytvářet pro kvalitní škálování mipmapy</long>
+		<long xml:lang="da">Generer mipmaps, når det er muligt, for at opnå en højere kvalitetsskalering</long>
+		<long xml:lang="de">Wenn möglich für präzise Skalierung Mipmaps erstellen</long>
+		<long xml:lang="es">Generar mipmap cuando sea posible para obtener una escala de mayor calidad</long>
+		<long xml:lang="fi">Luo mipmap skaalauksen laadun parantamiseksi mikäli se on mahdollista</long>
+		<long xml:lang="fr">Générer des mipmaps dans la mesure du possible pour une mise à l'échelle de meilleure qualité</long>
+		<long xml:lang="hu">MIP térképek készítése, hacsak lehetséges, a jobb minőségű skálázás érdekében</long>
+		<long xml:lang="it">Genera mipmap quando possibile per migliorare la qualità di ridimensionamento</long>
+		<long xml:lang="ja">高品質スケーリングが可能な場合ミップマップを生成</long>
+		<long xml:lang="pl">O ile to możliwe, generuj mitmapy dla lepszej jakości skalowania</long>
+		<long xml:lang="pt">Gerar mapas quando possível para dimensionamento de melhor qualidade</long>
+		<long xml:lang="pt_BR">Gerar mapas quando possível para dimensionamento de melhor qualidade</long>
+		<long xml:lang="ru">По возможности применять множественное отображение для масштабирования качества изображения</long>
+		<long xml:lang="sv">Generera mipmappar när det är möjligt för skalning av högre kvalitet</long>
+		<long xml:lang="zh_CN">生成可能用于更高质量缩放比例的 mipmap</long>
+		<long xml:lang="zh_TW">在可能使用更高品質比例時產生 Mipmap</long>
+		<default>true</default>
+	    </option>
+	    <option type="list" name="backgrounds">
+		<short>Background Images</short>
+		<short xml:lang="sv">Bakgrundsbilder</short>
+		<long>Background images</long>
+		<long xml:lang="sv">Bakgrundsbilder</long>
+		<type>string</type>
+	    </option>
+	    <option type="bool" name="adjust_image">
+		<short>Adjust Image</short>
+		<short xml:lang="sv">Justera bild</short>
+		<long>Adjust top face image to rotation</long>
+		<default>false</default>
+	    </option>
+	    <option type="float" name="active_opacity">
+		<short>Opacity During Rotation</short>
+		<long>Opacity of desktop window during rotation.</long>
+		<default>100.0</default>
+		<min>0.0</min>
+		<max>100.0</max>
+		<precision>1.0</precision>
+	    </option>
+	    <option type="float" name="inactive_opacity">
+		<short>Opacity When Not Rotating</short>
+		<long>Opacity of desktop window when not rotating.</long>
+		<default>100.0</default>
+		<min>0.0</min>
+		<max>100.0</max>
+		<precision>1.0</precision>
+	    </option>
+	    <option type="float" name="fade_time">
+		<short>Fade Time</short>
+		<long>Desktop Window Opacity Fade Time.</long>
+		<default>1.0</default>
+		<min>0.0</min>
+		<max>10.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="bool" name="transparent_manual_only">
+		<short>Transparency Only on Mouse Rotate</short>
+		<long>Initiates Cube transparency only if rotation is mouse driven.</long>
+		<default>true</default>
+	    </option>
+	    <option type="int" name="multioutput_mode">
+		<short>Multi Output Mode</short>
+		<long>Selects how the cube is displayed if multiple output devices are used.</long>
+		<min>0</min>
+		<max>2</max>
+		<default>0</default>
+		<desc>
+		    <value>0</value>
+		    <name>Automatic</name>
+		</desc>
+		<desc>
+		    <value>1</value>
+		    <name>Multiple cubes</name>
+		</desc>
+		<desc>
+		    <value>2</value>
+		    <name>On big cube</name>
+		</desc>
+	    </option>
+	</screen>
+    </plugin>
+</ecomp>

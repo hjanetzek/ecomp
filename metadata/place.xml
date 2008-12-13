@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="place">
+	<short>Place Windows</short>
+	<short xml:lang="ca">Situa les finestres</short>
+	<short xml:lang="cs">Rozmístit okna</short>
+	<short xml:lang="da">Placer vinduer</short>
+	<short xml:lang="de">Fenster platzieren</short>
+	<short xml:lang="es">Colocar ventanas</short>
+	<short xml:lang="fi">Asettele ikkunat</short>
+	<short xml:lang="fr">Placer des fenêtres</short>
+	<short xml:lang="hu">Ablak elhelyezése</short>
+	<short xml:lang="it">Posiziona finestre</short>
+	<short xml:lang="ja">ウィンドウを配置する</short>
+	<short xml:lang="pl">Rozmieść okna</short>
+	<short xml:lang="pt">Colocar Janelas</short>
+	<short xml:lang="pt_BR">Colocar Janelas</short>
+	<short xml:lang="ru">Размещение окон</short>
+	<short xml:lang="sv">Placera fönster</short>
+	<short xml:lang="zh_CN">放置窗口</short>
+	<short xml:lang="zh_TW">放置視窗</short>
+	<long>Place windows at appropriate positions when mapped</long>
+	<long xml:lang="ca">Situa les finestres en les posicions adequades quan s'assignin</long>
+	<long xml:lang="cs">Umístit mapovaná okna na odpovídající pozice</long>
+	<long xml:lang="da">Placer vinduerne på de korrekte positioner, når de er tilknyttet</long>
+	<long xml:lang="de">Fenster bei Zuordnung ungefähr platzieren</long>
+	<long xml:lang="es">Coloca las ventanas en sus lugares adecuados en la asignación</long>
+	<long xml:lang="fi">Asettele ikkunat sopiville paikoille niiden ilmestyessä</long>
+	<long xml:lang="fr">Placer des fenêtres aux positions correctes lorsqu'elles sont mappées</long>
+	<long xml:lang="hu">Térképezés esetén az ablakok elhelyezése a megfelelő pozícióba</long>
+	<long xml:lang="it">Posiziona finestre in maniera appropriata quando associate</long>
+	<long xml:lang="ja">マップ時にウィンドウを適切な位置に配置する</long>
+	<long xml:lang="pl">Podczas mapowania umieszczaj okna we właściwych miejscach</long>
+	<long xml:lang="pt">Colocar janelas nas posições apropriadas quando houver mapeamento</long>
+	<long xml:lang="pt_BR">Colocar janelas nas posições apropriadas quando houver mapeamento</long>
+	<long xml:lang="ru">При отображении разместите окна в нужных местах</long>
+	<long xml:lang="sv">Placera fönster på lämpliga positioner när de kopplas</long>
+	<long xml:lang="zh_CN">映射时将窗口放置在适当位置</long>
+	<long xml:lang="zh_TW">在映射時將視窗放置到適當位置</long>
+	<screen>
+	    <option type="bool" name="workarounds">
+		<short>Workarounds</short>
+		<short xml:lang="ca">Solucions alternatives</short>
+		<short xml:lang="cs">Řešení problémů</short>
+		<short xml:lang="da">Løsninger</short>
+		<short xml:lang="de">Workarounds</short>
+		<short xml:lang="es">Soluciones alternativas</short>
+		<short xml:lang="fi">Poikkeukset</short>
+		<short xml:lang="fr">Solutions</short>
+		<short xml:lang="hu">Kerülő megoldások</short>
+		<short xml:lang="it">Alternative</short>
+		<short xml:lang="ja">回避方法</short>
+		<short xml:lang="pl">Obejścia problemów</short>
+		<short xml:lang="pt">Soluções</short>
+		<short xml:lang="pt_BR">Soluções</short>
+		<short xml:lang="ru">Обходные пути</short>
+		<short xml:lang="sv">Problemlösningar</short>
+		<short xml:lang="zh_CN">工作区</short>
+		<short xml:lang="zh_TW">解決方式</short>
+		<long>Window placement workarounds</long>
+		<long xml:lang="ca">Solucions alternatives de disposició de finestres</long>
+		<long xml:lang="cs">Nouzová řešení umístění oken</long>
+		<long xml:lang="da">Løsninger til vinduesplaceringer</long>
+		<long xml:lang="de">Fensterplatzierungs-Workarounds</long>
+		<long xml:lang="es">Procedimientos alternativos para colocación de ventanas</long>
+		<long xml:lang="fi">Poikkeukset ikkunoiden asettelussa</long>
+		<long xml:lang="fr">Solution de placement de fenêtre</long>
+		<long xml:lang="hu">Kerülőmegoldások az ablak elhelyezésére</long>
+		<long xml:lang="it">Alternative posizionamento finestre</long>
+		<long xml:lang="ja">ウィンドウ配置の回避策</long>
+		<long xml:lang="pl">Obejścia problemów z rozmieszczeniem okien</long>
+		<long xml:lang="pt">Soluções para colocação de janelas</long>
+		<long xml:lang="pt_BR">Soluções para colocação de janelas</long>
+		<long xml:lang="ru">Обходные пути при размещении окна</long>
+		<long xml:lang="sv">Problemlösning för fönsterplacering</long>
+		<long xml:lang="zh_CN">窗口放置工作区</long>
+		<long xml:lang="zh_TW">視窗位置解決方式</long>
+		<default>true</default>
+	    </option>
+	    <option type="int" name="mode">
+		<short>Placement Mode</short>
+		<short xml:lang="sv">Placeringsläge</short>
+		<long>Algorithm to use for window placement</long>
+		<long xml:lang="sv">Algoritm att använda för fönsterplacering</long>
+		<default>0</default>
+		<min>0</min>
+		<max>4</max>
+		<desc>
+		    <value>0</value>
+		    <name>Cascade</name>
+		</desc>
+		<desc>
+		    <value>1</value>
+		    <name>Centered</name>
+		</desc>
+		<desc>
+		    <value>2</value>
+		    <name>Smart</name>
+		</desc>
+		<desc>
+		    <value>3</value>
+		    <name>Maximize</name>
+		</desc>
+		<desc>
+		    <value>4</value>
+		    <name>Random</name>
+		</desc>
+	    </option>
+	    <option type="list" name="position_matches">
+		<short>Positioned windows</short>
+		<short xml:lang="sv">Positionerade fönster</short>
+		<long>Windows that should be positioned by default</long>
+		<type>match</type>
+	    </option>
+	    <option type="list" name="position_x_values">
+		<short>X Positions</short>
+		<short xml:lang="sv">X-positioner</short>
+		<long>X position values</long>
+		<long xml:lang="sv">X-positionsvärden</long>
+		<type>int</type>
+	    </option>
+	    <option type="list" name="position_y_values">
+		<short>Y Positions</short>
+		<short xml:lang="sv">Y-positioner</short>
+		<long>Y position values</long>
+		<long xml:lang="sv">Y-positionsvärden</long>
+		<type>int</type>
+	    </option>
+	    <option type="list" name="viewport_matches">
+		<short>Viewport positioned windows</short>
+		<long>Windows that should be positioned in specific viewports by default</long>
+		<type>match</type>
+	    </option>
+	    <option type="list" name="viewport_x_values">
+		<short>X Viewport Positions</short>
+		<long>Horizontal viewport positions</long>
+		<long xml:lang="sv">Horisontella skivbordsvypositioner</long>
+		<type>int</type>
+	    </option>
+	    <option type="list" name="viewport_y_values">
+		<short>Y Viewport Positions</short>
+		<long>Vertical viewport positions</long>
+		<type>int</type>
+	    </option>
+	</screen>
+    </plugin>
+</ecomp>

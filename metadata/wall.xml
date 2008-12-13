@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+	<plugin useBcop="true" name="wall">
+		<short>Desktop Wall</short>
+		<long>Desktop Wall Plugin</long>
+		<category>Desktop</category>
+		<feature>largedesktop</feature>
+		<deps>
+			<relation type="after">
+				<plugin>decoration</plugin>
+			</relation>
+			<relation type="before">
+				<plugin>wobbly</plugin>
+				<plugin>fade</plugin>
+			</relation>
+		</deps>
+		<display>
+			<group>
+				<short>Viewport Switch Preview</short>
+				<option type="bool" name="show_switcher">
+					<short>Show Viewport Switcher Preview</short>
+					<long>Show switcher window while switching viewports</long>
+					<default>true</default>
+				</option>
+				<option type="bool" name="miniscreen">
+					<short>Show Live Viewport Previews</short>
+					<long>Show live viewport previews in switcher window</long>
+					<default>false</default>
+				</option>
+				<option type="float" name="preview_timeout">
+					<short>Switch Target Preview Visibility Time</short>
+					<long>Duration (in s) the switch target preview should remain visible after switching ends.</long>
+					<default>0.4</default>
+					<min>0.0</min>
+					<max>2.0</max>
+					<precision>0.05</precision>
+				</option>
+				<option type="int" name="edge_radius">
+						<short>Edge Radius</short>
+						<long>Radius of the rounded edge</long>
+						<default>5</default>
+						<min>0</min>
+						<max>20</max>
+					</option>
+					<option type="color" name="outline_color">
+						<short>Outline Color</short>
+						<long>Outline color of the switcher window.</long>
+						<default>
+							<red>0x3333</red>
+							<green>0x3333</green>
+							<blue>0x3333</blue>
+							<alpha>0xd998</alpha>
+						</default>
+					</option>
+				<subgroup>
+					<short>Background Gradient</short>
+					
+					<option type="color" name="background_gradient_base_color">
+						<short>Base Color</short>
+						<long>First color for the background gradient of the switcher window.</long>
+						<default>
+							<red>0xcccc</red>
+							<green>0xcccc</green>
+							<blue>0xe665</blue>
+							<alpha>0xd998</alpha>
+						</default>
+					</option>
+					<option type="color" name="background_gradient_highlight_color">
+						<short>Highlight Color</short>
+						<long>Second color for the background gradient of the switcher window.</long>
+						<default>
+							<red>0xf332</red>
+							<green>0xf332</green>
+							<blue>0xffff</blue>
+							<alpha>0xd998</alpha>
+						</default>
+					</option>
+					<option type="color" name="background_gradient_shadow_color">
+						<short>Shadow Color</short>
+						<short xml:lang="sv">Skuggfärg</short>
+						<long>Third color for the background gradient of the switcher window.</long>
+						<default>
+							<red>0xf332</red>
+							<green>0xf332</green>
+							<blue>0xffff</blue>
+							<alpha>0xd998</alpha>
+						</default>
+					</option>
+				</subgroup>
+				<subgroup>
+					<short>Thumb Gradient</short>
+
+					<option type="color" name="thumb_gradient_base_color">
+						<short>Base Color</short>
+						<long>First color for the thumb gradient of the switcher window.</long>
+						<default>
+							<red>0x3333</red>
+							<green>0x3333</green>
+							<blue>0x3333</blue>
+							<alpha>0x5999</alpha>
+						</default>
+					</option>
+					<option type="color" name="thumb_gradient_highlight_color">
+						<short>Highlight Color</short>
+						<long>Second color for the thumb gradient of the switcher window.</long>
+						<default>
+							<red>0x3fff</red>
+							<green>0x3fff</green>
+							<blue>0x3fff</blue>
+							<alpha>0x3fff</alpha>
+						</default>
+					</option>
+				</subgroup>
+				<subgroup>
+					<short>Highlight Gradient</short>
+
+					<option type="color" name="thumb_highlight_gradient_base_color">
+						<short>Base Color</short>
+						<long>First color for the thumb highlight gradient of the switcher window.</long>
+						<default>
+							<red>0xffff</red>
+							<green>0xffff</green>
+							<blue>0xffff</blue>
+							<alpha>0xf332</alpha>
+						</default>
+					</option>
+					<option type="color" name="thumb_highlight_gradient_shadow_color">
+						<short>Shadow Color</short>
+						<short xml:lang="sv">Skuggfärg</short>
+						<long>Second color for the thumb highlight gradient of the switcher window.</long>
+						<default>
+							<red>0xdfff</red>
+							<green>0xdfff</green>
+							<blue>0xdfff</blue>
+							<alpha>0xa665</alpha>
+						</default>
+					</option>
+				</subgroup>
+				<subgroup>
+					<short>Arrow Colors</short>
+
+					<option type="color" name="arrow_base_color">
+						<short>Base Color</short>
+						<long>First color of the arrow of the switcher window.</long>
+						<default>
+							<red>0xe665</red>
+							<green>0xe665</green>
+							<blue>0xe665</blue>
+							<alpha>0xd998</alpha>
+						</default>
+					</option>
+					<option type="color" name="arrow_shadow_color">
+						<short>Shadow Color</short>
+						<short xml:lang="sv">Skuggfärg</short>
+						<long>Second color of the arrow of the switcher window.</long>
+						<default>
+							<red>0xdc28</red>
+							<green>0xdc28</green>
+							<blue>0xdc28</blue>
+							<alpha>0xd998</alpha>
+						</default>
+					</option>
+				</subgroup>
+			</group>
+			<group>
+				<short>Viewport Switching</short>
+				<option type="bool" name="allow_wraparound">
+					<short>Allow Wrap-Around</short>
+					<long>Allow wrap-around when moving the wall up/down/left/right</long>
+					<default>false</default>
+				</option>
+				<option type="float" name="slide_duration">
+					<short>Wall Sliding Duration</short>
+					<long>Duration (in s) for wall sliding viewport switching animation</long>
+					<default>0.3</default>
+					<min>0.1</min>
+					<max>5.0</max>
+					<precision>0.05</precision>
+				</option>
+				<option type="action" name="left">
+					<short>Move Left</short>
+					<long>Move along the wall to the left</long>
+					<allowed key="true" button="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;Left</key>
+					</default>
+				</option>
+				<option type="action" name="right">
+					<short>Move Right</short>
+					<long>Move along the wall to the right</long>
+					<allowed key="true" button="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;Right</key>
+					</default>
+				</option>
+				<option type="action" name="up">
+					<short>Move Up</short>
+					<long>Move along the wall up</long>
+					<allowed key="true" button="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;Up</key>
+					</default>
+				</option>
+				<option type="action" name="down">
+					<short>Move Down</short>
+					<long>Move along the wall down</long>
+					<allowed key="true" button="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;Down</key>
+					</default>
+				</option>
+				<option type="action" name="next">
+					<short>Move Next</short>
+					<long>Move along the wall to the next viewport</long>
+					<allowed key="true" button="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;Next</key>
+					</default>
+				</option>
+				<option type="action" name="prev">
+					<short>Move Prev</short>
+					<long>Move along the wall to the previous viewport</long>
+					<allowed key="true" button="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;Prior</key>
+					</default>
+				</option>
+				<option type="action" name="left_window">
+					<short>Move Left With Window</short>
+					<long>Move with window along the wall to the left</long>
+					<allowed key="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;&lt;Shift&gt;Left</key>
+					</default>
+				</option>
+				<option type="action" name="right_window">
+					<short>Move Right With Window</short>
+					<long>Move with window along the wall to the right</long>
+					<allowed key="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;&lt;Shift&gt;Right</key>
+					</default>
+				</option>
+				<option type="action" name="up_window">
+					<short>Move Up With Window</short>
+					<long>Move with window along the wall up</long>
+					<allowed key="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;&lt;Shift&gt;Up</key>
+					</default>
+				</option>
+				<option type="action" name="down_window">
+					<short>Move Down With Window</short>
+					<long>Move with window along the wall down</long>
+					<allowed key="true"/>
+					<default>
+						<key>&lt;Control&gt;&lt;Alt&gt;&lt;Shift&gt;Down</key>
+					</default>
+				</option>
+				<option type="action" name="flip_left">
+					<short>Flip Left</short>
+					<long>Flip left</long>
+					<allowed edgednd="true" edge="true"/>
+					<default>
+						<edges left="true"/>
+					</default>
+				</option>
+				<option type="action" name="flip_right">
+					<short>Flip Right</short>
+					<long>Flip right</long>
+					<allowed edgednd="true" edge="true"/>
+					<default>
+						<edges right="true"/>
+					</default>
+				</option>
+				<option type="action" name="flip_up">
+					<short>Flip Up</short>
+					<long>Flip up</long>
+					<allowed edgednd="true" edge="true"/>
+					<default>
+						<edges top="true"/>
+					</default>
+				</option>
+				<option type="action" name="flip_down">
+					<short>Flip Down</short>
+					<long>Flip down</long>
+					<allowed edgednd="true" edge="true"/>
+					<default>
+						<edges bottom="true"/>
+					</default>
+				</option>
+			</group>
+		</display>
+		<screen>
+			<group>
+				<short>Viewport Switching</short>
+				<option type="int" name="mmmode">
+					<short>Multimonitor behavior</short>
+					<long>How should a multimonitor configuration be handeled</long>
+					<default>0</default>
+					<min>0</min>
+					<max>1</max>
+					<desc>
+						<value>0</value>
+						<name>Switch all</name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<name>Switch separately</name>
+					</desc>
+				</option>
+			</group>
+			<group>
+				<short>Edge Flipping</short>
+				<option type="bool" name="edgeflip_pointer">
+					<short>Edge Flip Pointer</short>
+					<short xml:lang="ca">Punter d'inversió de vora</short>
+					<short xml:lang="cs">Překlápění hran ukazatelem</short>
+					<short xml:lang="da">Markør til kant, vend</short>
+					<short xml:lang="de">An Rand wechseln (Zeiger)</short>
+					<short xml:lang="es">Puntero de inversión de borde</short>
+					<short xml:lang="fi">Osoittimella aktivoituvat työpöydän reunat</short>
+					<short xml:lang="fr">Rotation de côté - Pointeur</short>
+					<short xml:lang="hu">Élforgatás mutató</short>
+					<short xml:lang="it">Puntatore riflessione bordi</short>
+					<short xml:lang="ja">エッジフリップポインタ</short>
+					<short xml:lang="pl">Przełączanie widoków za pomocą wskaźnika</short>
+					<short xml:lang="pt">Ponteiro de Inversão de Bordas</short>
+					<short xml:lang="pt_BR">Ponteiro de Inversão de Bordas</short>
+					<short xml:lang="ru">Отражение при курсоре на краю</short>
+					<short xml:lang="sv">Kantvänd pekare</short>
+					<short xml:lang="zh_CN">边缘翻转指针</short>
+					<short xml:lang="zh_TW">邊緣翻轉指標</short>
+					<long>Flip viewport when moving the pointer to a screen edge</long>
+					<default>false</default>
+				</option>
+				<option type="bool" name="edgeflip_move">
+					<short>Edge Flip Move</short>
+					<short xml:lang="ca">Moviment d'inversió de vora</short>
+					<short xml:lang="cs">Překlápění hran při přesunu</short>
+					<short xml:lang="da">Flyt til kant, vend</short>
+					<short xml:lang="de">An Rand wechseln (Verschieben)</short>
+					<short xml:lang="es">Mover inversión de borde</short>
+					<short xml:lang="fi">Ikkunaa siirrettäessä aktivoituvat työpöydän reunat</short>
+					<short xml:lang="fr">Rotation de côté - Déplacement</short>
+					<short xml:lang="hu">Élforgatás áthelyezés</short>
+					<short xml:lang="it">Spostamento riflessione bordi</short>
+					<short xml:lang="ja">エッジフリップ移動</short>
+					<short xml:lang="pl">Przełączanie krawędziami - przenoszenie</short>
+					<short xml:lang="pt">Movimento de Inversão de Bordas</short>
+					<short xml:lang="pt_BR">Movimento de Inversão de Bordas</short>
+					<short xml:lang="ru">Отражение при перемещении к краю</short>
+					<short xml:lang="sv">Kantvänd flyttning</short>
+					<short xml:lang="zh_CN">边缘翻转移动</short>
+					<short xml:lang="zh_TW">邊緣翻轉移動</short>
+					<long>Flip viewport when moving a window to a screen edge</long>
+					<default>true</default>
+				</option>
+				<option type="bool" name="edgeflip_dnd">
+					<short>Edge Flip DnD</short>
+					<short xml:lang="ca">DnD d'inversió de vora</short>
+					<short xml:lang="cs">Překlápění hran DnD</short>
+					<short xml:lang="da">Træk-og-slip til kant, vend</short>
+					<short xml:lang="de">An Rand wechseln (Ziehen und Ablegen)</short>
+					<short xml:lang="es">DnD de inversión de borde</short>
+					<short xml:lang="fi">Raahattaessa aktivoituvat työpöydän reunat</short>
+					<short xml:lang="fr">Rotation de côté - Glissement-déplacement</short>
+					<short xml:lang="hu">Élforgatás egérművelet</short>
+					<short xml:lang="it">DnD riflessione bordi</short>
+					<short xml:lang="ja">エッジフリップDnD</short>
+					<short xml:lang="pl">Przełączanie krawędziami - DnD</short>
+					<short xml:lang="pt">DnD de Inversão de Bordas</short>
+					<short xml:lang="pt_BR">DnD de Inversão de Bordas</short>
+					<short xml:lang="ru">Отражение при перетаскивании к краю</short>
+					<short xml:lang="sv">Kantvänd DnD</short>
+					<short xml:lang="zh_CN">边缘翻转 DnD</short>
+					<short xml:lang="zh_TW">邊緣翻轉 DnD</short>
+					<long>Flip viewport when dragging an object to a screen edge</long>
+					<default>false</default>
+				</option>
+			</group>
+		</screen>
+	</plugin>
+</ecomp>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="png">
+	<short>Png</short>
+	<short xml:lang="sv">Png</short>
+	<long>Png image loader</long>
+	<long xml:lang="sv">Png-bildläsare</long>
+	<feature>imageext:png</feature>
+	<feature>imagemime:image/png</feature>
+    </plugin>
+</ecomp>

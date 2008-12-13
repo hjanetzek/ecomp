@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="ini">
+	<short>Ini</short>
+	<short xml:lang="sv">Ini</short>
+	<long>Ini Flat File Backend</long>
+    </plugin>
+</ecomp>

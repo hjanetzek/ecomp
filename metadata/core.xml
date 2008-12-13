@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <core>
+	<short>General Options</short>
+	<short xml:lang="sv">Allmänna alternativ</short>
+	<long>General ecomp options</long>
+	<display>
+	    <option type="list" name="active_plugins">
+		<short>Active Plugins</short>
+		<short xml:lang="ca">Connectors actius</short>
+		<short xml:lang="cs">Aktivní moduly</short>
+		<short xml:lang="da">Aktive plugins</short>
+		<short xml:lang="de">Aktive Plugins</short>
+		<short xml:lang="es">Complementos activos</short>
+		<short xml:lang="fi">Käytössä olevat liitännäiset</short>
+		<short xml:lang="fr">Plug-ins actifs</short>
+		<short xml:lang="hu">Aktív bővítmények</short>
+		<short xml:lang="it">Plug-in attivi</short>
+		<short xml:lang="ja">アクティブプラグイン</short>
+		<short xml:lang="pl">Włączone wtyczki</short>
+		<short xml:lang="pt">Plug-ins Ativos</short>
+		<short xml:lang="pt_BR">Plug-ins Ativos</short>
+		<short xml:lang="ru">Активные модули</short>
+		<short xml:lang="sv">Aktiva insticksmoduler</short>
+		<short xml:lang="zh_CN">活动插件</short>
+		<short xml:lang="zh_TW">主動式外掛程式</short>
+		<long>List of currently active plugins</long>
+		<long xml:lang="ca">Llista dels connectors actius actualment</long>
+		<long xml:lang="cs">Seznam právě aktivních modulů</long>
+		<long xml:lang="da">Liste over aktive plugins</long>
+		<long xml:lang="de">Liste der aktiven Plugins</long>
+		<long xml:lang="es">Lista de complementos activos actualmente</long>
+		<long xml:lang="fi">Lista aktiivisista liitännäisistä</long>
+		<long xml:lang="fr">Liste des plug-ins actuellement actifs</long>
+		<long xml:lang="hu">Az aktuális bővítmények listája</long>
+		<long xml:lang="it">Elenco di plug-in correntemente attivi</long>
+		<long xml:lang="ja">現在アクティブなプラグインのリスト</long>
+		<long xml:lang="pl">Lista aktualnie włączonych wtyczek</long>
+		<long xml:lang="pt">Lista de plug-ins atualmente ativos</long>
+		<long xml:lang="pt_BR">Lista de plug-ins atualmente ativos</long>
+		<long xml:lang="ru">Список текущих активных модулей</long>
+		<long xml:lang="sv">Lista över för närvarande aktiva insticksmoduler</long>
+		<long xml:lang="zh_CN">当前活动的插件列表</long>
+		<long xml:lang="zh_TW">最新主動式外掛程式清單</long>
+		<type>string</type>
+	    </option>
+	    <option type="int" name="texture_filter">
+		<short>Texture Filter</short>
+		<short xml:lang="ca">Filtre de textura</short>
+		<short xml:lang="cs">Filtr textur</short>
+		<short xml:lang="da">Teksturfilter</short>
+		<short xml:lang="de">Strukturfilter</short>
+		<short xml:lang="es">Filtro de textura</short>
+		<short xml:lang="fi">Tekstuurisuodin</short>
+		<short xml:lang="fr">Filtre de texture</short>
+		<short xml:lang="hu">Textúraszűrő</short>
+		<short xml:lang="it">Filtro texture</short>
+		<short xml:lang="ja">テクスチャフィルタ</short>
+		<short xml:lang="pl">Filtr tekstury</short>
+		<short xml:lang="pt">Filtro de Textura</short>
+		<short xml:lang="pt_BR">Filtro de Textura</short>
+		<short xml:lang="ru">Фильтр текстур</short>
+		<short xml:lang="sv">Texturfilter</short>
+		<short xml:lang="zh_CN">纹理过滤器</short>
+		<short xml:lang="zh_TW">材質過濾器</short>
+		<long>Texture filtering</long>
+		<long xml:lang="cs">Filtrování textur</long>
+		<long xml:lang="de">Texturfilter</long>
+		<long xml:lang="es">Filtro de texturas</long>
+		<long xml:lang="fi">Tekstuurisuodatus</long>
+		<long xml:lang="fr">Filtrage de texture</long>
+		<long xml:lang="it">Filtro trama</long>
+		<long xml:lang="ja">テクスチャフィルタ</long>
+		<long xml:lang="pt_BR">Filtragem da textura</long>
+		<long xml:lang="sv">Texturfiltrering</long>
+		<long xml:lang="zh_CN">纹理过滤</long>
+		<long xml:lang="zh_TW">材質篩選</long>
+		<default>1</default>
+		<min>0</min>
+		<max>2</max>
+		<desc>
+		    <value>0</value>
+		    <name>Fast</name>
+		</desc>
+		<desc>
+		    <value>1</value>
+		    <name>Good</name>
+		</desc>
+		<desc>
+		    <value>2</value>
+		    <name>Best</name>
+		</desc>
+	    </option>
+	</display>
+	<screen>
+	    <option type="bool" name="detect_refresh_rate">
+		<short>Detect Refresh Rate</short>
+		<short xml:lang="ca">Detecta la freqüència d'actualització</short>
+		<short xml:lang="cs">Zjistit obnovovací frekvenci</short>
+		<short xml:lang="da">Registrer opdateringshastighed</short>
+		<short xml:lang="de">Aktualisierungsrate erkennen</short>
+		<short xml:lang="es">Detectar frecuencia de actualización</short>
+		<short xml:lang="fi">Tunnista päivitystaajuus</short>
+		<short xml:lang="fr">Détecter la fréquence de rafraîchissement</short>
+		<short xml:lang="hu">Frissítési frekvencia felismerése</short>
+		<short xml:lang="it">Rileva frequenza di aggiornamento</short>
+		<short xml:lang="ja">更新レートの検出</short>
+		<short xml:lang="pl">Wykryj częstotliwość odświeżania</short>
+		<short xml:lang="pt">Detectar Taxa de Atualização</short>
+		<short xml:lang="pt_BR">Detectar Taxa de Atualização</short>
+		<short xml:lang="ru">Определить частоту обновления</short>
+		<short xml:lang="sv">Detektera uppdateringsfrekvens</short>
+		<short xml:lang="zh_CN">检测刷新率</short>
+		<short xml:lang="zh_TW">偵測重新整理速率</short>
+		<long>Automatic detection of refresh rate</long>
+		<long xml:lang="ca">Detecció automàtica de la freqüència d'actualització</long>
+		<long xml:lang="cs">Automatická detekce obnovovací frekvence</long>
+		<long xml:lang="da">Automatisk registrering af opdateringshastighed</long>
+		<long xml:lang="de">Automatische Erkennung der Aktualisierungsrate</long>
+		<long xml:lang="es">Detección automática de la frecuencia de actualización</long>
+		<long xml:lang="fi">Virkistystaajuuden automaattinen tunnistus</long>
+		<long xml:lang="fr">Détection automatique de la fréquence de rafraîchissement</long>
+		<long xml:lang="hu">Frissítési frekvencia automatikus érzékelése</long>
+		<long xml:lang="it">Rilevamento automatico della frequenza di aggiornamento</long>
+		<long xml:lang="ja">更新レートの自動検出</long>
+		<long xml:lang="pl">Automatyczne wykrywanie częstotliwości odświeżania</long>
+		<long xml:lang="pt">Detecção automática da taxa de atualização</long>
+		<long xml:lang="pt_BR">Detecção automática da taxa de atualização</long>
+		<long xml:lang="ru">Автоматическое определение частоты обновления</long>
+		<long xml:lang="sv">Automatisk identifiering av uppdateringsfrekvens</long>
+		<long xml:lang="zh_CN">自动检测刷新率</long>
+		<long xml:lang="zh_TW">自動偵測重新整理速率</long>
+		<default>true</default>
+	    </option>
+	    <option type="bool" name="lighting">
+		<short>Lighting</short>
+		<short xml:lang="ca">Il·luminació</short>
+		<short xml:lang="cs">Světlo</short>
+		<short xml:lang="da">Belysning</short>
+		<short xml:lang="de">Beleuchtung</short>
+		<short xml:lang="es">Iluminación</short>
+		<short xml:lang="fi">Valaistus</short>
+		<short xml:lang="fr">Éclairage</short>
+		<short xml:lang="hu">Világosítás</short>
+		<short xml:lang="it">Illuminazione</short>
+		<short xml:lang="ja">照明</short>
+		<short xml:lang="pl">Błyskawica</short>
+		<short xml:lang="pt">Iluminação</short>
+		<short xml:lang="pt_BR">Iluminação</short>
+		<short xml:lang="ru">Освещение</short>
+		<short xml:lang="sv">Ljussättning</short>
+		<short xml:lang="zh_CN">加亮</short>
+		<short xml:lang="zh_TW">光源</short>
+		<long>Use diffuse light when screen is transformed</long>
+		<long xml:lang="ca">Utilitza llum de difusió en transformar la pantalla</long>
+		<long xml:lang="cs">Použít rozptýlené světlo při transformaci okna</long>
+		<long xml:lang="da">Brug spredt lys, når skærmbilledet omdannes</long>
+		<long xml:lang="de">Beim Umwandeln des Bildschirms diffuses Licht verwenden</long>
+		<long xml:lang="es">Usa luz indirecta cuando se transforma la pantalla</long>
+		<long xml:lang="fi">Käytä hajavaloa ruudun muuttuessa</long>
+		<long xml:lang="fr">Utiliser la lumière diffuse lorsque l'écran est transformé</long>
+		<long xml:lang="hu">Szórt fény használata képernyő-transzformációnál</long>
+		<long xml:lang="it">Usa luce diffusa alla trasformazione della schermata</long>
+		<long xml:lang="ja">画面の変換時に散光を使用</long>
+		<long xml:lang="pl">Używaj rozproszonego światła podczas przekształceń ekranu</long>
+		<long xml:lang="pt">Usar luz difusa quando a tela for transformada</long>
+		<long xml:lang="pt_BR">Usar luz difusa quando a tela for transformada</long>
+		<long xml:lang="ru">Использование рассеянного света при преобразовании экрана</long>
+		<long xml:lang="sv">Använd diffus belysning när skärmen transformeras</long>
+		<long xml:lang="zh_CN">转换屏幕时使用漫射灯</long>
+		<long xml:lang="zh_TW">在螢幕轉換時使用擴散光</long>
+		<default>true</default>
+	    </option>
+	    <option type="int" name="refresh_rate">
+		<short>Refresh Rate</short>
+		<short xml:lang="ca">Freqüència d'actualització</short>
+		<short xml:lang="cs">Obnovovací frekvence</short>
+		<short xml:lang="da">Opdateringshastighed</short>
+		<short xml:lang="de">Aktualisierungsrate</short>
+		<short xml:lang="es">Frecuencia de actualización</short>
+		<short xml:lang="fi">Virkistystaajuus</short>
+		<short xml:lang="fr">Fréquence de rafraîchissement</short>
+		<short xml:lang="hu">Frissítési frekvencia</short>
+		<short xml:lang="it">Frequenza di aggiornamento</short>
+		<short xml:lang="ja">更新レート</short>
+		<short xml:lang="pl">Częstotliwość odświeżania</short>
+		<short xml:lang="pt">Taxa de Atualização</short>
+		<short xml:lang="pt_BR">Taxa de Atualização</short>
+		<short xml:lang="ru">Частота обновления</short>
+		<short xml:lang="sv">Uppdateringsfrekvens</short>
+		<short xml:lang="zh_CN">刷新率</short>
+		<short xml:lang="zh_TW">重新整理速率</short>
+		<long>The rate at which the screen is redrawn (times/second)</long>
+		<default>50</default>
+		<min>1</min>
+		<max>200</max>
+	    </option>
+	    <option type="int" name="hsize">
+		<short>Horizontal Virtual Size</short>
+		<short xml:lang="ca">Mida virtual horitzontal</short>
+		<short xml:lang="cs">Vodorovná virtuální velikost</short>
+		<short xml:lang="da">Vandret virtuel størrelse</short>
+		<short xml:lang="de">Horizontale virtuelle Größe</short>
+		<short xml:lang="es">Tamaño horizontal virtual</short>
+		<short xml:lang="fi">Virtuaalinen vaakatasokoko</short>
+		<short xml:lang="fr">Taille virtuelle horizontale</short>
+		<short xml:lang="hu">Vízszintes virtuális méret</short>
+		<short xml:lang="it">Dimensioni virtuali orizzontali</short>
+		<short xml:lang="ja">水平仮想サイズ</short>
+		<short xml:lang="pl">Poziomy rozmiar wirtualny</short>
+		<short xml:lang="pt_BR">Tamanho Virtual Horizontal</short>
+		<short xml:lang="ru">Виртуальный размер по горизонтали</short>
+		<short xml:lang="sv">Virtuell horisontell storlek</short>
+		<short xml:lang="zh_CN">水平虚拟大小</short>
+		<short xml:lang="zh_TW">水平虛擬大小</short>
+		<long>Screen size multiplier for horizontal virtual size</long>
+		<default>4</default>
+		<min>1</min>
+		<max>32</max>
+	    </option>
+	    <option type="int" name="vsize">
+		<short>Vertical Virtual Size</short>
+		<short xml:lang="ca">Mida virtual vertical</short>
+		<short xml:lang="cs">Svislá virtuální velikost</short>
+		<short xml:lang="da">Lodret virtuel størrelse</short>
+		<short xml:lang="de">Vertikale virtuelle Größe</short>
+		<short xml:lang="es">Tamaño vertical virtual</short>
+		<short xml:lang="fi">Virtuaalinen pystytasokoko</short>
+		<short xml:lang="fr">Taille virtuelle verticale</short>
+		<short xml:lang="hu">Függőleges virtuális méret</short>
+		<short xml:lang="it">Dimensioni virtuali verticali</short>
+		<short xml:lang="ja">垂直仮想サイズ</short>
+		<short xml:lang="pl">Pionowy rozmiar wirtualny</short>
+		<short xml:lang="pt_BR">Tamanho Virtual Vertical</short>
+		<short xml:lang="ru">Виртуальный размер по вертикали</short>
+		<short xml:lang="sv">Vertikal virtuell storlek</short>
+		<short xml:lang="zh_CN">垂直虚拟大小</short>
+		<short xml:lang="zh_TW">垂直虛擬大小</short>
+		<long>Screen size multiplier for vertical virtual size</long>
+		<default>1</default>
+		<min>1</min>
+		<max>32</max>
+	    </option>
+	    <option type="int" name="opacity_step">
+		<short>Opacity Step</short>
+		<short xml:lang="ca">Etapa d'opacitat</short>
+		<short xml:lang="cs">Krok krytí</short>
+		<short xml:lang="da">Uigennemsigtighedstrin</short>
+		<short xml:lang="de">Durchlässigkeits-Schritt</short>
+		<short xml:lang="es">Paso de opacidad</short>
+		<short xml:lang="fi">Peittävyyden askel</short>
+		<short xml:lang="fr">Incrément d'opacité</short>
+		<short xml:lang="hu">Átlátszatlanság mértéke</short>
+		<short xml:lang="it">Passo opacità</short>
+		<short xml:lang="ja">不透明度ステップ</short>
+		<short xml:lang="pl">Krok nieprzezroczystości</short>
+		<short xml:lang="pt">Etapa de Opacidade</short>
+		<short xml:lang="pt_BR">Etapa de Opacidade</short>
+		<short xml:lang="ru">Шаг прозрачности</short>
+		<short xml:lang="sv">Intervall för opakhet</short>
+		<short xml:lang="zh_CN">不透明度级别</short>
+		<short xml:lang="zh_TW">不透明度間隔</short>
+		<long>Opacity change step</long>
+		<default>10</default>
+		<min>1</min>
+		<max>50</max>
+	    </option>
+	    <option type="bool" name="unredirect_fullscreen_windows">
+		<short>Unredirect Fullscreen Windows</short>
+		<short xml:lang="ca">No redirigeixis les finestres a pantalla completa</short>
+		<short xml:lang="cs">Unredirect Fullscreen Windows</short>
+		<short xml:lang="da">Omdiriger ikke fuldskærmsvinduer</short>
+		<short xml:lang="de">Umleitung von Vollbildfenstern aufheben</short>
+		<short xml:lang="es">Anular redirección de ventanas a pantalla completa</short>
+		<short xml:lang="fi">Kokoruutuikkunoita ei uudelleenohjata</short>
+		<short xml:lang="fr">Ne pas rediriger les fenêtres plein écran</short>
+		<short xml:lang="hu">Teljes méretű ablakok visszairányítása</short>
+		<short xml:lang="it">Annulla reindirizzamento finestre a schermo intero</short>
+		<short xml:lang="ja">全画面ウィンドウのリダイレクト解除</short>
+		<short xml:lang="pl">Cofnij przekierowanie okien pełnoekranowych</short>
+		<short xml:lang="pt">Anular redirecionamento de janelas de tela inteira</short>
+		<short xml:lang="pt_BR">Anular redirecionamento de janelas de tela inteira</short>
+		<short xml:lang="ru">Отменить перенаправление окон в полноэкранном режиме</short>
+		<short xml:lang="sv">Omdirigera tillbaka helskärmsfönster</short>
+		<short xml:lang="zh_CN">取消重定向全屏窗口</short>
+		<short xml:lang="zh_TW">全螢幕視窗解除重新導向</short>
+		<long>Allow drawing of fullscreen windows to not be redirected to offscreen pixmaps</long>
+		<long xml:lang="ca">Permet que la representació de finestres a pantalla completa no es redirigeixi cap a mapes de píxels fora de la pantalla</long>
+		<long xml:lang="cs">Povolit vykreslování celoobrazovkových oken bez přesměrování do mimoobrazovkových pixmap</long>
+		<long xml:lang="da">Tillad trækning af fuldskærmsvinduer, uden at der omdirrigeres til pixmaps uden for skærmbilledet</long>
+		<long xml:lang="de">Aufbau von Vollbildfenstern ohne Umleitung zu Offscreen-Pixmaps erlauben</long>
+		<long xml:lang="es">Permitir que al dibujar ventanas a pantalla completa no se redireccionen a pixmaps de fuera de pantalla</long>
+		<long xml:lang="fi">Kokoruutuikkunoita ei uudelleenohjata piilotetuille pikselikartoille</long>
+		<long xml:lang="fr">Empêcher la redirection vers des pixmaps hors de l'écran lors de l'affichage des fenêtres plein écran</long>
+		<long xml:lang="hu">A teljes méretű ablakok nem irányíthatók át képen kívüli pixeltérképekre</long>
+		<long xml:lang="it">Consenti disegno finestre a schermo intero per non essere reindirizzati a pixmap fuori schermo</long>
+		<long xml:lang="ja">スクリーン外のピックスマップにリダイレクトしないように全画面ウィンドウの描画を許可する</long>
+		<long xml:lang="pl">Zezwól na to, by rysowanie okien pełnoekranowych nie było przekierowywane do map obrazu poza ekranem</long>
+		<long xml:lang="pt">Permitir que o desenho das janelas em tela inteira não seja redirecionado para pixmaps fora da tela</long>
+		<long xml:lang="pt_BR">Permitir que o desenho das janelas em tela inteira não seja redirecionado para pixmaps fora da tela</long>
+		<long xml:lang="ru">Позволяет рисовать окна в полноэкранном режиме без перенаправления в области растрового отображения за пределами экрана</long>
+		<long xml:lang="sv">Tillåt att inte utritning av helskärmsfönster omdirigeras till bilder utanför skärmen</long>
+		<long xml:lang="zh_CN">允许全屏窗口的绘制不重定向到屏幕外的象素映射</long>
+		<long xml:lang="zh_TW">使全螢幕的描繪動作不會重新導向到幕後 Pixmap</long>
+		<default>false</default>
+	    </option>
+	    <option type="string" name="default_icon">
+		<short>Default Icon</short>
+		<short xml:lang="ca">Icona per defecte</short>
+		<short xml:lang="cs">Výchozí ikona</short>
+		<short xml:lang="da">Standardikon</short>
+		<short xml:lang="de">Standardsymbol</short>
+		<short xml:lang="es">Icono por defecto</short>
+		<short xml:lang="fi">Oletuskuvake</short>
+		<short xml:lang="fr">Icône par défaut</short>
+		<short xml:lang="hu">Alapértelmezett ikon</short>
+		<short xml:lang="it">Icona di default</short>
+		<short xml:lang="ja">デフォルトのアイコン</short>
+		<short xml:lang="pl">Domyślna ikona</short>
+		<short xml:lang="pt">Ícone Padrão</short>
+		<short xml:lang="pt_BR">Ícone Padrão</short>
+		<short xml:lang="ru">Значок по умолчанию</short>
+		<short xml:lang="sv">Standardikon</short>
+		<short xml:lang="zh_CN">默认图标</short>
+		<short xml:lang="zh_TW">預設圖示</short>
+		<long>Default window icon image</long>
+		<long xml:lang="ca">Imatge d'icona de finestra per defecte</long>
+		<long xml:lang="cs">Výchozí ikona okna</long>
+		<long xml:lang="da">Standardbillede til vinduesikon</long>
+		<long xml:lang="de">Standardfenstersymbol</long>
+		<long xml:lang="es">Imagen del icono de ventana por defecto</long>
+		<long xml:lang="fi">Oletuskuva ikkunakuvakkeelle</long>
+		<long xml:lang="fr">Image de l'icône de la fenêtre par défaut</long>
+		<long xml:lang="hu">Alapértelmezett ikon képe</long>
+		<long xml:lang="it">Immagine icona finestra di default</long>
+		<long xml:lang="ja">デフォルトのウィンドウアイコンイメージ</long>
+		<long xml:lang="pl">Obraz domyślnej ikony okna</long>
+		<long xml:lang="pt">Imagem do ícone padrão da janela</long>
+		<long xml:lang="pt_BR">Imagem do ícone padrão da janela</long>
+		<long xml:lang="ru">Изображение значка окна по умолчанию</long>
+		<long xml:lang="sv">Standardikonbild för fönster</long>
+		<long xml:lang="zh_CN">默认窗口图标图像</long>
+		<long xml:lang="zh_TW">預設的視窗圖示影像</long>
+		<default>icon</default>
+	    </option>
+	    <option type="bool" name="sync_to_vblank">
+		<short>Sync To VBlank</short>
+		<short xml:lang="ca">Sincronitza amb enfosquiment vertical</short>
+		<short xml:lang="cs">Synchronizovat při VBlank </short>
+		<short xml:lang="da">Synkroniser med lodret slukning</short>
+		<short xml:lang="de">Mit VBlank synchronisieren</short>
+		<short xml:lang="es">Sincronizar con borrado vertical</short>
+		<short xml:lang="fi">Synkronoi VBlankiin</short>
+		<short xml:lang="fr">Sync vers VBlank</short>
+		<short xml:lang="hu">Szinkronizálás VBlank-ra</short>
+		<short xml:lang="it">Sincronizza con VBlank</short>
+		<short xml:lang="ja">垂直ブランクに同期化</short>
+		<short xml:lang="pl">Synchronizuj z VBlank</short>
+		<short xml:lang="pt_BR">Sincronização para o VBlank</short>
+		<short xml:lang="ru">Синхронизировать с VBlank</short>
+		<short xml:lang="sv">Synkronisera till VBlank</short>
+		<short xml:lang="zh_CN">与 Vblank 同步</short>
+		<short xml:lang="zh_TW">同步化到 VBlank</short>
+		<long>Only perform screen updates during vertical blanking period</long>
+		<long xml:lang="ca">Només actualitza la pantalla durant els períodes d'enfosquiment vertical</long>
+		<long xml:lang="cs">Provádět aktualizace obrazovky pouze během intervalu vertikálního zatemnění</long>
+		<long xml:lang="da">Udfør kun skærmopdatering i den lodrette slukkeperiode</long>
+		<long xml:lang="de">Bildschirmaktualisierungen nur während Deaktivierung der vertikalen Anzeige durchführen</long>
+		<long xml:lang="es">Sólo se llevan a cabo actualizaciones de la pantalla durante el período de borrado vertical</long>
+		<long xml:lang="fi">Suorita vain näyttöpäivitykset pystytasossa tehtävän tyhjäyksen aikana</long>
+		<long xml:lang="fr">N'effectuer les mises à jour de l'écran que lors de la période de vidage vertical</long>
+		<long xml:lang="hu">A képernyő-frissítések végrehajtása csak a függőleges törlési periódusban</long>
+		<long xml:lang="it">Esegui aggiornamenti schermata solo durante periodo di lampeggiamento verticale</long>
+		<long xml:lang="ja">垂直ブランキング期間にのみ画面を更新する</long>
+		<long xml:lang="pl">Odświeżaj ekran tylko podczas okresu poziomego wygaszania</long>
+		<long xml:lang="pt_BR">Somente executar atualizações da tela durante o período de limpeza vertical</long>
+		<long xml:lang="ru">Обновления экрана выполняются только во время гашения обратного хода луча кадровой развертки</long>
+		<long xml:lang="zh_CN">垂直清屏期间仅执行屏幕更新</long>
+		<long xml:lang="zh_TW">只在垂直空白期間執行螢幕更新</long>
+		<default>true</default>
+	    </option>
+	    <option type="int" name="number_of_desktops">
+		<short>Number of Desktops</short>
+		<short xml:lang="ca">Nombre d'escriptoris</short>
+		<short xml:lang="cs">Počet ploch</short>
+		<short xml:lang="da">Antal skriveborde</short>
+		<short xml:lang="de">Anzahl der Desktops</short>
+		<short xml:lang="es">Número de escritorios</short>
+		<short xml:lang="fi">Työpöytien määrä</short>
+		<short xml:lang="fr">Nombre de bureaux</short>
+		<short xml:lang="hu">Munkaasztalok száma</short>
+		<short xml:lang="it">Numero di desktop</short>
+		<short xml:lang="ja">デスクトップ数</short>
+		<short xml:lang="pl">Ilość pulpitów</short>
+		<short xml:lang="pt_BR">Número de Áreas de Trabalho</short>
+		<short xml:lang="ru">Число рабочих столов</short>
+		<short xml:lang="sv">Antal skrivbord</short>
+		<short xml:lang="zh_CN">桌面数</short>
+		<short xml:lang="zh_TW">桌面數</short>
+		<long>Number of virtual desktops</long>
+		<long xml:lang="sv">Antal virtuella skrivbord</long>
+		<default>1</default>
+		<min>1</min>
+		<max>36</max>
+	    </option>
+	    <option type="bool" name="detect_outputs">
+		<short>Detect Outputs</short>
+		<short xml:lang="ca">Detecta les sortides</short>
+		<short xml:lang="cs">Detekovat výstupy</short>
+		<short xml:lang="da">Registrer udgange</short>
+		<short xml:lang="de">Ausgaben erkennen</short>
+		<short xml:lang="es">Detectar salidas</short>
+		<short xml:lang="fi">Tunnista ulostulot</short>
+		<short xml:lang="fr">Détection des sorties</short>
+		<short xml:lang="hu">Kimenetek észlelése</short>
+		<short xml:lang="it">Rileva output</short>
+		<short xml:lang="ja">出力検出</short>
+		<short xml:lang="pl">Wykryj wyjścia</short>
+		<short xml:lang="pt_BR">Detectar Saídas</short>
+		<short xml:lang="ru">Определить устройства вывода</short>
+		<short xml:lang="zh_CN">检测输出</short>
+		<short xml:lang="zh_TW">偵測輸出</short>
+		<long>Automatic detection of output devices</long>
+		<long xml:lang="ca">Detecció automàtica dels dispositius de sortida</long>
+		<long xml:lang="cs">Automatická detekce výstupních zařízení</long>
+		<long xml:lang="da">Automatisk registrering af udgangsenheder</long>
+		<long xml:lang="de">Automatische Erkennung von Ausgabegeräten</long>
+		<long xml:lang="es">Detección automática de dispositivos de salida</long>
+		<long xml:lang="fi">Ulostulolaitteiden automaattinen tunnistus</long>
+		<long xml:lang="fr">Détection automatiques des périphériques de sortie</long>
+		<long xml:lang="hu">Kimeneti eszközök automatikus érzékelése</long>
+		<long xml:lang="it">Rilevamento automatico dispositivi di output</long>
+		<long xml:lang="ja">出力デバイスの自動検出</long>
+		<long xml:lang="pl">Automatyczne wykrywanie urządzeń wyjściowych</long>
+		<long xml:lang="pt_BR">Detecção automática de dispositivos de saída</long>
+		<long xml:lang="ru">Автоматическое определение устройств вывода</long>
+		<long xml:lang="zh_CN">自动检测输出设备</long>
+		<long xml:lang="zh_TW">自動偵測輸出設備</long>
+		<default>true</default>
+	    </option>
+	    <option type="list" name="outputs">
+		<short>Outputs</short>
+		<short xml:lang="ca">Sortides</short>
+		<short xml:lang="cs">Výstupy</short>
+		<short xml:lang="da">Udgange</short>
+		<short xml:lang="de">Ausgaben</short>
+		<short xml:lang="es">Salidas</short>
+		<short xml:lang="fi">Ulostulot</short>
+		<short xml:lang="fr">Produit</short>
+		<short xml:lang="hu">Kimenetek</short>
+		<short xml:lang="it">Output</short>
+		<short xml:lang="ja">出力</short>
+		<short xml:lang="pl">Wyjścia</short>
+		<short xml:lang="pt_BR">Saídas</short>
+		<short xml:lang="ru">Устройства вывода</short>
+		<short xml:lang="sv">Utmatningar</short>
+		<short xml:lang="zh_CN">输出</short>
+		<short xml:lang="zh_TW">輸出</short>
+		<long>List of strings describing output devices</long>
+		<long xml:lang="ca">Llista de cadenes que descriuen els dispositius de sortida</long>
+		<long xml:lang="cs">Seznam řetězců, které popisují výstupní zařízení</long>
+		<long xml:lang="da">Liste over strenge, der beskriver udgangsenheder</long>
+		<long xml:lang="de">Liste mit Zeichenketten zur Erläuterung von Ausgabegeräten</long>
+		<long xml:lang="es">Lista de cadenas que describen los dispositivos de salida</long>
+		<long xml:lang="fi">Ulostulolaitteita kuvaavien merkkijonojen luettelo</long>
+		<long xml:lang="fr">Liste des chaînes décrivant les périphériques de sortie</long>
+		<long xml:lang="hu">Kimeneti eszközöket leíró karakterláncok listája</long>
+		<long xml:lang="it">Elenco di stringhe che descrivono i dispositivi di output</long>
+		<long xml:lang="ja">出力デバイスを表す文字列リスト</long>
+		<long xml:lang="pl">Lista opisów urządzeń wyjściowych</long>
+		<long xml:lang="pt_BR">Lista de strings que descrevem os dispositivos de saída</long>
+		<long xml:lang="ru">Список строк, описывающих устройства вывода</long>
+		<long xml:lang="sv">Lista över strängar som beskriver utmatningsenheter</long>
+		<long xml:lang="zh_CN">描述输出设备的字符串列表</long>
+		<long xml:lang="zh_TW">描述輸出設備的字串清單</long>
+		<type>string</type>
+		<default>
+		    <value>640x480+0+0</value>
+		</default>
+	    </option>
+	    <option type="match" name="focus_prevention_match">
+		<short>Focus Prevention Windows</short>
+		<long>Focus prevention windows</long>
+		<default>any</default>
+	    </option>
+	    <option type="list" name="opacity_matches">
+		<short>Opacity windows</short>
+		<long>Windows that should be translucent by default</long>
+		<type>match</type>
+	    </option>
+	    <option type="list" name="opacity_values">
+		<short>Opacity window values</short>
+		<long>Opacity values for windows that should be translucent by default</long>
+		<type>int</type>
+	    </option>
+	</screen>
+    </core>
+</ecomp>

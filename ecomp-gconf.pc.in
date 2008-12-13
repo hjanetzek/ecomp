@@ -1,0 +1,6 @@
+prefix=@prefix@
+xsltdir=@datarootdir@/ecomp
+
+Name: ecomp-gconf
+Description: GConf plugin for ecomp
+Version: @VERSION@

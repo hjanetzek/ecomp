@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+	<plugin useBcop="true" name="expo">
+		<short>Expo</short>
+		<long>Expo Plugin</long>
+		<category>Desktop</category>
+		<deps>
+			<relation type="after">
+				<plugin>decoration</plugin>
+				<plugin>cube</plugin>
+				<plugin>cubereflex</plugin>
+			</relation>
+		</deps>
+		<display>
+			<group>
+				<short>Bindings</short>
+				<option type="action" name="expo">
+					<short>Expo</short>
+					<long>Engage wall expo mode</long>
+					<allowed key="true" edge="true"/>
+					<default>
+						<key>&lt;Super&gt;e</key>
+						<edges top_left="true"/>
+					</default>
+				</option>
+				<option type="action" name="next">
+					<short>Next</short>
+					<long>Next Desktop</long>
+					<allowed key="true"/>
+					<default>
+					</default>
+				</option>
+				<option type="action" name="prev">
+					<short>Previous</short>
+					<long>Previous Desktopn</long>
+					<allowed key="true"/>
+					<default>
+					</default>
+				</option>
+
+				<option type="int" name="double_click_time">
+					<short>Double click time</short>
+					<long>Timeframe to execute a double click</long>
+					<default>500</default>
+					<min>50</min>
+					<max>2000</max>
+				</option>
+			</group>
+			<group>
+				<short>Behaviour</short>
+				<option type="float" name="zoom_time">
+					<short>Zoom time</short>
+					<long>Duration of the zoomout animation</long>
+					<default>0.5</default>
+					<min>0.1</min>
+					<max>5.0</max>
+					<precision>0.1</precision>
+				</option>
+				<option type="bool" name="rotate">
+					<short>Tilt view</short>
+					<long>Tilt window view in expo mode</long>
+					<default>false</default>
+				</option>
+				<option type="bool" name="expo_immediate_move">
+					<short>Immediate moves</short>
+					<long>Selects if windows movements in expo mode should be immediate - this among other things disables wobbliness</long>
+					<default>false</default>
+				</option>
+				<option type="int" name="expo_animation">
+					<short>Expo Animation</short>
+					<long>Animation used when switching to expo mode</long>
+					<default>0</default>
+					<min>0</min>
+					<max>2</max>
+					<desc>
+						<value>0</value>
+						<name>Zoom</name>
+						<name xml:lang="ca">Zoom</name>
+						<name xml:lang="cs">Zvětšení</name>
+						<name xml:lang="da">Zoom</name>
+						<name xml:lang="de">Zoom</name>
+						<name xml:lang="es">Ampliar/reducir</name>
+						<name xml:lang="fi">Zoom</name>
+						<name xml:lang="fr">Zoom</name>
+						<name xml:lang="hu">Nagyítás</name>
+						<name xml:lang="it">Zoom</name>
+						<name xml:lang="ja">ズーム</name>
+						<name xml:lang="pl">Powiększenie</name>
+						<name xml:lang="pt">Zoom</name>
+						<name xml:lang="pt_BR">Zoom</name>
+						<name xml:lang="ru">Изменить масштаб</name>
+						<name xml:lang="sv">Zoom</name>
+						<name xml:lang="zh_CN">缩放</name>
+						<name xml:lang="zh_TW">縮放</name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<name>Fade + Zoom</name>
+					</desc>
+					<desc>
+						<value>2</value>
+						<name>Vortex</name>
+					</desc>
+				</option>
+			</group>
+			<group>
+				<short>Appearance</short>
+				<option type="bool" name="reflection">
+					<short>Reflection</short>
+					<long>Show a reflection of the viewports on the ground</long>
+					<default>true</default>
+				</option>
+				<option type="color" name="ground_color1">
+					<short>Ground color(near)</short>
+					<long>Color of the ground (near).</long>
+					<default>
+						<red>0xb333</red>
+						<green>0xb333</green>
+						<blue>0xb333</blue>
+						<alpha>0xcccc</alpha>
+					</default>
+				</option>
+				<option type="color" name="ground_color2">
+					<short>Ground color(far)</short>
+					<long>Color of the ground (far).</long>
+					<default>
+						<red>0xb333</red>
+						<green>0xb333</green>
+						<blue>0xb333</blue>
+						<alpha>0x0000</alpha>
+					</default>
+				</option>
+				<option type="float" name="ground_size">
+					<short>Reflection ground size</short>
+					<long>Reflection ground size.</long>
+					<default>0.5</default>
+					<min>0.0</min>
+					<max>1.0</max>
+					<precision>0.01</precision>
+				</option>
+				<option type="float" name="distance">
+					<short>Distance</short>
+					<long>Distance of the expo wall</long>
+					<default>0.0</default>
+					<min>0.0</min>
+					<max>1.0</max>
+					<precision>0.01</precision>
+				</option>
+				<option type="float" name="scale_factor">
+					<short>Reflection Scale</short>
+					<long>Scale factor of the expo wall reflection</long>
+					<default>0.75</default>
+					<min>0.0</min>
+					<max>2.0</max>
+					<precision>0.01</precision>
+				</option>
+				<option type="float" name="aspect_ratio">
+					<short>Aspect Ratio</short>
+					<long>Expo mode aspect ratio</long>
+					<default>1.0</default>
+					<min>0.0</min>
+					<max>1.0</max>
+					<precision>0.1</precision>
+				</option>
+				<option type="bool" name="mipmaps">
+					<short>Mipmaps</short>
+					<long>Generate mipmaps in expo mode</long>
+					<default>false</default>
+				</option>
+				<option type="int" name="multioutput_mode">
+					<short>Multi Output Mode</short>
+					<long>Selects how the expo wall is displayed if multiple output devices are used.</long>
+					<min>0</min>
+					<max>1</max>
+					<default>0</default>
+					<desc>
+						<value>0</value>
+						<name>One big wall</name>
+					</desc>
+					<desc>
+						<value>1</value>
+						<name>One wall per output</name>
+					</desc>
+	    			</option>
+	    			<option type="bool" name="hide_docks">
+					<short>Hide panels/docks in expo</short>
+					<long>Hide panels/docks in expo.</long>
+					<default>true</default>
+				</option>
+			</group>
+		</display>
+	</plugin>
+</ecomp>

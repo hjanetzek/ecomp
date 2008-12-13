@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="decoration">
+	<short>Window Decoration</short>
+	<short xml:lang="ca">Decoració de la finestra</short>
+	<short xml:lang="cs">Dekorace oken</short>
+	<short xml:lang="da">Vinduesdekoration</short>
+	<short xml:lang="de">Fensterdekoration</short>
+	<short xml:lang="es">Decoración de ventanas</short>
+	<short xml:lang="fi">Ikkunan kehykset</short>
+	<short xml:lang="fr">Décoration de la fenêtre</short>
+	<short xml:lang="hu">Ablakdekoráció</short>
+	<short xml:lang="it">Decorazione finestra</short>
+	<short xml:lang="ja">ウィンドウ装飾</short>
+	<short xml:lang="pl">Dekoracja okna</short>
+	<short xml:lang="pt">Decoração da Janela</short>
+	<short xml:lang="pt_BR">Decoração da Janela</short>
+	<short xml:lang="ru">Оформление окна</short>
+	<short xml:lang="sv">Fönsterdekoration</short>
+	<short xml:lang="zh_CN">窗口装饰</short>
+	<short xml:lang="zh_TW">視窗裝飾</short>
+	<long>Window decorations</long>
+	<long xml:lang="ca">Decoracions de finestres</long>
+	<long xml:lang="cs">Dekorace oken</long>
+	<long xml:lang="da">Vinduesdekorationer</long>
+	<long xml:lang="de">Fensterdekorationen</long>
+	<long xml:lang="es">La decoración de las ventanas</long>
+	<long xml:lang="fi">Ikkunan kehykset</long>
+	<long xml:lang="fr">Décoration des fenêtres</long>
+	<long xml:lang="hu">Ablakdekorációk</long>
+	<long xml:lang="it">Decorazioni finestre</long>
+	<long xml:lang="ja">ウィンドウ装飾</long>
+	<long xml:lang="pl">Dekoracje okna</long>
+	<long xml:lang="pt">Decorações das janelas</long>
+	<long xml:lang="pt_BR">Decorações das janelas</long>
+	<long xml:lang="ru">Оформление окна</long>
+	<long xml:lang="sv">Fönsterdekorationer</long>
+	<long xml:lang="zh_CN">窗口装饰</long>
+	<long xml:lang="zh_TW">視窗裝飾</long>
+	<feature>decorations</feature>
+	<deps>
+	    <relation type="before">
+		<plugin>fade</plugin>
+		<plugin>cube</plugin>
+		<plugin>scale</plugin>
+		<plugin>wobbly</plugin>
+	    </relation>
+	</deps>
+	<display>
+	    <option type="float" name="shadow_radius">
+		<short>Shadow Radius</short>
+		<short xml:lang="ca">Radi de l'ombra</short>
+		<short xml:lang="cs">Poloměr stínu</short>
+		<short xml:lang="da">Skyggeradius</short>
+		<short xml:lang="de">Schattenradius</short>
+		<short xml:lang="es">Radio de la sombra</short>
+		<short xml:lang="fi">Varjon säde</short>
+		<short xml:lang="fr">Rayon de l'ombre</short>
+		<short xml:lang="hu">Árnyék átmérője</short>
+		<short xml:lang="it">Raggio ombreggiatura</short>
+		<short xml:lang="ja">シャドウ半径</short>
+		<short xml:lang="pl">Promień cienia</short>
+		<short xml:lang="pt">Raio da Sombra</short>
+		<short xml:lang="pt_BR">Raio da Sombra</short>
+		<short xml:lang="ru">Радиус тени</short>
+		<short xml:lang="sv">Skuggradie</short>
+		<short xml:lang="zh_CN">阴影半径</short>
+		<short xml:lang="zh_TW">陰影半徑</short>
+		<long>Drop shadow radius</long>
+		<long xml:lang="ca">Radi de l'ombra descendent</long>
+		<long xml:lang="cs">Poloměr vrženého stínu</long>
+		<long xml:lang="da">Slagskyggeradius</long>
+		<long xml:lang="de">Drop-Shadow-Radius</long>
+		<long xml:lang="es">Desechar radio de la sombra</long>
+		<long xml:lang="fi">Hylkää varjon säde</long>
+		<long xml:lang="fr">Rayon de l'ombre des gouttes</long>
+		<long xml:lang="hu">Árnyék átmérője</long>
+		<long xml:lang="it">Raggio ombreggiatura esterna</long>
+		<long xml:lang="ja">シャドウ半径を無視</long>
+		<long xml:lang="pl">Promień cienia</long>
+		<long xml:lang="pt_BR">Descartar o raio da sombra</long>
+		<long xml:lang="ru">Радиус отбрасываемой тени</long>
+		<long xml:lang="sv">Radie för skuggkastning</long>
+		<long xml:lang="zh_CN">减小阴影半径</long>
+		<long xml:lang="zh_TW">投影半徑</long>
+		<default>8.0</default>
+		<min>0.1</min>
+		<max>18.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="float" name="shadow_opacity">
+		<short>Shadow Opacity</short>
+		<short xml:lang="ca">Opacitat de l'ombra</short>
+		<short xml:lang="cs">Krytí stínu</short>
+		<short xml:lang="da">Skyggens uigennemsigtighed</short>
+		<short xml:lang="de">Schattendurchlässigkeit</short>
+		<short xml:lang="es">Opacidad de la sombra</short>
+		<short xml:lang="fi">Varjon vahvuus</short>
+		<short xml:lang="fr">Opacité de l'ombre</short>
+		<short xml:lang="hu">Árnyék átlátszatlansága</short>
+		<short xml:lang="it">Opacità finestra</short>
+		<short xml:lang="ja">シャドウ不透明度</short>
+		<short xml:lang="pl">NIeprzezroczystość cienia</short>
+		<short xml:lang="pt">Opacidade da Sombra</short>
+		<short xml:lang="pt_BR">Opacidade da Sombra</short>
+		<short xml:lang="ru">Прозрачность тени</short>
+		<short xml:lang="sv">Skuggopakhet</short>
+		<short xml:lang="zh_CN">阴影不透明度</short>
+		<short xml:lang="zh_TW">陰影不透明度</short>
+		<long>Drop shadow opacity</long>
+		<long xml:lang="ca">Opacitat de l'ombra descendent</long>
+		<long xml:lang="cs">Krytí vrženého stínu</long>
+		<long xml:lang="da">Slagskyggens uigennemsigtighed</long>
+		<long xml:lang="de">Drop-Shadow-Durchlässigkeit</long>
+		<long xml:lang="es">Desechar opacidad de la sombra</long>
+		<long xml:lang="fi">Hylkää varjon vahvuus</long>
+		<long xml:lang="fr">Opacité de l'ombre des gouttes</long>
+		<long xml:lang="hu">Árnyék átlátszatlansága</long>
+		<long xml:lang="it">Opacità ombreggiatura esterna</long>
+		<long xml:lang="ja">シャドウ不透明度を無視</long>
+		<long xml:lang="pl">Nieprzezroczystość cienia</long>
+		<long xml:lang="pt_BR">Descartar a opacidade da sombra</long>
+		<long xml:lang="ru">Прозрачность отбрасываемой тени</long>
+		<long xml:lang="sv">Opakhet för skuggkastning</long>
+		<long xml:lang="zh_CN">减小阴影不透明度</long>
+		<long xml:lang="zh_TW">投影半徑不透明度</long>
+		<default>0.5</default>
+		<min>0.01</min>
+		<max>6.0</max>
+		<precision>0.01</precision>
+	    </option>
+	    <option type="color" name="shadow_color">
+		<short>Shadow Color</short>
+		<short xml:lang="sv">Skuggfärg</short>
+		<long>Drop shadow color</long>
+		<long xml:lang="sv">Färg för skuggkastning</long>
+	    </option>
+	    <option type="int" name="shadow_x_offset">
+		<short>Shadow Offset X</short>
+		<short xml:lang="ca">Desplaçament en X de l'ombra</short>
+		<short xml:lang="cs">Posun stínu X</short>
+		<short xml:lang="da">Skyggeforskydning X</short>
+		<short xml:lang="de">Schattenversatz X</short>
+		<short xml:lang="es">Desplazamiento X de la sombra</short>
+		<short xml:lang="fi">Varjon poikkeama (X)</short>
+		<short xml:lang="fr">Décalage X de l'ombre</short>
+		<short xml:lang="hu">Árnyék X eltolás</short>
+		<short xml:lang="it">Offset ombreggiatura X</short>
+		<short xml:lang="ja">シャドウオフセットX</short>
+		<short xml:lang="pl">Przesunięcie cienia - współrzędna X</short>
+		<short xml:lang="pt">Deslocamento X da Sombra</short>
+		<short xml:lang="pt_BR">Deslocamento X da Sombra</short>
+		<short xml:lang="ru">Смещение тени по оси X</short>
+		<short xml:lang="sv">Skuggposition X</short>
+		<short xml:lang="zh_CN">阴影偏移 X</short>
+		<short xml:lang="zh_TW">陰影偏移 X 軸</short>
+		<long>Drop shadow X offset</long>
+		<long xml:lang="ca">Desplaçament en X de l'ombra descendent</long>
+		<long xml:lang="cs">Posun vrženého stínu X</long>
+		<long xml:lang="da">Slagskyggeforskydning X</long>
+		<long xml:lang="de">Drop-Shadow-X-Offset</long>
+		<long xml:lang="es">Desechar desplazamiento X de la sombra</long>
+		<long xml:lang="fi">Hylkää varjon poikkeama (X)</long>
+		<long xml:lang="fr">Décalage X de l'ombre des gouttes</long>
+		<long xml:lang="hu">Árnyék X-eltolása</long>
+		<long xml:lang="it">Offset X ombreggiatura esterna</long>
+		<long xml:lang="ja">シャドウXオフセットを無視</long>
+		<long xml:lang="pl">Przesunięcie cienia w osi X</long>
+		<long xml:lang="pt_BR">Descartar o deslocamento X da sombra</long>
+		<long xml:lang="ru">Смещение отбрасываемой тени по оси X</long>
+		<long xml:lang="sv">Skuggkastning X-position</long>
+		<long xml:lang="zh_CN">减小阴影 X 偏移</long>
+		<long xml:lang="zh_TW">投影 X 軸偏移</long>
+		<default>1</default>
+		<min>-16</min>
+		<max>16</max>
+	    </option>
+	    <option type="int" name="shadow_y_offset">
+		<short>Shadow Offset Y</short>
+		<short xml:lang="ca">Desplaçament en Y de l'ombra</short>
+		<short xml:lang="cs">Posun stínu Y</short>
+		<short xml:lang="da">Skyggeforskydning Y</short>
+		<short xml:lang="de">Schattenversatz Y</short>
+		<short xml:lang="es">Desplazamiento Y de la sombra</short>
+		<short xml:lang="fi">Varjon poikkeama (Y)</short>
+		<short xml:lang="fr">Décalage Y de l'ombre</short>
+		<short xml:lang="hu">Árnyék Y eltolás</short>
+		<short xml:lang="it">Offset ombreggiatura Y</short>
+		<short xml:lang="ja">シャドウオフセットY</short>
+		<short xml:lang="pl">Przesunięcie cienia - współrzędna Y</short>
+		<short xml:lang="pt">Deslocamento Y da Sombra</short>
+		<short xml:lang="pt_BR">Deslocamento Y da Sombra</short>
+		<short xml:lang="ru">Смещение тени по оси Y</short>
+		<short xml:lang="sv">Skuggposition Y</short>
+		<short xml:lang="zh_CN">阴影偏移 Y</short>
+		<short xml:lang="zh_TW">陰影偏移 Y 軸</short>
+		<long>Drop shadow Y offset</long>
+		<long xml:lang="ca">Desplaçament en Y de l'ombra descendent</long>
+		<long xml:lang="cs">Posun vrženého stínu Y</long>
+		<long xml:lang="da">Slagskyggeforskydning Y</long>
+		<long xml:lang="de">Drop-Shadow-Y-Offset</long>
+		<long xml:lang="es">Desechar desplazamiento Y de la sombra</long>
+		<long xml:lang="fi">Hylkää varjon poikkeama (Y)</long>
+		<long xml:lang="fr">Décalage Y de l'ombre des gouttes</long>
+		<long xml:lang="hu">Árnyék Y-eltolása</long>
+		<long xml:lang="it">Offset Y ombreggiatura esterna</long>
+		<long xml:lang="ja">シャドウYオフセットを無視</long>
+		<long xml:lang="pl">Przesunięcie cienia w osi Y</long>
+		<long xml:lang="pt_BR">Descartar o deslocamento Y da sombra</long>
+		<long xml:lang="ru">Смещение отбрасываемой тени по оси Y</long>
+		<long xml:lang="sv">Skuggkastning Y-position</long>
+		<long xml:lang="zh_CN">减小阴影 Y 偏移</long>
+		<long xml:lang="zh_TW">投影 Y 軸偏移</long>
+		<default>1</default>
+		<min>-16</min>
+		<max>16</max>
+	    </option>
+	    <option type="bool" name="mipmap">
+		<short>Mipmap</short>
+		<short xml:lang="ca">Mipmap</short>
+		<short xml:lang="cs">Mipmap</short>
+		<short xml:lang="da">Mipmap</short>
+		<short xml:lang="de">Mipmap</short>
+		<short xml:lang="es">Mipmap</short>
+		<short xml:lang="fi">Mipmap</short>
+		<short xml:lang="fr">Mipmap</short>
+		<short xml:lang="hu">MIP térkép</short>
+		<short xml:lang="it">Mipmap</short>
+		<short xml:lang="ja">ミップマップ</short>
+		<short xml:lang="pl">Mipmapa</short>
+		<short xml:lang="pt">Mapa</short>
+		<short xml:lang="pt_BR">Mapa</short>
+		<short xml:lang="ru">Mipmap</short>
+		<short xml:lang="sv">Mipmap</short>
+		<short xml:lang="zh_CN">Mipmap</short>
+		<short xml:lang="zh_TW">Mipmap</short>
+		<long>Allow mipmaps to be generated for decoration textures</long>
+		<default>false</default>
+	    </option>
+	    <option type="match" name="decoration_match">
+		<short>Decoration windows</short>
+		<short xml:lang="sv">Dekorationsfönster</short>
+		<long>Windows that should be decorated</long>
+		<long xml:lang="sv">Fönster som ska dekoreras</long>
+		<default>any</default>
+	    </option>
+	    <option type="match" name="shadow_match">
+		<short>Shadow windows</short>
+		<short xml:lang="sv">Skuggfönster</short>
+		<long>Windows that should have a shadow</long>
+		<long xml:lang="sv">Fönster som ska ha en skugga</long>
+		<default>any</default>
+	    </option>
+	</display>
+    </plugin>
+</ecomp>

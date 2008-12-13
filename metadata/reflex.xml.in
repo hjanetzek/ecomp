@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ecomp>
+	<plugin name="reflex" useBcop="true">
+		<_short>Reflection</_short>
+		<_long>Draws reflections</_long>
+		<category>Effects</category>
+		<deps>
+			<relation type="after">
+				<plugin>blur</plugin>
+				<plugin>svg</plugin>
+				<plugin>png</plugin>
+				<plugin>imgjpeg</plugin>
+			</relation>
+		</deps>
+		<screen>
+			<group>
+				<_short>Main</_short>
+				<option name="file" type="string">
+					<_short>Reflection Image</_short>
+					<_long>Reflection Image file</_long>
+					<hints>file;image;</hints>
+					<default>reflection.png</default>
+				</option>
+				<option name="match" type="match">
+					<_short>Window match</_short>
+					<_long>Reflection Window Match</_long>
+					<default>any</default>
+				</option>
+				<option name="window" type="bool">
+					<_short>Reflection for Windows</_short>
+					<_long>Draw Reflection for windows.</_long>
+					<default>false</default>
+				</option>
+				<option name="decoration" type="bool">
+					<_short>Reflection for Decorations</_short>
+					<_long>Draw Reflection for decorations.</_long>
+					<default>true</default>
+				</option>
+				<option name="threshold" type="int">
+					<_short>Alpha Dependence Threshold</_short>
+					<_long>Alpha dependence threshold.</_long>
+					<default>1</default>
+					<min>1</min>
+					<max>10</max>
+				</option>
+				<option name="moving" type="bool">
+					<_short>Moving reflection</_short>
+					<_long>Move the reflection on window move.</_long>
+					<default>true</default>
+				</option>
+			</group>
+		</screen>
+	</plugin>
+</ecomp>

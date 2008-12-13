@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="fade">
+	<short>Fading Windows</short>
+	<short xml:lang="ca">Esvaïment de finestres</short>
+	<short xml:lang="cs">Slábnutí oken</short>
+	<short xml:lang="da">Fading af vinduer</short>
+	<short xml:lang="de">Fenster ein-/ausblenden</short>
+	<short xml:lang="es">Desvanecer ventanas</short>
+	<short xml:lang="fi">Ikkunoiden häivytys</short>
+	<short xml:lang="fr">Fondu des fenêtres</short>
+	<short xml:lang="hu">Ablakok elhalványítása</short>
+	<short xml:lang="it">Finestre in dissolvenza</short>
+	<short xml:lang="ja">ウィンドウのフェード</short>
+	<short xml:lang="pl">Płynne pojawianie się/zanikanie okien</short>
+	<short xml:lang="pt">Janelas Esmaecidas</short>
+	<short xml:lang="pt_BR">Janelas Esmaecidas</short>
+	<short xml:lang="ru">Проявление/исчезание окон</short>
+	<short xml:lang="sv">Tonande fönster</short>
+	<short xml:lang="zh_CN">渐弱窗口</short>
+	<short xml:lang="zh_TW">視窗淡出中</short>
+	<long>Fade in windows when mapped and fade out windows when unmapped</long>
+	<long xml:lang="ca">Es fan aparèixer progressivament les finestres quan s'assignen i s'esvaeixen quan no estan assignades</long>
+	<long xml:lang="cs">Blednutí mapovaných oken a materializace oken nemapovaných</long>
+	<long xml:lang="da">Vinduerne tones ind, når de tilknyttes, og tones ud, når tilknytningen ophæves.</long>
+	<long xml:lang="de">Fenster beim Zuordnen einblenden, beim Aufheben der Zuordnung ausblenden</long>
+	<long xml:lang="es">Las ventanas aparecen progresivamente cuando se asignan y se desvanecen cuando se desasignan</long>
+	<long xml:lang="fi">Ikkunat häivytetään näkyvistä/näkyviin</long>
+	<long xml:lang="fr">Apparition en fondu des fenêtres en mode mapped et disparition en fondu des fenêtres en mode unmapped</long>
+	<long xml:lang="hu">Leképezés esetén az ablak erősítése, lecsatolás esetén elhalványítása</long>
+	<long xml:lang="it">Applica dissolvenza in entrata alle finestre quando associate e in uscita quando disassociate</long>
+	<long xml:lang="ja">マップ時にウィンドウをフェードインし、マップ解除時にウィンドウをフェードアウトする</long>
+	<long xml:lang="pl">Okna powinny pojawiać się płynnie podczas mapowania i płynnie zanikać podczas odmapowania.</long>
+	<long xml:lang="pt">Avivar janelas quando houver mapeamento e esmaecê-las quando não houver mapeamento</long>
+	<long xml:lang="pt_BR">Avivar janelas quando houver mapeamento e esmaecê-las quando não houver mapeamento</long>
+	<long xml:lang="ru">Постепенное проявление окон при отображении и постепенное исчезновение при отмене отображения</long>
+	<long xml:lang="sv">Tona in fönster när de kopplas och tona ut fönster när de kopplas loss</long>
+	<long xml:lang="zh_CN">映射时渐现窗口和不映射时渐弱窗口</long>
+	<long xml:lang="zh_TW">在映射時淡入視窗，以及在解除映射時淡出視窗</long>
+	<deps>
+	    <relation type="before">
+		<plugin>cube</plugin>
+		<plugin>scale</plugin>
+	    </relation>
+	</deps>
+	<screen>
+	    <option type="float" name="fade_speed">
+		<short>Fade Speed</short>
+		<short xml:lang="ca">Velocitat d'esvaïment</short>
+		<short xml:lang="cs">Rychlost blednutí</short>
+		<short xml:lang="da">Fadehastighed</short>
+		<short xml:lang="de">Ausblendgeschwindigkeit</short>
+		<short xml:lang="es">Velocidad de desvanecimiento</short>
+		<short xml:lang="fi">Häivytyksen nopeus</short>
+		<short xml:lang="fr">Vitesse de fondu</short>
+		<short xml:lang="hu">Elhalványulás sebessége</short>
+		<short xml:lang="it">Velocità dissolvenza</short>
+		<short xml:lang="ja">フェードスピード</short>
+		<short xml:lang="pl">Szybkość pojawiania się/zanikania</short>
+		<short xml:lang="pt">Velocidade de Esmaecimento</short>
+		<short xml:lang="pt_BR">Velocidade de Esmaecimento</short>
+		<short xml:lang="ru">Скорость проявления/исчезания</short>
+		<short xml:lang="sv">Toningshastighet</short>
+		<short xml:lang="zh_CN">减弱速度</short>
+		<short xml:lang="zh_TW">淡出/淡入速度</short>
+		<long>Window fade speed</long>
+		<long xml:lang="ca">Velocitat d'esvaïment de la finestra</long>
+		<long xml:lang="cs">Rychlost blednutí okna</long>
+		<long xml:lang="da">Fadehastighed for vindue</long>
+		<long xml:lang="de">Fensterausblendgeschwindigkeit</long>
+		<long xml:lang="es">Velocidad de desvanecimiento de ventana</long>
+		<long xml:lang="fi">Ikkunan häivytyksen nopeus</long>
+		<long xml:lang="fr">Vitesse de fondu de la fenêtre</long>
+		<long xml:lang="hu">Ablak elhalványulásának sebessége</long>
+		<long xml:lang="it">Velocità dissolvenza finestra</long>
+		<long xml:lang="ja">ウィンドウフェードスピード</long>
+		<long xml:lang="pl">Szybkość płynnego pojawiania się/zanikania okien</long>
+		<long xml:lang="pt_BR">Velocidade de esmaecimento da janela</long>
+		<long xml:lang="ru">Скорость проявления/исчезания окна</long>
+		<long xml:lang="zh_CN">窗口渐弱速度</long>
+		<long xml:lang="zh_TW">Window 淡出/淡入速度</long>
+		<default>5.0</default>
+		<min>0.1</min>
+		<max>25.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="match" name="window_match">
+		<short>Fade windows</short>
+		<short xml:lang="sv">Tona fönster</short>
+		<long>Windows that should be fading</long>
+		<long xml:lang="sv">Fönster som ska tonas</long>
+		<default>any</default>
+	    </option>
+	    <option type="bool" name="visual_bell">
+		<short>Visual Bell</short>
+		<short xml:lang="ca">Campana visual</short>
+		<short xml:lang="cs">Vizuální zvonek</short>
+		<short xml:lang="da">Visuel klokke</short>
+		<short xml:lang="de">Visuelle Glocke</short>
+		<short xml:lang="es">Timbre virtual</short>
+		<short xml:lang="fi">Näkyvä kello</short>
+		<short xml:lang="fr">Cloche virtuelle</short>
+		<short xml:lang="hu">Vizuális csengő</short>
+		<short xml:lang="it">Segnale acustico visivo</short>
+		<short xml:lang="ja">可視ベル</short>
+		<short xml:lang="pl">Wizualny dzwonek systemowy</short>
+		<short xml:lang="pt">Campainha Visual</short>
+		<short xml:lang="pt_BR">Campainha Visual</short>
+		<short xml:lang="ru">Визуализация звукового сигнала</short>
+		<short xml:lang="sv">Visuell signal</short>
+		<short xml:lang="zh_CN">静音</short>
+		<short xml:lang="zh_TW">警示鈴聲</short>
+		<long>Fade effect on system beep</long>
+		<long xml:lang="ca">Efecte d'esvaïment amb avís sonor del sistema</long>
+		<long xml:lang="cs">Efekt blednutí při systémovém pípnutí</long>
+		<long xml:lang="da">Fadeeffekt ved systemtone</long>
+		<long xml:lang="de">Ausblendeffekt für System-Warnton</long>
+		<long xml:lang="es">Efecto de desvanecimiento con pitido del sistema</long>
+		<long xml:lang="fi">Häivitystehoste järjestelmän huomatuksessa</long>
+		<long xml:lang="fr">Effet de fondu au signal sonore du système</long>
+		<long xml:lang="hu">Elhalványulás effektus rendszerhang esetén</long>
+		<long xml:lang="it">Effetto dissolvenza al beep del sistema</long>
+		<long xml:lang="ja">システムビープ音のフェード効果</long>
+		<long xml:lang="pl">Efekt zaciemnienia przy dzwonku systemowym</long>
+		<long xml:lang="pt">Efeito de esmaecimento no bip do sistema</long>
+		<long xml:lang="pt_BR">Efeito de esmaecimento no bip do sistema</long>
+		<long xml:lang="ru">Эффект проявления/исчезания при системном звуковом сигнале</long>
+		<long xml:lang="sv">Toningseffekt vid systemsignal</long>
+		<long xml:lang="zh_CN">系统嘟嘟声的减弱效果</long>
+		<long xml:lang="zh_TW">系統發出嗶聲時啟用淡出/淡入特效</long>
+		<default>false</default>
+	    </option>
+	    <option type="bool" name="fullscreen_visual_bell">
+		<short>Fullscreen Visual Bell</short>
+		<short xml:lang="ca">Campana visual a pantalla completa</short>
+		<short xml:lang="cs">Celoobrazovkový vizuální zvonek</short>
+		<short xml:lang="da">Visuel klokke i fuld skærm</short>
+		<short xml:lang="de">Visuelle Glocke in Vollbild</short>
+		<short xml:lang="es">Timbre visual a pantalla completa</short>
+		<short xml:lang="fi">Kokoruudun näkyvä kello</short>
+		<short xml:lang="fr">Cloche visuelle plein écran</short>
+		<short xml:lang="hu">Teljes képernyő vizuális csengő</short>
+		<short xml:lang="it">Segnale visivo schermo intero</short>
+		<short xml:lang="ja">全画面ビジュアルベル</short>
+		<short xml:lang="pl">Pełnoekranowy wizualny dzwonek systemowy</short>
+		<short xml:lang="pt">Campainha Visual de Tela Inteira</short>
+		<short xml:lang="pt_BR">Campainha Visual de Tela Inteira</short>
+		<short xml:lang="ru">Полноэкранная визуализация звукового сигнала</short>
+		<short xml:lang="sv">Visuell helskärmssignal</short>
+		<short xml:lang="zh_CN">全屏静音</short>
+		<short xml:lang="zh_TW">全螢幕警示鈴聲</short>
+		<long>Fullscreen fade effect on system beep</long>
+		<long xml:lang="ca">Efecte d'esvaïment a pantalla completa amb avís sonor del sistema</long>
+		<long xml:lang="cs">Celoobrazovkový efekt slábnutí při systémovém pípnutí</long>
+		<long xml:lang="da">Fadeeffekt i fuld skærm ved systemtone</long>
+		<long xml:lang="de">Ausblendeffekt für System-Warnton in Vollbild</long>
+		<long xml:lang="es">Efecto de desvanecimiento a pantalla completa con el pitido del sistema</long>
+		<long xml:lang="fi">Kokoruudun häivytystehoste järjestelmän huomautuksesta</long>
+		<long xml:lang="fr">Effet de fondu plein écran au signal sonore du système</long>
+		<long xml:lang="hu">Teljes képernyő halványuló effektus rendszercsengő esetén</long>
+		<long xml:lang="it">Effetto dissolvenza schermo intero al beep del sistema</long>
+		<long xml:lang="ja">システムビープ音の全画面フェード効果</long>
+		<long xml:lang="pl">Pełnoekranowy efekt przyciemnienia przy dzwonku systemowym</long>
+		<long xml:lang="pt">Efeito de esmaecimento de tela inteira ao som de bip do sistema</long>
+		<long xml:lang="pt_BR">Efeito de esmaecimento de tela inteira ao som de bip do sistema</long>
+		<long xml:lang="ru">Полноэкранный эффект проявления/исчезания при системном звуковом сигнале</long>
+		<long xml:lang="sv">Helskärmstoningseffekt vid systemsignal</long>
+		<long xml:lang="zh_CN">系统嘟嘟声的全屏减弱效果</long>
+		<long xml:lang="zh_TW">系統發出嗶聲時啟用全螢幕淡出/淡入特效</long>
+		<default>false</default>
+	    </option>
+	</screen>
+    </plugin>
+</ecomp>

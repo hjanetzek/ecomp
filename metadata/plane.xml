@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="plane">
+	<short>Desktop Plane</short>
+	<short xml:lang="hu">Munkaasztal sík</short>
+	<short xml:lang="pl">Płaszczyzna pulpitu</short>
+	<short xml:lang="sv">Skrivbordsplan</short>
+	<long>Place windows on a plane</long>
+	<long xml:lang="hu">Ablakok elhelyezése a síkon</long>
+	<long xml:lang="pl">Umieszczaj okna na płaszczyźnie</long>
+	<long xml:lang="sv">Placera fönster på ett plan</long>
+	<feature>largedesktop</feature>
+	<deps>
+	    <relation type="before">
+		<plugin>switcher</plugin>
+		<plugin>scale</plugin>
+	    </relation>
+	</deps>
+	<display>
+	    <option type="action" name="plane_left">
+		<short>Plane Left</short>
+		<short xml:lang="hu">Gördítés balra</short>
+		<short xml:lang="pl">Lewa płaszczyzna </short>
+		<short xml:lang="sv">Plana åt vänster</short>
+		<long>Plane left</long>
+		<long xml:lang="hu">Gördítés balra</long>
+		<long xml:lang="pl">Płaszczyzna z lewej strony</long>
+		<long xml:lang="sv">Plana åt vänster</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;Left</key>
+		</default>
+	    </option>
+	    <option type="action" name="plane_right">
+		<short>Plane Right</short>
+		<short xml:lang="hu">Gördítés jobbra</short>
+		<short xml:lang="pl">Prawa płaszczyzna</short>
+		<short xml:lang="sv">Plana åt höger</short>
+		<long>Plane right</long>
+		<long xml:lang="hu">Gördítés jobbra</long>
+		<long xml:lang="pl">Płaszczyzna z prawej strony</long>
+		<long xml:lang="sv">Plana åt höger</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;Right</key>
+		</default>
+	    </option>
+	    <option type="action" name="plane_down">
+		<short>Plane Down</short>
+		<short xml:lang="hu">Gördítés le</short>
+		<short xml:lang="pl">Płaszczyzna dolna</short>
+		<short xml:lang="sv">Plana nedåt</short>
+		<long>Plane down</long>
+		<long xml:lang="hu">Gördítés le</long>
+		<long xml:lang="pl">Płaszczyzna u dołu</long>
+		<long xml:lang="sv">Plana nedåt</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;Down</key>
+		</default>
+	    </option>
+	    <option type="action" name="plane_up">
+		<short>Plane Up</short>
+		<short xml:lang="hu">Gördítés fel</short>
+		<short xml:lang="pl">Płaszczyzna górna</short>
+		<short xml:lang="sv">Plana uppåt</short>
+		<long>Plane up</long>
+		<long xml:lang="hu">Gördítés fel</long>
+		<long xml:lang="pl">Płaszczyzna u góry</long>
+		<long xml:lang="sv">Plana uppåt</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;Up</key>
+		</default>
+	    </option>
+	    <option type="action" name="plane_to_1">
+		<short>Plane To Face 1</short>
+		<short xml:lang="sv">Plana till yta 1</short>
+		<long>Plane to face 1</long>
+		<long xml:lang="sv">Plana till yta 1</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_2">
+		<short>Plane To Face 2</short>
+		<short xml:lang="sv">Plana till yta 2</short>
+		<long>Plane to face 2</long>
+		<long xml:lang="sv">Plana till yta 2</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_3">
+		<short>Plane To Face 3</short>
+		<short xml:lang="sv">Plana till yta 3</short>
+		<long>Plane to face 3</long>
+		<long xml:lang="sv">Plana till yta 3</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_4">
+		<short>Plane To Face 4</short>
+		<short xml:lang="sv">Plana till yta 4</short>
+		<long>Plane to face 4</long>
+		<long xml:lang="sv">Plana till yta 4</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_5">
+		<short>Plane To Face 5</short>
+		<short xml:lang="sv">Plana till yta 5</short>
+		<long>Plane to face 5</long>
+		<long xml:lang="sv">Plana till yta 5</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_6">
+		<short>Plane To Face 6</short>
+		<short xml:lang="sv">Plana till yta 6</short>
+		<long>Plane to face 6</long>
+		<long xml:lang="sv">Plana till yta 6</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_7">
+		<short>Plane To Face 7</short>
+		<short xml:lang="sv">Plana till yta 7</short>
+		<long>Plane to face 7</long>
+		<long xml:lang="sv">Plana till yta 7</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_8">
+		<short>Plane To Face 8</short>
+		<short xml:lang="sv">Plana till yta 8</short>
+		<long>Plane to face 8</long>
+		<long xml:lang="sv">Plana till yta 8</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_9">
+		<short>Plane To Face 9</short>
+		<short xml:lang="sv">Plana till yta 9</short>
+		<long>Plane to face 9</long>
+		<long xml:lang="sv">Plana till yta 9</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_10">
+		<short>Plane To Face 10</short>
+		<short xml:lang="sv">Plana till yta 10</short>
+		<long>Plane to face 10</long>
+		<long xml:lang="sv">Plana till yta 10</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_11">
+		<short>Plane To Face 11</short>
+		<short xml:lang="sv">Plana till yta 11</short>
+		<long>Plane to face 11</long>
+		<long xml:lang="sv">Plana till yta 11</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="plane_to_12">
+		<short>Plane To Face 12</short>
+		<short xml:lang="sv">Plana till yta 12</short>
+		<long>Plane to face 12</long>
+		<long xml:lang="sv">Plana till yta 12</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	</display>
+    </plugin>
+</ecomp>

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<ecomp>
+	<plugin name="cubereflex" useBcop="true">
+		<_short>Cube Reflection</_short>
+		<_long>Ecomp cube reflection</_long>
+		<category>Effects</category>
+		<deps>
+		<relation type="after">
+			<plugin>cube</plugin>
+			<plugin>rotate</plugin>
+		</relation>
+		<requirement>
+			<plugin>cube</plugin>
+		</requirement>
+		</deps>
+		<screen>
+			<option name="ground_color1" type="color">
+				<_short>Ground color(near)</_short>
+				<_long>Color of the ground (near).</_long>
+				<default>
+					<red>0xb333</red>
+					<green>0xb333</green>
+					<blue>0xb333</blue>
+					<alpha>0xcccc</alpha>
+				</default>
+			</option>
+			<option name="ground_color2" type="color">
+				<_short>Ground color(far)</_short>
+				<_long>Color of the ground (far).</_long>
+				<default>
+					<red>0xb333</red>
+					<green>0xb333</green>
+					<blue>0xb333</blue>
+					<alpha>0x0000</alpha>
+				</default>
+			</option>
+			<option name="ground_size" type="float">
+				<_short>Reflection ground size</_short>
+				<_long>Reflection ground size.</_long>
+				<default>0.5</default>
+				<min>0.0</min>
+				<max>1.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="intensity" type="float">
+				<_short>Intensity</_short>
+				<_long>Reflection intensity</_long>
+				<default>0.4</default>
+				<min>0.0</min>
+				<max>1.0</max>
+				<precision>0.01</precision>
+			</option>
+			<option name="auto_zoom" type="bool">
+				<_short>Auto zoom</_short>
+				<_long>Zoom out automatically to make the cube fit to the screen.</_long>
+				<default>true</default>
+			</option>
+			<option name="zoom_manual_only" type="bool">
+				<_short>Auto zoom only on Mouse Rotate</_short>
+				<_long>Zoom out automatically only on mouse rotate.</_long>
+				<default>true</default>
+			</option>
+			<option name="mode" type="int">
+				<_short>Reflection mode</_short>
+				<_long>Reflection mode.</_long>
+				<default>0</default>
+				<min>0</min>
+				<max>3</max>
+				<desc>
+					<value>0</value>
+					<_name>Jumpy</_name>
+				</desc>
+				<desc>
+					<value>1</value>
+					<_name>Jumpy reflection</_name>
+				</desc>
+				<desc>
+					<value>2</value>
+					<_name>Distance</_name>
+				</desc>
+				<desc>
+					<value>3</value>
+					<_name>Above</_name>
+				</desc>
+			</option>
+		</screen>
+	</plugin>
+</ecomp>

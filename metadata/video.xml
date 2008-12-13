@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="video">
+	<short>Video Playback</short>
+	<short xml:lang="sv">Videouppspelning</short>
+	<long>Video playback</long>
+	<long xml:lang="sv">Video uppspelning</long>
+	<feature>video</feature>
+	<display>
+	    <option type="bool" name="yv12">
+		<short>YV12 colorspace</short>
+		<long>Provide YV12 colorspace support</long>
+		<default>true</default>
+	    </option>
+	</display>
+    </plugin>
+</ecomp>

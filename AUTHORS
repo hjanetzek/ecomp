@@ -1,0 +1,32 @@
+compiz and the standard set of plugins are designed and written by
+
+David Reveman <davidr@novell.com>
+
+with additional functionality by
+
+Radek Doulik <rodo@novell.com> IO multiplexing
+Mirco Müller <macslow@bangang.de> Skydome support in cube plugin
+Søren Sandmann <sandmann@redhat.com> plane plugin
+Dan Winship <danw@novell.com> gconf-dump plugin
+Brian Paul <brian.paul@tungstengraphics.com> Matrix functions
+
+and other contributions by
+
+Mike Cook <mcook@novell.com>
+Mike Dransfield <mike@blueroot.co.uk>
+Diogo Ferreira <diogo@underdev.org>
+gandalfn <gandalfn@club-internet.fr>
+Guillaume <ixcemix@gmail.com>
+Kristian Høgsberg <krh@redhat.com>
+Dennis Kasprzyk <onestone@beryl-project.org>
+Gerd Kohlberger <lowfi@chello.at>
+Volker Krause <vkrause@kde.org>
+moppsy <moppsy@comcast.net>
+Jeremy C. Reed <reed@reedmedia.net>
+Thierry Reding <thierry@gilfi.de>
+Julian Sikorski <lordzanon@poczta.onet.pl>
+Quinn Storm <livinglatexkali@gmail.com>
+Erkin Bahceci <erkinbah@gmail.com>
+
+hacked by
+Hannes Janetzek <hannes.janetzek@gmail.com> to make compiz work as a plain composite manager

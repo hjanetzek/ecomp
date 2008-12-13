@@ -1,0 +1,3112 @@
+# Turkish message file for YaST2 (@memory@).
+# Copyright (C) 2005 SUSE Linux Products GmbH.
+# Copyright (C) 2002 SuSE Linux AG.
+# Copyright (C) 1999, 2000, 2001 SuSE GmbH.
+# Görkem Çetin <gorkem@gelecek.com.tr>, 1999, 2000.
+# Mehmet Mıdık <mmidik@setra.net.tr>, 2000.
+# Metin Oral <moral@suse.de>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: YaST (@memory@)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-11 13:02-0400\n"
+"PO-Revision-Date: 2001-10-18 10:13+0200\n"
+"Last-Translator: Görkem Çetin <gorkem@gelecek.com.tr>\n"
+"Language-Team: turkish <i18n@suse.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# clients/inst_sw_single.ycp:146
+#: ../gtk/gnome/50-compiz-desktop-key.xml.in.h:1 ../src/main.c:54
+#, fuzzy
+msgid "Desktop"
+msgstr "Masaüstü:"
+
+# clients/inst_sw_single.ycp:188
+#: ../gtk/gnome/50-compiz-key.xml.in.h:1
+#, fuzzy
+msgid "Window Management"
+msgstr "Pencere yöneticisi"
+
+#: ../gtk/gnome/compiz.desktop.in.h:1
+msgid "Compiz"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:1
+#, fuzzy
+msgid "Blur type"
+msgstr "Seçili"
+
+# include/partitioning/auto_part_ui.ycp:147
+#: ../gtk/window-decorator/gwd.schemas.in.h:2
+#, fuzzy
+msgid "Metacity theme active window opacity"
+msgstr "Windows'u &tamamen sil"
+
+# include/partitioning/auto_part_ui.ycp:147
+#: ../gtk/window-decorator/gwd.schemas.in.h:3
+#, fuzzy
+msgid "Metacity theme active window opacity shade"
+msgstr "Windows'u &tamamen sil"
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:4
+msgid "Metacity theme opacity"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:5
+msgid "Metacity theme opacity shade"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:6
+msgid "Opacity to use for active windows with metacity theme decorations"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:7
+msgid "Opacity to use for metacity theme decorations"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:8
+msgid ""
+"Shade active windows with metacity theme decorations from opaque to "
+"translucent"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:9
+msgid ""
+"Shade windows with metacity theme decorations from opaque to translucent"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:10
+msgid "Type of blur used for window decorations"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:11
+msgid "Use metacity theme"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:12
+msgid "Use metacity theme when drawing window decorations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:1
+#, fuzzy
+msgid "Annotate"
+msgstr "Başlangıç"
+
+# include/security/ui.ycp:774
+#: ../metadata/annotate.xml.in.h:2
+#, fuzzy
+msgid "Annotate Fill Color"
+msgstr "Normal saat"
+
+#: ../metadata/annotate.xml.in.h:3
+msgid "Annotate Stroke Color"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:4
+#, fuzzy
+msgid "Annotate plugin"
+msgstr "Aktif profil"
+
+#: ../metadata/annotate.xml.in.h:5
+msgid "Clear"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:6
+msgid "Draw"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:7
+msgid "Draw using tool"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:8
+msgid "Fill color for annotations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:9 ../metadata/clone.xml.in.h:2
+#: ../metadata/rotate.xml.in.h:11 ../metadata/screenshot.xml.in.h:3
+#: ../metadata/water.xml.in.h:6 ../metadata/zoom.xml.in.h:2
+#, fuzzy
+msgid "Initiate"
+msgstr "Başlangıç"
+
+#: ../metadata/annotate.xml.in.h:10
+#, fuzzy
+msgid "Initiate annotate drawing"
+msgstr "Başlangıç"
+
+#: ../metadata/annotate.xml.in.h:11
+#, fuzzy
+msgid "Initiate annotate erasing"
+msgstr "Başlangıç"
+
+#: ../metadata/annotate.xml.in.h:12
+#, fuzzy
+msgid "Initiate erase"
+msgstr "Başlangıç"
+
+#: ../metadata/annotate.xml.in.h:13
+msgid "Line width"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:14
+msgid "Line width for annotations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:15
+msgid "Stroke color for annotations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:16
+msgid "Stroke width"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:17
+msgid "Stroke width for annotations"
+msgstr ""
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/blur.xml.in.h:1
+#, fuzzy
+msgid "Alpha Blur"
+msgstr "Windows'u &sil"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/blur.xml.in.h:2
+#, fuzzy
+msgid "Alpha blur windows"
+msgstr "Windows'u &sil"
+
+# include/tv/ui.ycp:493
+#: ../metadata/blur.xml.in.h:3
+#, fuzzy
+msgid "Blur Filter"
+msgstr "&Filtre koy"
+
+#: ../metadata/blur.xml.in.h:4
+#, fuzzy
+msgid "Blur Occlusion"
+msgstr "Süre"
+
+#: ../metadata/blur.xml.in.h:5
+#, fuzzy
+msgid "Blur Saturation"
+msgstr "Süre"
+
+#: ../metadata/blur.xml.in.h:6
+#, fuzzy
+msgid "Blur Speed"
+msgstr "Seçili"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/blur.xml.in.h:7
+#, fuzzy
+msgid "Blur Windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/blur.xml.in.h:8
+msgid "Blur behind translucent parts of windows"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:9
+#, fuzzy
+msgid "Blur saturation"
+msgstr "Süre"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/blur.xml.in.h:10
+#, fuzzy
+msgid "Blur windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/blur.xml.in.h:11
+msgid "Blur windows that doesn't have focus"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:12
+msgid "Filter method used for blurring"
+msgstr ""
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/blur.xml.in.h:13
+#, fuzzy
+msgid "Focus Blur"
+msgstr "Windows'u &sil"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/blur.xml.in.h:14
+#, fuzzy
+msgid "Focus blur windows"
+msgstr "Windows'u &sil"
+
+# RU
+#: ../metadata/blur.xml.in.h:15
+#, fuzzy
+msgid "Gaussian Radius"
+msgstr "Rusya Federasyonu"
+
+# /usr/lib/YaST2/keyboard_raw.ycp:638
+#: ../metadata/blur.xml.in.h:16
+#, fuzzy
+msgid "Gaussian Strength"
+msgstr "Rusça"
+
+# RU
+#: ../metadata/blur.xml.in.h:17
+#, fuzzy
+msgid "Gaussian radius"
+msgstr "Rusya Federasyonu"
+
+# /usr/lib/YaST2/keyboard_raw.ycp:638
+#: ../metadata/blur.xml.in.h:18
+#, fuzzy
+msgid "Gaussian strength"
+msgstr "Rusça"
+
+#: ../metadata/blur.xml.in.h:19
+#, fuzzy
+msgid "Mipmap LOD"
+msgstr "Lima"
+
+#: ../metadata/blur.xml.in.h:20
+msgid "Mipmap level-of-detail"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:21
+msgid "Pulse"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:22
+msgid "Pulse effect"
+msgstr ""
+
+# clients/inst_resize_ui.ycp:597
+#: ../metadata/blur.xml.in.h:23
+#, fuzzy
+msgid "Window blur speed"
+msgstr "Windows içermeyen alan (%1)"
+
+#: ../metadata/blur.xml.in.h:24
+msgid "Windows that should be affected by focus blur"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:25
+msgid "Windows that should be use alpha blur by default"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:26
+msgid "blur occlusion"
+msgstr ""
+
+#: ../metadata/clone.xml.in.h:1
+#, fuzzy
+msgid "Clone Output"
+msgstr "Kısa çıktı"
+
+#: ../metadata/clone.xml.in.h:3
+#, fuzzy
+msgid "Initiate clone selection"
+msgstr "Başlangıç"
+
+#: ../metadata/clone.xml.in.h:4
+msgid "Output clone handler"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:1
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command0"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:2
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command1"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:3
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command10"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:4
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command11"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:5
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command2"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:6
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command3"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:7
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command4"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:8
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command5"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:9
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command6"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:10
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command7"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:11
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command8"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:12
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command9"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:13
+#, fuzzy
+msgid "Active Plugins"
+msgstr "Aktif profil"
+
+#: ../metadata/core.xml.in.h:14
+msgid ""
+"Allow drawing of fullscreen windows to not be redirected to offscreen pixmaps"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:15
+msgid "Audible Bell"
+msgstr ""
+
+# include/partitioning/custom_part_dialogs.ycp:288
+#: ../metadata/core.xml.in.h:16
+#, fuzzy
+msgid "Audible system beep"
+msgstr "Dosya &sistemi"
+
+#: ../metadata/core.xml.in.h:17
+#, fuzzy
+msgid "Auto-Raise"
+msgstr "Otomatik"
+
+#: ../metadata/core.xml.in.h:18
+msgid "Auto-Raise Delay"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:19
+msgid "Automatic detection of output devices"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:20
+msgid "Automatic detection of refresh rate"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:21
+msgid "Click To Focus"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:22
+msgid "Click on window moves input focus to it"
+msgstr ""
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/core.xml.in.h:23
+#, fuzzy
+msgid "Close Window"
+msgstr "Windows'u &sil"
+
+#: ../metadata/core.xml.in.h:24
+msgid "Close active window"
+msgstr ""
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:25
+#, fuzzy
+msgid "Command line 0"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:26
+#, fuzzy
+msgid "Command line 1"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:27
+#, fuzzy
+msgid "Command line 10"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:28
+#, fuzzy
+msgid "Command line 11"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:29
+#, fuzzy
+msgid "Command line 2"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:30
+#, fuzzy
+msgid "Command line 3"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:31
+#, fuzzy
+msgid "Command line 4"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:32
+#, fuzzy
+msgid "Command line 5"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:33
+#, fuzzy
+msgid "Command line 6"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:34
+#, fuzzy
+msgid "Command line 7"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:35
+#, fuzzy
+msgid "Command line 8"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:36
+#, fuzzy
+msgid "Command line 9"
+msgstr "Komut: "
+
+#: ../metadata/core.xml.in.h:37
+msgid "Command line to be executed in shell when run_command0 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:38
+msgid "Command line to be executed in shell when run_command1 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:39
+msgid "Command line to be executed in shell when run_command10 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:40
+msgid "Command line to be executed in shell when run_command11 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:41
+msgid "Command line to be executed in shell when run_command2 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:42
+msgid "Command line to be executed in shell when run_command3 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:43
+msgid "Command line to be executed in shell when run_command4 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:44
+msgid "Command line to be executed in shell when run_command5 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:45
+msgid "Command line to be executed in shell when run_command6 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:46
+msgid "Command line to be executed in shell when run_command7 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:47
+msgid "Command line to be executed in shell when run_command8 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:48
+msgid "Command line to be executed in shell when run_command9 is invoked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:49
+msgid "Decrease Opacity"
+msgstr ""
+
+# include/partitioning/auto_part_ui.ycp:147
+#: ../metadata/core.xml.in.h:50
+#, fuzzy
+msgid "Decrease window opacity"
+msgstr "Windows'u &tamamen sil"
+
+# include/tv/ui.ycp:398
+#: ../metadata/core.xml.in.h:51
+#, fuzzy
+msgid "Default Icon"
+msgstr "Geçerli bölüm"
+
+#: ../metadata/core.xml.in.h:52
+#, fuzzy
+msgid "Default window icon image"
+msgstr "Öntanımlı es&kime tarihi"
+
+#: ../metadata/core.xml.in.h:53
+#, fuzzy
+msgid "Detect Outputs"
+msgstr "Kısa çıktı"
+
+# clients/inst_sw_single.ycp:1620
+#: ../metadata/core.xml.in.h:54
+#, fuzzy
+msgid "Detect Refresh Rate"
+msgstr "Güncelleme için seçin"
+
+#: ../metadata/core.xml.in.h:55
+msgid "Focus Prevention Windows"
+msgstr ""
+
+# include/nis_server/io.ycp:465
+#: ../metadata/core.xml.in.h:56
+#, fuzzy
+msgid "Focus prevention windows"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/core.xml.in.h:57
+msgid "General Options"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:58
+msgid "General compiz options"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:59
+msgid "Hide Skip Taskbar Windows"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:60
+msgid "Hide all windows and focus desktop"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:61
+msgid "Hide windows not in taskbar when entering show desktop mode"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:62
+#, fuzzy
+msgid "Horizontal Virtual Size"
+msgstr "Sanal diskler"
+
+#: ../metadata/core.xml.in.h:63
+msgid "Ignore Hints When Maximized"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:64
+msgid "Ignore size increment and aspect hints when window is maximized"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:65
+msgid "Increase Opacity"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:66
+msgid "Increase window opacity"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:67
+msgid "Interval before raising selected windows"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:68
+msgid "Interval between ping messages"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:69
+#, fuzzy
+msgid "Lighting"
+msgstr "Kayıt tutma"
+
+# include/scanner/scanner_functions.ycp:218
+#: ../metadata/core.xml.in.h:70
+#, fuzzy
+msgid "List of currently active plugins"
+msgstr "Sadece algılanan yazıcıları listele"
+
+#: ../metadata/core.xml.in.h:71
+msgid "List of strings describing output devices"
+msgstr ""
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/core.xml.in.h:72
+#, fuzzy
+msgid "Lower Window"
+msgstr "Windows"
+
+#: ../metadata/core.xml.in.h:73
+msgid "Lower window beneath other windows"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:74
+msgid "Maximize Window"
+msgstr ""
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/core.xml.in.h:75
+#, fuzzy
+msgid "Maximize Window Horizontally"
+msgstr "Windows'u &küçült"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/core.xml.in.h:76
+#, fuzzy
+msgid "Maximize Window Vertically"
+msgstr "Windows'u &küçült"
+
+#: ../metadata/core.xml.in.h:77
+msgid "Maximize active window"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:78
+msgid "Maximize active window horizontally"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:79
+msgid "Maximize active window vertically"
+msgstr ""
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/core.xml.in.h:80
+#, fuzzy
+msgid "Minimize Window"
+msgstr "Windows'u &küçült"
+
+#: ../metadata/core.xml.in.h:81
+msgid "Minimize active window"
+msgstr ""
+
+# clients/inst_sw_single.ycp:146
+#: ../metadata/core.xml.in.h:82
+#, fuzzy
+msgid "Number of Desktops"
+msgstr "Masaüstü:"
+
+# clients/inst_sw_single.ycp:146
+#: ../metadata/core.xml.in.h:83
+#, fuzzy
+msgid "Number of virtual desktops"
+msgstr "Masaüstü:"
+
+#: ../metadata/core.xml.in.h:84
+msgid "Only perform screen updates during vertical blanking period"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:85
+msgid "Opacity Step"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:86
+msgid "Opacity change step"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:87
+msgid "Opacity values for windows that should be translucent by default"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:88
+msgid "Opacity window values"
+msgstr ""
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/core.xml.in.h:89
+#, fuzzy
+msgid "Opacity windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/core.xml.in.h:90
+msgid "Open a terminal"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:91
+msgid "Open window menu"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:92
+msgid "Outputs"
+msgstr ""
+
+# clients/hwinfo.ycp:71
+#: ../metadata/core.xml.in.h:93
+#, fuzzy
+msgid "Ping Delay"
+msgstr "Bekleme"
+
+#: ../metadata/core.xml.in.h:94
+msgid "Raise On Click"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:95
+#, fuzzy
+msgid "Raise Window"
+msgstr "Boyut değiştirme işlemi başarısız oldu"
+
+#: ../metadata/core.xml.in.h:96
+msgid "Raise selected windows after interval"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:97
+msgid "Raise window above other windows"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:98
+msgid "Raise windows when clicked"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:99
+#, fuzzy
+msgid "Refresh Rate"
+msgstr "&Listeyi tazele"
+
+#: ../metadata/core.xml.in.h:100
+msgid "Run Dialog"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:101
+#, fuzzy
+msgid "Run command 0"
+msgstr "Komut '%1'"
+
+#: ../metadata/core.xml.in.h:102
+#, fuzzy
+msgid "Run command 1"
+msgstr "Komut '%1'"
+
+#: ../metadata/core.xml.in.h:103
+#, fuzzy
+msgid "Run command 10"
+msgstr "Komut '%1'"
+
+#: ../metadata/core.xml.in.h:104
+#, fuzzy
+msgid "Run command 11"
+msgstr "Komut '%1'"
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:105
+#, fuzzy
+msgid "Run command 2"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:106
+#, fuzzy
+msgid "Run command 3"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:107
+#, fuzzy
+msgid "Run command 4"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:108
+#, fuzzy
+msgid "Run command 5"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:109
+#, fuzzy
+msgid "Run command 6"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:110
+#, fuzzy
+msgid "Run command 7"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:111
+#, fuzzy
+msgid "Run command 8"
+msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#: ../metadata/core.xml.in.h:112
+#, fuzzy
+msgid "Run command 9"
+msgstr "Komut: "
+
+#: ../metadata/core.xml.in.h:113
+msgid "Screen size multiplier for horizontal virtual size"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:114
+msgid "Screen size multiplier for vertical virtual size"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:115
+#, fuzzy
+msgid "Screenshot command line"
+msgstr "Komut satırı girdisi incelenirken hata oluştu."
+
+#: ../metadata/core.xml.in.h:116
+msgid "Show Main Menu"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:117
+msgid "Show Run Application dialog"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:118
+msgid "Show the main menu"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:119
+#, fuzzy
+msgid "Slow Animations"
+msgstr "Tüm bölümleri göster"
+
+#: ../metadata/core.xml.in.h:120
+msgid "Sync To VBlank"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:121
+msgid "Take a screenshot"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:122
+msgid "Take a screenshot of a window"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:123
+#, fuzzy
+msgid "Terminal command line"
+msgstr "Komut satırı girdisi incelenirken hata oluştu."
+
+# include/tv/ui.ycp:493
+#: ../metadata/core.xml.in.h:124
+#, fuzzy
+msgid "Texture Filter"
+msgstr "&Filtre koy"
+
+# include/tv/ui.ycp:493
+#: ../metadata/core.xml.in.h:125
+#, fuzzy
+msgid "Texture filtering"
+msgstr "&Filtre koy"
+
+#: ../metadata/core.xml.in.h:126
+msgid "The rate at which the screen is redrawn (times/second)"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:127
+msgid "Toggle Window Maximized"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:128
+msgid "Toggle Window Maximized Horizontally"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:129
+msgid "Toggle Window Maximized Vertically"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:130
+msgid "Toggle Window Shaded"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:131
+msgid "Toggle active window maximized"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:132
+msgid "Toggle active window maximized horizontally"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:133
+msgid "Toggle active window maximized vertically"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:134
+msgid "Toggle active window shaded"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:135
+msgid "Toggle use of slow animations"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:136
+msgid "Unmaximize Window"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:137
+msgid "Unmaximize active window"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:138
+msgid "Unredirect Fullscreen Windows"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:139
+msgid "Use diffuse light when screen is transformed"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:140
+#, fuzzy
+msgid "Vertical Virtual Size"
+msgstr "Sanal diskler"
+
+# clients/inst_sw_single.ycp:188
+#: ../metadata/core.xml.in.h:141
+#, fuzzy
+msgid "Window Menu"
+msgstr "Pencere yöneticisi"
+
+#: ../metadata/core.xml.in.h:142
+msgid "Window screenshot command line"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:143
+msgid "Windows that should be translucent by default"
+msgstr ""
+
+# include/x11/resolution_dialog.ycp:81
+#: ../metadata/cube.xml.in.h:1 ../metadata/rotate.xml.in.h:1
+#, fuzzy
+msgid "Acceleration"
+msgstr "3D hızlandırma:"
+
+#: ../metadata/cube.xml.in.h:2
+msgid "Adjust Image"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:3
+msgid "Adjust top face image to rotation"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:4
+msgid "Advance to next slide"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:5
+#, fuzzy
+msgid "Animate Skydome"
+msgstr "Sidney"
+
+#: ../metadata/cube.xml.in.h:6
+msgid "Animate skydome when rotating cube"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:7
+msgid "Background Images"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:8
+msgid "Background images"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:9
+msgid "Color of top and bottom sides of the cube"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:10
+msgid "Color to use for the bottom color-stop of the skydome-fallback gradient"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:11
+msgid "Color to use for the top color-stop of the skydome-fallback gradient"
+msgstr ""
+
+# include/security/ui.ycp:774
+#: ../metadata/cube.xml.in.h:12
+#, fuzzy
+msgid "Cube Color"
+msgstr "Normal saat"
+
+# clients/inst_sw_single.ycp:146
+#: ../metadata/cube.xml.in.h:13
+#, fuzzy
+msgid "Desktop Cube"
+msgstr "Masaüstü:"
+
+# include/x11/resolution_dialog.ycp:81
+#: ../metadata/cube.xml.in.h:14
+#, fuzzy
+msgid "Fold Acceleration"
+msgstr "3D hızlandırma:"
+
+#: ../metadata/cube.xml.in.h:15
+#, fuzzy
+msgid "Fold Speed"
+msgstr "Seçili"
+
+# classnames.ycp:73
+#: ../metadata/cube.xml.in.h:16
+#, fuzzy
+msgid "Fold Timestep"
+msgstr "Süre"
+
+#: ../metadata/cube.xml.in.h:17 ../metadata/switcher.xml.in.h:10
+msgid "Generate mipmaps when possible for higher quality scaling"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:18
+#, fuzzy
+msgid "Go back to previous slide"
+msgstr "Onceki cekirdek"
+
+#: ../metadata/cube.xml.in.h:19
+#, fuzzy
+msgid "Image files"
+msgstr "Başarısız dosyalar"
+
+#: ../metadata/cube.xml.in.h:20
+msgid "Image to use as texture for the skydome"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:21
+msgid "Inside Cube"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:22
+msgid "Inside cube"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:23
+msgid "List of PNG and SVG files that should be rendered on top face of cube"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:24 ../metadata/decoration.xml.in.h:10
+#: ../metadata/switcher.xml.in.h:13
+#, fuzzy
+msgid "Mipmap"
+msgstr "Lima"
+
+# clients/inst_sw_single.ycp:1623
+#: ../metadata/cube.xml.in.h:25
+#, fuzzy
+msgid "Next Slide"
+msgstr "Sonraki güncelleme"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/cube.xml.in.h:26
+#, fuzzy
+msgid "Place windows on cube"
+msgstr "Windows'u &sil"
+
+#: ../metadata/cube.xml.in.h:27
+#, fuzzy
+msgid "Prev Slide"
+msgstr "Onceki cekirdek"
+
+#: ../metadata/cube.xml.in.h:28
+msgid "Render skydome"
+msgstr ""
+
+# clients/inst_environment.ycp:306
+#: ../metadata/cube.xml.in.h:29
+#, fuzzy
+msgid "Scale image"
+msgstr "yerel zaman"
+
+#: ../metadata/cube.xml.in.h:30
+msgid "Scale images to cover top face of cube"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:31
+#, fuzzy
+msgid "Skydome"
+msgstr "Sidney"
+
+#: ../metadata/cube.xml.in.h:32
+msgid "Skydome Gradient End Color"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:33
+msgid "Skydome Gradient Start Color"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:34
+#, fuzzy
+msgid "Skydome Image"
+msgstr "Sidney"
+
+#: ../metadata/cube.xml.in.h:35 ../metadata/minimize.xml.in.h:7
+#: ../metadata/rotate.xml.in.h:85 ../metadata/scale.xml.in.h:23
+#: ../metadata/switcher.xml.in.h:27 ../metadata/zoom.xml.in.h:7
+#, fuzzy
+msgid "Speed"
+msgstr "Seçili"
+
+# classnames.ycp:73
+#: ../metadata/cube.xml.in.h:36 ../metadata/minimize.xml.in.h:8
+#: ../metadata/rotate.xml.in.h:88 ../metadata/scale.xml.in.h:25
+#: ../metadata/switcher.xml.in.h:31 ../metadata/zoom.xml.in.h:8
+#, fuzzy
+msgid "Timestep"
+msgstr "Süre"
+
+#: ../metadata/cube.xml.in.h:37
+msgid "Unfold"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:38
+msgid "Unfold cube"
+msgstr ""
+
+#: ../metadata/dbus.xml.in.h:1
+msgid "Dbus"
+msgstr ""
+
+#: ../metadata/dbus.xml.in.h:2
+msgid "Dbus Control Backend"
+msgstr ""
+
+#: ../metadata/decoration.xml.in.h:1
+msgid "Allow mipmaps to be generated for decoration textures"
+msgstr ""
+
+# clients/support_registration.ycp:66
+#: ../metadata/decoration.xml.in.h:2
+#, fuzzy
+msgid "Command"
+msgstr "Komut: "
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/decoration.xml.in.h:3
+#, fuzzy
+msgid "Decoration windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/decoration.xml.in.h:4
+msgid ""
+"Decorator command line that is executed if no decorator is already running"
+msgstr ""
+
+#: ../metadata/decoration.xml.in.h:5
+#, fuzzy
+msgid "Drop shadow X offset"
+msgstr "&Düşük seviye"
+
+#: ../metadata/decoration.xml.in.h:6
+#, fuzzy
+msgid "Drop shadow Y offset"
+msgstr "&Düşük seviye"
+
+#: ../metadata/decoration.xml.in.h:7
+#, fuzzy
+msgid "Drop shadow color"
+msgstr "Radius"
+
+#: ../metadata/decoration.xml.in.h:8
+#, fuzzy
+msgid "Drop shadow opacity"
+msgstr "&Düşük seviye"
+
+#: ../metadata/decoration.xml.in.h:9
+#, fuzzy
+msgid "Drop shadow radius"
+msgstr "Radius"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/decoration.xml.in.h:11
+#, fuzzy
+msgid "Shadow Color"
+msgstr "Windows'u &küçült"
+
+#: ../metadata/decoration.xml.in.h:12
+#, fuzzy
+msgid "Shadow Offset X"
+msgstr "&Düşük seviye"
+
+#: ../metadata/decoration.xml.in.h:13
+#, fuzzy
+msgid "Shadow Offset Y"
+msgstr "&Düşük seviye"
+
+#: ../metadata/decoration.xml.in.h:14
+#, fuzzy
+msgid "Shadow Opacity"
+msgstr "&Düşük seviye"
+
+#: ../metadata/decoration.xml.in.h:15
+#, fuzzy
+msgid "Shadow Radius"
+msgstr "Radius"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/decoration.xml.in.h:16
+#, fuzzy
+msgid "Shadow windows"
+msgstr "Windows'u &küçült"
+
+#: ../metadata/decoration.xml.in.h:17
+#, fuzzy
+msgid "Window Decoration"
+msgstr "Tanımsız"
+
+#: ../metadata/decoration.xml.in.h:18
+#, fuzzy
+msgid "Window decorations"
+msgstr "ypbind seçenekleri"
+
+#: ../metadata/decoration.xml.in.h:19
+msgid "Windows that should be decorated"
+msgstr ""
+
+#: ../metadata/decoration.xml.in.h:20
+msgid "Windows that should have a shadow"
+msgstr ""
+
+#: ../metadata/fade.xml.in.h:1
+msgid "Fade On Minimize/Open/Close"
+msgstr ""
+
+#: ../metadata/fade.xml.in.h:2
+#, fuzzy
+msgid "Fade Speed"
+msgstr "Seçili"
+
+#: ../metadata/fade.xml.in.h:3
+msgid "Fade effect on minimize/open/close window events"
+msgstr ""
+
+# include/partitioning/custom_part_dialogs.ycp:288
+#: ../metadata/fade.xml.in.h:4
+#, fuzzy
+msgid "Fade effect on system beep"
+msgstr "Dosya &sistemi"
+
+#: ../metadata/fade.xml.in.h:5
+msgid "Fade in windows when mapped and fade out windows when unmapped"
+msgstr ""
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/fade.xml.in.h:6
+#, fuzzy
+msgid "Fade windows"
+msgstr "Windows'u &sil"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/fade.xml.in.h:7
+#, fuzzy
+msgid "Fading Windows"
+msgstr "Windows'u &küçült"
+
+#: ../metadata/fade.xml.in.h:8
+msgid "Fullscreen Visual Bell"
+msgstr ""
+
+#: ../metadata/fade.xml.in.h:9
+msgid "Fullscreen fade effect on system beep"
+msgstr ""
+
+#: ../metadata/fade.xml.in.h:10
+msgid "Visual Bell"
+msgstr ""
+
+# clients/inst_resize_ui.ycp:597
+#: ../metadata/fade.xml.in.h:11
+#, fuzzy
+msgid "Window fade speed"
+msgstr "Windows içermeyen alan (%1)"
+
+#: ../metadata/fade.xml.in.h:12
+msgid "Windows that should be fading"
+msgstr ""
+
+# clients/inst_custom_part.ycp:2928
+#: ../metadata/fs.xml.in.h:1
+#, fuzzy
+msgid "Mount Point"
+msgstr "Geri dönüşüm noktası oluştur"
+
+# clients/inst_custom_part.ycp:2928
+#: ../metadata/fs.xml.in.h:2
+#, fuzzy
+msgid "Mount point"
+msgstr "Geri dönüşüm noktası oluştur"
+
+#: ../metadata/fs.xml.in.h:3
+msgid "Userspace File System"
+msgstr ""
+
+#: ../metadata/fs.xml.in.h:4
+msgid "Userspace file system"
+msgstr ""
+
+#: ../metadata/gconf.xml.in.h:1
+msgid "GConf"
+msgstr ""
+
+#: ../metadata/gconf.xml.in.h:2
+msgid "GConf Control Backend"
+msgstr ""
+
+#: ../metadata/ini.xml.in.h:1
+msgid "Ini"
+msgstr ""
+
+#: ../metadata/ini.xml.in.h:2
+msgid "Ini Flat File Backend"
+msgstr ""
+
+#: ../metadata/inotify.xml.in.h:1
+msgid "File change notification plugin"
+msgstr ""
+
+#: ../metadata/inotify.xml.in.h:2
+msgid "Inotify"
+msgstr ""
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/minimize.xml.in.h:1
+#, fuzzy
+msgid "Minimize Effect"
+msgstr "Windows'u &küçült"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/minimize.xml.in.h:2
+#, fuzzy
+msgid "Minimize Windows"
+msgstr "Windows'u &küçült"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/minimize.xml.in.h:3
+#, fuzzy
+msgid "Minimize speed"
+msgstr "Windows'u &küçült"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/minimize.xml.in.h:4
+#, fuzzy
+msgid "Minimize timestep"
+msgstr "Windows'u &küçült"
+
+#: ../metadata/minimize.xml.in.h:5
+msgid "Shade Resistance"
+msgstr ""
+
+#: ../metadata/minimize.xml.in.h:6
+msgid "Shade resistance"
+msgstr ""
+
+#: ../metadata/minimize.xml.in.h:9
+msgid "Transform windows when they are minimized and unminimized"
+msgstr ""
+
+#: ../metadata/minimize.xml.in.h:10
+msgid "Windows that should be transformed when minimized"
+msgstr ""
+
+# include/ui/common_messages.ycp:23
+#: ../metadata/move.xml.in.h:1
+#, fuzzy
+msgid "Constrain Y"
+msgstr "İçerecek"
+
+#: ../metadata/move.xml.in.h:2
+msgid "Constrain Y coordinate to workspace area"
+msgstr ""
+
+#: ../metadata/move.xml.in.h:3
+#, fuzzy
+msgid "Initiate Window Move"
+msgstr "&Aşağı"
+
+#: ../metadata/move.xml.in.h:4
+#, fuzzy
+msgid "Move Window"
+msgstr "&Aşağı"
+
+#: ../metadata/move.xml.in.h:5
+#, fuzzy
+msgid "Move window"
+msgstr "&Aşağı"
+
+#: ../metadata/move.xml.in.h:6 ../metadata/scale.xml.in.h:13
+#: ../metadata/switcher.xml.in.h:15
+#, fuzzy
+msgid "Opacity"
+msgstr "&Düşük seviye"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/move.xml.in.h:7
+#, fuzzy
+msgid "Opacity level of moving windows"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/move.xml.in.h:8
+msgid "Snapoff and auto unmaximized maximized windows when dragging"
+msgstr ""
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/move.xml.in.h:9
+#, fuzzy
+msgid "Snapoff maximized windows"
+msgstr "Windows'u &küçült"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/move.xml.in.h:10
+#, fuzzy
+msgid "Start moving window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/place.xml.in.h:1
+msgid "Algorithm to use for window placement"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:2
+#, fuzzy
+msgid "Horizontal viewport positions"
+msgstr "Sanal diskler"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/place.xml.in.h:3
+#, fuzzy
+msgid "Place Windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/place.xml.in.h:4
+msgid "Place windows at appropriate positions when mapped"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:5
+msgid "Placement Mode"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:6
+#, fuzzy
+msgid "Positioned windows"
+msgstr "Boyut değiştirme işlemi başarısız oldu"
+
+#: ../metadata/place.xml.in.h:7
+#, fuzzy
+msgid "Vertical viewport positions"
+msgstr "Sanal diskler"
+
+#: ../metadata/place.xml.in.h:8
+#, fuzzy
+msgid "Viewport positioned windows"
+msgstr "Boyut değiştirme işlemi başarısız oldu"
+
+#: ../metadata/place.xml.in.h:9
+#, fuzzy
+msgid "Window placement workarounds"
+msgstr "ypbind seçenekleri"
+
+#: ../metadata/place.xml.in.h:10
+msgid "Windows that should be positioned by default"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:11
+msgid "Windows that should be positioned in specific viewports by default"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:12
+#, fuzzy
+msgid "Workarounds"
+msgstr "&İş grubu"
+
+#: ../metadata/place.xml.in.h:13
+#, fuzzy
+msgid "X Positions"
+msgstr "Boyut değiştirme işlemi başarısız oldu"
+
+#: ../metadata/place.xml.in.h:14
+#, fuzzy
+msgid "X Viewport Positions"
+msgstr "Sanal diskler"
+
+#: ../metadata/place.xml.in.h:15
+msgid "X position values"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:16
+#, fuzzy
+msgid "Y Positions"
+msgstr "Boyut değiştirme işlemi başarısız oldu"
+
+#: ../metadata/place.xml.in.h:17
+#, fuzzy
+msgid "Y Viewport Positions"
+msgstr "Sanal diskler"
+
+#: ../metadata/place.xml.in.h:18
+msgid "Y position values"
+msgstr ""
+
+# clients/inst_sw_single.ycp:146
+#: ../metadata/plane.xml.in.h:1
+#, fuzzy
+msgid "Desktop Plane"
+msgstr "Masaüstü:"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/plane.xml.in.h:2
+#, fuzzy
+msgid "Place windows on a plane"
+msgstr "Windows'u &sil"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/plane.xml.in.h:3
+#, fuzzy
+msgid "Plane Down"
+msgstr "Windows'u &sil"
+
+#: ../metadata/plane.xml.in.h:4
+#, fuzzy
+msgid "Plane Left"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/plane.xml.in.h:5
+#, fuzzy
+msgid "Plane Right"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:6
+#, fuzzy
+msgid "Plane To Face 1"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:7
+#, fuzzy
+msgid "Plane To Face 10"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:8
+#, fuzzy
+msgid "Plane To Face 11"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:9
+#, fuzzy
+msgid "Plane To Face 12"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:10
+#, fuzzy
+msgid "Plane To Face 2"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:11
+#, fuzzy
+msgid "Plane To Face 3"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:12
+#, fuzzy
+msgid "Plane To Face 4"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:13
+#, fuzzy
+msgid "Plane To Face 5"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:14
+#, fuzzy
+msgid "Plane To Face 6"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:15
+#, fuzzy
+msgid "Plane To Face 7"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:16
+#, fuzzy
+msgid "Plane To Face 8"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:17
+#, fuzzy
+msgid "Plane To Face 9"
+msgstr "Daemon başlatılıyor."
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/plane.xml.in.h:18
+#, fuzzy
+msgid "Plane Up"
+msgstr "Windows'u &sil"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/plane.xml.in.h:19
+#, fuzzy
+msgid "Plane down"
+msgstr "Windows'u &sil"
+
+#: ../metadata/plane.xml.in.h:20
+#, fuzzy
+msgid "Plane left"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/plane.xml.in.h:21
+#, fuzzy
+msgid "Plane right"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:22
+#, fuzzy
+msgid "Plane to face 1"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:23
+#, fuzzy
+msgid "Plane to face 10"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:24
+#, fuzzy
+msgid "Plane to face 11"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:25
+#, fuzzy
+msgid "Plane to face 12"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:26
+#, fuzzy
+msgid "Plane to face 2"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:27
+#, fuzzy
+msgid "Plane to face 3"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:28
+#, fuzzy
+msgid "Plane to face 4"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:29
+#, fuzzy
+msgid "Plane to face 5"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:30
+#, fuzzy
+msgid "Plane to face 6"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:31
+#, fuzzy
+msgid "Plane to face 7"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:32
+#, fuzzy
+msgid "Plane to face 8"
+msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#: ../metadata/plane.xml.in.h:33
+#, fuzzy
+msgid "Plane to face 9"
+msgstr "Daemon başlatılıyor."
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/plane.xml.in.h:34
+#, fuzzy
+msgid "Plane up"
+msgstr "Windows'u &sil"
+
+#: ../metadata/png.xml.in.h:1
+msgid "Png"
+msgstr ""
+
+#: ../metadata/png.xml.in.h:2
+msgid "Png image loader"
+msgstr ""
+
+#: ../metadata/regex.xml.in.h:1
+msgid "Regex Matching"
+msgstr ""
+
+#: ../metadata/regex.xml.in.h:2
+msgid "Regex window matching"
+msgstr ""
+
+#: ../metadata/resize.xml.in.h:1
+msgid "Default Resize Mode"
+msgstr ""
+
+#: ../metadata/resize.xml.in.h:2
+msgid "Default mode used for window resizing"
+msgstr ""
+
+#: ../metadata/resize.xml.in.h:3
+#, fuzzy
+msgid "Initiate Window Resize"
+msgstr "Başlangıç"
+
+#: ../metadata/resize.xml.in.h:4
+#, fuzzy
+msgid "Resize Window"
+msgstr "Boyut değiştirme işlemi başarısız oldu"
+
+#: ../metadata/resize.xml.in.h:5
+#, fuzzy
+msgid "Resize window"
+msgstr "Boyut değiştirme işlemi başarısız oldu"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/resize.xml.in.h:6
+#, fuzzy
+msgid "Start resizing window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:2
+msgid "Edge Flip DnD"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:3
+msgid "Edge Flip Move"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:4
+msgid "Edge Flip Pointer"
+msgstr ""
+
+# clients/online_update.ycp:223
+#: ../metadata/rotate.xml.in.h:5
+#, fuzzy
+msgid "Flip Time"
+msgstr "Gerçek zamanlı"
+
+#: ../metadata/rotate.xml.in.h:6
+msgid "Flip to left viewport and warp pointer"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:7
+msgid "Flip to next viewport when dragging object to screen edge"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:8
+msgid "Flip to next viewport when moving pointer to screen edge"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:9
+msgid "Flip to next viewport when moving window to screen edge"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:10
+msgid "Flip to right viewport and warp pointer"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:12 ../metadata/zoom.xml.in.h:3
+msgid "Invert Y axis for pointer movement"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:13 ../metadata/zoom.xml.in.h:4
+#, fuzzy
+msgid "Pointer Invert Y"
+msgstr "%1 için göstergeç"
+
+# include/cups/ui.ycp:541
+#: ../metadata/rotate.xml.in.h:14 ../metadata/zoom.xml.in.h:5
+#, fuzzy
+msgid "Pointer Sensitivity"
+msgstr "Yazıcı aygıtı"
+
+#: ../metadata/rotate.xml.in.h:15
+#, fuzzy
+msgid "Rotate Cube"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/rotate.xml.in.h:16
+msgid "Rotate Flip Left"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:17
+msgid "Rotate Flip Right"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:18
+#, fuzzy
+msgid "Rotate Left"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:19
+#, fuzzy
+msgid "Rotate Left with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:20
+#, fuzzy
+msgid "Rotate Right"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:21
+#, fuzzy
+msgid "Rotate Right with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:22
+#, fuzzy
+msgid "Rotate To"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/rotate.xml.in.h:23
+#, fuzzy
+msgid "Rotate To Face 1"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:24
+#, fuzzy
+msgid "Rotate To Face 1 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:25
+#, fuzzy
+msgid "Rotate To Face 10"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:26
+#, fuzzy
+msgid "Rotate To Face 10 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:27
+#, fuzzy
+msgid "Rotate To Face 11"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:28
+#, fuzzy
+msgid "Rotate To Face 11 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:29
+#, fuzzy
+msgid "Rotate To Face 12"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:30
+#, fuzzy
+msgid "Rotate To Face 12 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:31
+#, fuzzy
+msgid "Rotate To Face 2"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:32
+#, fuzzy
+msgid "Rotate To Face 2 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:33
+#, fuzzy
+msgid "Rotate To Face 3"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:34
+#, fuzzy
+msgid "Rotate To Face 3 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:35
+#, fuzzy
+msgid "Rotate To Face 4"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:36
+#, fuzzy
+msgid "Rotate To Face 4 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:37
+#, fuzzy
+msgid "Rotate To Face 5"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:38
+#, fuzzy
+msgid "Rotate To Face 5 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:39
+#, fuzzy
+msgid "Rotate To Face 6"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:40
+#, fuzzy
+msgid "Rotate To Face 6 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:41
+#, fuzzy
+msgid "Rotate To Face 7"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:42
+#, fuzzy
+msgid "Rotate To Face 7 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:43
+#, fuzzy
+msgid "Rotate To Face 8"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:44
+#, fuzzy
+msgid "Rotate To Face 8 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:45
+#, fuzzy
+msgid "Rotate To Face 9"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:46
+#, fuzzy
+msgid "Rotate To Face 9 with Window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:47
+#, fuzzy
+msgid "Rotate desktop cube"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/rotate.xml.in.h:48
+#, fuzzy
+msgid "Rotate left"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/rotate.xml.in.h:49
+msgid "Rotate left and brind active window along"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:50
+#, fuzzy
+msgid "Rotate right"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/rotate.xml.in.h:51
+msgid "Rotate right and brind active window along"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:52
+#, fuzzy
+msgid "Rotate to face 1"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:53
+#, fuzzy
+msgid "Rotate to face 1 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:54
+#, fuzzy
+msgid "Rotate to face 10"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:55
+#, fuzzy
+msgid "Rotate to face 10 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:56
+#, fuzzy
+msgid "Rotate to face 11"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:57
+#, fuzzy
+msgid "Rotate to face 11 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:58
+#, fuzzy
+msgid "Rotate to face 12"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:59
+#, fuzzy
+msgid "Rotate to face 12 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:60
+#, fuzzy
+msgid "Rotate to face 2"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:61
+#, fuzzy
+msgid "Rotate to face 2 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:62
+#, fuzzy
+msgid "Rotate to face 3"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:63
+#, fuzzy
+msgid "Rotate to face 3 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:64
+#, fuzzy
+msgid "Rotate to face 4"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:65
+#, fuzzy
+msgid "Rotate to face 4 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:66
+#, fuzzy
+msgid "Rotate to face 5"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:67
+#, fuzzy
+msgid "Rotate to face 5 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:68
+#, fuzzy
+msgid "Rotate to face 6"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:69
+#, fuzzy
+msgid "Rotate to face 6 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:70
+#, fuzzy
+msgid "Rotate to face 7"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:71
+#, fuzzy
+msgid "Rotate to face 7 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:72
+#, fuzzy
+msgid "Rotate to face 8"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:73
+#, fuzzy
+msgid "Rotate to face 8 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:74
+#, fuzzy
+msgid "Rotate to face 9"
+msgstr "Uzak alt ağ"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:75
+#, fuzzy
+msgid "Rotate to face 9 and bring active window along"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/rotate.xml.in.h:76
+#, fuzzy
+msgid "Rotate to viewport"
+msgstr "Uzak alt ağ"
+
+#: ../metadata/rotate.xml.in.h:77
+#, fuzzy
+msgid "Rotate window"
+msgstr "&Aşağı"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/rotate.xml.in.h:78
+#, fuzzy
+msgid "Rotate with window"
+msgstr "Daemon başlatılıyor."
+
+# include/x11/resolution_dialog.ycp:81
+#: ../metadata/rotate.xml.in.h:79
+#, fuzzy
+msgid "Rotation Acceleration"
+msgstr "3D hızlandırma:"
+
+# classnames.ycp:73
+#: ../metadata/rotate.xml.in.h:80
+#, fuzzy
+msgid "Rotation Speed"
+msgstr "Süre"
+
+# classnames.ycp:73
+#: ../metadata/rotate.xml.in.h:81
+#, fuzzy
+msgid "Rotation Timestep"
+msgstr "Süre"
+
+#: ../metadata/rotate.xml.in.h:82 ../metadata/zoom.xml.in.h:6
+msgid "Sensitivity of pointer movement"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:83
+msgid "Snap Cube Rotation to Top Face"
+msgstr ""
+
+#: ../metadata/rotate.xml.in.h:84
+msgid "Snap To Top Face"
+msgstr ""
+
+# include/ui/wizard_hw.ycp:51
+#: ../metadata/rotate.xml.in.h:86
+#, fuzzy
+msgid "Start Rotation"
+msgstr "Algılamayı başlat"
+
+#: ../metadata/rotate.xml.in.h:87
+msgid "Timeout before flipping viewport"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:1 ../metadata/switcher.xml.in.h:2
+msgid "Amount of opacity in percent"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:2
+#, fuzzy
+msgid "Darken Background"
+msgstr "Arka plan"
+
+#: ../metadata/scale.xml.in.h:3
+msgid "Darken background when scaling windows"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:4
+msgid "Hover Time"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:5
+#, fuzzy
+msgid "Initiate Window Picker"
+msgstr "&Aşağı"
+
+#: ../metadata/scale.xml.in.h:6
+msgid "Initiate Window Picker For All Windows"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:7
+msgid "Initiate Window Picker For Window Group"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:8
+msgid "Initiate Window Picker For Windows on Current Output"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:9
+msgid "Layout and start transforming all windows"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:10
+msgid "Layout and start transforming window group"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:11
+msgid "Layout and start transforming windows"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:12
+msgid "Layout and start transforming windows on current output"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:14
+msgid "Overlay Icon"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:15
+msgid "Overlay an icon on windows once they are scaled"
+msgstr ""
+
+# menuentries/menuentry_scanner.ycp:36
+#: ../metadata/scale.xml.in.h:16
+#, fuzzy
+msgid "Scale"
+msgstr "Tarayıcı"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/scale.xml.in.h:17
+#, fuzzy
+msgid "Scale Windows"
+msgstr "Windows'u &sil"
+
+# clients/inst_environment.ycp:306
+#: ../metadata/scale.xml.in.h:18
+#, fuzzy
+msgid "Scale speed"
+msgstr "yerel zaman"
+
+# clients/inst_environment.ycp:306
+#: ../metadata/scale.xml.in.h:19
+#, fuzzy
+msgid "Scale timestep"
+msgstr "yerel zaman"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/scale.xml.in.h:20
+#, fuzzy
+msgid "Scale windows"
+msgstr "Windows'u &sil"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/scale.xml.in.h:21
+#, fuzzy
+msgid "Space between windows"
+msgstr "Windows'u &sil"
+
+# /usr/lib/YaST2/keyboard_raw.ycp:200
+#: ../metadata/scale.xml.in.h:22
+#, fuzzy
+msgid "Spacing"
+msgstr "İspanya"
+
+#: ../metadata/scale.xml.in.h:24
+msgid ""
+"Time (in ms) before scale mode is terminated when hovering over a window"
+msgstr ""
+
+#: ../metadata/scale.xml.in.h:26
+msgid "Windows that should be scaled in scale mode"
+msgstr ""
+
+#: ../metadata/screenshot.xml.in.h:1
+msgid "Automatically open screenshot in this application"
+msgstr ""
+
+#: ../metadata/screenshot.xml.in.h:2
+#, fuzzy
+msgid "Directory"
+msgstr "Dizin\n"
+
+#: ../metadata/screenshot.xml.in.h:4
+#, fuzzy
+msgid "Initiate rectangle screenshot"
+msgstr "Başlangıç"
+
+#: ../metadata/screenshot.xml.in.h:5
+msgid "Launch Application"
+msgstr ""
+
+#: ../metadata/screenshot.xml.in.h:6
+#, fuzzy
+msgid "Put screenshot images in this directory"
+msgstr "Dizinin içine girerek devam et"
+
+#: ../metadata/screenshot.xml.in.h:7
+#, fuzzy
+msgid "Screenshot"
+msgstr "Komut satırı girdisi incelenirken hata oluştu."
+
+#: ../metadata/screenshot.xml.in.h:8
+#, fuzzy
+msgid "Screenshot plugin"
+msgstr "Komut satırı girdisi incelenirken hata oluştu."
+
+#: ../metadata/svg.xml.in.h:1
+msgid "Svg"
+msgstr ""
+
+#: ../metadata/svg.xml.in.h:2
+msgid "Svg image loader"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:1
+msgid "Amount of brightness in percent"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:3
+msgid "Amount of saturation in percent"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:4
+#, fuzzy
+msgid "Application Switcher"
+msgstr "Uygulama sırası"
+
+#: ../metadata/switcher.xml.in.h:5
+#, fuzzy
+msgid "Auto Rotate"
+msgstr "Otomatik"
+
+# classnames.ycp:50 classnames.ycp:59
+#: ../metadata/switcher.xml.in.h:6
+#, fuzzy
+msgid "Brightness"
+msgstr "Köprü"
+
+#: ../metadata/switcher.xml.in.h:7
+#, fuzzy
+msgid "Bring To Front"
+msgstr "Hareket"
+
+#: ../metadata/switcher.xml.in.h:8
+msgid "Bring selected window to front"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:9
+msgid "Distance desktop should be zoom out while switching windows"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:11
+#, fuzzy
+msgid "Icon"
+msgstr "İkonlar"
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/switcher.xml.in.h:12
+#, fuzzy
+msgid "Minimized"
+msgstr "Windows'u &küçült"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/switcher.xml.in.h:14
+#, fuzzy
+msgid "Next window"
+msgstr "Windows'u &sil"
+
+#: ../metadata/switcher.xml.in.h:16
+msgid "Popup switcher if not visible and select next window"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:17
+msgid "Popup switcher if not visible and select next window out of all windows"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:18
+msgid "Popup switcher if not visible and select previous window"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:19
+msgid ""
+"Popup switcher if not visible and select previous window out of all windows"
+msgstr ""
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/switcher.xml.in.h:20
+#, fuzzy
+msgid "Prev window"
+msgstr "Windows"
+
+#: ../metadata/switcher.xml.in.h:21
+msgid "Rotate to the selected window while switching"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:22
+#, fuzzy
+msgid "Saturation"
+msgstr "Süre"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/switcher.xml.in.h:23
+#, fuzzy
+msgid "Select next window"
+msgstr "Windows'u &sil"
+
+# include/nis_server/io.ycp:465
+#: ../metadata/switcher.xml.in.h:24
+#, fuzzy
+msgid "Select previous window"
+msgstr "Daemon başlatılıyor."
+
+#: ../metadata/switcher.xml.in.h:25
+msgid "Show icon next to thumbnail"
+msgstr ""
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/switcher.xml.in.h:26
+#, fuzzy
+msgid "Show minimized windows"
+msgstr "Windows'u &küçült"
+
+# clients/inst_environment.ycp:306
+#: ../metadata/switcher.xml.in.h:28
+#, fuzzy
+msgid "Switcher speed"
+msgstr "yerel zaman"
+
+# clients/inst_environment.ycp:306
+#: ../metadata/switcher.xml.in.h:29
+#, fuzzy
+msgid "Switcher timestep"
+msgstr "yerel zaman"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/switcher.xml.in.h:30
+#, fuzzy
+msgid "Switcher windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/switcher.xml.in.h:32
+msgid "Windows that should be shown in switcher"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:33
+#, fuzzy
+msgid "Zoom"
+msgstr "Kullanıcı çıkışı yap"
+
+#: ../metadata/video.xml.in.h:1
+msgid "Provide YV12 colorspace support"
+msgstr ""
+
+#: ../metadata/video.xml.in.h:2
+msgid "Video Playback"
+msgstr ""
+
+#: ../metadata/video.xml.in.h:3
+msgid "Video playback"
+msgstr ""
+
+#: ../metadata/video.xml.in.h:4
+msgid "YV12 colorspace"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:1
+#, fuzzy
+msgid "Add line"
+msgstr "Bağlantı &ekle"
+
+# clients/inst_custom_part.ycp:2928
+#: ../metadata/water.xml.in.h:2
+#, fuzzy
+msgid "Add point"
+msgstr "Geri dönüşüm noktası oluştur"
+
+#: ../metadata/water.xml.in.h:3
+msgid "Adds water effects to different desktop actions"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:4
+msgid "Delay (in ms) between each rain-drop"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:5
+msgid "Enable pointer water effects"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:7
+msgid "Line"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:8
+msgid "Offset Scale"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:9
+msgid "Point"
+msgstr ""
+
+# clients/hwinfo.ycp:71
+#: ../metadata/water.xml.in.h:10
+#, fuzzy
+msgid "Rain Delay"
+msgstr "Bekleme"
+
+#: ../metadata/water.xml.in.h:11
+msgid "Title wave"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:12
+#, fuzzy
+msgid "Toggle rain"
+msgstr "&Durum aç/kapa"
+
+#: ../metadata/water.xml.in.h:13
+#, fuzzy
+msgid "Toggle rain effect"
+msgstr "&Durum aç/kapa"
+
+#: ../metadata/water.xml.in.h:14
+#, fuzzy
+msgid "Toggle wiper"
+msgstr "&Durum aç/kapa"
+
+#: ../metadata/water.xml.in.h:15
+#, fuzzy
+msgid "Toggle wiper effect"
+msgstr "&Durum aç/kapa"
+
+#: ../metadata/water.xml.in.h:16
+msgid "Water Effect"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:17
+msgid "Water offset scale"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:18
+msgid "Wave effect from window title"
+msgstr ""
+
+#: ../metadata/wobbly.xml.in.h:1
+msgid "Focus Effect"
+msgstr ""
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/wobbly.xml.in.h:2
+#, fuzzy
+msgid "Focus Window Effect"
+msgstr "Windows"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/wobbly.xml.in.h:3
+#, fuzzy
+msgid "Focus Windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/wobbly.xml.in.h:4
+#, fuzzy
+msgid "Friction"
+msgstr "Hareket"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/wobbly.xml.in.h:5
+#, fuzzy
+msgid "Grab Windows"
+msgstr "Windows'u &sil"
+
+#: ../metadata/wobbly.xml.in.h:6
+#, fuzzy
+msgid "Grid Resolution"
+msgstr "Çözünürlük"
+
+#: ../metadata/wobbly.xml.in.h:7
+msgid "Inverted window snapping"
+msgstr ""
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/wobbly.xml.in.h:8
+#, fuzzy
+msgid "Make window shiver"
+msgstr "Windows'u &sil"
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/wobbly.xml.in.h:9
+#, fuzzy
+msgid "Map Effect"
+msgstr "Windows"
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/wobbly.xml.in.h:10
+#, fuzzy
+msgid "Map Window Effect"
+msgstr "Windows"
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/wobbly.xml.in.h:11
+#, fuzzy
+msgid "Map Windows"
+msgstr "Windows"
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/wobbly.xml.in.h:12
+#, fuzzy
+msgid "Maximize Effect"
+msgstr "Windows"
+
+# clients/ui_widgets.ycp:182 clients/ui_widgets.ycp:210
+#: ../metadata/wobbly.xml.in.h:13
+#, fuzzy
+msgid "Minimum Grid Size"
+msgstr "En düşük g&rup belirticisi"
+
+# clients/ui_widgets.ycp:182 clients/ui_widgets.ycp:210
+#: ../metadata/wobbly.xml.in.h:14
+#, fuzzy
+msgid "Minimum Vertex Grid Size"
+msgstr "En düşük g&rup belirticisi"
+
+#: ../metadata/wobbly.xml.in.h:15
+#, fuzzy
+msgid "Move Windows"
+msgstr "&Aşağı"
+
+# 'driver' as in '(hardware) driver update'
+#: ../metadata/wobbly.xml.in.h:16
+#, fuzzy
+msgid "Shiver"
+msgstr "Sürücü"
+
+#: ../metadata/wobbly.xml.in.h:17
+msgid "Snap Inverted"
+msgstr ""
+
+# clients/inst_target_part.ycp:387
+#: ../metadata/wobbly.xml.in.h:18
+#, fuzzy
+msgid "Snap windows"
+msgstr "Windows'u &küçült"
+
+#: ../metadata/wobbly.xml.in.h:19
+#, fuzzy
+msgid "Spring Friction"
+msgstr "Hareket"
+
+# clients/hwinfo.ycp:104
+#: ../metadata/wobbly.xml.in.h:20
+#, fuzzy
+msgid "Spring K"
+msgstr "Adımlama"
+
+# clients/hwinfo.ycp:104
+#: ../metadata/wobbly.xml.in.h:21
+#, fuzzy
+msgid "Spring Konstant"
+msgstr "Adımlama"
+
+# clients/inst_target_part.ycp:404
+#: ../metadata/wobbly.xml.in.h:22
+#, fuzzy
+msgid "Toggle window snapping"
+msgstr "Windows'u &sil"
+
+#: ../metadata/wobbly.xml.in.h:23
+msgid "Use spring model for wobbly window effect"
+msgstr ""
+
+#: ../metadata/wobbly.xml.in.h:24
+#, fuzzy
+msgid "Vertex Grid Resolution"
+msgstr "Sunucu çözümlemesi"
+
+#: ../metadata/wobbly.xml.in.h:25
+msgid "Windows that should wobble when focused"
+msgstr ""
+
+#: ../metadata/wobbly.xml.in.h:26
+msgid "Windows that should wobble when grabbed"
+msgstr ""
+
+#: ../metadata/wobbly.xml.in.h:27
+msgid "Windows that should wobble when mapped"
+msgstr ""
+
+#: ../metadata/wobbly.xml.in.h:28
+msgid "Windows that should wobble when moved"
+msgstr ""
+
+#: ../metadata/wobbly.xml.in.h:29
+msgid "Wobble effect when maximizing and unmaximizing windows"
+msgstr ""
+
+# clients/inst_resize_ui.ycp:688
+#: ../metadata/wobbly.xml.in.h:30
+#, fuzzy
+msgid "Wobbly Windows"
+msgstr "Windows"
+
+#: ../metadata/zoom.xml.in.h:1
+#, fuzzy
+msgid "Filter Linear"
+msgstr "Filtre:"
+
+#: ../metadata/zoom.xml.in.h:9
+msgid "Use linear filter when zoomed in"
+msgstr ""
+
+# clients/inst_sw_single.ycp:146
+#: ../metadata/zoom.xml.in.h:10
+#, fuzzy
+msgid "Zoom Desktop"
+msgstr "Masaüstü:"
+
+#: ../metadata/zoom.xml.in.h:11
+#, fuzzy
+msgid "Zoom In"
+msgstr "Kullanıcı çıkışı yap"
+
+#: ../metadata/zoom.xml.in.h:12
+#, fuzzy
+msgid "Zoom Out"
+msgstr "Kullanıcı çıkışı yap"
+
+#: ../metadata/zoom.xml.in.h:13
+#, fuzzy
+msgid "Zoom Speed"
+msgstr "Seçili"
+
+# classnames.ycp:73
+#: ../metadata/zoom.xml.in.h:14
+#, fuzzy
+msgid "Zoom Timestep"
+msgstr "Süre"
+
+#: ../metadata/zoom.xml.in.h:15
+msgid "Zoom and pan desktop cube"
+msgstr ""
+
+#: ../metadata/zoom.xml.in.h:16
+#, fuzzy
+msgid "Zoom factor"
+msgstr "Kullanıcı çıkışı yap"
+
+#: ../src/main.c:55
+msgid "Dock"
+msgstr ""
+
+#: ../src/main.c:56
+msgid "Toolbar"
+msgstr ""
+
+#: ../src/main.c:57
+msgid "Menu"
+msgstr "Menü"
+
+#: ../src/main.c:58
+msgid "Utility"
+msgstr ""
+
+#: ../src/main.c:59
+msgid "Splash"
+msgstr ""
+
+# /usr/lib/YaST2/keyboard_raw.ycp:230
+#: ../src/main.c:60
+#, fuzzy
+msgid "Dialog"
+msgstr "Katalog"
+
+#: ../src/main.c:61
+msgid "Normal"
+msgstr ""
+
+# clients/inst_sw_single.ycp:188
+#: ../src/main.c:62
+#, fuzzy
+msgid "DropdownMenu"
+msgstr "Pencere yöneticisi"
+
+#: ../src/main.c:63
+#, fuzzy
+msgid "PopupMenu"
+msgstr "Menü"
+
+#: ../src/main.c:64
+msgid "Tooltip"
+msgstr ""
+
+#: ../src/main.c:65
+#, fuzzy
+msgid "Notification"
+msgstr "Hareket"
+
+#: ../src/main.c:66
+msgid "Combo"
+msgstr ""
+
+#: ../src/main.c:67
+msgid "Dnd"
+msgstr ""
+
+#: ../src/main.c:68
+msgid "ModalDialog"
+msgstr ""
+
+#: ../src/main.c:69
+msgid "Fullscreen"
+msgstr ""
+
+#: ../src/main.c:70
+msgid "Unknown"
+msgstr "Bilinmeyen"
+
+#, fuzzy
+#~ msgid "4xBilinear"
+#~ msgstr "Filtre:"
+
+# /usr/lib/YaST2/keyboard_raw.ycp:638
+#, fuzzy
+#~ msgid "Gaussian"
+#~ msgstr "Rusça"
+
+#, fuzzy
+#~ msgid "Blur saturation (0-100)"
+#~ msgstr "Süre"
+
+#, fuzzy
+#~ msgid "Drop shadow opacity (0.01-6.00)"
+#~ msgstr "&Düşük seviye"
+
+#, fuzzy
+#~ msgid "Drop shadow radius (0.0-48.0)"
+#~ msgstr "Radius"
+
+# include/nis_server/io.ycp:465
+#, fuzzy
+#~ msgid "Focus prevention windows (match)"
+#~ msgstr "Daemon başlatılıyor."
+
+# include/x11/resolution_dialog.ycp:81
+#, fuzzy
+#~ msgid "Fold Acceleration (1.0-20.0)"
+#~ msgstr "3D hızlandırma:"
+
+#, fuzzy
+#~ msgid "Fold Speed (0.0-50.0)"
+#~ msgstr "Seçili"
+
+# classnames.ycp:73
+#, fuzzy
+#~ msgid "Fold Timestep (0.0-50.0)"
+#~ msgstr "Süre"
+
+# RU
+#, fuzzy
+#~ msgid "Gaussian radius (1-15)"
+#~ msgstr "Rusya Federasyonu"
+
+# /usr/lib/YaST2/keyboard_raw.ycp:638
+#, fuzzy
+#~ msgid "Gaussian strength (0.00-1.00)"
+#~ msgstr "Rusça"
+
+# clients/inst_resize_ui.ycp:688
+#, fuzzy
+#~ msgid "Map Window Effect (None, Shiver)"
+#~ msgstr "Windows"
+
+# clients/inst_target_part.ycp:387
+#, fuzzy
+#~ msgid "Minimize speed (0.0-50.0)"
+#~ msgstr "Windows'u &küçült"
+
+# clients/inst_target_part.ycp:387
+#, fuzzy
+#~ msgid "Minimize timestep (0.0-50.0)"
+#~ msgstr "Windows'u &küçült"
+
+# clients/ui_widgets.ycp:182 clients/ui_widgets.ycp:210
+#, fuzzy
+#~ msgid "Minimum Vertex Grid Size (4-128)"
+#~ msgstr "En düşük g&rup belirticisi"
+
+# clients/inst_sw_single.ycp:146
+#, fuzzy
+#~ msgid "Number of virtual desktops (1-36)"
+#~ msgstr "Masaüstü:"
+
+# include/nis_server/io.ycp:465
+#, fuzzy
+#~ msgid "Opacity level of moving windows (1-100)"
+#~ msgstr "Daemon başlatılıyor."
+
+# include/nis_server/io.ycp:465
+#, fuzzy
+#~ msgid "Opacity level of resizing windows (1-100)"
+#~ msgstr "Daemon başlatılıyor."
+
+# include/security/ui.ycp:774
+#, fuzzy
+#~ msgid "Outline Color"
+#~ msgstr "Normal saat"
+
+# include/x11/resolution_dialog.ycp:81
+#, fuzzy
+#~ msgid "Rotation Acceleration (1.0-20.0)"
+#~ msgstr "3D hızlandırma:"
+
+# classnames.ycp:73
+#, fuzzy
+#~ msgid "Rotation Timestep (0.0-50.0)"
+#~ msgstr "Süre"
+
+# clients/inst_environment.ycp:306
+#, fuzzy
+#~ msgid "Scale speed (0.0-50.0)"
+#~ msgstr "yerel zaman"
+
+# clients/inst_environment.ycp:306
+#, fuzzy
+#~ msgid "Scale timestep (0.0-50.0)"
+#~ msgstr "yerel zaman"
+
+# clients/inst_target_part.ycp:404
+#, fuzzy
+#~ msgid "Space between windows (0-250)"
+#~ msgstr "Windows'u &sil"
+
+#, fuzzy
+#~ msgid "Spring Friction (0.0-10.0)"
+#~ msgstr "Hareket"
+
+# clients/hwinfo.ycp:104
+#, fuzzy
+#~ msgid "Spring Konstant (0.0-10.0)"
+#~ msgstr "Adımlama"
+
+# include/tv/ui.ycp:493
+#, fuzzy
+#~ msgid "Texture filtering (Fast, Good, Best)"
+#~ msgstr "&Filtre koy"
+
+#, fuzzy
+#~ msgid "Vertex Grid Resolution (1-64)"
+#~ msgstr "Sunucu çözümlemesi"
+
+# clients/inst_resize_ui.ycp:597
+#, fuzzy
+#~ msgid "Window blur speed (0.0-10.0)"
+#~ msgstr "Windows içermeyen alan (%1)"
+
+# clients/inst_resize_ui.ycp:597
+#, fuzzy
+#~ msgid "Window fade speed (0.0-25.0)"
+#~ msgstr "Windows içermeyen alan (%1)"
+
+#, fuzzy
+#~ msgid "Zoom Speed (0.0-50.0)"
+#~ msgstr "Seçili"
+
+# classnames.ycp:73
+#, fuzzy
+#~ msgid "Zoom Timestep (0.0-50.0)"
+#~ msgstr "Süre"
+
+#, fuzzy
+#~ msgid "Zoom factor (1.01-3.00)"
+#~ msgstr "Kullanıcı çıkışı yap"
+
+# include/nis_server/io.ycp:465
+#, fuzzy
+#~ msgid "Plane To Face %d with Window"
+#~ msgstr "Daemon başlatılıyor."
+
+#~ msgid "None"
+#~ msgstr "Hiçbiri"
+
+# clients/support_registration.ycp:66
+#, fuzzy
+#~ msgid "Command line %d"
+#~ msgstr "Komut: "
+
+# clients/support_registration.ycp:66
+#, fuzzy
+#~ msgid "Run command %d"
+#~ msgstr "Komut: "
+
+# clients/inst_resize_ui.ycp:688
+#, fuzzy
+#~ msgid "Window Types"
+#~ msgstr "Windows"
+
+#, fuzzy
+#~ msgid "Move Window Types"
+#~ msgstr "Servis sağlayıcı türü"
+
+#, fuzzy
+#~ msgid "Enable focus prevention"
+#~ msgstr "ZEN bölümünü etkinleştir"
+
+#, fuzzy
+#~ msgid "Corners"
+#~ msgstr "Dönüştürücüler"
+
+#, fuzzy
+#~ msgid "Show switcher"
+#~ msgstr "&Değişiklikleri göster"
+
+# clients/hwinfo.ycp:72
+#, fuzzy
+#~ msgid "Sloppy Focus"
+#~ msgstr "Disket sürücü"
+
+# include/nis_server/io.ycp:465
+#, fuzzy
+#~ msgid "Start moving window using keyboard"
+#~ msgstr "Daemon başlatılıyor."
+
+#, fuzzy
+#~ msgid "Terminate"
+#~ msgstr "Terminaller"

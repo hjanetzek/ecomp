@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="move">
+	<short>Move Window</short>
+	<short xml:lang="ca">Mou la finestra</short>
+	<short xml:lang="cs">Přesunout okno</short>
+	<short xml:lang="da">Flyt vindue</short>
+	<short xml:lang="de">Fenster verschieben</short>
+	<short xml:lang="es">Mover ventana</short>
+	<short xml:lang="fi">Siirrä ikkunaa</short>
+	<short xml:lang="fr">Déplacer la fenêtre</short>
+	<short xml:lang="hu">Ablak mozgatása</short>
+	<short xml:lang="it">Finestra mobile</short>
+	<short xml:lang="ja">ウィンドウを移動</short>
+	<short xml:lang="pl">Przenieś okno</short>
+	<short xml:lang="pt">Mover Janela</short>
+	<short xml:lang="pt_BR">Mover Janela</short>
+	<short xml:lang="ru">Переместить окно</short>
+	<short xml:lang="sv">Flytta fönster</short>
+	<short xml:lang="zh_CN">移动窗口</short>
+	<short xml:lang="zh_TW">移動視窗</short>
+	<long>Move window</long>
+	<long xml:lang="ca">Mou la finestra</long>
+	<long xml:lang="cs">Přesunout okno</long>
+	<long xml:lang="da">Flyt vindue</long>
+	<long xml:lang="de">Fenster verschieben</long>
+	<long xml:lang="es">Mueve la ventana</long>
+	<long xml:lang="fi">Siirrä ikkunaa</long>
+	<long xml:lang="fr">Déplacer la fenêtre</long>
+	<long xml:lang="hu">Ablak mozgatása</long>
+	<long xml:lang="it">Finestra mobile</long>
+	<long xml:lang="ja">ウィンドウを移動</long>
+	<long xml:lang="pl">Przenieś okno</long>
+	<long xml:lang="pt">Mover janela</long>
+	<long xml:lang="pt_BR">Mover janela</long>
+	<long xml:lang="ru">Переместить окно</long>
+	<long xml:lang="sv">Flytta fönster</long>
+	<long xml:lang="zh_CN">移动窗口</long>
+	<long xml:lang="zh_TW">移動視窗</long>
+	<display>
+	    <option type="action" name="initiate">
+		<short>Initiate Window Move</short>
+		<short xml:lang="ca">Inicia el moviment de la finestra</short>
+		<short xml:lang="cs">Iniciovat přesun okna</short>
+		<short xml:lang="da">Start vinduesflytning</short>
+		<short xml:lang="de">Fensterverschiebung initiieren</short>
+		<short xml:lang="es">Iniciar movimiento de ventana</short>
+		<short xml:lang="fi">Siirrä ikkunaa</short>
+		<short xml:lang="fr">Lancer le déplacement de fenêtre</short>
+		<short xml:lang="hu">Ablakmozgatás indítása</short>
+		<short xml:lang="it">Avvia Spostamento finestre</short>
+		<short xml:lang="ja">ウィンドウの移動を開始</short>
+		<short xml:lang="pl">Rozpocznij przenoszenie okna</short>
+		<short xml:lang="pt">Iniciar Movimento de Janelas</short>
+		<short xml:lang="pt_BR">Iniciar Movimento de Janelas</short>
+		<short xml:lang="ru">Инициировать движение окна</short>
+		<short xml:lang="sv">Initiera fönsterflyttning</short>
+		<short xml:lang="zh_CN">启动窗口移动</short>
+		<short xml:lang="zh_TW">起始化視窗移動</short>
+		<long>Start moving window</long>
+		<long xml:lang="ca">Comença el moviment de la finestra</long>
+		<long xml:lang="cs">Zahájit pohyb okna</long>
+		<long xml:lang="da">Start flytning af vindue</long>
+		<long xml:lang="de">Fensterverschiebung starten</long>
+		<long xml:lang="es">Empieza a mover la ventana</long>
+		<long xml:lang="fi">Aloita ikkunan siirtäminen</long>
+		<long xml:lang="fr">Démarrer le déplacement de la fenêtre</long>
+		<long xml:lang="hu">Ablakmozgatás indítása</long>
+		<long xml:lang="it">Avvia finestra mobile</long>
+		<long xml:lang="ja">ウィンドウの移動を開始</long>
+		<long xml:lang="pl">Rozpocznij przenoszenie okna</long>
+		<long xml:lang="pt">Iniciar movimento da janela</long>
+		<long xml:lang="pt_BR">Iniciar movimento da janela</long>
+		<long xml:lang="ru">Запуск перемещения окна</long>
+		<long xml:lang="sv">Börja flytta fönster</long>
+		<long xml:lang="zh_CN">开始移动窗口</long>
+		<long xml:lang="zh_TW">開始移動視窗</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <key>&lt;Alt&gt;F7</key>
+		    <button>&lt;Alt&gt;Button1</button>
+		</default>
+	    </option>
+	    <option type="int" name="opacity">
+		<short>Opacity</short>
+		<short xml:lang="ca">Opacitat</short>
+		<short xml:lang="cs">Krytí</short>
+		<short xml:lang="da">Uigennemsigtighed</short>
+		<short xml:lang="de">Durchlässigkeit</short>
+		<short xml:lang="es">Opacidad</short>
+		<short xml:lang="fi">Peittävyys</short>
+		<short xml:lang="fr">Opacité</short>
+		<short xml:lang="hu">Átlátszatlanság</short>
+		<short xml:lang="it">Opacità</short>
+		<short xml:lang="ja">不透明度</short>
+		<short xml:lang="pl">Nieprzezroczystość</short>
+		<short xml:lang="pt">Opacidade</short>
+		<short xml:lang="pt_BR">Opacidade</short>
+		<short xml:lang="ru">Прозрачность</short>
+		<short xml:lang="sv">Opakhet</short>
+		<short xml:lang="zh_CN">不透明度</short>
+		<short xml:lang="zh_TW">不透明度</short>
+		<long>Opacity level of moving windows</long>
+		<long xml:lang="ca">Nivell d'opacitat de les finestres en moviment</long>
+		<long xml:lang="cs">Úroveň krytí přesouvaných oken</long>
+		<long xml:lang="da">Uigennemsigtighedsniveau ved flytning af vinduer</long>
+		<long xml:lang="de">Durchlässigkeitsgrad beweglicher Fenster</long>
+		<long xml:lang="es">Nivel de opacidad de las ventanas en movimiento</long>
+		<long xml:lang="fi">Liikkuvien ikkunoiden läpikuultavuustaso</long>
+		<long xml:lang="fr">Niveau d'opacité pour déplacer des fenêtres</long>
+		<long xml:lang="hu">Ablakmozgatás átlátszatlanságának szintje</long>
+		<long xml:lang="it">Livello di opacità delle finestre mobili</long>
+		<long xml:lang="ja">移動ウィンドウの不透明度レベル</long>
+		<long xml:lang="pl">Poziom nieprzezroczystości przesuwanych okien</long>
+		<long xml:lang="pt_BR">Nível de opacidade das janelas em movimento</long>
+		<long xml:lang="ru">Степень прозрачности движущихся окон</long>
+		<long xml:lang="sv">Opaknivå för flyttande fönster</long>
+		<long xml:lang="zh_CN">移动窗口的不透明度</long>
+		<long xml:lang="zh_TW">移動視窗的不透明度</long>
+		<default>100</default>
+		<min>1</min>
+		<max>100</max>
+	    </option>
+	    <option type="bool" name="constrain_y">
+		<short>Constrain Y</short>
+		<short xml:lang="ca">Restringeix Y</short>
+		<short xml:lang="cs">Omezení Y</short>
+		<short xml:lang="da">Begræns Y</short>
+		<short xml:lang="de">Y einschränken</short>
+		<short xml:lang="es">Limitar Y</short>
+		<short xml:lang="fi">Rajoita Y-koordinaatti</short>
+		<short xml:lang="fr">Contraindre Y</short>
+		<short xml:lang="hu">Y megszorítás</short>
+		<short xml:lang="it">Mantieni Y</short>
+		<short xml:lang="ja">Ｙをコンストレイン</short>
+		<short xml:lang="pl">Ogranicz Y</short>
+		<short xml:lang="pt">Restringir Y</short>
+		<short xml:lang="pt_BR">Restringir Y</short>
+		<short xml:lang="ru">Ограничить Y</short>
+		<short xml:lang="sv">Begränsa Y</short>
+		<short xml:lang="zh_CN">约束 Y</short>
+		<short xml:lang="zh_TW">等比縮放 Y 軸</short>
+		<long>Constrain Y coordinate to workspace area</long>
+		<long xml:lang="ca">Restringeix la coordenada Y a l'àrea de l'espai de treball</long>
+		<long xml:lang="cs">Omezení Y souřadnice na pracovní prostor</long>
+		<long xml:lang="da">Begræns Y-koordinaten til arbejdsområdet</long>
+		<long xml:lang="de">Y-Koordinate auf Arbeitsoberfläche einschränken</long>
+		<long xml:lang="es">Limita la coordenada Y al área de trabajo</long>
+		<long xml:lang="fi">Rajoita Y-koordinaatti työskentelyalueelle</long>
+		<long xml:lang="fr">Contraindre la coordonnée Y à être dans la zone de l'espace de travail</long>
+		<long xml:lang="hu">Y koordináta-megszorítás a munkafelületre</long>
+		<long xml:lang="it">Mantieni coordinata Y nell'area dello spazio di lavoro</long>
+		<long xml:lang="ja">Y座標をワークスペースエリアにコンストレイン</long>
+		<long xml:lang="pl">Ogranicz współrzędną Y do obszaru roboczego</long>
+		<long xml:lang="pt">Restringir a coordenada Y conforme a área de trabalho</long>
+		<long xml:lang="pt_BR">Restringir a coordenada Y conforme a área de trabalho</long>
+		<long xml:lang="ru">Ограничение координаты Y пределами рабочей области</long>
+		<long xml:lang="sv">Begränsa Y-koordinat till arbetsyta</long>
+		<long xml:lang="zh_CN">约束工作空间区域的 Y 坐标</long>
+		<long xml:lang="zh_TW">等比縮放 Y 軸對應到工作環境區域</long>
+		<default>true</default>
+	    </option>
+	    <option type="bool" name="snapoff_maximized">
+		<short>Snapoff maximized windows</short>
+		<short xml:lang="ca">Separa les finestres maximitzades</short>
+		<short xml:lang="cs">Odtrhávat maximalizovaná okna</short>
+		<short xml:lang="da">Frigør maksimerede vinduer</short>
+		<short xml:lang="de">Einrasten maximierter Fenster aufheben</short>
+		<short xml:lang="es">Separar ventanas maximizadas</short>
+		<short xml:lang="fi">Vapauta suurennetut ikkunat</short>
+		<short xml:lang="fr">Désactiver l'alignement des fenêtres agrandies</short>
+		<short xml:lang="hu">A maximalizált ablakok azonnali visszaállítása</short>
+		<short xml:lang="it">Dividi finestre ingrandite</short>
+		<short xml:lang="ja">最大化したウィンドウのスナップ解除</short>
+		<short xml:lang="pl">Odepnij zmaksymalizowane okna</short>
+		<short xml:lang="pt">Janelas maximizadas quebradas</short>
+		<short xml:lang="pt_BR">Janelas maximizadas quebradas</short>
+		<short xml:lang="ru">Отменить привязку полностью развернутых окон</short>
+		<short xml:lang="sv">Koppla loss maximerade fönster</short>
+		<short xml:lang="zh_CN">删除最大化窗口快照</short>
+		<short xml:lang="zh_TW">解除嵌入最大化視窗</short>
+		<long>Snapoff and auto unmaximized maximized windows when dragging</long>
+		<long xml:lang="ca">Separa i desmaximitza les finestres maximitzades en arrossegar</long>
+		<long xml:lang="cs">Snapoff and auto unmaximized maximized windows when dragging</long>
+		<long xml:lang="da">Frigør og gendan automatisk maksimerede vinduer, når de trækkes</long>
+		<long xml:lang="de">Beim Ziehen Einrasten und Maximierung maximierter Fenster aufheben</long>
+		<long xml:lang="es">Separar y desmaximizar automáticamente ventanas maximizadas al arrastrar</long>
+		<long xml:lang="fi">Vapauta ja palauta suurennetut ikkunat automaattisesti siirrettäessä</long>
+		<long xml:lang="fr">Désactiver l'alignement et la réduction automatique des fenêtres lorsque vous les faites glisser</long>
+		<long xml:lang="hu">Az ablakok azonnali, automatikus visszaállítása azok mozgatásakor</long>
+		<long xml:lang="it">Dividi e riduci automaticamente finestre ingrandite durante il trascinamento</long>
+		<long xml:lang="ja">ドラッグ時に、最大化したウィンドウをスナップ解除して最大化を自動解除</long>
+		<long xml:lang="pl">Odepnij i automatycznie cofnij maksymalizację okien podczas przesuwania</long>
+		<long xml:lang="pt">Janelas maximizadas quebradas e automaticamente desmaximizadas ao arrastar</long>
+		<long xml:lang="pt_BR">Janelas maximizadas quebradas e automaticamente desmaximizadas ao arrastar</long>
+		<long xml:lang="ru">Отмена привязки и автоматическая отмена развертывания полностью развернутых окон при перетаскивании</long>
+		<long xml:lang="sv">Koppla loss och automatiskt avmaximera maximerade fönster när de dras</long>
+		<long xml:lang="zh_CN">拖动时删除快照并自动取消窗口的最大化</long>
+		<long xml:lang="zh_TW">在拖曳已最大化視窗時為其解除嵌入和自動解除最大化</long>
+		<default>true</default>
+	    </option>
+	    <option type="bool" name="lazy_positioning">
+		<short>Lazy Positioning</short>
+		<long>Do not update the server-side position of windows until finished moving</long>
+		<default>true</default>
+	    </option>
+	</display>
+    </plugin>
+</ecomp>

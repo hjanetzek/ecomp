@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+  <plugin useBcop="true" name="thumbnail">
+    <short>Window Previews</short>
+    <long>Window thumbnails at the taskbar</long>
+	<category>Extras</category>
+    <screen>
+      <group>
+        <short>Settings</short>
+        <option type="int" name="thumb_size">
+          <short>Thumbnail Window Size</short>
+          <long>Thumbnail window size.</long>
+          <default>200</default>
+          <min>50</min>
+          <max>1500</max>
+        </option>
+        <option type="int" name="show_delay">
+          <short>Show Delay</short>
+          <long>Time (in ms) before Thumbnail is shown.</long>
+          <default>100</default>
+          <min>100</min>
+          <max>10000</max>
+        </option>
+        <option type="int" name="border">
+          <short>Thumbnail Border Size</short>
+          <long>Size of Thumbnail Border.</long>
+          <default>16</default>
+          <min>1</min>
+          <max>32</max>
+        </option>
+        <option type="color" name="thumb_color">
+          <short>Thumbnail Border Glow Color</short>
+          <long>Thumbnail Background and Border Glow Color.</long>
+          <default>
+            <red>0x0000</red>
+            <green>0x0000</green>
+            <blue>0x0000</blue>
+            <alpha>0x7fff</alpha>
+          </default>
+        </option>
+        <option type="float" name="fade_speed">
+          <short>Fade In/Out Duration</short>
+          <long>Fade In/Out Duration in seconds.</long>
+          <default>0.5</default>
+          <min>0.0</min>
+          <max>5.0</max>
+          <precision>0.1</precision>
+        </option>
+        <subgroup>
+          <short>Taskbar</short>
+          <option type="bool" name="current_viewport">
+            <short>Taskbar Shows Only Windows of Current Viewport</short>
+            <long>Set it if the Taskbar shows only Windows of Current Viewport.</long>
+            <default>true</default>
+          </option>
+          <option type="bool" name="always_on_top">
+            <short>Thumbnails Always on Top</short>
+            <long>Paint Thumbnails Always on Top.</long>
+            <default>true</default>
+          </option>
+        </subgroup>
+        <option type="bool" name="window_like">
+          <short>Paint Window Like Background</short>
+          <long>Paint Window Like Background instead of Glow.</long>
+          <default>true</default>
+        </option>
+        <option type="bool" name="mipmap">
+          <short>Generate Mipmaps</short>
+          <long>Generate mipmaps when possible for higher quality scaling.</long>
+          <default>false</default>
+        </option>
+        <subgroup>
+          <short>Window title</short>
+          <option type="bool" name="title_enabled">
+            <short>Enable Titles</short>
+            <long>Show Window Title in Thumbnail.</long>
+            <default>true</default>
+          </option>
+          <option type="bool" name="font_bold">
+            <short>Bold Font</short>
+            <long>Should be the window title Bold.</long>
+            <default>true</default>
+          </option>
+          <option type="int" name="font_size">
+            <short>Font Size</short>
+            <long>Window title Font Size.</long>
+            <default>12</default>
+            <min>6</min>
+            <max>36</max>
+          </option>
+          <option type="color" name="font_color">
+            <short>Font Color</short>
+            <long>Window title Font Color.</long>
+            <default>
+              <red>0x0000</red>
+              <green>0x0000</green>
+              <blue>0x0000</blue>
+              <alpha>0xffff</alpha>
+            </default>
+          </option>
+        </subgroup>
+      </group>
+    </screen>
+  </plugin>
+</ecomp>

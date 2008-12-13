@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="clone">
+	<short>Clone Output</short>
+	<short xml:lang="hu">Kimenet klónozása</short>
+	<short xml:lang="pl">Klonowanie wyjścia</short>
+	<short xml:lang="sv">Klona utmatning</short>
+	<long>Output clone handler</long>
+	<long xml:lang="hu">Kimenet klónkezelője</long>
+	<long xml:lang="pl">Zewnętrzna obsługa klonowania</long>
+	<display>
+	    <option type="action" name="initiate">
+		<short>Initiate</short>
+		<short xml:lang="ca">Inicia</short>
+		<short xml:lang="cs">Iniciovat</short>
+		<short xml:lang="da">Start</short>
+		<short xml:lang="de">Initiieren</short>
+		<short xml:lang="es">Iniciar</short>
+		<short xml:lang="fi">Aktivoi</short>
+		<short xml:lang="fr">Lancer</short>
+		<short xml:lang="hu">Indítás</short>
+		<short xml:lang="it">Avvia</short>
+		<short xml:lang="ja">開始</short>
+		<short xml:lang="pl">Inicjuj</short>
+		<short xml:lang="pt">Iniciar</short>
+		<short xml:lang="pt_BR">Iniciar</short>
+		<short xml:lang="ru">Инициировать</short>
+		<short xml:lang="sv">Initiera</short>
+		<short xml:lang="zh_CN">启动</short>
+		<short xml:lang="zh_TW">起始化</short>
+		<long>Initiate clone selection</long>
+		<long xml:lang="hu">Klónkiválasztás indítása</long>
+		<long xml:lang="pl">Rozpocznij klonowanie zaznaczenia</long>
+		<allowed button="true"/>
+		<default>
+		    <button>&lt;Super&gt;&lt;Shift&gt;Button1</button>
+		</default>
+	    </option>
+	</display>
+    </plugin>
+</ecomp>

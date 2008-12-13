@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+  <plugin useBcop="true" name="mblur">
+    <short>Motion blur</short>
+    <long>Motion blur effect</long>
+	<category>Effects</category>
+    <display>
+      <group>
+        <short>Main</short>
+        <subgroup>
+          <short>Activate</short>
+          <option type="action" name="initiate">
+            <short>Toggle Motion Blur</short>
+            <long>Toggle motion Blur effect.</long>
+            <allowed key="true"/>
+            <default>
+              <key>&lt;Control&gt;F12</key>
+            </default>
+          </option>
+        </subgroup>
+      </group>
+    </display>
+    <screen>
+      <group>
+        <short>Main</short>
+        <subgroup>
+          <short>Visibility/Performance</short>
+          <option type="int" name="mode">
+            <short>Motion Blur mode</short>
+            <long>Motion Blur render mode.</long>
+			<default>0</default>
+			<min>0</min>
+			<max>1</max>
+			<desc>
+				<value>0</value>
+				<name>Texture Copy</name>
+			</desc>
+			<desc>
+				<value>1</value>
+				<name>Accumulation buffer</name>
+			</desc>
+          </option>
+          <option type="float" name="strength">
+            <short>Motion Blur Strength</short>
+            <long>Motion Blur strength.</long>
+            <default>20.0</default>
+            <min>0.0</min>
+            <max>100.0</max>
+            <precision>0.01</precision>
+          </option>
+        </subgroup>
+        <subgroup>
+          <short>Activate</short>
+          <option type="bool" name="on_transformed_screen">
+            <short>Motion Blur on Transformed Screen</short>
+            <long>Execute Motion Blur if the screen is transformed.</long>
+            <default>false</default>
+          </option>
+        </subgroup>
+      </group>
+    </screen>
+  </plugin>
+</ecomp>

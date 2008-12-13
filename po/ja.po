@@ -1,0 +1,3938 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Compiz\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-11 13:02-0400\n"
+"PO-Revision-Date: 2006-06-21 13:31\n"
+"Last-Translator: Novell Language <language@novell.com>\n"
+"Language-Team: Novell Language <language@novell.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../gtk/gnome/50-compiz-desktop-key.xml.in.h:1 ../src/main.c:54
+msgid "Desktop"
+msgstr "デスクトップ"
+
+#: ../gtk/gnome/50-compiz-key.xml.in.h:1
+#, fuzzy
+msgid "Window Management"
+msgstr "ウィンドウメニュー"
+
+#: ../gtk/gnome/compiz.desktop.in.h:1
+msgid "Compiz"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:1
+#, fuzzy
+msgid "Blur type"
+msgstr "速度をフォールド"
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:2
+#, fuzzy
+msgid "Metacity theme active window opacity"
+msgstr "ウィンドウの不透明度を下げる"
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:3
+#, fuzzy
+msgid "Metacity theme active window opacity shade"
+msgstr "アクティブなウィンドウを水平方向に最大化する"
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:4
+msgid "Metacity theme opacity"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:5
+msgid "Metacity theme opacity shade"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:6
+msgid "Opacity to use for active windows with metacity theme decorations"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:7
+msgid "Opacity to use for metacity theme decorations"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:8
+msgid ""
+"Shade active windows with metacity theme decorations from opaque to "
+"translucent"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:9
+msgid ""
+"Shade windows with metacity theme decorations from opaque to translucent"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:10
+msgid "Type of blur used for window decorations"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:11
+msgid "Use metacity theme"
+msgstr ""
+
+#: ../gtk/window-decorator/gwd.schemas.in.h:12
+msgid "Use metacity theme when drawing window decorations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:1
+#, fuzzy
+msgid "Annotate"
+msgstr "開始"
+
+#: ../metadata/annotate.xml.in.h:2
+#, fuzzy
+msgid "Annotate Fill Color"
+msgstr "キューブの色"
+
+#: ../metadata/annotate.xml.in.h:3
+msgid "Annotate Stroke Color"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:4
+#, fuzzy
+msgid "Annotate plugin"
+msgstr "アクティブプラグイン"
+
+#: ../metadata/annotate.xml.in.h:5
+#, fuzzy
+msgid "Clear"
+msgstr "_クリア"
+
+#: ../metadata/annotate.xml.in.h:6
+msgid "Draw"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:7
+msgid "Draw using tool"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:8
+msgid "Fill color for annotations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:9 ../metadata/clone.xml.in.h:2
+#: ../metadata/rotate.xml.in.h:11 ../metadata/screenshot.xml.in.h:3
+#: ../metadata/water.xml.in.h:6 ../metadata/zoom.xml.in.h:2
+msgid "Initiate"
+msgstr "開始"
+
+#: ../metadata/annotate.xml.in.h:10
+#, fuzzy
+msgid "Initiate annotate drawing"
+msgstr "ウィンドウのサイズ変更を開始"
+
+#: ../metadata/annotate.xml.in.h:11
+#, fuzzy
+msgid "Initiate annotate erasing"
+msgstr "ウィンドウのサイズ変更を開始"
+
+#: ../metadata/annotate.xml.in.h:12
+#, fuzzy
+msgid "Initiate erase"
+msgstr "開始"
+
+#: ../metadata/annotate.xml.in.h:13
+msgid "Line width"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:14
+msgid "Line width for annotations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:15
+msgid "Stroke color for annotations"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:16
+msgid "Stroke width"
+msgstr ""
+
+#: ../metadata/annotate.xml.in.h:17
+msgid "Stroke width for annotations"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:1
+#, fuzzy
+msgid "Alpha Blur"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/blur.xml.in.h:2
+#, fuzzy
+msgid "Alpha blur windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/blur.xml.in.h:3
+#, fuzzy
+msgid "Blur Filter"
+msgstr "テクスチャフィルタ"
+
+#: ../metadata/blur.xml.in.h:4
+#, fuzzy
+msgid "Blur Occlusion"
+msgstr "飽和度"
+
+#: ../metadata/blur.xml.in.h:5
+#, fuzzy
+msgid "Blur Saturation"
+msgstr "飽和度"
+
+#: ../metadata/blur.xml.in.h:6
+#, fuzzy
+msgid "Blur Speed"
+msgstr "速度をフォールド"
+
+#: ../metadata/blur.xml.in.h:7
+#, fuzzy
+msgid "Blur Windows"
+msgstr "ウィンドウを配置する"
+
+#: ../metadata/blur.xml.in.h:8
+msgid "Blur behind translucent parts of windows"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:9
+#, fuzzy
+msgid "Blur saturation"
+msgstr "飽和度"
+
+#: ../metadata/blur.xml.in.h:10
+#, fuzzy
+msgid "Blur windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/blur.xml.in.h:11
+#, fuzzy
+msgid "Blur windows that doesn't have focus"
+msgstr "フォーカス時に揺れるウィンドウタイプ"
+
+#: ../metadata/blur.xml.in.h:12
+msgid "Filter method used for blurring"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:13
+#, fuzzy
+msgid "Focus Blur"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/blur.xml.in.h:14
+#, fuzzy
+msgid "Focus blur windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/blur.xml.in.h:15
+#, fuzzy
+msgid "Gaussian Radius"
+msgstr "ロシア連邦"
+
+#: ../metadata/blur.xml.in.h:16
+#, fuzzy
+msgid "Gaussian Strength"
+msgstr "ロシア語"
+
+#: ../metadata/blur.xml.in.h:17
+#, fuzzy
+msgid "Gaussian radius"
+msgstr "ロシア連邦"
+
+#: ../metadata/blur.xml.in.h:18
+#, fuzzy
+msgid "Gaussian strength"
+msgstr "ロシア語"
+
+#: ../metadata/blur.xml.in.h:19
+#, fuzzy
+msgid "Mipmap LOD"
+msgstr "ミップマップ"
+
+#: ../metadata/blur.xml.in.h:20
+msgid "Mipmap level-of-detail"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:21
+msgid "Pulse"
+msgstr ""
+
+#: ../metadata/blur.xml.in.h:22
+#, fuzzy
+msgid "Pulse effect"
+msgstr "効果をフォーカス"
+
+#: ../metadata/blur.xml.in.h:23
+#, fuzzy
+msgid "Window blur speed"
+msgstr "ウィンドウフェードスピード"
+
+#: ../metadata/blur.xml.in.h:24
+#, fuzzy
+msgid "Windows that should be affected by focus blur"
+msgstr "フェードするウィンドウタイプ"
+
+#: ../metadata/blur.xml.in.h:25
+#, fuzzy
+msgid "Windows that should be use alpha blur by default"
+msgstr "フェードするウィンドウタイプ"
+
+#: ../metadata/blur.xml.in.h:26
+msgid "blur occlusion"
+msgstr ""
+
+#: ../metadata/clone.xml.in.h:1
+#, fuzzy
+msgid "Clone Output"
+msgstr "出力"
+
+#: ../metadata/clone.xml.in.h:3
+#, fuzzy
+msgid "Initiate clone selection"
+msgstr "ビデオモード選択"
+
+#: ../metadata/clone.xml.in.h:4
+msgid "Output clone handler"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:1
+#, fuzzy
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command0"
+msgstr ""
+"呼び出し時にcommand10により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:2
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command1"
+msgstr ""
+"呼び出し時にcommand1により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:3
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command10"
+msgstr ""
+"呼び出し時にcommand10により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:4
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command11"
+msgstr ""
+"呼び出し時にcommand11により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:5
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command2"
+msgstr ""
+"呼び出し時にcommand2により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:6
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command3"
+msgstr ""
+"呼び出し時にcommand3により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:7
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command4"
+msgstr ""
+"呼び出し時にcommand4により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:8
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command5"
+msgstr ""
+"呼び出し時にcommand5により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:9
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command6"
+msgstr ""
+"呼び出し時にcommand6により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:10
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command7"
+msgstr ""
+"呼び出し時にcommand7により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:11
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command8"
+msgstr ""
+"呼び出し時にcommand8により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:12
+msgid ""
+"A keybinding that when invoked, will run the shell command identified by "
+"command9"
+msgstr "呼びし時にcommand9により識別されたシェルコマンドを実行するキーバインド"
+
+#: ../metadata/core.xml.in.h:13
+msgid "Active Plugins"
+msgstr "アクティブプラグイン"
+
+#: ../metadata/core.xml.in.h:14
+msgid ""
+"Allow drawing of fullscreen windows to not be redirected to offscreen pixmaps"
+msgstr ""
+"スクリーン外のピックスマップにリダイレクトしないように全画面ウィンドウの描画"
+"を許可する"
+
+#: ../metadata/core.xml.in.h:15
+msgid "Audible Bell"
+msgstr "可聴ベル"
+
+#: ../metadata/core.xml.in.h:16
+msgid "Audible system beep"
+msgstr "可聴システムビープ音"
+
+#: ../metadata/core.xml.in.h:17
+msgid "Auto-Raise"
+msgstr "自動調整"
+
+#: ../metadata/core.xml.in.h:18
+msgid "Auto-Raise Delay"
+msgstr "自動調整の待ち時間"
+
+#: ../metadata/core.xml.in.h:19
+msgid "Automatic detection of output devices"
+msgstr "出力デバイスの自動検出"
+
+#: ../metadata/core.xml.in.h:20
+msgid "Automatic detection of refresh rate"
+msgstr "更新レートの自動検出"
+
+#: ../metadata/core.xml.in.h:21
+msgid "Click To Focus"
+msgstr "クリックしてフォーカス"
+
+#: ../metadata/core.xml.in.h:22
+msgid "Click on window moves input focus to it"
+msgstr "ウィンドウをクリックすると、入力フォーカスがそのウィンドウに移動します"
+
+#: ../metadata/core.xml.in.h:23
+msgid "Close Window"
+msgstr "ウィンドウを閉じる"
+
+#: ../metadata/core.xml.in.h:24
+msgid "Close active window"
+msgstr "アクティブなウィンドウを閉じる"
+
+#: ../metadata/core.xml.in.h:25
+#, fuzzy
+msgid "Command line 0"
+msgstr "コマンドライン10"
+
+#: ../metadata/core.xml.in.h:26
+msgid "Command line 1"
+msgstr "コマンドライン1"
+
+#: ../metadata/core.xml.in.h:27
+msgid "Command line 10"
+msgstr "コマンドライン10"
+
+#: ../metadata/core.xml.in.h:28
+msgid "Command line 11"
+msgstr "コマンドライン11"
+
+#: ../metadata/core.xml.in.h:29
+msgid "Command line 2"
+msgstr "コマンドライン2"
+
+#: ../metadata/core.xml.in.h:30
+msgid "Command line 3"
+msgstr "コマンドライン3"
+
+#: ../metadata/core.xml.in.h:31
+msgid "Command line 4"
+msgstr "コマンドライン4"
+
+#: ../metadata/core.xml.in.h:32
+msgid "Command line 5"
+msgstr "コマンドライン5"
+
+#: ../metadata/core.xml.in.h:33
+msgid "Command line 6"
+msgstr "コマンドライン6"
+
+#: ../metadata/core.xml.in.h:34
+msgid "Command line 7"
+msgstr "コマンドライン7"
+
+#: ../metadata/core.xml.in.h:35
+msgid "Command line 8"
+msgstr "コマンドライン8"
+
+#: ../metadata/core.xml.in.h:36
+msgid "Command line 9"
+msgstr "コマンドライン9"
+
+#: ../metadata/core.xml.in.h:37
+#, fuzzy
+msgid "Command line to be executed in shell when run_command0 is invoked"
+msgstr "run_command10の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:38
+msgid "Command line to be executed in shell when run_command1 is invoked"
+msgstr "run_command1の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:39
+msgid "Command line to be executed in shell when run_command10 is invoked"
+msgstr "run_command10の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:40
+msgid "Command line to be executed in shell when run_command11 is invoked"
+msgstr "run_command11の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:41
+msgid "Command line to be executed in shell when run_command2 is invoked"
+msgstr "run_command2の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:42
+msgid "Command line to be executed in shell when run_command3 is invoked"
+msgstr "run_command3の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:43
+msgid "Command line to be executed in shell when run_command4 is invoked"
+msgstr "run_command4の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:44
+msgid "Command line to be executed in shell when run_command5 is invoked"
+msgstr "run_command5の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:45
+msgid "Command line to be executed in shell when run_command6 is invoked"
+msgstr "run_command6の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:46
+msgid "Command line to be executed in shell when run_command7 is invoked"
+msgstr "run_command7の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:47
+msgid "Command line to be executed in shell when run_command8 is invoked"
+msgstr "run_command8の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:48
+msgid "Command line to be executed in shell when run_command9 is invoked"
+msgstr "run_command9の呼び出し時にシェルで実行されるコマンドライン"
+
+#: ../metadata/core.xml.in.h:49
+msgid "Decrease Opacity"
+msgstr "不透明度を下げる"
+
+#: ../metadata/core.xml.in.h:50
+msgid "Decrease window opacity"
+msgstr "ウィンドウの不透明度を下げる"
+
+#: ../metadata/core.xml.in.h:51
+msgid "Default Icon"
+msgstr "デフォルトのアイコン"
+
+#: ../metadata/core.xml.in.h:52
+msgid "Default window icon image"
+msgstr "デフォルトのウィンドウアイコンイメージ"
+
+#: ../metadata/core.xml.in.h:53
+msgid "Detect Outputs"
+msgstr "出力検出"
+
+#: ../metadata/core.xml.in.h:54
+msgid "Detect Refresh Rate"
+msgstr "更新レートの検出"
+
+#: ../metadata/core.xml.in.h:55
+#, fuzzy
+msgid "Focus Prevention Windows"
+msgstr "ウィンドウタイプをフォーカス"
+
+#: ../metadata/core.xml.in.h:56
+#, fuzzy
+msgid "Focus prevention windows"
+msgstr "ウィンドウタイプをフォーカス"
+
+#: ../metadata/core.xml.in.h:57
+msgid "General Options"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:58
+msgid "General compiz options"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:59
+msgid "Hide Skip Taskbar Windows"
+msgstr "スキップタスクバーウィンドウを非表示にする"
+
+#: ../metadata/core.xml.in.h:60
+msgid "Hide all windows and focus desktop"
+msgstr "すべてのウィンドウを非表示にし、デスクトップをフォーカス"
+
+#: ../metadata/core.xml.in.h:61
+msgid "Hide windows not in taskbar when entering show desktop mode"
+msgstr "デスクトップ表示モード移行時にタスクバーにないウィンドウを非表示にする"
+
+#: ../metadata/core.xml.in.h:62
+msgid "Horizontal Virtual Size"
+msgstr "水平仮想サイズ"
+
+#: ../metadata/core.xml.in.h:63
+msgid "Ignore Hints When Maximized"
+msgstr "最大化時にヒントを無視"
+
+#: ../metadata/core.xml.in.h:64
+msgid "Ignore size increment and aspect hints when window is maximized"
+msgstr "ウィンドウの最大化時には、サイズ増分とアスペクトのヒントを無視する"
+
+#: ../metadata/core.xml.in.h:65
+msgid "Increase Opacity"
+msgstr "不透明度を高める"
+
+#: ../metadata/core.xml.in.h:66
+msgid "Increase window opacity"
+msgstr "ウィンドウの不透明度を高める"
+
+#: ../metadata/core.xml.in.h:67
+#, fuzzy
+msgid "Interval before raising selected windows"
+msgstr "選択したウィンドウを手前にするまでの間隔"
+
+#: ../metadata/core.xml.in.h:68
+msgid "Interval between ping messages"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:69
+msgid "Lighting"
+msgstr "照明"
+
+#: ../metadata/core.xml.in.h:70
+msgid "List of currently active plugins"
+msgstr "現在アクティブなプラグインのリスト"
+
+#: ../metadata/core.xml.in.h:71
+msgid "List of strings describing output devices"
+msgstr "出力デバイスを表す文字列リスト"
+
+#: ../metadata/core.xml.in.h:72
+msgid "Lower Window"
+msgstr "ウィンドウを下げる"
+
+#: ../metadata/core.xml.in.h:73
+msgid "Lower window beneath other windows"
+msgstr "他のウィンドウの下にウィンドウを下げる"
+
+#: ../metadata/core.xml.in.h:74
+msgid "Maximize Window"
+msgstr "ウィンドウを最大化する"
+
+#: ../metadata/core.xml.in.h:75
+msgid "Maximize Window Horizontally"
+msgstr "水平方向にウィンドウを最大化する"
+
+#: ../metadata/core.xml.in.h:76
+msgid "Maximize Window Vertically"
+msgstr "垂直方向にウィンドウを最大化する"
+
+#: ../metadata/core.xml.in.h:77
+msgid "Maximize active window"
+msgstr "アクティブなウィンドウを最大化する"
+
+#: ../metadata/core.xml.in.h:78
+msgid "Maximize active window horizontally"
+msgstr "アクティブなウィンドウを水平方向に最大化する"
+
+#: ../metadata/core.xml.in.h:79
+msgid "Maximize active window vertically"
+msgstr "アクティブなウィンドウを垂直方向に最大化する"
+
+#: ../metadata/core.xml.in.h:80
+msgid "Minimize Window"
+msgstr "ウィンドウを最小化する"
+
+#: ../metadata/core.xml.in.h:81
+msgid "Minimize active window"
+msgstr "アクティブなウィンドウを最小化する"
+
+#: ../metadata/core.xml.in.h:82
+msgid "Number of Desktops"
+msgstr "デスクトップ数"
+
+#: ../metadata/core.xml.in.h:83
+#, fuzzy
+msgid "Number of virtual desktops"
+msgstr "仮想デスクトップ数"
+
+#: ../metadata/core.xml.in.h:84
+msgid "Only perform screen updates during vertical blanking period"
+msgstr "垂直ブランキング期間にのみ画面を更新する"
+
+#: ../metadata/core.xml.in.h:85
+msgid "Opacity Step"
+msgstr "不透明度ステップ"
+
+#: ../metadata/core.xml.in.h:86
+#, fuzzy
+msgid "Opacity change step"
+msgstr "不透明度変更ステップ"
+
+#: ../metadata/core.xml.in.h:87
+msgid "Opacity values for windows that should be translucent by default"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:88
+msgid "Opacity window values"
+msgstr ""
+
+#: ../metadata/core.xml.in.h:89
+#, fuzzy
+msgid "Opacity windows"
+msgstr "ウィンドウ間のスペース"
+
+#: ../metadata/core.xml.in.h:90
+#, fuzzy
+msgid "Open a terminal"
+msgstr "端末で稼動"
+
+#: ../metadata/core.xml.in.h:91
+msgid "Open window menu"
+msgstr "ウィンドウメニューを開く"
+
+#: ../metadata/core.xml.in.h:92
+msgid "Outputs"
+msgstr "出力"
+
+#: ../metadata/core.xml.in.h:93
+#, fuzzy
+msgid "Ping Delay"
+msgstr "雨の待ち時間"
+
+#: ../metadata/core.xml.in.h:94
+msgid "Raise On Click"
+msgstr "クリックして上げる"
+
+#: ../metadata/core.xml.in.h:95
+msgid "Raise Window"
+msgstr "ウィンドウを手前に表示"
+
+#: ../metadata/core.xml.in.h:96
+msgid "Raise selected windows after interval"
+msgstr "時間間隔後に選択したウィンドウを上げる"
+
+#: ../metadata/core.xml.in.h:97
+msgid "Raise window above other windows"
+msgstr "ウィンドウを他のウィンドウの手前に表示する"
+
+#: ../metadata/core.xml.in.h:98
+msgid "Raise windows when clicked"
+msgstr "クリック時にウィンドウを上げる"
+
+#: ../metadata/core.xml.in.h:99
+msgid "Refresh Rate"
+msgstr "更新レート"
+
+#: ../metadata/core.xml.in.h:100
+msgid "Run Dialog"
+msgstr "ランダイアログ"
+
+#: ../metadata/core.xml.in.h:101
+#, fuzzy
+msgid "Run command 0"
+msgstr "ランコマンド10"
+
+#: ../metadata/core.xml.in.h:102
+msgid "Run command 1"
+msgstr "ランコマンド1"
+
+#: ../metadata/core.xml.in.h:103
+msgid "Run command 10"
+msgstr "ランコマンド10"
+
+#: ../metadata/core.xml.in.h:104
+msgid "Run command 11"
+msgstr "ランコマンド11"
+
+#: ../metadata/core.xml.in.h:105
+msgid "Run command 2"
+msgstr "ランコマンド2"
+
+#: ../metadata/core.xml.in.h:106
+msgid "Run command 3"
+msgstr "ランコマンド3"
+
+#: ../metadata/core.xml.in.h:107
+msgid "Run command 4"
+msgstr "ランコマンド4"
+
+#: ../metadata/core.xml.in.h:108
+msgid "Run command 5"
+msgstr "ランコマンド5"
+
+#: ../metadata/core.xml.in.h:109
+msgid "Run command 6"
+msgstr "ランコマンド6"
+
+#: ../metadata/core.xml.in.h:110
+msgid "Run command 7"
+msgstr "ランコマンド7"
+
+#: ../metadata/core.xml.in.h:111
+msgid "Run command 8"
+msgstr "ランコマンド8"
+
+#: ../metadata/core.xml.in.h:112
+msgid "Run command 9"
+msgstr "ランコマンド9"
+
+#: ../metadata/core.xml.in.h:113
+#, fuzzy
+msgid "Screen size multiplier for horizontal virtual size"
+msgstr "水平仮想サイズの画面サイズ乗数"
+
+#: ../metadata/core.xml.in.h:114
+#, fuzzy
+msgid "Screen size multiplier for vertical virtual size"
+msgstr "垂直仮想サイズの画面サイズ乗数"
+
+#: ../metadata/core.xml.in.h:115
+msgid "Screenshot command line"
+msgstr "スクリーンショットコマンドライン"
+
+#: ../metadata/core.xml.in.h:116
+msgid "Show Main Menu"
+msgstr "メインメニューの表示"
+
+#: ../metadata/core.xml.in.h:117
+msgid "Show Run Application dialog"
+msgstr "ランアプリケーションダイアログの表示"
+
+#: ../metadata/core.xml.in.h:118
+msgid "Show the main menu"
+msgstr "メインメニューの表示"
+
+#: ../metadata/core.xml.in.h:119
+msgid "Slow Animations"
+msgstr "アニメーションのスロー再生"
+
+#: ../metadata/core.xml.in.h:120
+msgid "Sync To VBlank"
+msgstr "垂直ブランクに同期化"
+
+#: ../metadata/core.xml.in.h:121
+msgid "Take a screenshot"
+msgstr "スクリーンショットを撮る"
+
+#: ../metadata/core.xml.in.h:122
+msgid "Take a screenshot of a window"
+msgstr "ウィンドウのスクリーンショットを撮る"
+
+#: ../metadata/core.xml.in.h:123
+#, fuzzy
+msgid "Terminal command line"
+msgstr "スクリーンショットコマンドライン"
+
+#: ../metadata/core.xml.in.h:124
+msgid "Texture Filter"
+msgstr "テクスチャフィルタ"
+
+#: ../metadata/core.xml.in.h:125
+msgid "Texture filtering"
+msgstr "テクスチャフィルタ"
+
+#: ../metadata/core.xml.in.h:126
+#, fuzzy
+msgid "The rate at which the screen is redrawn (times/second)"
+msgstr "画面の再描画レート(回/秒)"
+
+#: ../metadata/core.xml.in.h:127
+msgid "Toggle Window Maximized"
+msgstr "最大化されたウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:128
+msgid "Toggle Window Maximized Horizontally"
+msgstr "水平方向に最大化されたウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:129
+msgid "Toggle Window Maximized Vertically"
+msgstr "垂直方向に最大化されたウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:130
+msgid "Toggle Window Shaded"
+msgstr "シェードされたウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:131
+msgid "Toggle active window maximized"
+msgstr "最大化されたアクティブウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:132
+msgid "Toggle active window maximized horizontally"
+msgstr "水平方向に最大化されたアクティブウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:133
+msgid "Toggle active window maximized vertically"
+msgstr "垂直方向に最大化されたアクティブウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:134
+msgid "Toggle active window shaded"
+msgstr "シェードされたアクティブウィンドウを切り替え"
+
+#: ../metadata/core.xml.in.h:135
+msgid "Toggle use of slow animations"
+msgstr "スロー再生アニメーション使用の切り替え"
+
+#: ../metadata/core.xml.in.h:136
+msgid "Unmaximize Window"
+msgstr "ウィンドウの最大化解除"
+
+#: ../metadata/core.xml.in.h:137
+msgid "Unmaximize active window"
+msgstr "アクティブウィンドウの最大化解除"
+
+#: ../metadata/core.xml.in.h:138
+msgid "Unredirect Fullscreen Windows"
+msgstr "全画面ウィンドウのリダイレクト解除"
+
+#: ../metadata/core.xml.in.h:139
+msgid "Use diffuse light when screen is transformed"
+msgstr "画面の変換時に散光を使用"
+
+#: ../metadata/core.xml.in.h:140
+msgid "Vertical Virtual Size"
+msgstr "垂直仮想サイズ"
+
+#: ../metadata/core.xml.in.h:141
+msgid "Window Menu"
+msgstr "ウィンドウメニュー"
+
+#: ../metadata/core.xml.in.h:142
+msgid "Window screenshot command line"
+msgstr "ウィンドウスクリーンショットのコマンドライン"
+
+#: ../metadata/core.xml.in.h:143
+#, fuzzy
+msgid "Windows that should be translucent by default"
+msgstr "フェードするウィンドウタイプ"
+
+#: ../metadata/cube.xml.in.h:1 ../metadata/rotate.xml.in.h:1
+msgid "Acceleration"
+msgstr "アクセラレーション"
+
+#: ../metadata/cube.xml.in.h:2
+msgid "Adjust Image"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:3
+msgid "Adjust top face image to rotation"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:4
+msgid "Advance to next slide"
+msgstr "次のスライドに進む"
+
+#: ../metadata/cube.xml.in.h:5
+msgid "Animate Skydome"
+msgstr "スカイドームをアニメーション化する"
+
+#: ../metadata/cube.xml.in.h:6
+msgid "Animate skydome when rotating cube"
+msgstr "キューブの回転時にスカイドームをアニメーション化する"
+
+#: ../metadata/cube.xml.in.h:7
+msgid "Background Images"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:8
+msgid "Background images"
+msgstr ""
+
+#: ../metadata/cube.xml.in.h:9
+msgid "Color of top and bottom sides of the cube"
+msgstr "キューブの上部および下部の面のカラー"
+
+#: ../metadata/cube.xml.in.h:10
+msgid "Color to use for the bottom color-stop of the skydome-fallback gradient"
+msgstr ""
+"スカイドームフォールバックグラデーションの下部カラーストップに使用する色"
+
+#: ../metadata/cube.xml.in.h:11
+msgid "Color to use for the top color-stop of the skydome-fallback gradient"
+msgstr ""
+"スカイドームフォールバックグラデーションの上部カラーストップに使用する色"
+
+#: ../metadata/cube.xml.in.h:12
+msgid "Cube Color"
+msgstr "キューブの色"
+
+#: ../metadata/cube.xml.in.h:13
+msgid "Desktop Cube"
+msgstr "デスクトップキューブ"
+
+#: ../metadata/cube.xml.in.h:14
+msgid "Fold Acceleration"
+msgstr "アクセラレーションをフォールド"
+
+#: ../metadata/cube.xml.in.h:15
+msgid "Fold Speed"
+msgstr "速度をフォールド"
+
+#: ../metadata/cube.xml.in.h:16
+msgid "Fold Timestep"
+msgstr "タイムステップをフォールド"
+
+#: ../metadata/cube.xml.in.h:17 ../metadata/switcher.xml.in.h:10
+msgid "Generate mipmaps when possible for higher quality scaling"
+msgstr "高品質スケーリングが可能な場合ミップマップを生成"
+
+#: ../metadata/cube.xml.in.h:18
+msgid "Go back to previous slide"
+msgstr "前のスライドに戻る"
+
+#: ../metadata/cube.xml.in.h:19
+msgid "Image files"
+msgstr "イメージファイル"
+
+#: ../metadata/cube.xml.in.h:20
+msgid "Image to use as texture for the skydome"
+msgstr "スカイドームのテクスチャとして使用するイメージ"
+
+#: ../metadata/cube.xml.in.h:21
+msgid "Inside Cube"
+msgstr "キューブ内部"
+
+#: ../metadata/cube.xml.in.h:22
+msgid "Inside cube"
+msgstr "キューブ内部"
+
+#: ../metadata/cube.xml.in.h:23
+msgid "List of PNG and SVG files that should be rendered on top face of cube"
+msgstr "キューブの上面にレンダリングするPNGおよびSVGファイルのリスト"
+
+#: ../metadata/cube.xml.in.h:24 ../metadata/decoration.xml.in.h:10
+#: ../metadata/switcher.xml.in.h:13
+msgid "Mipmap"
+msgstr "ミップマップ"
+
+#: ../metadata/cube.xml.in.h:25
+msgid "Next Slide"
+msgstr "次のスライド"
+
+#: ../metadata/cube.xml.in.h:26
+msgid "Place windows on cube"
+msgstr "ウィンドウをキューブに配置する"
+
+#: ../metadata/cube.xml.in.h:27
+#, fuzzy
+msgid "Prev Slide"
+msgstr "前のスライド"
+
+#: ../metadata/cube.xml.in.h:28
+msgid "Render skydome"
+msgstr "スカイドームのレンダリング"
+
+#: ../metadata/cube.xml.in.h:29
+msgid "Scale image"
+msgstr "スケールイメージ"
+
+#: ../metadata/cube.xml.in.h:30
+msgid "Scale images to cover top face of cube"
+msgstr "キューブの上面を覆うスケールイメージ"
+
+#: ../metadata/cube.xml.in.h:31
+msgid "Skydome"
+msgstr "スカイドーム"
+
+#: ../metadata/cube.xml.in.h:32
+msgid "Skydome Gradient End Color"
+msgstr "スカイドームグラデーション終了色"
+
+#: ../metadata/cube.xml.in.h:33
+msgid "Skydome Gradient Start Color"
+msgstr "スカイドームグラデーション開始色"
+
+#: ../metadata/cube.xml.in.h:34
+msgid "Skydome Image"
+msgstr "スカイドームイメージ"
+
+#: ../metadata/cube.xml.in.h:35 ../metadata/minimize.xml.in.h:7
+#: ../metadata/rotate.xml.in.h:85 ../metadata/scale.xml.in.h:23
+#: ../metadata/switcher.xml.in.h:27 ../metadata/zoom.xml.in.h:7
+msgid "Speed"
+msgstr "速度"
+
+#: ../metadata/cube.xml.in.h:36 ../metadata/minimize.xml.in.h:8
+#: ../metadata/rotate.xml.in.h:88 ../metadata/scale.xml.in.h:25
+#: ../metadata/switcher.xml.in.h:31 ../metadata/zoom.xml.in.h:8
+msgid "Timestep"
+msgstr "タイムステップ"
+
+#: ../metadata/cube.xml.in.h:37
+msgid "Unfold"
+msgstr "開く"
+
+#: ../metadata/cube.xml.in.h:38
+msgid "Unfold cube"
+msgstr "キューブを開く"
+
+#: ../metadata/dbus.xml.in.h:1
+msgid "Dbus"
+msgstr ""
+
+#: ../metadata/dbus.xml.in.h:2
+msgid "Dbus Control Backend"
+msgstr ""
+
+#: ../metadata/decoration.xml.in.h:1
+msgid "Allow mipmaps to be generated for decoration textures"
+msgstr ""
+
+#: ../metadata/decoration.xml.in.h:2
+msgid "Command"
+msgstr "コマンド"
+
+#: ../metadata/decoration.xml.in.h:3
+#, fuzzy
+msgid "Decoration windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/decoration.xml.in.h:4
+msgid ""
+"Decorator command line that is executed if no decorator is already running"
+msgstr "デコレータが動作していない場合に実行されるデコレータコマンドライン"
+
+#: ../metadata/decoration.xml.in.h:5
+msgid "Drop shadow X offset"
+msgstr "シャドウXオフセットを無視"
+
+#: ../metadata/decoration.xml.in.h:6
+msgid "Drop shadow Y offset"
+msgstr "シャドウYオフセットを無視"
+
+#: ../metadata/decoration.xml.in.h:7
+#, fuzzy
+msgid "Drop shadow color"
+msgstr "シャドウ半径を無視"
+
+#: ../metadata/decoration.xml.in.h:8
+msgid "Drop shadow opacity"
+msgstr "シャドウ不透明度を無視"
+
+#: ../metadata/decoration.xml.in.h:9
+msgid "Drop shadow radius"
+msgstr "シャドウ半径を無視"
+
+#: ../metadata/decoration.xml.in.h:11
+#, fuzzy
+msgid "Shadow Color"
+msgstr "ウィンドウをスナップ"
+
+#: ../metadata/decoration.xml.in.h:12
+msgid "Shadow Offset X"
+msgstr "シャドウオフセットX"
+
+#: ../metadata/decoration.xml.in.h:13
+msgid "Shadow Offset Y"
+msgstr "シャドウオフセットY"
+
+#: ../metadata/decoration.xml.in.h:14
+msgid "Shadow Opacity"
+msgstr "シャドウ不透明度"
+
+#: ../metadata/decoration.xml.in.h:15
+msgid "Shadow Radius"
+msgstr "シャドウ半径"
+
+#: ../metadata/decoration.xml.in.h:16
+#, fuzzy
+msgid "Shadow windows"
+msgstr "ウィンドウをスナップ"
+
+#: ../metadata/decoration.xml.in.h:17
+msgid "Window Decoration"
+msgstr "ウィンドウ装飾"
+
+#: ../metadata/decoration.xml.in.h:18
+msgid "Window decorations"
+msgstr "ウィンドウ装飾"
+
+#: ../metadata/decoration.xml.in.h:19
+#, fuzzy
+msgid "Windows that should be decorated"
+msgstr "フェードするウィンドウタイプ"
+
+#: ../metadata/decoration.xml.in.h:20
+#, fuzzy
+msgid "Windows that should have a shadow"
+msgstr "フェードするウィンドウタイプ"
+
+#: ../metadata/fade.xml.in.h:1
+msgid "Fade On Minimize/Open/Close"
+msgstr ""
+
+#: ../metadata/fade.xml.in.h:2
+msgid "Fade Speed"
+msgstr "フェードスピード"
+
+#: ../metadata/fade.xml.in.h:3
+msgid "Fade effect on minimize/open/close window events"
+msgstr ""
+
+#: ../metadata/fade.xml.in.h:4
+msgid "Fade effect on system beep"
+msgstr "システムビープ音のフェード効果"
+
+#: ../metadata/fade.xml.in.h:5
+msgid "Fade in windows when mapped and fade out windows when unmapped"
+msgstr ""
+"マップ時にウィンドウをフェードインし、マップ解除時にウィンドウをフェードアウ"
+"トする"
+
+#: ../metadata/fade.xml.in.h:6
+#, fuzzy
+msgid "Fade windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/fade.xml.in.h:7
+msgid "Fading Windows"
+msgstr "ウィンドウのフェード"
+
+#: ../metadata/fade.xml.in.h:8
+msgid "Fullscreen Visual Bell"
+msgstr "全画面ビジュアルベル"
+
+#: ../metadata/fade.xml.in.h:9
+msgid "Fullscreen fade effect on system beep"
+msgstr "システムビープ音の全画面フェード効果"
+
+#: ../metadata/fade.xml.in.h:10
+msgid "Visual Bell"
+msgstr "可視ベル"
+
+#: ../metadata/fade.xml.in.h:11
+msgid "Window fade speed"
+msgstr "ウィンドウフェードスピード"
+
+#: ../metadata/fade.xml.in.h:12
+#, fuzzy
+msgid "Windows that should be fading"
+msgstr "フェードするウィンドウタイプ"
+
+#: ../metadata/fs.xml.in.h:1
+#, fuzzy
+msgid "Mount Point"
+msgstr "点"
+
+#: ../metadata/fs.xml.in.h:2
+#, fuzzy
+msgid "Mount point"
+msgstr "点を追加"
+
+#: ../metadata/fs.xml.in.h:3
+msgid "Userspace File System"
+msgstr ""
+
+#: ../metadata/fs.xml.in.h:4
+msgid "Userspace file system"
+msgstr ""
+
+#: ../metadata/gconf.xml.in.h:1
+msgid "GConf"
+msgstr ""
+
+#: ../metadata/gconf.xml.in.h:2
+msgid "GConf Control Backend"
+msgstr ""
+
+#: ../metadata/ini.xml.in.h:1
+#, fuzzy
+msgid "Ini"
+msgstr "変更しないでください"
+
+#: ../metadata/ini.xml.in.h:2
+msgid "Ini Flat File Backend"
+msgstr ""
+
+#: ../metadata/inotify.xml.in.h:1
+msgid "File change notification plugin"
+msgstr ""
+
+#: ../metadata/inotify.xml.in.h:2
+#, fuzzy
+msgid "Inotify"
+msgstr "変更しないでください"
+
+#: ../metadata/minimize.xml.in.h:1
+msgid "Minimize Effect"
+msgstr "効果を最小限にする"
+
+#: ../metadata/minimize.xml.in.h:2
+#, fuzzy
+msgid "Minimize Windows"
+msgstr "ウィンドウを最小化する"
+
+#: ../metadata/minimize.xml.in.h:3
+msgid "Minimize speed"
+msgstr "速度を最小限にする"
+
+#: ../metadata/minimize.xml.in.h:4
+msgid "Minimize timestep"
+msgstr "タイムステップを最小限にする"
+
+#: ../metadata/minimize.xml.in.h:5
+msgid "Shade Resistance"
+msgstr "シェード耐性"
+
+#: ../metadata/minimize.xml.in.h:6
+msgid "Shade resistance"
+msgstr "シェード耐性"
+
+#: ../metadata/minimize.xml.in.h:9
+msgid "Transform windows when they are minimized and unminimized"
+msgstr "ウィンドウが最小化および最小化解除時に変換"
+
+#: ../metadata/minimize.xml.in.h:10
+#, fuzzy
+msgid "Windows that should be transformed when minimized"
+msgstr "最小化した場合に変換するウィンドウタイプ"
+
+#: ../metadata/move.xml.in.h:1
+msgid "Constrain Y"
+msgstr "Ｙをコンストレイン"
+
+#: ../metadata/move.xml.in.h:2
+msgid "Constrain Y coordinate to workspace area"
+msgstr "Y座標をワークスペースエリアにコンストレイン"
+
+#: ../metadata/move.xml.in.h:3
+msgid "Initiate Window Move"
+msgstr "ウィンドウの移動を開始"
+
+#: ../metadata/move.xml.in.h:4
+msgid "Move Window"
+msgstr "ウィンドウを移動"
+
+#: ../metadata/move.xml.in.h:5
+msgid "Move window"
+msgstr "ウィンドウを移動"
+
+#: ../metadata/move.xml.in.h:6 ../metadata/scale.xml.in.h:13
+#: ../metadata/switcher.xml.in.h:15
+msgid "Opacity"
+msgstr "不透明度"
+
+#: ../metadata/move.xml.in.h:7
+msgid "Opacity level of moving windows"
+msgstr "移動ウィンドウの不透明度レベル"
+
+#: ../metadata/move.xml.in.h:8
+msgid "Snapoff and auto unmaximized maximized windows when dragging"
+msgstr "ドラッグ時に、最大化したウィンドウをスナップ解除して最大化を自動解除"
+
+#: ../metadata/move.xml.in.h:9
+msgid "Snapoff maximized windows"
+msgstr "最大化したウィンドウのスナップ解除"
+
+#: ../metadata/move.xml.in.h:10
+msgid "Start moving window"
+msgstr "ウィンドウの移動を開始"
+
+#: ../metadata/place.xml.in.h:1
+msgid "Algorithm to use for window placement"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:2
+#, fuzzy
+msgid "Horizontal viewport positions"
+msgstr "水平仮想サイズ"
+
+#: ../metadata/place.xml.in.h:3
+msgid "Place Windows"
+msgstr "ウィンドウを配置する"
+
+#: ../metadata/place.xml.in.h:4
+msgid "Place windows at appropriate positions when mapped"
+msgstr "マップ時にウィンドウを適切な位置に配置する"
+
+#: ../metadata/place.xml.in.h:5
+msgid "Placement Mode"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:6
+#, fuzzy
+msgid "Positioned windows"
+msgstr "最小化したウィンドウの表示"
+
+#: ../metadata/place.xml.in.h:7
+#, fuzzy
+msgid "Vertical viewport positions"
+msgstr "水平仮想サイズ"
+
+#: ../metadata/place.xml.in.h:8
+#, fuzzy
+msgid "Viewport positioned windows"
+msgstr "最小化したウィンドウの表示"
+
+#: ../metadata/place.xml.in.h:9
+msgid "Window placement workarounds"
+msgstr "ウィンドウ配置の回避策"
+
+#: ../metadata/place.xml.in.h:10
+#, fuzzy
+msgid "Windows that should be positioned by default"
+msgstr "フェードするウィンドウタイプ"
+
+#: ../metadata/place.xml.in.h:11
+#, fuzzy
+msgid "Windows that should be positioned in specific viewports by default"
+msgstr "スケールモードで調整するウィンドウタイプ"
+
+#: ../metadata/place.xml.in.h:12
+msgid "Workarounds"
+msgstr "回避方法"
+
+#: ../metadata/place.xml.in.h:13
+#, fuzzy
+msgid "X Positions"
+msgstr "最小化したウィンドウの表示"
+
+#: ../metadata/place.xml.in.h:14
+#, fuzzy
+msgid "X Viewport Positions"
+msgstr "水平仮想サイズ"
+
+#: ../metadata/place.xml.in.h:15
+msgid "X position values"
+msgstr ""
+
+#: ../metadata/place.xml.in.h:16
+#, fuzzy
+msgid "Y Positions"
+msgstr "最小化したウィンドウの表示"
+
+#: ../metadata/place.xml.in.h:17
+#, fuzzy
+msgid "Y Viewport Positions"
+msgstr "水平仮想サイズ"
+
+#: ../metadata/place.xml.in.h:18
+msgid "Y position values"
+msgstr ""
+
+#: ../metadata/plane.xml.in.h:1
+#, fuzzy
+msgid "Desktop Plane"
+msgstr "デスクトップキューブ"
+
+#: ../metadata/plane.xml.in.h:2
+#, fuzzy
+msgid "Place windows on a plane"
+msgstr "ウィンドウをキューブに配置する"
+
+#: ../metadata/plane.xml.in.h:3
+#, fuzzy
+msgid "Plane Down"
+msgstr "Page Down"
+
+#: ../metadata/plane.xml.in.h:4
+#, fuzzy
+msgid "Plane Left"
+msgstr "左に回転"
+
+#: ../metadata/plane.xml.in.h:5
+#, fuzzy
+msgid "Plane Right"
+msgstr "右に回転"
+
+#: ../metadata/plane.xml.in.h:6
+#, fuzzy
+msgid "Plane To Face 1"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:7
+#, fuzzy
+msgid "Plane To Face 10"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:8
+#, fuzzy
+msgid "Plane To Face 11"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:9
+#, fuzzy
+msgid "Plane To Face 12"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:10
+#, fuzzy
+msgid "Plane To Face 2"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:11
+#, fuzzy
+msgid "Plane To Face 3"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:12
+#, fuzzy
+msgid "Plane To Face 4"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:13
+#, fuzzy
+msgid "Plane To Face 5"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:14
+#, fuzzy
+msgid "Plane To Face 6"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:15
+#, fuzzy
+msgid "Plane To Face 7"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:16
+#, fuzzy
+msgid "Plane To Face 8"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:17
+#, fuzzy
+msgid "Plane To Face 9"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:18
+#, fuzzy
+msgid "Plane Up"
+msgstr "Page Up"
+
+#: ../metadata/plane.xml.in.h:19
+#, fuzzy
+msgid "Plane down"
+msgstr "ウィンドウを配置する"
+
+#: ../metadata/plane.xml.in.h:20
+#, fuzzy
+msgid "Plane left"
+msgstr "左に回転"
+
+#: ../metadata/plane.xml.in.h:21
+#, fuzzy
+msgid "Plane right"
+msgstr "右に回転"
+
+#: ../metadata/plane.xml.in.h:22
+#, fuzzy
+msgid "Plane to face 1"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:23
+#, fuzzy
+msgid "Plane to face 10"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:24
+#, fuzzy
+msgid "Plane to face 11"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:25
+#, fuzzy
+msgid "Plane to face 12"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:26
+#, fuzzy
+msgid "Plane to face 2"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:27
+#, fuzzy
+msgid "Plane to face 3"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:28
+#, fuzzy
+msgid "Plane to face 4"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:29
+#, fuzzy
+msgid "Plane to face 5"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:30
+#, fuzzy
+msgid "Plane to face 6"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:31
+#, fuzzy
+msgid "Plane to face 7"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:32
+#, fuzzy
+msgid "Plane to face 8"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:33
+#, fuzzy
+msgid "Plane to face 9"
+msgstr "%d に向かうように回転"
+
+#: ../metadata/plane.xml.in.h:34
+#, fuzzy
+msgid "Plane up"
+msgstr "Page Up"
+
+#: ../metadata/png.xml.in.h:1
+msgid "Png"
+msgstr ""
+
+#: ../metadata/png.xml.in.h:2
+msgid "Png image loader"
+msgstr ""
+
+#: ../metadata/regex.xml.in.h:1
+#, fuzzy
+msgid "Regex Matching"
+msgstr "ウィンドウスナップの切り替え"
+
+#: ../metadata/regex.xml.in.h:2
+#, fuzzy
+msgid "Regex window matching"
+msgstr "ウィンドウスナップの切り替え"
+
+#: ../metadata/resize.xml.in.h:1
+msgid "Default Resize Mode"
+msgstr ""
+
+#: ../metadata/resize.xml.in.h:2
+msgid "Default mode used for window resizing"
+msgstr ""
+
+#: ../metadata/resize.xml.in.h:3
+msgid "Initiate Window Resize"
+msgstr "ウィンドウのサイズ変更を開始"
+
+#: ../metadata/resize.xml.in.h:4
+msgid "Resize Window"
+msgstr "ウィンドウのサイズ変更"
+
+#: ../metadata/resize.xml.in.h:5
+msgid "Resize window"
+msgstr "ウィンドウのサイズ変更"
+
+#: ../metadata/resize.xml.in.h:6
+msgid "Start resizing window"
+msgstr "ウィンドウのサイズ変更を開始"
+
+#: ../metadata/rotate.xml.in.h:2
+msgid "Edge Flip DnD"
+msgstr "エッジフリップDnD"
+
+#: ../metadata/rotate.xml.in.h:3
+msgid "Edge Flip Move"
+msgstr "エッジフリップ移動"
+
+#: ../metadata/rotate.xml.in.h:4
+msgid "Edge Flip Pointer"
+msgstr "エッジフリップポインタ"
+
+#: ../metadata/rotate.xml.in.h:5
+msgid "Flip Time"
+msgstr "時間のフリップ"
+
+#: ../metadata/rotate.xml.in.h:6
+msgid "Flip to left viewport and warp pointer"
+msgstr "左ビューポートとワープポインタにフリップ"
+
+#: ../metadata/rotate.xml.in.h:7
+msgid "Flip to next viewport when dragging object to screen edge"
+msgstr "オブジェクトを画面の端にドラッグする時に次のビューポートにフリップする"
+
+#: ../metadata/rotate.xml.in.h:8
+msgid "Flip to next viewport when moving pointer to screen edge"
+msgstr "ポインタを画面の端に移動する時に次のビューポートにフリップする"
+
+#: ../metadata/rotate.xml.in.h:9
+msgid "Flip to next viewport when moving window to screen edge"
+msgstr "ウィンドウを画面の端に移動する時に次のビューポートにフリップする"
+
+#: ../metadata/rotate.xml.in.h:10
+msgid "Flip to right viewport and warp pointer"
+msgstr "右ビューポートとワープポインタにフリップ"
+
+#: ../metadata/rotate.xml.in.h:12 ../metadata/zoom.xml.in.h:3
+msgid "Invert Y axis for pointer movement"
+msgstr "ポインタ移動用にY 軸を反転させる"
+
+#: ../metadata/rotate.xml.in.h:13 ../metadata/zoom.xml.in.h:4
+msgid "Pointer Invert Y"
+msgstr "ポインタ反転Y"
+
+#: ../metadata/rotate.xml.in.h:14 ../metadata/zoom.xml.in.h:5
+msgid "Pointer Sensitivity"
+msgstr "ポインタ感度"
+
+#: ../metadata/rotate.xml.in.h:15
+msgid "Rotate Cube"
+msgstr "キューブの回転"
+
+#: ../metadata/rotate.xml.in.h:16
+msgid "Rotate Flip Left"
+msgstr "左にフリップ回転"
+
+#: ../metadata/rotate.xml.in.h:17
+msgid "Rotate Flip Right"
+msgstr "右にフリップ回転"
+
+#: ../metadata/rotate.xml.in.h:18
+msgid "Rotate Left"
+msgstr "左に回転"
+
+#: ../metadata/rotate.xml.in.h:19
+msgid "Rotate Left with Window"
+msgstr "ウィンドウと一緒に左に回転"
+
+#: ../metadata/rotate.xml.in.h:20
+msgid "Rotate Right"
+msgstr "右に回転"
+
+#: ../metadata/rotate.xml.in.h:21
+msgid "Rotate Right with Window"
+msgstr "ウィンドウと一緒に右に回転"
+
+#: ../metadata/rotate.xml.in.h:22
+msgid "Rotate To"
+msgstr "回転先"
+
+#: ../metadata/rotate.xml.in.h:23
+#, fuzzy
+msgid "Rotate To Face 1"
+msgstr "面10に回転"
+
+#: ../metadata/rotate.xml.in.h:24
+#, fuzzy
+msgid "Rotate To Face 1 with Window"
+msgstr "ウィンドウと一緒に面10に回転"
+
+#: ../metadata/rotate.xml.in.h:25
+msgid "Rotate To Face 10"
+msgstr "面10に回転"
+
+#: ../metadata/rotate.xml.in.h:26
+msgid "Rotate To Face 10 with Window"
+msgstr "ウィンドウと一緒に面10に回転"
+
+#: ../metadata/rotate.xml.in.h:27
+msgid "Rotate To Face 11"
+msgstr "面11に回転"
+
+#: ../metadata/rotate.xml.in.h:28
+msgid "Rotate To Face 11 with Window"
+msgstr "ウィンドウと一緒に面11に回転"
+
+#: ../metadata/rotate.xml.in.h:29
+msgid "Rotate To Face 12"
+msgstr "面12に回転"
+
+#: ../metadata/rotate.xml.in.h:30
+msgid "Rotate To Face 12 with Window"
+msgstr "ウィンドウと一緒に面12に回転"
+
+#: ../metadata/rotate.xml.in.h:31
+msgid "Rotate To Face 2"
+msgstr "面2に回転"
+
+#: ../metadata/rotate.xml.in.h:32
+msgid "Rotate To Face 2 with Window"
+msgstr "ウィンドウと一緒に面2に回転"
+
+#: ../metadata/rotate.xml.in.h:33
+msgid "Rotate To Face 3"
+msgstr "面3に回転"
+
+#: ../metadata/rotate.xml.in.h:34
+msgid "Rotate To Face 3 with Window"
+msgstr "ウィンドウと一緒に面3に回転"
+
+#: ../metadata/rotate.xml.in.h:35
+msgid "Rotate To Face 4"
+msgstr "面4に回転"
+
+#: ../metadata/rotate.xml.in.h:36
+msgid "Rotate To Face 4 with Window"
+msgstr "ウィンドウと一緒に面4に回転"
+
+#: ../metadata/rotate.xml.in.h:37
+msgid "Rotate To Face 5"
+msgstr "面5に回転"
+
+#: ../metadata/rotate.xml.in.h:38
+msgid "Rotate To Face 5 with Window"
+msgstr "ウィンドウと一緒に面5に回転"
+
+#: ../metadata/rotate.xml.in.h:39
+msgid "Rotate To Face 6"
+msgstr "面6に回転"
+
+#: ../metadata/rotate.xml.in.h:40
+msgid "Rotate To Face 6 with Window"
+msgstr "ウィンドウと一緒に面6に回転"
+
+#: ../metadata/rotate.xml.in.h:41
+msgid "Rotate To Face 7"
+msgstr "面7に回転"
+
+#: ../metadata/rotate.xml.in.h:42
+msgid "Rotate To Face 7 with Window"
+msgstr "ウィンドウと一緒に面7に回転"
+
+#: ../metadata/rotate.xml.in.h:43
+msgid "Rotate To Face 8"
+msgstr "面8に回転"
+
+#: ../metadata/rotate.xml.in.h:44
+msgid "Rotate To Face 8 with Window"
+msgstr "ウィンドウと一緒に面8に回転"
+
+#: ../metadata/rotate.xml.in.h:45
+msgid "Rotate To Face 9"
+msgstr "面9に回転"
+
+#: ../metadata/rotate.xml.in.h:46
+msgid "Rotate To Face 9 with Window"
+msgstr "ウィンドウと一緒に面9に回転"
+
+#: ../metadata/rotate.xml.in.h:47
+msgid "Rotate desktop cube"
+msgstr "デスクトップキューブの回転"
+
+#: ../metadata/rotate.xml.in.h:48
+msgid "Rotate left"
+msgstr "左に回転"
+
+#: ../metadata/rotate.xml.in.h:49
+#, fuzzy
+msgid "Rotate left and brind active window along"
+msgstr "左に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:50
+msgid "Rotate right"
+msgstr "右に回転"
+
+#: ../metadata/rotate.xml.in.h:51
+#, fuzzy
+msgid "Rotate right and brind active window along"
+msgstr "右に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:52
+#, fuzzy
+msgid "Rotate to face 1"
+msgstr "面10に回転"
+
+#: ../metadata/rotate.xml.in.h:53
+#, fuzzy
+msgid "Rotate to face 1 and bring active window along"
+msgstr "面10に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:54
+msgid "Rotate to face 10"
+msgstr "面10に回転"
+
+#: ../metadata/rotate.xml.in.h:55
+msgid "Rotate to face 10 and bring active window along"
+msgstr "面10に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:56
+msgid "Rotate to face 11"
+msgstr "面11に回転"
+
+#: ../metadata/rotate.xml.in.h:57
+msgid "Rotate to face 11 and bring active window along"
+msgstr "面11に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:58
+msgid "Rotate to face 12"
+msgstr "面12に回転"
+
+#: ../metadata/rotate.xml.in.h:59
+msgid "Rotate to face 12 and bring active window along"
+msgstr "面12に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:60
+msgid "Rotate to face 2"
+msgstr "面2に回転"
+
+#: ../metadata/rotate.xml.in.h:61
+msgid "Rotate to face 2 and bring active window along"
+msgstr "面2に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:62
+msgid "Rotate to face 3"
+msgstr "面3に回転"
+
+#: ../metadata/rotate.xml.in.h:63
+msgid "Rotate to face 3 and bring active window along"
+msgstr "面3に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:64
+msgid "Rotate to face 4"
+msgstr "面4に回転"
+
+#: ../metadata/rotate.xml.in.h:65
+msgid "Rotate to face 4 and bring active window along"
+msgstr "面4に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:66
+msgid "Rotate to face 5"
+msgstr "面5に回転"
+
+#: ../metadata/rotate.xml.in.h:67
+msgid "Rotate to face 5 and bring active window along"
+msgstr "面5に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:68
+msgid "Rotate to face 6"
+msgstr "面6に回転"
+
+#: ../metadata/rotate.xml.in.h:69
+msgid "Rotate to face 6 and bring active window along"
+msgstr "面6に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:70
+msgid "Rotate to face 7"
+msgstr "面7に回転"
+
+#: ../metadata/rotate.xml.in.h:71
+msgid "Rotate to face 7 and bring active window along"
+msgstr "面7に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:72
+msgid "Rotate to face 8"
+msgstr "面8に回転"
+
+#: ../metadata/rotate.xml.in.h:73
+msgid "Rotate to face 8 and bring active window along"
+msgstr "面8に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:74
+msgid "Rotate to face 9"
+msgstr "面9に回転"
+
+#: ../metadata/rotate.xml.in.h:75
+msgid "Rotate to face 9 and bring active window along"
+msgstr "面9に回転して、アクティブなウィンドウを移動"
+
+#: ../metadata/rotate.xml.in.h:76
+msgid "Rotate to viewport"
+msgstr "ビューポートに回転"
+
+#: ../metadata/rotate.xml.in.h:77
+#, fuzzy
+msgid "Rotate window"
+msgstr "ウィンドウを回転"
+
+#: ../metadata/rotate.xml.in.h:78
+msgid "Rotate with window"
+msgstr "ウィンドウとともに回転"
+
+#: ../metadata/rotate.xml.in.h:79
+msgid "Rotation Acceleration"
+msgstr "回転アクセラレーション"
+
+#: ../metadata/rotate.xml.in.h:80
+msgid "Rotation Speed"
+msgstr "回転速度"
+
+#: ../metadata/rotate.xml.in.h:81
+msgid "Rotation Timestep"
+msgstr "回転タイムステップ"
+
+#: ../metadata/rotate.xml.in.h:82 ../metadata/zoom.xml.in.h:6
+msgid "Sensitivity of pointer movement"
+msgstr "ポインタの移動感度"
+
+#: ../metadata/rotate.xml.in.h:83
+msgid "Snap Cube Rotation to Top Face"
+msgstr "キューブ回転を上面にスナップ"
+
+#: ../metadata/rotate.xml.in.h:84
+msgid "Snap To Top Face"
+msgstr "上面にスナップ"
+
+#: ../metadata/rotate.xml.in.h:86
+msgid "Start Rotation"
+msgstr "回転の開始"
+
+#: ../metadata/rotate.xml.in.h:87
+msgid "Timeout before flipping viewport"
+msgstr "ビューポートフリップのタイムアウト"
+
+#: ../metadata/scale.xml.in.h:1 ../metadata/switcher.xml.in.h:2
+msgid "Amount of opacity in percent"
+msgstr "不透明度(%)"
+
+#: ../metadata/scale.xml.in.h:2
+msgid "Darken Background"
+msgstr "背景を暗くする"
+
+#: ../metadata/scale.xml.in.h:3
+msgid "Darken background when scaling windows"
+msgstr "ウィンドウのスクロール時に背景を暗くする"
+
+#: ../metadata/scale.xml.in.h:4
+msgid "Hover Time"
+msgstr "ホバー時間"
+
+#: ../metadata/scale.xml.in.h:5
+msgid "Initiate Window Picker"
+msgstr "ウィンドウピッカーを起動"
+
+#: ../metadata/scale.xml.in.h:6
+msgid "Initiate Window Picker For All Windows"
+msgstr "すべてのウィンドウでウィンドウピッカーを起動"
+
+#: ../metadata/scale.xml.in.h:7
+msgid "Initiate Window Picker For Window Group"
+msgstr "ウィンドウグループでウィンドウピッカーを起動"
+
+#: ../metadata/scale.xml.in.h:8
+msgid "Initiate Window Picker For Windows on Current Output"
+msgstr "現在の出力でウィンドウのウィンドウピッカーを起動"
+
+#: ../metadata/scale.xml.in.h:9
+msgid "Layout and start transforming all windows"
+msgstr "配列してすべてのウィンドウの変換を開始する"
+
+#: ../metadata/scale.xml.in.h:10
+msgid "Layout and start transforming window group"
+msgstr "配列してウィンドウグループの変換を開始する"
+
+#: ../metadata/scale.xml.in.h:11
+msgid "Layout and start transforming windows"
+msgstr "配列してウィンドウの変換を開始する"
+
+#: ../metadata/scale.xml.in.h:12
+msgid "Layout and start transforming windows on current output"
+msgstr "現在の出力で配列してウィンドウの変換を開始する"
+
+#: ../metadata/scale.xml.in.h:14
+msgid "Overlay Icon"
+msgstr "オーバレイアイコン"
+
+#: ../metadata/scale.xml.in.h:15
+msgid "Overlay an icon on windows once they are scaled"
+msgstr "ウィンドウ調整後にアイコンをオーバレイ"
+
+#: ../metadata/scale.xml.in.h:16
+msgid "Scale"
+msgstr "スケール"
+
+#: ../metadata/scale.xml.in.h:17
+#, fuzzy
+msgid "Scale Windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/scale.xml.in.h:18
+msgid "Scale speed"
+msgstr "スケール速度"
+
+#: ../metadata/scale.xml.in.h:19
+msgid "Scale timestep"
+msgstr "スケールタイムステップ"
+
+#: ../metadata/scale.xml.in.h:20
+msgid "Scale windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/scale.xml.in.h:21
+msgid "Space between windows"
+msgstr "ウィンドウ間のスペース"
+
+#: ../metadata/scale.xml.in.h:22
+msgid "Spacing"
+msgstr "スペース"
+
+#: ../metadata/scale.xml.in.h:24
+msgid ""
+"Time (in ms) before scale mode is terminated when hovering over a window"
+msgstr "ウィンドウ上をホバー時に、スケールモードを終了するまでの時間(ms)"
+
+#: ../metadata/scale.xml.in.h:26
+#, fuzzy
+msgid "Windows that should be scaled in scale mode"
+msgstr "スケールモードで調整するウィンドウタイプ"
+
+#: ../metadata/screenshot.xml.in.h:1
+#, fuzzy
+msgid "Automatically open screenshot in this application"
+msgstr "ログイン時にアプレットを自動的に起動する"
+
+#: ../metadata/screenshot.xml.in.h:2
+#, fuzzy
+msgid "Directory"
+msgstr "ディレクトリ\n"
+
+#: ../metadata/screenshot.xml.in.h:4
+#, fuzzy
+msgid "Initiate rectangle screenshot"
+msgstr "スクリーンショットを撮る"
+
+#: ../metadata/screenshot.xml.in.h:5
+#, fuzzy
+msgid "Launch Application"
+msgstr "アプリケーションの起動"
+
+#: ../metadata/screenshot.xml.in.h:6
+#, fuzzy
+msgid "Put screenshot images in this directory"
+msgstr "ディレクトリに再帰"
+
+#: ../metadata/screenshot.xml.in.h:7
+#, fuzzy
+msgid "Screenshot"
+msgstr "画面"
+
+#: ../metadata/screenshot.xml.in.h:8
+#, fuzzy
+msgid "Screenshot plugin"
+msgstr "スクリーンショットコマンドライン"
+
+#: ../metadata/svg.xml.in.h:1
+msgid "Svg"
+msgstr ""
+
+#: ../metadata/svg.xml.in.h:2
+msgid "Svg image loader"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:1
+msgid "Amount of brightness in percent"
+msgstr "明るさの量(%)"
+
+#: ../metadata/switcher.xml.in.h:3
+msgid "Amount of saturation in percent"
+msgstr "飽和度の量(%)"
+
+#: ../metadata/switcher.xml.in.h:4
+msgid "Application Switcher"
+msgstr "アプリケーションスイッチャ"
+
+#: ../metadata/switcher.xml.in.h:5
+#, fuzzy
+msgid "Auto Rotate"
+msgstr "自動調整"
+
+#: ../metadata/switcher.xml.in.h:6
+msgid "Brightness"
+msgstr "明るさ"
+
+#: ../metadata/switcher.xml.in.h:7
+msgid "Bring To Front"
+msgstr "正面へ移動"
+
+#: ../metadata/switcher.xml.in.h:8
+msgid "Bring selected window to front"
+msgstr "選択したウィンドウを正面へ移動"
+
+#: ../metadata/switcher.xml.in.h:9
+msgid "Distance desktop should be zoom out while switching windows"
+msgstr "ウィンドウ切り替え中デスクトップ距離をズームアウト"
+
+#: ../metadata/switcher.xml.in.h:11
+msgid "Icon"
+msgstr "アイコン"
+
+#: ../metadata/switcher.xml.in.h:12
+msgid "Minimized"
+msgstr "最小化"
+
+#: ../metadata/switcher.xml.in.h:14
+msgid "Next window"
+msgstr "次のウィンドウ"
+
+#: ../metadata/switcher.xml.in.h:16
+msgid "Popup switcher if not visible and select next window"
+msgstr "表示されていない場合スイッチャをポップアップして次のウィンドウを選択"
+
+#: ../metadata/switcher.xml.in.h:17
+msgid "Popup switcher if not visible and select next window out of all windows"
+msgstr ""
+"表示されていない場合スイッチャをポップアップしてすべてのウィンドウから次の"
+"ウィンドウを選択"
+
+#: ../metadata/switcher.xml.in.h:18
+msgid "Popup switcher if not visible and select previous window"
+msgstr "表示されていない場合スイッチャをポップアップして前のウィンドウを選択"
+
+#: ../metadata/switcher.xml.in.h:19
+msgid ""
+"Popup switcher if not visible and select previous window out of all windows"
+msgstr ""
+"表示されていない場合スイッチャをポップアップしてすべてのウィンドウから前の"
+"ウィンドウを選択"
+
+#: ../metadata/switcher.xml.in.h:20
+msgid "Prev window"
+msgstr "前のウィンドウ"
+
+#: ../metadata/switcher.xml.in.h:21
+msgid "Rotate to the selected window while switching"
+msgstr ""
+
+#: ../metadata/switcher.xml.in.h:22
+msgid "Saturation"
+msgstr "飽和度"
+
+#: ../metadata/switcher.xml.in.h:23
+msgid "Select next window"
+msgstr "次のウィンドウを選択"
+
+#: ../metadata/switcher.xml.in.h:24
+msgid "Select previous window"
+msgstr "前のウィンドウを選択"
+
+#: ../metadata/switcher.xml.in.h:25
+msgid "Show icon next to thumbnail"
+msgstr "サムネイルの横にアイコンを表示"
+
+#: ../metadata/switcher.xml.in.h:26
+msgid "Show minimized windows"
+msgstr "最小化したウィンドウの表示"
+
+#: ../metadata/switcher.xml.in.h:28
+msgid "Switcher speed"
+msgstr "スイッチャ速度"
+
+#: ../metadata/switcher.xml.in.h:29
+msgid "Switcher timestep"
+msgstr "スイッチャタイムステップ"
+
+#: ../metadata/switcher.xml.in.h:30
+#, fuzzy
+msgid "Switcher windows"
+msgstr "スケールウィンドウ"
+
+#: ../metadata/switcher.xml.in.h:32
+#, fuzzy
+msgid "Windows that should be shown in switcher"
+msgstr "スイッチャに表示するウィンドウタイプ"
+
+#: ../metadata/switcher.xml.in.h:33
+msgid "Zoom"
+msgstr "ズーム"
+
+#: ../metadata/video.xml.in.h:1
+msgid "Provide YV12 colorspace support"
+msgstr ""
+
+#: ../metadata/video.xml.in.h:2
+msgid "Video Playback"
+msgstr ""
+
+#: ../metadata/video.xml.in.h:3
+msgid "Video playback"
+msgstr ""
+
+#: ../metadata/video.xml.in.h:4
+msgid "YV12 colorspace"
+msgstr ""
+
+#: ../metadata/water.xml.in.h:1
+msgid "Add line"
+msgstr "線を追加"
+
+#: ../metadata/water.xml.in.h:2
+msgid "Add point"
+msgstr "点を追加"
+
+#: ../metadata/water.xml.in.h:3
+msgid "Adds water effects to different desktop actions"
+msgstr "異なるデスクトップアクションに水効果を追加する"
+
+#: ../metadata/water.xml.in.h:4
+msgid "Delay (in ms) between each rain-drop"
+msgstr "各水滴間の遅延時間(ms)"
+
+#: ../metadata/water.xml.in.h:5
+msgid "Enable pointer water effects"
+msgstr "ポインタの水効果を有効にする"
+
+#: ../metadata/water.xml.in.h:7
+msgid "Line"
+msgstr "線"
+
+#: ../metadata/water.xml.in.h:8
+msgid "Offset Scale"
+msgstr "オフセットスケール"
+
+#: ../metadata/water.xml.in.h:9
+msgid "Point"
+msgstr "点"
+
+#: ../metadata/water.xml.in.h:10
+msgid "Rain Delay"
+msgstr "雨の待ち時間"
+
+#: ../metadata/water.xml.in.h:11
+msgid "Title wave"
+msgstr "タイトルウェーブ"
+
+#: ../metadata/water.xml.in.h:12
+msgid "Toggle rain"
+msgstr "雨の切り替え"
+
+#: ../metadata/water.xml.in.h:13
+msgid "Toggle rain effect"
+msgstr "雨効果の切り替え"
+
+#: ../metadata/water.xml.in.h:14
+msgid "Toggle wiper"
+msgstr "ワイパーの切り替え"
+
+#: ../metadata/water.xml.in.h:15
+msgid "Toggle wiper effect"
+msgstr "ワイパー効果の切り替え"
+
+#: ../metadata/water.xml.in.h:16
+msgid "Water Effect"
+msgstr "水効果"
+
+#: ../metadata/water.xml.in.h:17
+msgid "Water offset scale"
+msgstr "水オフセットスケール"
+
+#: ../metadata/water.xml.in.h:18
+msgid "Wave effect from window title"
+msgstr "ウィンドウタイトルからウェーブ効果"
+
+#: ../metadata/wobbly.xml.in.h:1
+msgid "Focus Effect"
+msgstr "効果をフォーカス"
+
+#: ../metadata/wobbly.xml.in.h:2
+msgid "Focus Window Effect"
+msgstr "ウィンドウ効果をフォーカス"
+
+#: ../metadata/wobbly.xml.in.h:3
+#, fuzzy
+msgid "Focus Windows"
+msgstr "ウィンドウタイプをフォーカス"
+
+#: ../metadata/wobbly.xml.in.h:4
+msgid "Friction"
+msgstr "摩擦"
+
+#: ../metadata/wobbly.xml.in.h:5
+#, fuzzy
+msgid "Grab Windows"
+msgstr "ウィンドウタイプを取得"
+
+#: ../metadata/wobbly.xml.in.h:6
+msgid "Grid Resolution"
+msgstr "グリッド解像度"
+
+#: ../metadata/wobbly.xml.in.h:7
+msgid "Inverted window snapping"
+msgstr "反転されたウィンドウをスナップ"
+
+#: ../metadata/wobbly.xml.in.h:8
+msgid "Make window shiver"
+msgstr "ウィンドウを震動させる"
+
+#: ../metadata/wobbly.xml.in.h:9
+msgid "Map Effect"
+msgstr "効果のマップ"
+
+#: ../metadata/wobbly.xml.in.h:10
+msgid "Map Window Effect"
+msgstr "ウィンドウ効果をマップ"
+
+#: ../metadata/wobbly.xml.in.h:11
+#, fuzzy
+msgid "Map Windows"
+msgstr "ウィンドウタイプのマップ"
+
+#: ../metadata/wobbly.xml.in.h:12
+msgid "Maximize Effect"
+msgstr "効果を最大限にする"
+
+#: ../metadata/wobbly.xml.in.h:13
+msgid "Minimum Grid Size"
+msgstr "最小グリッドサイズ"
+
+#: ../metadata/wobbly.xml.in.h:14
+msgid "Minimum Vertex Grid Size"
+msgstr "最小頂点グリッドサイズ"
+
+#: ../metadata/wobbly.xml.in.h:15
+#, fuzzy
+msgid "Move Windows"
+msgstr "ウィンドウを移動"
+
+# 'driver' as in '(hardware) driver update'
+#: ../metadata/wobbly.xml.in.h:16
+msgid "Shiver"
+msgstr "震動"
+
+#: ../metadata/wobbly.xml.in.h:17
+msgid "Snap Inverted"
+msgstr "反転をスナップ"
+
+#: ../metadata/wobbly.xml.in.h:18
+msgid "Snap windows"
+msgstr "ウィンドウをスナップ"
+
+#: ../metadata/wobbly.xml.in.h:19
+msgid "Spring Friction"
+msgstr "バネ摩擦"
+
+#: ../metadata/wobbly.xml.in.h:20
+msgid "Spring K"
+msgstr "バネ定数"
+
+#: ../metadata/wobbly.xml.in.h:21
+msgid "Spring Konstant"
+msgstr "バネ定数"
+
+#: ../metadata/wobbly.xml.in.h:22
+msgid "Toggle window snapping"
+msgstr "ウィンドウスナップの切り替え"
+
+#: ../metadata/wobbly.xml.in.h:23
+msgid "Use spring model for wobbly window effect"
+msgstr "揺れるウィンドウ効果用にバネモデルを使用"
+
+#: ../metadata/wobbly.xml.in.h:24
+msgid "Vertex Grid Resolution"
+msgstr "頂点グリッド解像度"
+
+#: ../metadata/wobbly.xml.in.h:25
+#, fuzzy
+msgid "Windows that should wobble when focused"
+msgstr "フォーカス時に揺れるウィンドウタイプ"
+
+#: ../metadata/wobbly.xml.in.h:26
+#, fuzzy
+msgid "Windows that should wobble when grabbed"
+msgstr "取得時に揺れるウィンドウタイプ"
+
+#: ../metadata/wobbly.xml.in.h:27
+#, fuzzy
+msgid "Windows that should wobble when mapped"
+msgstr "マップ時に揺れるウィンドウタイプ"
+
+#: ../metadata/wobbly.xml.in.h:28
+#, fuzzy
+msgid "Windows that should wobble when moved"
+msgstr "移動時に揺れるウィンドウタイプ"
+
+#: ../metadata/wobbly.xml.in.h:29
+msgid "Wobble effect when maximizing and unmaximizing windows"
+msgstr "ウィンドウの最大化および最大化解除時の揺れる効果"
+
+#: ../metadata/wobbly.xml.in.h:30
+msgid "Wobbly Windows"
+msgstr "揺れるウィンドウ"
+
+#: ../metadata/zoom.xml.in.h:1
+msgid "Filter Linear"
+msgstr "線形のフィルタ"
+
+#: ../metadata/zoom.xml.in.h:9
+#, fuzzy
+msgid "Use linear filter when zoomed in"
+msgstr "ズームイン時に線形フィルタを使用"
+
+#: ../metadata/zoom.xml.in.h:10
+msgid "Zoom Desktop"
+msgstr "デスクトップのズーム"
+
+#: ../metadata/zoom.xml.in.h:11
+msgid "Zoom In"
+msgstr "ズームイン"
+
+#: ../metadata/zoom.xml.in.h:12
+msgid "Zoom Out"
+msgstr "ズームアウト"
+
+#: ../metadata/zoom.xml.in.h:13
+msgid "Zoom Speed"
+msgstr "ズーム速度"
+
+#: ../metadata/zoom.xml.in.h:14
+msgid "Zoom Timestep"
+msgstr "ズームタイムステップ"
+
+#: ../metadata/zoom.xml.in.h:15
+msgid "Zoom and pan desktop cube"
+msgstr "デスクトップキューブのズームとパン"
+
+#: ../metadata/zoom.xml.in.h:16
+msgid "Zoom factor"
+msgstr "ズーム要素"
+
+#: ../src/main.c:55
+msgid "Dock"
+msgstr "ドック"
+
+#: ../src/main.c:56
+msgid "Toolbar"
+msgstr "ツールバー"
+
+#: ../src/main.c:57
+msgid "Menu"
+msgstr "メニュー"
+
+#: ../src/main.c:58
+msgid "Utility"
+msgstr "ユーティリティ"
+
+#: ../src/main.c:59
+msgid "Splash"
+msgstr "スプラッシュ"
+
+#: ../src/main.c:60
+msgid "Dialog"
+msgstr "ダイアログ"
+
+#: ../src/main.c:61
+msgid "Normal"
+msgstr "通常"
+
+#: ../src/main.c:62
+msgid "DropdownMenu"
+msgstr "ドロップダウンメニュー"
+
+#: ../src/main.c:63
+msgid "PopupMenu"
+msgstr "ポップアップメニュー"
+
+#: ../src/main.c:64
+msgid "Tooltip"
+msgstr "ツールヒント"
+
+#: ../src/main.c:65
+msgid "Notification"
+msgstr "通知"
+
+#: ../src/main.c:66
+msgid "Combo"
+msgstr "コンボ"
+
+#: ../src/main.c:67
+msgid "Dnd"
+msgstr "Dnd"
+
+#: ../src/main.c:68
+msgid "ModalDialog"
+msgstr "モーダルダイアログ"
+
+#: ../src/main.c:69
+msgid "Fullscreen"
+msgstr "フルスクリーン"
+
+#: ../src/main.c:70
+msgid "Unknown"
+msgstr "不明"
+
+#, fuzzy
+#~ msgid "4xBilinear"
+#~ msgstr "線形のフィルタ"
+
+#, fuzzy
+#~ msgid "Gaussian"
+#~ msgstr "ロシア語"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command0 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand10により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command1 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand1により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command10 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand10により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command11 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand11により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command2 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand2により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command3 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand3により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command4 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand4により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command5 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand5により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command6 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand6により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command7 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand7により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command8 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼び出し時にcommand8により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command9 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "呼びし時にcommand9により識別されたシェルコマンドを実行するキーバインド"
+
+#, fuzzy
+#~ msgid ""
+#~ "Add line (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Add point (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Advance to next slide (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Amount of brightness in percent (0-100)"
+#~ msgstr "明るさの量(%)"
+
+#, fuzzy
+#~ msgid "Amount of opacity in percent (0-100)"
+#~ msgstr "不透明度(%)"
+
+#, fuzzy
+#~ msgid "Amount of saturation in percent (0-100)"
+#~ msgstr "飽和度の量(%)"
+
+#, fuzzy
+#~ msgid "Blur saturation (0-100)"
+#~ msgstr "飽和度"
+
+#, fuzzy
+#~ msgid ""
+#~ "Clear (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Close active window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Decrease window opacity (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Delay (in ms) between each rain-drop (0-3600000)"
+#~ msgstr "各水滴間の遅延時間(ms)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Distance desktop should be zoom out while switching windows (0.0-5.0)"
+#~ msgstr "ウィンドウ切り替え中デスクトップ距離をズームアウト"
+
+#~ msgid "Do not modify"
+#~ msgstr "変更しないでください"
+
+#, fuzzy
+#~ msgid ""
+#~ "Draw using tool (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Drop shadow X offset (-16-16)"
+#~ msgstr "シャドウXオフセットを無視"
+
+#, fuzzy
+#~ msgid "Drop shadow Y offset (-16-16)"
+#~ msgstr "シャドウYオフセットを無視"
+
+#, fuzzy
+#~ msgid "Drop shadow opacity (0.01-6.00)"
+#~ msgstr "シャドウ不透明度を無視"
+
+#, fuzzy
+#~ msgid "Drop shadow radius (0.0-48.0)"
+#~ msgstr "シャドウ半径を無視"
+
+#, fuzzy
+#~ msgid ""
+#~ "Enable pointer water effects (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Flip to left viewport and warp pointer (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Flip to right viewport and warp pointer (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#~ msgid "Focus Window Effect (None, Shiver)"
+#~ msgstr "ウィンドウ効果をフォーカス(なし、震動)"
+
+#, fuzzy
+#~ msgid "Focus prevention windows (match)"
+#~ msgstr "前のウィンドウを選択"
+
+#~ msgid "Fold Acceleration (1.0-20.0)"
+#~ msgstr "アクセラレーションをフォールド(1.0-20.0)"
+
+#, fuzzy
+#~ msgid "Fold Speed (0.0-50.0)"
+#~ msgstr "速度をフォールド(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Fold Timestep (0.0-50.0)"
+#~ msgstr "タイムステップをフォールド(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Gaussian radius (1-15)"
+#~ msgstr "ロシア連邦"
+
+#, fuzzy
+#~ msgid "Gaussian strength (0.00-1.00)"
+#~ msgstr "ロシア語"
+
+#, fuzzy
+#~ msgid ""
+#~ "Go back to previous slide (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Hide all windows and focus desktop (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Increase window opacity (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Initiate annotate drawing (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Initiate annotate erasing (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Initiate clone selection (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Initiate rectangle screenshot (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Interval before raising selected windows (0-10000)"
+#~ msgstr "選択したウィンドウを手前にするまでの間隔"
+
+#, fuzzy
+#~ msgid ""
+#~ "Layout and start transforming all windows (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Layout and start transforming window group (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Layout and start transforming windows (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Layout and start transforming windows on current output (Left, Right, "
+#~ "Top, Bottom, TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr "現在の出力で配列してウィンドウの変換を開始する"
+
+#, fuzzy
+#~ msgid ""
+#~ "Lower window beneath other windows (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Make window shiver (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#~ msgid "Map Window Effect (None, Shiver)"
+#~ msgstr "ウィンドウ効果のマップ(なし、震動)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Maximize active window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Maximize active window horizontally (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Maximize active window vertically (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Minimize active window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Minimize speed (0.0-50.0)"
+#~ msgstr "速度を最低にする(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Minimize timestep (0.0-50.0)"
+#~ msgstr "速度を最低にする(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Minimum Vertex Grid Size (4-128)"
+#~ msgstr "最小頂点グリッドサイズ"
+
+#, fuzzy
+#~ msgid "Number of virtual desktops (1-36)"
+#~ msgstr "仮想デスクトップ数"
+
+#, fuzzy
+#~ msgid "Opacity change step (1-50)"
+#~ msgstr "不透明度変更ステップ"
+
+#, fuzzy
+#~ msgid "Opacity level of moving windows (1-100)"
+#~ msgstr "移動ウィンドウの不透明度レベル"
+
+#, fuzzy
+#~ msgid "Opacity level of resizing windows (1-100)"
+#~ msgstr "移動ウィンドウの不透明度レベル"
+
+#, fuzzy
+#~ msgid ""
+#~ "Open a terminal (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Open window menu (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Outline Color"
+#~ msgstr "キューブの色"
+
+#, fuzzy
+#~ msgid "Overlay an icon on windows once they are scaled (None, Emblem, Big)"
+#~ msgstr "ウィンドウ調整後にアイコンをオーバレイ"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane down (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane left (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane right (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 1 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 10 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 11 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 12 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 2 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 3 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 4 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 5 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 6 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 7 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 8 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane to face 9 (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Plane up (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#~ msgid "Plugins that this must load before"
+#~ msgstr "これを前にロードする必要のあるプラグイン"
+
+#~ msgid "Plugins that this requires"
+#~ msgstr "これが必要なプラグイン"
+
+#, fuzzy
+#~ msgid ""
+#~ "Popup switcher if not visible and select next window (Left, Right, Top, "
+#~ "Bottom, TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "表示されていない場合スイッチャをポップアップしてすべてのウィンドウから次の"
+#~ "ウィンドウを選択"
+
+#, fuzzy
+#~ msgid ""
+#~ "Popup switcher if not visible and select next window out of all windows "
+#~ "(Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "表示されていない場合スイッチャをポップアップしてすべてのウィンドウから次の"
+#~ "ウィンドウを選択"
+
+#, fuzzy
+#~ msgid ""
+#~ "Popup switcher if not visible and select previous window (Left, Right, "
+#~ "Top, Bottom, TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "表示されていない場合スイッチャをポップアップしてすべてのウィンドウから前の"
+#~ "ウィンドウを選択"
+
+#, fuzzy
+#~ msgid ""
+#~ "Popup switcher if not visible and select previous window out of all "
+#~ "windows (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "表示されていない場合スイッチャをポップアップしてすべてのウィンドウから前の"
+#~ "ウィンドウを選択"
+
+#, fuzzy
+#~ msgid ""
+#~ "Pulse effect (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Raise window above other windows (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate left (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate left and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate right (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate right and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 1 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 1 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 10 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 10 and bring active window along (Left, Right, Top, "
+#~ "Bottom, TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 11 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 11 and bring active window along (Left, Right, Top, "
+#~ "Bottom, TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 12 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 12 and bring active window along (Left, Right, Top, "
+#~ "Bottom, TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 2 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 2 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 3 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 3 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 4 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 4 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 5 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 5 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 6 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 6 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 7 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 7 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 8 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 8 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 9 (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to face 9 and bring active window along (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate to viewport (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rotate with window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Rotation Acceleration (1.0-20.0)"
+#~ msgstr "アクセラレーションをフォールド(1.0-20.0)"
+
+#, fuzzy
+#~ msgid "Rotation Speed (0.0-50.0)"
+#~ msgstr "速度のズーム(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Rotation Timestep (0.0-50.0)"
+#~ msgstr "タイムステップのズーム(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Scale speed (0.0-50.0)"
+#~ msgstr "スケール速度(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Scale timestep (0.0-50.0)"
+#~ msgstr "スケールタイムステップ(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Screen size multiplier for horizontal virtual size (1-32)"
+#~ msgstr "水平仮想サイズの画面サイズ乗数"
+
+#, fuzzy
+#~ msgid "Screen size multiplier for vertical virtual size (1-32)"
+#~ msgstr "垂直仮想サイズの画面サイズ乗数"
+
+#, fuzzy
+#~ msgid ""
+#~ "Select next window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Select previous window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Sensitivity of pointer movement (0.01-100.00)"
+#~ msgstr "ポインタの移動感度"
+
+#~ msgid "Shade resistance (0-100)"
+#~ msgstr "シェード耐性（0-100）"
+
+#, fuzzy
+#~ msgid ""
+#~ "Show Run Application dialog (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Show the main menu (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Space between windows (0-250)"
+#~ msgstr "ウィンドウ間のスペース"
+
+#, fuzzy
+#~ msgid "Spring Friction (0.0-10.0)"
+#~ msgstr "バネ摩擦"
+
+#, fuzzy
+#~ msgid "Spring Konstant (0.0-10.0)"
+#~ msgstr "バネ定数"
+
+#, fuzzy
+#~ msgid ""
+#~ "Start Rotation (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Start moving window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Start resizing window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Switcher speed (0.0-50.0)"
+#~ msgstr "スケール速度(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Switcher timestep (0.0-50.0)"
+#~ msgstr "スケールタイムステップ(0.1-50.0)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Take a screenshot (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Take a screenshot of a window (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#~ msgid "Texture filtering (Fast, Good, Best)"
+#~ msgstr "テクスチャフィルタ(高速、良、最高)"
+
+#, fuzzy
+#~ msgid "The rate at which the screen is redrawn (times/second) (1-200)"
+#~ msgstr "画面の再描画レート(回/秒)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Time (in ms) before scale mode is terminated when hovering over a window "
+#~ "(50-10000)"
+#~ msgstr "ウィンドウ上をホバー時に、スケールモードを終了するまでの時間(ms)"
+
+#, fuzzy
+#~ msgid "Timeout before flipping viewport (0-1000)"
+#~ msgstr "ビューポートフリップのタイムアウト"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle active window maximized (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle active window maximized horizontally (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle active window maximized vertically (Left, Right, Top, Bottom, "
+#~ "TopLeft, TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle active window shaded (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle rain effect (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle use of slow animations (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle window snapping (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Toggle wiper effect (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#~ msgid "USe linear filter when zoomed in"
+#~ msgstr "ズームイン時に線形フィルタを使用"
+
+#, fuzzy
+#~ msgid ""
+#~ "Unfold cube (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Unmaximize active window (Left, Right, Top, Bottom, TopLeft, TopRight, "
+#~ "BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Vertex Grid Resolution (1-64)"
+#~ msgstr "頂点グリッド解像度"
+
+#, fuzzy
+#~ msgid "Water offset scale (0.0-10.0)"
+#~ msgstr "水オフセットスケール"
+
+#, fuzzy
+#~ msgid ""
+#~ "Wave effect from window title (Left, Right, Top, Bottom, TopLeft, "
+#~ "TopRight, BottomLeft, BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Window blur speed (0.0-10.0)"
+#~ msgstr "ウィンドウフェードスピード"
+
+#, fuzzy
+#~ msgid "Window fade speed (0.0-25.0)"
+#~ msgstr "ウィンドウフェードスピード"
+
+#, fuzzy
+#~ msgid "Windows that should be affected by focus blur (match)"
+#~ msgstr "フェードするウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should be decorated (match)"
+#~ msgstr "フェードするウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should be fading (match)"
+#~ msgstr "フェードするウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should be have a shadow (match)"
+#~ msgstr "フェードするウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should be scaled in scale mode (match)"
+#~ msgstr "スケールモードで調整するウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should be shown in switcher (match)"
+#~ msgstr "スイッチャに表示するウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should be transformed when minimized (match)"
+#~ msgstr "最小化した場合に変換するウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should use alpha blur by default (match)"
+#~ msgstr "フェードするウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should wobble when focused (match)"
+#~ msgstr "フォーカス時に揺れるウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should wobble when grabbed (match)"
+#~ msgstr "取得時に揺れるウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should wobble when mapped (match)"
+#~ msgstr "マップ時に揺れるウィンドウタイプ"
+
+#, fuzzy
+#~ msgid "Windows that should wobble when moved (match)"
+#~ msgstr "移動時に揺れるウィンドウタイプ"
+
+#, fuzzy
+#~ msgid ""
+#~ "Zoom In (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid ""
+#~ "Zoom Out (Left, Right, Top, Bottom, TopLeft, TopRight, BottomLeft, "
+#~ "BottomRight)"
+#~ msgstr ""
+#~ "スケールモードを開始するホットコーナー(TopLeft、TopRight、BottomLeft、"
+#~ "BottomRight)"
+
+#, fuzzy
+#~ msgid "Zoom Speed (0.0-50.0)"
+#~ msgstr "速度のズーム(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Zoom Timestep (0.0-50.0)"
+#~ msgstr "タイムステップのズーム(0.1-50.0)"
+
+#, fuzzy
+#~ msgid "Zoom factor (1.01-3.00)"
+#~ msgstr "ズーム要素"
+
+#~ msgid "."
+#~ msgstr "."
+
+#, fuzzy
+#~ msgid "Maximize"
+#~ msgstr "最小化"
+
+#, fuzzy
+#~ msgid "Plane To Face %d"
+#~ msgstr "%d に向かうように回転"
+
+#, fuzzy
+#~ msgid "Plane to face %d"
+#~ msgstr "%d に向かうように回転"
+
+#, fuzzy
+#~ msgid "Plane To Face %d with Window"
+#~ msgstr "%d がウィンドウに向かうように回転"
+
+#, fuzzy
+#~ msgid "Plane to face %d and bring active window along"
+#~ msgstr "%d に向かうように回転し、アクティブウィンドウを揃えます"
+
+#~ msgid "Rotate To Face %d"
+#~ msgstr "%d に向かうように回転"
+
+#~ msgid "Rotate to face %d"
+#~ msgstr "%d に向かうように回転"
+
+#~ msgid "Rotate To Face %d with Window"
+#~ msgstr "%d がウィンドウに向かうように回転"
+
+#~ msgid "Rotate to face %d and bring active window along"
+#~ msgstr "%d に向かうように回転し、アクティブウィンドウを揃えます"
+
+#~ msgid "None"
+#~ msgstr "なし"
+
+#~ msgid "Emblem"
+#~ msgstr "エンブレム"
+
+#~ msgid "Big"
+#~ msgstr "大きい"
+
+#~ msgid "Fast"
+#~ msgstr "高速"
+
+#~ msgid "Good"
+#~ msgstr "良"
+
+#~ msgid "Best"
+#~ msgstr "最高"
+
+#~ msgid "Command line %d"
+#~ msgstr "コマンドライン %d"
+
+#~ msgid "Command line to be executed in shell when run_command%d is invoked"
+#~ msgstr "run_command%d の起動時にシェルで実行されるコマンドライン"
+
+#~ msgid "Run command %d"
+#~ msgstr "コマンド %d の実行"
+
+#~ msgid ""
+#~ "A keybinding that when invoked, will run the shell command identified by "
+#~ "command%d"
+#~ msgstr ""
+#~ "呼び出し時にcommand%d で指定されたシェルコマンドを実行するキーバインド"
+
+#~ msgid "Window Types"
+#~ msgstr "ウィンドウタイプ"
+
+#~ msgid "Move Window Types"
+#~ msgstr "ウィンドウタイプを移動"
+
+#, fuzzy
+#~ msgid "Enable focus prevention"
+#~ msgstr "ZENパーティションを有効にする"
+
+#~ msgid "Corners"
+#~ msgstr "コーナー"
+
+#~ msgid "Focus window when mouse moves over them"
+#~ msgstr "マウスの移動時にウィンドウをフォーカス"
+
+#~ msgid "Initiate All Windows"
+#~ msgstr "すべてのウィンドウを開始"
+
+#~ msgid "Initiate Keyboard Window Move"
+#~ msgstr "キーボードによるウィンドウの移動を開始する"
+
+#~ msgid "Initiate Keyboard Window Resize"
+#~ msgstr "キーボードによるウィンドウのサイズ変更を開始する"
+
+#~ msgid "Initiate Window Switcher"
+#~ msgstr "ウィンドウスイッチャを起動"
+
+#~ msgid "Modifier to show switcher for all windows"
+#~ msgstr "すべてのウィンドウでスイッチャを表示する修飾子"
+
+#~ msgid "Return from scale view"
+#~ msgstr "スケールビューから戻る"
+
+#~ msgid "Show switcher"
+#~ msgstr "スイッチャの表示"
+
+#~ msgid "Sloppy Focus"
+#~ msgstr "スロッピフォーカス"
+
+#~ msgid "Start moving window using keyboard"
+#~ msgstr "キーボードを使ったウィンドウの移動を開始"
+
+#~ msgid "Start resizing window using keyboard"
+#~ msgstr "キーボードを使ったウィンドウのサイズ変更を開始"
+
+#~ msgid "Terminate"
+#~ msgstr "終了"
+
+#~ msgid "Water effect on system beep"
+#~ msgstr "システムビープ音の水効果"
+
+#~ msgid ""
+#~ "Window types that should be fading (Desktop, Dock, Toolbar, Menu, "
+#~ "Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, Unknown)"
+#~ msgstr ""
+#~ "フェードするウィンドウタイプ(デスクトップ、ドック、ツールバー、メニュー、"
+#~ "ユーティリティ、スプラッシュ、ダイアログ、モデルダイアログ、標準、全画面、"
+#~ "不明)"
+
+#~ msgid ""
+#~ "Window types that should be transformed when minimized (Desktop, Dock, "
+#~ "Toolbar, Menu, Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, "
+#~ "Unknown)"
+#~ msgstr ""
+#~ "最小化時に変換するウィンドウタイプ(デスクトップ、ドック、ツールバー、メ"
+#~ "ニュー、ユーティリティ、スプラッシュ、ダイアログ、モデルダイアログ、標準、"
+#~ "全画面、不明)"
+
+#~ msgid ""
+#~ "Window types that should scaled in scale mode (Desktop, Dock, Toolbar, "
+#~ "Menu, Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, Unknown)"
+#~ msgstr ""
+#~ "スケールモードでスケールするウィンドウタイプ(デスクトップ、ドック、ツール"
+#~ "バー、メニュー、ユーティリティ、スプラッシュ、ダイアログ、モデルダイアロ"
+#~ "グ、標準、全画面、不明)"
+
+#~ msgid ""
+#~ "Window types that should shown in switcher (Desktop, Dock, Toolbar, Menu, "
+#~ "Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, Unknown)"
+#~ msgstr ""
+#~ "スイッチャで表示するウィンドウタイプ(デスクトップ、ドック、ツールバー、メ"
+#~ "ニュー、ユーティリティ、スプラッシュ、ダイアログ、モデルダイアログ、標準、"
+#~ "全画面、不明)"
+
+#~ msgid ""
+#~ "Window types that should wobble when focused (Desktop, Dock, Toolbar, "
+#~ "Menu, Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, Unknown)"
+#~ msgstr ""
+#~ "フォーカス時に揺れるウィンドウタイプ(デスクトップ、ドック、ツールバー、メ"
+#~ "ニュー、ユーティリティ、スプラッシュ、ダイアログ、モデルダイアログ、標準、"
+#~ "全画面、不明)"
+
+#~ msgid ""
+#~ "Window types that should wobble when grabbed (Desktop, Dock, Toolbar, "
+#~ "Menu, Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, Unknown)"
+#~ msgstr ""
+#~ "取得時に揺れるウィンドウタイプ(デスクトップ、ドック、ツールバー、メ"
+#~ "ニュー、ユーティリティ、スプラッシュ、ダイアログ、モデルダイアログ、標準、"
+#~ "全画面、不明)"
+
+#~ msgid ""
+#~ "Window types that should wobble when mapped (Desktop, Dock, Toolbar, "
+#~ "Menu, Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, Unknown)"
+#~ msgstr ""
+#~ "マップ時に揺れるウィンドウタイプ(デスクトップ、ドック、ツールバー、メ"
+#~ "ニュー、ユーティリティ、スプラッシュ、ダイアログ、モデルダイアログ、標準、"
+#~ "全画面、不明)"
+
+#~ msgid ""
+#~ "Window types that should wobble when moved (Desktop, Dock, Toolbar, Menu, "
+#~ "Utility, Splash, Dialog, ModalDialog, Normal, Fullscreen, Unknown)"
+#~ msgstr ""
+#~ "移動時に揺れるウィンドウタイプ(デスクトップ、ドック、ツールバー、メ"
+#~ "ニュー、ユーティリティ、スプラッシュ、ダイアログ、モデルダイアログ、標準、"
+#~ "全画面、不明)"
+
+#~ msgid "Wobble effect on system beep"
+#~ msgstr "システムビープ音の揺れる効果"

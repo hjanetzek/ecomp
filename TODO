@@ -1,0 +1,53 @@
+MUHAHAHA way too much to do to tell...
+
+
+
+in general
+x remove all wm parts from 'compiz' i.e. strip out all unused parts
+x rename everything to ecomorph
++ keep plugin compatibility with compiz
+x fix synchronisation between e's desktops and ecomorph viewports (or better add viewport support to e)
+x fix sync between window movements triggered by ecomorph
+  (in general again: let ecomorph act as something like an ewmh pager and make e ewmh compilant in this regards)
+- write a window decorator that uses e's border themes... and the dropshadow module 
+- write a module that reads the metadata spec files and creates config dialogs from them
+x trigger all plugin actions via dbus by an e module 
+  - add edge/corner events to e
++ get window icons from e
+- use efl for core
+- switch to xcb branch someday :/
+...
+
+___________________________________________________________________________________
+priority fixies:
+- remove '_e_border' window class hacks
+
++ use desktop atom for e's background
+- send event to uniconify windows 
+
+x move border with deskflip correctly
+
+x place windows correctly after restart of e (claws is not brought to front... claws bug? :p)
+  (hack atm, but works ok)
+
+x get sticky window property... atm only the window on the 
+  desk where it was made sticky should be moved
+  (expo movement of sticky window still does not work) 
+
+
+
+___________________________________________________________________________________
+bugs
+- not all window with _e_border class are w->managed ?!
+- audacious playlist is lost somewhere when setting audacious sticky 
+ -> get it back with 'cleanup windows' on the origin desk 
+- expo : the desk must be selected before one can move fullscreen/maximized window correctly 
+- toggle keybindigns that were deactivated by mouse must  be deactivated by re-pressing th key before 
+  other plugin actions can be activated-> ecomp needs to send a deactivation event 
+
+
+Legend:
++ : done
+x :  partially done
+- : not done
+

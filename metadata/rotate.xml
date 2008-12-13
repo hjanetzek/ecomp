@@ -1,0 +1,1442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="rotate">
+	<short>Rotate Cube</short>
+	<short xml:lang="ca">Gira el cub</short>
+	<short xml:lang="cs">Otočit kostkou</short>
+	<short xml:lang="da">Roter kubus</short>
+	<short xml:lang="de">Würfel drehen</short>
+	<short xml:lang="es">Girar cubo</short>
+	<short xml:lang="fi">Käännä kuutiota</short>
+	<short xml:lang="fr">Rotation du cube</short>
+	<short xml:lang="hu">Kocka forgatása</short>
+	<short xml:lang="it">Ruota cubo</short>
+	<short xml:lang="ja">キューブの回転</short>
+	<short xml:lang="pl">Obróć kostkę</short>
+	<short xml:lang="pt">Girar Cubo</short>
+	<short xml:lang="pt_BR">Girar Cubo</short>
+	<short xml:lang="ru">Вращать куб</short>
+	<short xml:lang="sv">Rotera kub</short>
+	<short xml:lang="zh_CN">旋转立方体</short>
+	<short xml:lang="zh_TW">旋轉立方體</short>
+	<long>Rotate desktop cube</long>
+	<long xml:lang="ca">Gira el cub de l'escriptori</long>
+	<long xml:lang="cs">Otočit kostkou ploch</long>
+	<long xml:lang="da">Roter skrivebordskubus</long>
+	<long xml:lang="de">Desktop-Würfel drehen</long>
+	<long xml:lang="es">Girar cubo del escritorio</long>
+	<long xml:lang="fi">Käännä työpöytäkuutiota</long>
+	<long xml:lang="fr">Rotation du cube de bureau</long>
+	<long xml:lang="hu">A munkaasztalkocka forgatása</long>
+	<long xml:lang="it">Ruota cubo desktop</long>
+	<long xml:lang="ja">デスクトップキューブの回転</long>
+	<long xml:lang="pl">Obróć kostkę pulpitu</long>
+	<long xml:lang="pt">Girar cubo da área de trabalho</long>
+	<long xml:lang="pt_BR">Girar cubo da área de trabalho</long>
+	<long xml:lang="ru">Вращение куба рабочего стола</long>
+	<long xml:lang="sv">Rotera skrivbordskub</long>
+	<long xml:lang="zh_CN">旋转桌面立方体</long>
+	<long xml:lang="zh_TW">旋轉桌面立方體</long>
+	<deps>
+	    <requirement>
+		<plugin>cube</plugin>
+	    </requirement>
+	    <relation type="after">
+		<plugin>cube</plugin>
+	    </relation>
+	</deps>
+	<display>
+	    <option type="action" name="initiate">
+		<short>Initiate</short>
+		<short xml:lang="ca">Inicia</short>
+		<short xml:lang="cs">Iniciovat</short>
+		<short xml:lang="da">Start</short>
+		<short xml:lang="de">Initiieren</short>
+		<short xml:lang="es">Iniciar</short>
+		<short xml:lang="fi">Aktivoi</short>
+		<short xml:lang="fr">Lancer</short>
+		<short xml:lang="hu">Indítás</short>
+		<short xml:lang="it">Avvia</short>
+		<short xml:lang="ja">開始</short>
+		<short xml:lang="pl">Inicjuj</short>
+		<short xml:lang="pt">Iniciar</short>
+		<short xml:lang="pt_BR">Iniciar</short>
+		<short xml:lang="ru">Инициировать</short>
+		<short xml:lang="sv">Initiera</short>
+		<short xml:lang="zh_CN">启动</short>
+		<short xml:lang="zh_TW">起始化</short>
+		<long>Start Rotation</long>
+		<long xml:lang="ca">Inicia el gir</long>
+		<long xml:lang="cs">Zahájit otáčení</long>
+		<long xml:lang="da">Start rotation</long>
+		<long xml:lang="de">Drehung starten</long>
+		<long xml:lang="es">Iniciar giro</long>
+		<long xml:lang="fi">Aloita kääntäminen</long>
+		<long xml:lang="fr">Démarrer la rotation</long>
+		<long xml:lang="hu">Forgatás indítása</long>
+		<long xml:lang="it">Avvia rotazione</long>
+		<long xml:lang="ja">回転の開始</long>
+		<long xml:lang="pl">Rozpocznij obrót</long>
+		<long xml:lang="pt">Iniciar Rotação</long>
+		<long xml:lang="pt_BR">Iniciar Rotação</long>
+		<long xml:lang="ru">Запуск вращения</long>
+		<long xml:lang="sv">Starta rotering</long>
+		<long xml:lang="zh_CN">开始旋转</long>
+		<long xml:lang="zh_TW">開始旋轉</long>
+		<allowed key="true" button="true"/>
+		<default>
+		    <button>&lt;Control&gt;&lt;Alt&gt;Button1</button>
+		</default>
+	    </option>
+	    <option type="action" name="rotate_left">
+		<short>Rotate Left</short>
+		<short xml:lang="ca">Gira cap a l'esquerra</short>
+		<short xml:lang="cs">Otočit vlevo</short>
+		<short xml:lang="da">Roter venstre</short>
+		<short xml:lang="de">Links drehen</short>
+		<short xml:lang="es">Girar a la izquierda</short>
+		<short xml:lang="fi">Käännä vasemmalle</short>
+		<short xml:lang="fr">Rotation à gauche</short>
+		<short xml:lang="hu">Forgatás balra</short>
+		<short xml:lang="it">Ruota sinistra</short>
+		<short xml:lang="ja">左に回転</short>
+		<short xml:lang="pl">Obróć w lewo</short>
+		<short xml:lang="pt">Girar para a Esquerda</short>
+		<short xml:lang="pt_BR">Girar para a Esquerda</short>
+		<short xml:lang="ru">Вращать влево</short>
+		<short xml:lang="sv">Rotera åt vänster</short>
+		<short xml:lang="zh_CN">逆时针旋转</short>
+		<short xml:lang="zh_TW">往左旋轉</short>
+		<long>Rotate left</long>
+		<long xml:lang="ca">Gira cap a l'esquerra</long>
+		<long xml:lang="cs">Otočit vlevo</long>
+		<long xml:lang="da">Roter til venstre</long>
+		<long xml:lang="de">Links drehen</long>
+		<long xml:lang="es">Girar a la izquierda</long>
+		<long xml:lang="fi">Käännä vasemmalle</long>
+		<long xml:lang="fr">Rotation à gauche</long>
+		<long xml:lang="hu">Balra forgatás</long>
+		<long xml:lang="it">Ruota _sinistra</long>
+		<long xml:lang="ja">左に回転</long>
+		<long xml:lang="pl">Obróć w lewo</long>
+		<long xml:lang="pt">Girar para a esquerda</long>
+		<long xml:lang="pt_BR">Girar para a esquerda</long>
+		<long xml:lang="ru">Вращение влево</long>
+		<long xml:lang="sv">Rotera åt vänster</long>
+		<long xml:lang="zh_CN">逆时针旋转</long>
+		<long xml:lang="zh_TW">往左旋轉</long>
+		<allowed key="true" edgednd="true" edge="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;Left</key>
+		</default>
+	    </option>
+	    <option type="action" name="rotate_right">
+		<short>Rotate Right</short>
+		<short xml:lang="ca">Gira cap a la dreta</short>
+		<short xml:lang="cs">Otočit vpravo</short>
+		<short xml:lang="da">Roter højre</short>
+		<short xml:lang="de">Rechts drehen</short>
+		<short xml:lang="es">Girar a la derecha</short>
+		<short xml:lang="fi">Käännä oikealle</short>
+		<short xml:lang="fr">Rotation à droite</short>
+		<short xml:lang="hu">Forgatás jobbra</short>
+		<short xml:lang="it">Ruota _destra</short>
+		<short xml:lang="ja">右に回転</short>
+		<short xml:lang="pl">Obróć w prawo</short>
+		<short xml:lang="pt">Girar para a Direita</short>
+		<short xml:lang="pt_BR">Girar para a Direita</short>
+		<short xml:lang="ru">Вращать вправо</short>
+		<short xml:lang="sv">Rotera åt höger</short>
+		<short xml:lang="zh_CN">顺时针旋转</short>
+		<short xml:lang="zh_TW">往右旋轉</short>
+		<long>Rotate right</long>
+		<long xml:lang="ca">Gira cap a la dreta</long>
+		<long xml:lang="cs">Otočit vpravo</long>
+		<long xml:lang="da">Roter til højre</long>
+		<long xml:lang="de">Rechts drehen</long>
+		<long xml:lang="es">Girar a la derecha</long>
+		<long xml:lang="fi">Käännä oikealle</long>
+		<long xml:lang="fr">Rotation à droite</long>
+		<long xml:lang="hu">Jobbra forgatás</long>
+		<long xml:lang="it">Ruota _destra</long>
+		<long xml:lang="ja">右に回転</long>
+		<long xml:lang="pl">Obróć w prawo</long>
+		<long xml:lang="pt">Girar para a direita</long>
+		<long xml:lang="pt_BR">Girar para a direita</long>
+		<long xml:lang="ru">Вращение вправо</long>
+		<long xml:lang="sv">Rotera åt höger</long>
+		<long xml:lang="zh_CN">顺时针旋转</long>
+		<long xml:lang="zh_TW">往右旋轉</long>
+		<allowed key="true" edgednd="true" edge="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;Right</key>
+		</default>
+	    </option>
+	    <option type="action" name="rotate_left_window">
+		<short>Rotate Left with Window</short>
+		<short xml:lang="ca">Gira cap a l'esquerra amb la finestra</short>
+		<short xml:lang="cs">Otočit vlevo s oknem</short>
+		<short xml:lang="da">Roter til venstre med vindue</short>
+		<short xml:lang="de">Links drehen mit Fenster</short>
+		<short xml:lang="es">Girar a la izquierda con ventana</short>
+		<short xml:lang="fi">Käännä vasemmalle ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation à gauche avec la fenêtre</short>
+		<short xml:lang="hu">Forgatás balra az ablakkal együtt</short>
+		<short xml:lang="it">Ruota a sinistra con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に左に回転</short>
+		<short xml:lang="pl">Obróć w lewo z oknem</short>
+		<short xml:lang="pt">Girar para a Esquerda com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Esquerda com Janela</short>
+		<short xml:lang="ru">Вращать влево вместе с окном</short>
+		<short xml:lang="sv">Rotera åt vänster med fönster</short>
+		<short xml:lang="zh_CN">逆时针旋转窗口</short>
+		<short xml:lang="zh_TW">隨視窗往左旋轉</short>
+		<long>Rotate left and bring active window along</long>
+		<allowed key="true" edgednd="true" edge="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;&lt;Shift&gt;Left</key>
+		</default>
+	    </option>
+	    <option type="action" name="rotate_right_window">
+		<short>Rotate Right with Window</short>
+		<short xml:lang="ca">Gira cap a la dreta amb la finestra</short>
+		<short xml:lang="cs">Otočit vpravo s oknem</short>
+		<short xml:lang="da">Roter til højre med vindue</short>
+		<short xml:lang="de">Rechts drehen mit Fenster</short>
+		<short xml:lang="es">Girar a la derecha con ventana</short>
+		<short xml:lang="fi">Käännä oikealle ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation à droite avec la fenêtre</short>
+		<short xml:lang="hu">Forgatás jobbra az ablakkal együtt</short>
+		<short xml:lang="it">Ruota a destra con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に右に回転</short>
+		<short xml:lang="pl">Obróć w prawo z oknem</short>
+		<short xml:lang="pt">Girar para a Direita com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Direita com Janela</short>
+		<short xml:lang="ru">Вращать вправо вместе с окном</short>
+		<short xml:lang="sv">Rotera åt höger med fönster</short>
+		<short xml:lang="zh_CN">顺时针旋转窗口</short>
+		<short xml:lang="zh_TW">隨視窗往右旋轉</short>
+		<long>Rotate right and bring active window along</long>
+		<allowed key="true" edgednd="true" edge="true" button="true"/>
+		<default>
+		    <key>&lt;Control&gt;&lt;Alt&gt;&lt;Shift&gt;Right</key>
+		</default>
+	    </option>
+	    <option type="bool" name="edge_flip_pointer">
+		<short>Edge Flip Pointer</short>
+		<short xml:lang="ca">Punter d'inversió de vora</short>
+		<short xml:lang="cs">Překlápění hran ukazatelem</short>
+		<short xml:lang="da">Markør til kant, vend</short>
+		<short xml:lang="de">An Rand wechseln (Zeiger)</short>
+		<short xml:lang="es">Puntero de inversión de borde</short>
+		<short xml:lang="fi">Osoittimella aktivoituvat työpöydän reunat</short>
+		<short xml:lang="fr">Rotation de côté - Pointeur</short>
+		<short xml:lang="hu">Élforgatás mutató</short>
+		<short xml:lang="it">Puntatore riflessione bordi</short>
+		<short xml:lang="ja">エッジフリップポインタ</short>
+		<short xml:lang="pl">Przełączanie widoków za pomocą wskaźnika</short>
+		<short xml:lang="pt">Ponteiro de Inversão de Bordas</short>
+		<short xml:lang="pt_BR">Ponteiro de Inversão de Bordas</short>
+		<short xml:lang="ru">Отражение при курсоре на краю</short>
+		<short xml:lang="sv">Kantvänd pekare</short>
+		<short xml:lang="zh_CN">边缘翻转指针</short>
+		<short xml:lang="zh_TW">邊緣翻轉指標</short>
+		<long>Flip to next viewport when moving pointer to screen edge</long>
+		<long xml:lang="ca">Inverteix cap a la propera àrea de visualització en moure el punter cap a la vora de la pantalla</long>
+		<long xml:lang="cs">Překlopit na další viewport při umístění ukazatele na hranici obrazovky</long>
+		<long xml:lang="da">Vend til næste visningsområde, når markøren flyttes til skærmens kant</long>
+		<long xml:lang="de">Zum nächsten Viewport wechseln, wenn Zeiger an den Bildschirmrand verschoben wird</long>
+		<long xml:lang="es">Se invierte al viewport siguiente al arrastrar un puntero al borde de la pantalla</long>
+		<long xml:lang="fi">Vaihda seuraavaan työpöytään vedettäessä osoitinta ruudun reunaa vasten.</long>
+		<long xml:lang="fr">Rotation vers la fenêtre suivante - Déplacement du pointeur vers le côté de l'écran</long>
+		<long xml:lang="hu">Mutató kép szélére húzása esetén forgatás a következő nézőpontig</long>
+		<long xml:lang="it">Rifletti su finestra successiva durante lo spostamento del puntatore sul bordo della schermata</long>
+		<long xml:lang="ja">ポインタを画面の端に移動する時に次のビューポートにフリップする</long>
+		<long xml:lang="pl">Przełącz do następnego widoku podczas przesuwania wskaźnika na krawędź ekranu</long>
+		<long xml:lang="pt">Inverter para o viewport seguinte ao mover o ponteiro para a borda da tela</long>
+		<long xml:lang="pt_BR">Inverter para o viewport seguinte ao mover o ponteiro para a borda da tela</long>
+		<long xml:lang="ru">Отражение на следующее кадровое окно при смещении курсора к краю экрана</long>
+		<long xml:lang="sv">Vänd till nästa skrivbordsvy när muspekaren flyttas till skärmens kant</long>
+		<long xml:lang="zh_CN">将指针移至屏幕边缘时翻转到下个视点</long>
+		<long xml:lang="zh_TW">將指標移動到螢幕邊緣時翻轉到下一個檢視區</long>
+		<default>false</default>
+	    </option>
+	    <option type="bool" name="edge_flip_window">
+		<short>Edge Flip Move</short>
+		<short xml:lang="ca">Moviment d'inversió de vora</short>
+		<short xml:lang="cs">Překlápění hran při přesunu</short>
+		<short xml:lang="da">Flyt til kant, vend</short>
+		<short xml:lang="de">An Rand wechseln (Verschieben)</short>
+		<short xml:lang="es">Mover inversión de borde</short>
+		<short xml:lang="fi">Ikkunaa siirrettäessä aktivoituvat työpöydän reunat</short>
+		<short xml:lang="fr">Rotation de côté - Déplacement</short>
+		<short xml:lang="hu">Élforgatás áthelyezés</short>
+		<short xml:lang="it">Spostamento riflessione bordi</short>
+		<short xml:lang="ja">エッジフリップ移動</short>
+		<short xml:lang="pl">Przełączanie krawędziami - przenoszenie</short>
+		<short xml:lang="pt">Movimento de Inversão de Bordas</short>
+		<short xml:lang="pt_BR">Movimento de Inversão de Bordas</short>
+		<short xml:lang="ru">Отражение при перемещении к краю</short>
+		<short xml:lang="sv">Kantvänd flyttning</short>
+		<short xml:lang="zh_CN">边缘翻转移动</short>
+		<short xml:lang="zh_TW">邊緣翻轉移動</short>
+		<long>Flip to next viewport when moving window to screen edge</long>
+		<long xml:lang="ca">Inverteix cap a la propera àrea de visualització en moure la finestra cap a la vora de la pantalla</long>
+		<long xml:lang="cs">Překlopit na další viewport při přesunu okna na hranici obrazovky</long>
+		<long xml:lang="da">Vend til næste visningsområde, når vinduet flyttes til skærmens kant</long>
+		<long xml:lang="de">Zum nächsten Viewport wechseln, wenn Fenster an den Bildschirmrand verschoben wird</long>
+		<long xml:lang="es">Se invierte al viewport siguiente al mover una ventana al borde de la pantalla</long>
+		<long xml:lang="fi">Vaihda seuraavaan työpöytään vedettäessä ikkunaa ruudun reunaa vasten.</long>
+		<long xml:lang="fr">Rotation vers la fenêtre suivante - Déplacement de la fenêtre vers le côté de l'écran</long>
+		<long xml:lang="hu">Egy ablak kép szélére húzása esetén forgatás a következő nézőpontig</long>
+		<long xml:lang="it">Rifletti su finestra successiva durante lo spostamento della finestra sul bordo della schermata</long>
+		<long xml:lang="ja">ウィンドウを画面の端に移動する時に次のビューポートにフリップする</long>
+		<long xml:lang="pl">Przełącz do następnego widoku podczas przesuwania okien na krawędź ekranu</long>
+		<long xml:lang="pt">Inverter para o viewport seguinte ao mover a janela para a borda da tela</long>
+		<long xml:lang="pt_BR">Inverter para o viewport seguinte ao mover a janela para a borda da tela</long>
+		<long xml:lang="ru">Отражение на следующее кадровое окно при перемещении окна к краю экрана</long>
+		<long xml:lang="sv">Vänd till nästa skrivbordsvy när fönster flyttas till skärmens kant</long>
+		<long xml:lang="zh_CN">将窗口移至屏幕边缘时翻转到下个视点</long>
+		<long xml:lang="zh_TW">將視窗移動到螢幕邊緣時翻轉到下一個檢視區</long>
+		<default>true</default>
+	    </option>
+	    <option type="bool" name="edge_flip_dnd">
+		<short>Edge Flip DnD</short>
+		<short xml:lang="ca">DnD d'inversió de vora</short>
+		<short xml:lang="cs">Překlápění hran DnD</short>
+		<short xml:lang="da">Træk-og-slip til kant, vend</short>
+		<short xml:lang="de">An Rand wechseln (Ziehen und Ablegen)</short>
+		<short xml:lang="es">DnD de inversión de borde</short>
+		<short xml:lang="fi">Raahattaessa aktivoituvat työpöydän reunat</short>
+		<short xml:lang="fr">Rotation de côté - Glissement-déplacement</short>
+		<short xml:lang="hu">Élforgatás egérművelet</short>
+		<short xml:lang="it">DnD riflessione bordi</short>
+		<short xml:lang="ja">エッジフリップDnD</short>
+		<short xml:lang="pl">Przełączanie krawędziami - DnD</short>
+		<short xml:lang="pt">DnD de Inversão de Bordas</short>
+		<short xml:lang="pt_BR">DnD de Inversão de Bordas</short>
+		<short xml:lang="ru">Отражение при перетаскивании к краю</short>
+		<short xml:lang="sv">Kantvänd DnD</short>
+		<short xml:lang="zh_CN">边缘翻转 DnD</short>
+		<short xml:lang="zh_TW">邊緣翻轉 DnD</short>
+		<long>Flip to next viewport when dragging object to screen edge</long>
+		<long xml:lang="ca">Inverteix cap a la propera àrea de visualització en arrossegar l'objecte cap a la vora de la pantalla</long>
+		<long xml:lang="cs">Překlopit na další viewport při přetažení objektu na hranici obrazovky</long>
+		<long xml:lang="da">Vend til næste visningsområde, når et objekt trækkes til skærmens kant</long>
+		<long xml:lang="de">Zum nächsten Viewport wechseln, wenn Objekt an den Bildschirmrand gezogen wird</long>
+		<long xml:lang="es">Se invierte al viewport siguiente al arrastrar un objeto al borde de la pantalla</long>
+		<long xml:lang="fi">Vaihda seuraavaan työpöytään vedettäessä objektia ruudun reunaa vasten.</long>
+		<long xml:lang="fr">Rotation vers la fenêtre suivante - Glissement d'un objet vers le côté de l'écran</long>
+		<long xml:lang="hu">Objektum kép szélére húzása esetén forgatás a következő nézőpontig</long>
+		<long xml:lang="it">Rifletti su finestra successiva durante il trascinamento dell'oggetto sul bordo della schermata</long>
+		<long xml:lang="ja">オブジェクトを画面の端にドラッグする時に次のビューポートにフリップする</long>
+		<long xml:lang="pl">Przełącz do następnego widoku podczas przeciągania obiektów na krawędź ekranu</long>
+		<long xml:lang="pt">Inverter para o viewport seguinte ao arrastar o objeto para a borda da tela</long>
+		<long xml:lang="pt_BR">Inverter para o viewport seguinte ao arrastar o objeto para a borda da tela</long>
+		<long xml:lang="ru">Отражение на следующее кадровое окно при перетаскивании объекта к краю экрана</long>
+		<long xml:lang="sv">Vänd till nästa skrivbordsvy när objekt dras till skärmens kant</long>
+		<long xml:lang="zh_CN">将对象拖至屏幕边缘时翻转到下个视点</long>
+		<long xml:lang="zh_TW">將物件拖曳到螢幕邊緣時翻轉到下一個檢視區</long>
+		<default>true</default>
+	    </option>
+	    <option type="int" name="flip_time">
+		<short>Flip Time</short>
+		<short xml:lang="ca">Temps d'inversió</short>
+		<short xml:lang="cs">Doba překlopení</short>
+		<short xml:lang="da">Vendingstid</short>
+		<short xml:lang="de">Wechselzeit</short>
+		<short xml:lang="es">Tiempo de inversión</short>
+		<short xml:lang="fi">Työpöydän reunan aktivoitumisviive</short>
+		<short xml:lang="fr">Temps de rotation</short>
+		<short xml:lang="hu">Forgatási idő</short>
+		<short xml:lang="it">Tempo riflessione</short>
+		<short xml:lang="ja">時間のフリップ</short>
+		<short xml:lang="pl">Czas przełączania</short>
+		<short xml:lang="pt">Tempo de Inversão</short>
+		<short xml:lang="pt_BR">Tempo de Inversão</short>
+		<short xml:lang="ru">Время отражения</short>
+		<short xml:lang="sv">Vändtid</short>
+		<short xml:lang="zh_CN">翻转时间</short>
+		<short xml:lang="zh_TW">翻轉時間</short>
+		<long>Timeout before flipping viewport</long>
+		<long xml:lang="ca">Temps d'espera abans d'invertir l'àrea de visualització</long>
+		<long xml:lang="cs">Časový limit před překlopením zorného pole</long>
+		<long xml:lang="da">Den tid, der går, inden visningsområdet skifter</long>
+		<long xml:lang="de">Zeitüberschreitung vor Viewport-Wechsel</long>
+		<long xml:lang="es">Tiempo límite antes de invertir viewport</long>
+		<long xml:lang="fi">Aikakatkaisu ennen näkymän vaihtamista</long>
+		<long xml:lang="fr">Timeout avant la rotation du bureau</long>
+		<long xml:lang="hu">A nézőpont váltása előtti időkorlát</long>
+		<long xml:lang="it">Timeout prima di capovolgimento riquadro di visualizzazione</long>
+		<long xml:lang="ja">ビューポートフリップのタイムアウト</long>
+		<long xml:lang="pl">Czas przed przełączeniem widoku</long>
+		<long xml:lang="pt_BR">Tempo de espera antes da inversão do viewport</long>
+		<long xml:lang="ru">Задержка во времени до отражения кадрового окна</long>
+		<long xml:lang="sv">Tidsgräns innan vändning av skrivbordsvy</long>
+		<long xml:lang="zh_CN">翻转十点之前发生超时</long>
+		<long xml:lang="zh_TW">逾時多久需翻轉檢視區</long>
+		<default>350</default>
+		<min>0</min>
+		<max>1000</max>
+	    </option>
+	    <option type="action" name="rotate_to_1">
+		<short>Rotate To Face 1</short>
+		<short xml:lang="sv">Rotera till yta 1</short>
+		<long>Rotate to face 1</long>
+		<long xml:lang="sv">Rotera till yta 1</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_2">
+		<short>Rotate To Face 2</short>
+		<short xml:lang="cs">Otočit na stranu 2</short>
+		<short xml:lang="de">Drehen zu Fläche 2</short>
+		<short xml:lang="es">Girar hacia el 2</short>
+		<short xml:lang="fi">Käännä työpöydälle 2</short>
+		<short xml:lang="fr">Rotation vers la face 2</short>
+		<short xml:lang="it">Ruota su faccia 2</short>
+		<short xml:lang="ja">面2に回転</short>
+		<short xml:lang="pt">Girar para a Face 2</short>
+		<short xml:lang="pt_BR">Girar para a Face 2</short>
+		<short xml:lang="sv">Rotera till yta 2</short>
+		<short xml:lang="zh_CN">旋转到第 2 面</short>
+		<short xml:lang="zh_TW">往面 2 旋轉</short>
+		<long>Rotate to face 2</long>
+		<long xml:lang="cs">Otočit na stranu 2</long>
+		<long xml:lang="de">Drehen zu Fläche 2</long>
+		<long xml:lang="es">Gira hacia el 2</long>
+		<long xml:lang="fi">Käännä työpöydälle 2</long>
+		<long xml:lang="fr">Rotation vers la face 2</long>
+		<long xml:lang="it">Ruota su faccia 2</long>
+		<long xml:lang="ja">面2に回転</long>
+		<long xml:lang="pt">Girar para a face 2</long>
+		<long xml:lang="pt_BR">Girar para a face 2</long>
+		<long xml:lang="sv">Rotera till yta 2</long>
+		<long xml:lang="zh_CN">旋转到第 2 面</long>
+		<long xml:lang="zh_TW">往面 2 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_3">
+		<short>Rotate To Face 3</short>
+		<short xml:lang="cs">Otočit na stranu 3</short>
+		<short xml:lang="de">Drehen zu Fläche 3</short>
+		<short xml:lang="es">Girar hacia el 3</short>
+		<short xml:lang="fi">Käännä työpöydälle 3</short>
+		<short xml:lang="fr">Rotation vers la face 3</short>
+		<short xml:lang="it">Ruota su faccia 3</short>
+		<short xml:lang="ja">面3に回転</short>
+		<short xml:lang="pt">Girar para a Face 3</short>
+		<short xml:lang="pt_BR">Girar para a Face 3</short>
+		<short xml:lang="sv">Rotera till yta 3</short>
+		<short xml:lang="zh_CN">旋转到第 3 面</short>
+		<short xml:lang="zh_TW">往面 3 旋轉</short>
+		<long>Rotate to face 3</long>
+		<long xml:lang="cs">Otočit na stranu 3</long>
+		<long xml:lang="de">Drehen zu Fläche 3</long>
+		<long xml:lang="es">Gira hacia el 3</long>
+		<long xml:lang="fi">Käännä työpöydälle 3</long>
+		<long xml:lang="fr">Rotation vers la face 3</long>
+		<long xml:lang="it">Ruota su faccia 3</long>
+		<long xml:lang="ja">面3に回転</long>
+		<long xml:lang="pt">Girar para a face 3</long>
+		<long xml:lang="pt_BR">Girar para a face 3</long>
+		<long xml:lang="sv">Rotera till yta 3</long>
+		<long xml:lang="zh_CN">旋转到第 3 面</long>
+		<long xml:lang="zh_TW">往面 3 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_4">
+		<short>Rotate To Face 4</short>
+		<short xml:lang="cs">Otočit na stranu 4</short>
+		<short xml:lang="de">Drehen zu Fläche 4</short>
+		<short xml:lang="es">Girar hacia el 4</short>
+		<short xml:lang="fi">Käännä työpöydälle 4</short>
+		<short xml:lang="fr">Rotation vers la face 4</short>
+		<short xml:lang="it">Ruota su faccia 4</short>
+		<short xml:lang="ja">面4に回転</short>
+		<short xml:lang="pt">Girar para a Face 4</short>
+		<short xml:lang="pt_BR">Girar para a Face 4</short>
+		<short xml:lang="sv">Rotera till yta 4</short>
+		<short xml:lang="zh_CN">旋转到第 4 面</short>
+		<short xml:lang="zh_TW">往面 4 旋轉</short>
+		<long>Rotate to face 4</long>
+		<long xml:lang="cs">Otočit na stranu 4</long>
+		<long xml:lang="de">Drehen zu Fläche 4</long>
+		<long xml:lang="es">Gira hacia el 4</long>
+		<long xml:lang="fi">Käännä työpöydälle 4</long>
+		<long xml:lang="fr">Rotation vers la face 4</long>
+		<long xml:lang="it">Ruota su faccia 4</long>
+		<long xml:lang="ja">面4に回転</long>
+		<long xml:lang="pt">Girar para a face 4</long>
+		<long xml:lang="pt_BR">Girar para a face 4</long>
+		<long xml:lang="sv">Rotera till yta 4</long>
+		<long xml:lang="zh_CN">旋转到第 4 面</long>
+		<long xml:lang="zh_TW">往面 4 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_5">
+		<short>Rotate To Face 5</short>
+		<short xml:lang="cs">Otočit na stranu 5</short>
+		<short xml:lang="de">Drehen zu Fläche 5</short>
+		<short xml:lang="es">Girar hacia el 5</short>
+		<short xml:lang="fi">Käännä työpöydälle 5</short>
+		<short xml:lang="fr">Rotation vers la face 5</short>
+		<short xml:lang="it">Ruota su faccia 5</short>
+		<short xml:lang="ja">面5に回転</short>
+		<short xml:lang="pt">Girar para a Face 5</short>
+		<short xml:lang="pt_BR">Girar para a Face 5</short>
+		<short xml:lang="sv">Rotera till yta 5</short>
+		<short xml:lang="zh_CN">旋转到第 5 面</short>
+		<short xml:lang="zh_TW">往面 5 旋轉</short>
+		<long>Rotate to face 5</long>
+		<long xml:lang="cs">Otočit na stranu 5</long>
+		<long xml:lang="de">Drehen zu Fläche 5</long>
+		<long xml:lang="es">Gira hacia el 5</long>
+		<long xml:lang="fi">Käännä työpöydälle 5</long>
+		<long xml:lang="fr">Rotation vers la face 5</long>
+		<long xml:lang="it">Ruota su faccia 5</long>
+		<long xml:lang="ja">面5に回転</long>
+		<long xml:lang="pt">Girar para a face 5</long>
+		<long xml:lang="pt_BR">Girar para a face 5</long>
+		<long xml:lang="sv">Rotera till yta 5</long>
+		<long xml:lang="zh_CN">旋转到第 5 面</long>
+		<long xml:lang="zh_TW">往面 5 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_6">
+		<short>Rotate To Face 6</short>
+		<short xml:lang="cs">Otočit na stranu 6</short>
+		<short xml:lang="de">Drehen zu Fläche 6</short>
+		<short xml:lang="es">Girar hacia el 6</short>
+		<short xml:lang="fi">Käännä työpöydälle 6</short>
+		<short xml:lang="fr">Rotation vers la face 6</short>
+		<short xml:lang="it">Ruota su faccia 6</short>
+		<short xml:lang="ja">面6に回転</short>
+		<short xml:lang="pt">Girar para a Face 6</short>
+		<short xml:lang="pt_BR">Girar para a Face 6</short>
+		<short xml:lang="sv">Rotera till yta 6</short>
+		<short xml:lang="zh_CN">旋转到第 6 面</short>
+		<short xml:lang="zh_TW">往面 6 旋轉</short>
+		<long>Rotate to face 6</long>
+		<long xml:lang="cs">Otočit na stranu 6</long>
+		<long xml:lang="de">Drehen zu Fläche 6</long>
+		<long xml:lang="es">Gira hacia el 6</long>
+		<long xml:lang="fi">Käännä työpöydälle 6</long>
+		<long xml:lang="fr">Rotation vers la face 6</long>
+		<long xml:lang="it">Ruota su faccia 6</long>
+		<long xml:lang="ja">面6に回転</long>
+		<long xml:lang="pt">Girar para a face 6</long>
+		<long xml:lang="pt_BR">Girar para a face 6</long>
+		<long xml:lang="sv">Rotera till yta 6</long>
+		<long xml:lang="zh_CN">旋转到第 6 面</long>
+		<long xml:lang="zh_TW">往面 6 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_7">
+		<short>Rotate To Face 7</short>
+		<short xml:lang="cs">Otočit na stranu 7</short>
+		<short xml:lang="de">Drehen zu Fläche 7</short>
+		<short xml:lang="es">Girar hacia el 7</short>
+		<short xml:lang="fi">Käännä työpöydälle 7</short>
+		<short xml:lang="fr">Rotation vers la face 7</short>
+		<short xml:lang="it">Ruota su faccia 7</short>
+		<short xml:lang="ja">面7に回転</short>
+		<short xml:lang="pt">Girar para a Face 7</short>
+		<short xml:lang="pt_BR">Girar para a Face 7</short>
+		<short xml:lang="sv">Rotera till yta 7</short>
+		<short xml:lang="zh_CN">旋转到第 7 面</short>
+		<short xml:lang="zh_TW">往面 7 旋轉</short>
+		<long>Rotate to face 7</long>
+		<long xml:lang="cs">Otočit na stranu 7</long>
+		<long xml:lang="de">Drehen zu Fläche 7</long>
+		<long xml:lang="es">Gira hacia el 7</long>
+		<long xml:lang="fi">Käännä työpöydälle 7</long>
+		<long xml:lang="fr">Rotation vers la face 7</long>
+		<long xml:lang="it">Ruota su faccia 7</long>
+		<long xml:lang="ja">面7に回転</long>
+		<long xml:lang="pt">Girar para a face 7</long>
+		<long xml:lang="pt_BR">Girar para a face 7</long>
+		<long xml:lang="sv">Rotera till yta 7</long>
+		<long xml:lang="zh_CN">旋转到第 7 面</long>
+		<long xml:lang="zh_TW">往面 7 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_8">
+		<short>Rotate To Face 8</short>
+		<short xml:lang="cs">Otočit na stranu 8</short>
+		<short xml:lang="de">Drehen zu Fläche 8</short>
+		<short xml:lang="es">Girar hacia el 8</short>
+		<short xml:lang="fi">Käännä työpöydälle 8</short>
+		<short xml:lang="fr">Rotation vers la face 8</short>
+		<short xml:lang="it">Ruota su faccia 8</short>
+		<short xml:lang="ja">面8に回転</short>
+		<short xml:lang="pt">Girar para a Face 8</short>
+		<short xml:lang="pt_BR">Girar para a Face 8</short>
+		<short xml:lang="sv">Rotera till yta 8</short>
+		<short xml:lang="zh_CN">旋转到第 8 面</short>
+		<short xml:lang="zh_TW">往面 8 旋轉</short>
+		<long>Rotate to face 8</long>
+		<long xml:lang="cs">Otočit na stranu 8</long>
+		<long xml:lang="de">Drehen zu Fläche 8</long>
+		<long xml:lang="es">Gira hacia el 8</long>
+		<long xml:lang="fi">Käännä työpöydälle 8</long>
+		<long xml:lang="fr">Rotation vers la face 8</long>
+		<long xml:lang="it">Ruota su faccia 8</long>
+		<long xml:lang="ja">面8に回転</long>
+		<long xml:lang="pt">Girar para a face 8</long>
+		<long xml:lang="pt_BR">Girar para a face 8</long>
+		<long xml:lang="sv">Rotera till yta 8</long>
+		<long xml:lang="zh_CN">旋转到第 8 面</long>
+		<long xml:lang="zh_TW">往面 8 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_9">
+		<short>Rotate To Face 9</short>
+		<short xml:lang="cs">Otočit na stranu 9</short>
+		<short xml:lang="de">Drehen zu Fläche 9</short>
+		<short xml:lang="es">Girar hacia el 9</short>
+		<short xml:lang="fi">Käännä työpöydälle 9</short>
+		<short xml:lang="fr">Rotation vers la face 9</short>
+		<short xml:lang="it">Ruota su faccia 9</short>
+		<short xml:lang="ja">面9に回転</short>
+		<short xml:lang="pt">Girar para a Face 9</short>
+		<short xml:lang="pt_BR">Girar para a Face 9</short>
+		<short xml:lang="sv">Rotera till yta 9</short>
+		<short xml:lang="zh_CN">旋转到第 9 面</short>
+		<short xml:lang="zh_TW">往面 9 旋轉</short>
+		<long>Rotate to face 9</long>
+		<long xml:lang="cs">Otočit na stranu 9</long>
+		<long xml:lang="de">Drehen zu Fläche 9</long>
+		<long xml:lang="es">Gira hacia el 9</long>
+		<long xml:lang="fi">Käännä työpöydälle 9</long>
+		<long xml:lang="fr">Rotation vers la face 9</long>
+		<long xml:lang="it">Ruota su faccia 9</long>
+		<long xml:lang="ja">面9に回転</long>
+		<long xml:lang="pt">Girar para a face 9</long>
+		<long xml:lang="pt_BR">Girar para a face 9</long>
+		<long xml:lang="sv">Rotera till yta 9</long>
+		<long xml:lang="zh_CN">旋转到第 9 面</long>
+		<long xml:lang="zh_TW">往面 9 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_10">
+		<short>Rotate To Face 10</short>
+		<short xml:lang="cs">Otočit na stranu 10</short>
+		<short xml:lang="de">Drehen zu Fläche 10</short>
+		<short xml:lang="es">Girar hacia el 10</short>
+		<short xml:lang="fi">Käännä työpöydälle 10</short>
+		<short xml:lang="fr">Rotation vers la face 10</short>
+		<short xml:lang="it">Ruota su faccia 10</short>
+		<short xml:lang="ja">面10に回転</short>
+		<short xml:lang="pt">Girar para a Face 10</short>
+		<short xml:lang="pt_BR">Girar para a Face 10</short>
+		<short xml:lang="sv">Rotera till yta 10</short>
+		<short xml:lang="zh_CN">旋转到第 10 面</short>
+		<short xml:lang="zh_TW">往面 10 旋轉</short>
+		<long>Rotate to face 10</long>
+		<long xml:lang="cs">Otočit na stranu 10</long>
+		<long xml:lang="de">Drehen zu Fläche 10</long>
+		<long xml:lang="es">Gira hacia el 10</long>
+		<long xml:lang="fi">Käännä työpöydälle 10</long>
+		<long xml:lang="fr">Rotation vers la face 10</long>
+		<long xml:lang="it">Ruota su faccia 10</long>
+		<long xml:lang="ja">面10に回転</long>
+		<long xml:lang="pt">Girar para a face 10</long>
+		<long xml:lang="pt_BR">Girar para a face 10</long>
+		<long xml:lang="sv">Rotera till yta 10</long>
+		<long xml:lang="zh_CN">旋转到第 10 面</long>
+		<long xml:lang="zh_TW">往面 10 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_11">
+		<short>Rotate To Face 11</short>
+		<short xml:lang="cs">Otočit na stranu 11</short>
+		<short xml:lang="de">Drehen zu Fläche 11</short>
+		<short xml:lang="es">Girar hacia el 11</short>
+		<short xml:lang="fi">Käännä työpöydälle 11</short>
+		<short xml:lang="fr">Rotation vers la face 11</short>
+		<short xml:lang="it">Ruota su faccia 11</short>
+		<short xml:lang="ja">面11に回転</short>
+		<short xml:lang="pt">Girar para a Face 11</short>
+		<short xml:lang="pt_BR">Girar para a Face 11</short>
+		<short xml:lang="sv">Rotera till yta 11</short>
+		<short xml:lang="zh_CN">旋转到第 11 面</short>
+		<short xml:lang="zh_TW">往面 11 旋轉</short>
+		<long>Rotate to face 11</long>
+		<long xml:lang="cs">Otočit na stranu 11</long>
+		<long xml:lang="de">Drehen zu Fläche 11</long>
+		<long xml:lang="es">Gira hacia el 11</long>
+		<long xml:lang="fi">Käännä työpöydälle 11</long>
+		<long xml:lang="fr">Rotation vers la face 11</long>
+		<long xml:lang="it">Ruota su faccia 11</long>
+		<long xml:lang="ja">面11に回転</long>
+		<long xml:lang="pt">Girar para a face 11</long>
+		<long xml:lang="pt_BR">Girar para a face 11</long>
+		<long xml:lang="sv">Rotera till yta 11</long>
+		<long xml:lang="zh_CN">旋转到第 11 面</long>
+		<long xml:lang="zh_TW">往面 11 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_12">
+		<short>Rotate To Face 12</short>
+		<short xml:lang="cs">Otočit na stranu 12</short>
+		<short xml:lang="de">Drehen zu Fläche 12</short>
+		<short xml:lang="es">Girar hacia el 12</short>
+		<short xml:lang="fi">Käännä työpöydälle 12</short>
+		<short xml:lang="fr">Rotation vers la face 12</short>
+		<short xml:lang="it">Ruota su faccia 12</short>
+		<short xml:lang="ja">面12に回転</short>
+		<short xml:lang="pt">Girar para a Face 12</short>
+		<short xml:lang="pt_BR">Girar para a Face 12</short>
+		<short xml:lang="sv">Rotera till yta 12</short>
+		<short xml:lang="zh_CN">旋转到第 12 面</short>
+		<short xml:lang="zh_TW">往面 12 旋轉</short>
+		<long>Rotate to face 12</long>
+		<long xml:lang="cs">Otočit na stranu 12</long>
+		<long xml:lang="de">Drehen zu Fläche 12</long>
+		<long xml:lang="es">Gira hacia el 12</long>
+		<long xml:lang="fi">Käännä työpöydälle 12</long>
+		<long xml:lang="fr">Rotation vers la face 12</long>
+		<long xml:lang="it">Ruota su faccia 12</long>
+		<long xml:lang="ja">面12に回転</long>
+		<long xml:lang="pt">Girar para a face 12</long>
+		<long xml:lang="pt_BR">Girar para a face 12</long>
+		<long xml:lang="sv">Rotera till yta 12</long>
+		<long xml:lang="zh_CN">旋转到第 12 面</long>
+		<long xml:lang="zh_TW">往面 12 旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_1_window">
+		<short>Rotate To Face 1 with Window</short>
+		<short xml:lang="sv">Rotera till yta 1 med fönster</short>
+		<long>Rotate to face 1 and bring active window along</long>
+		<long xml:lang="sv">Rotera till yta 1 och ta med aktivt fönster</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_2_window">
+		<short>Rotate To Face 2 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 2 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 2 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 2 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 2 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 2 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 2 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面2に回転</short>
+		<short xml:lang="pt">Girar para a Face 2 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 2 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 2 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 2 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 2 旋轉</short>
+		<long>Rotate to face 2 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 2 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 2 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 2 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 2 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 2 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 2 insieme a finestra attiva</long>
+		<long xml:lang="ja">面2に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 2 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 2 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 2 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 2 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 2 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_3_window">
+		<short>Rotate To Face 3 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 3 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 3 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 3 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 3 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 3 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 3 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面3に回転</short>
+		<short xml:lang="pt">Girar para a Face 3 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 3 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 3 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 3 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 3 旋轉</short>
+		<long>Rotate to face 3 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 3 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 3 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 3 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 3 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 3 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 3 insieme a finestra attiva</long>
+		<long xml:lang="ja">面3に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 3 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 3 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 3 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 3 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 3 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_4_window">
+		<short>Rotate To Face 4 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 4 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 4 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 4 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 4 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 4 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 4 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面4に回転</short>
+		<short xml:lang="pt">Girar para a Face 4 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 4 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 4 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 4 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 4 旋轉</short>
+		<long>Rotate to face 4 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 4 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 4 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 4 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 4 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 4 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 4 insieme a finestra attiva</long>
+		<long xml:lang="ja">面4に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 4 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 4 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 4 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 4 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 4 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_5_window">
+		<short>Rotate To Face 5 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 5 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 5 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 5 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 5 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 5 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 5 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面5に回転</short>
+		<short xml:lang="pt">Girar para a Face 5 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 5 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 5 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 5 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 5 旋轉</short>
+		<long>Rotate to face 5 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 5 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 5 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 5 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 5 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 5 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 5 insieme a finestra attiva</long>
+		<long xml:lang="ja">面5に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 5 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 5 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 5 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 5 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 5 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_6_window">
+		<short>Rotate To Face 6 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 6 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 6 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 6 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 6 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 6 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 6 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面6に回転</short>
+		<short xml:lang="pt">Girar para a Face 6 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 6 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 6 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 6 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 6 旋轉</short>
+		<long>Rotate to face 6 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 6 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 6 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 6 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 6 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 6 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 6 insieme a finestra attiva</long>
+		<long xml:lang="ja">面6に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 6 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 6 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 6 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 6 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 6 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_7_window">
+		<short>Rotate To Face 7 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 7 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 7 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 7 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 7 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 7 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 7 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面7に回転</short>
+		<short xml:lang="pt">Girar para a Face 7 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 7 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 7 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 7 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 7 旋轉</short>
+		<long>Rotate to face 7 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 7 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 7 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 7 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 7 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 7 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 7 insieme a finestra attiva</long>
+		<long xml:lang="ja">面7に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 7 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 7 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 7 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 7 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 7 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_8_window">
+		<short>Rotate To Face 8 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 8 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 8 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 8 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 8 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 8 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 8 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面8に回転</short>
+		<short xml:lang="pt">Girar para a Face 8 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 8 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 8 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 8 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 8 旋轉</short>
+		<long>Rotate to face 8 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 8 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 8 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 8 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 8 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 8 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 8 insieme a finestra attiva</long>
+		<long xml:lang="ja">面8に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 8 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 8 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 8 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 8 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 8 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_9_window">
+		<short>Rotate To Face 9 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 9 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 9 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 9 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 9 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 9 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 9 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面9に回転</short>
+		<short xml:lang="pt">Girar para a Face 9 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 9 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 9 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 9 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 9 旋轉</short>
+		<long>Rotate to face 9 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 9 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 9 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 9 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 9 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 9 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 9 insieme a finestra attiva</long>
+		<long xml:lang="ja">面9に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 9 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 9 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 9 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 9 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 9 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_10_window">
+		<short>Rotate To Face 10 with Window</short>
+		<short xml:lang="cs">Rotovat na stranu 10 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 10 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 10 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 10 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 10 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 10 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面10に回転</short>
+		<short xml:lang="pt">Girar para a Face 10 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 10 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 10 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 10 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 10 旋轉</short>
+		<long>Rotate to face 10 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 10 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 10 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 10 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 10 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 10 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 10 insieme a finestra attiva</long>
+		<long xml:lang="ja">面10に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 10 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 10 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 10 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 10 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 10 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_11_window">
+		<short>Rotate To Face 11 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 11 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 11 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 11 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 11 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 11 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 11 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面11に回転</short>
+		<short xml:lang="pt">Girar para a Face 11 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 11 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 11 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 11 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 11 旋轉</short>
+		<long>Rotate to face 11 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 11 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 11 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 11 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 11 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 11 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 11 insieme a finestra attiva</long>
+		<long xml:lang="ja">面11に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 11 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 11 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 11 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 11 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 11 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to_12_window">
+		<short>Rotate To Face 12 with Window</short>
+		<short xml:lang="cs">Otočit na stranu 12 s oknem</short>
+		<short xml:lang="de">Drehen zu Fläche 12 mit Fenster</short>
+		<short xml:lang="es">Girar hacia el 12 con ventana</short>
+		<short xml:lang="fi">Käännä työpöydälle 12 ikkunan kanssa</short>
+		<short xml:lang="fr">Rotation vers la face 12 avec la fenêtre</short>
+		<short xml:lang="it">Ruota su faccia 12 con finestra</short>
+		<short xml:lang="ja">ウィンドウと一緒に面12に回転</short>
+		<short xml:lang="pt">Girar para a Face 12 com Janela</short>
+		<short xml:lang="pt_BR">Girar para a Face 12 com Janela</short>
+		<short xml:lang="sv">Rotera till yta 12 med fönster</short>
+		<short xml:lang="zh_CN">旋转到带窗口的第 12 面</short>
+		<short xml:lang="zh_TW">隨視窗往面 12 旋轉</short>
+		<long>Rotate to face 12 and bring active window along</long>
+		<long xml:lang="cs">Otočit na stranu 12 a vzít aktivní okno s sebou</long>
+		<long xml:lang="de">Drehen zu Fläche 12 und aktives Fenster mitführen</long>
+		<long xml:lang="es">Gira hacia el 12 y arrastra la ventana activa</long>
+		<long xml:lang="fi">Käännä työpöydälle 12 ja pidä aktiivinen ikkuna mukana</long>
+		<long xml:lang="fr">Rotation vers la face 12 avec la fenêtre active</long>
+		<long xml:lang="it">Ruota su faccia 12 insieme a finestra attiva</long>
+		<long xml:lang="ja">面12に回転して、アクティブなウィンドウを移動</long>
+		<long xml:lang="pt">Girar para a face 12 e trazer a janela ativa junto</long>
+		<long xml:lang="pt_BR">Girar para a face 12 e trazer a janela ativa junto</long>
+		<long xml:lang="sv">Rotera till yta 12 och ta med aktivt fönster</long>
+		<long xml:lang="zh_CN">旋转到第 12 面并带来活动窗口</long>
+		<long xml:lang="zh_TW">往面 12 旋轉並隨同作用中視窗一起旋轉</long>
+		<allowed key="true" button="true"/>
+	    </option>
+	    <option type="action" name="rotate_to">
+		<short>Rotate To</short>
+		<short xml:lang="ca">Gira cap a</short>
+		<short xml:lang="cs">Otočit na</short>
+		<short xml:lang="da">Roter til</short>
+		<short xml:lang="de">Drehen in Richtung</short>
+		<short xml:lang="es">Girar a</short>
+		<short xml:lang="fi">Kierrä kohteeseen</short>
+		<short xml:lang="fr">Rotation vers</short>
+		<short xml:lang="hu">Forgatás</short>
+		<short xml:lang="it">Ruota su</short>
+		<short xml:lang="ja">回転先</short>
+		<short xml:lang="pl">Obróć do</short>
+		<short xml:lang="pt_BR">Girar para</short>
+		<short xml:lang="ru">Вращать до</short>
+		<short xml:lang="sv">Rotera till</short>
+		<short xml:lang="zh_CN">旋转到</short>
+		<short xml:lang="zh_TW">旋轉至</short>
+		<long>Rotate to viewport</long>
+		<long xml:lang="ca">Gira cap a l'àrea de visualització</long>
+		<long xml:lang="cs">Otočit na zorné pole</long>
+		<long xml:lang="da">Roter til visningsområde</long>
+		<long xml:lang="de">In Richtung Viewport drehen</long>
+		<long xml:lang="es">Girar a viewport</long>
+		<long xml:lang="fi">Kierrä näkymään</long>
+		<long xml:lang="fr">Rotation vers un bureau</long>
+		<long xml:lang="hu">Forgatás munkalapra</long>
+		<long xml:lang="it">Ruota su riquadro di visualizzazione</long>
+		<long xml:lang="ja">ビューポートに回転</long>
+		<long xml:lang="pl">Obraca do widoku</long>
+		<long xml:lang="pt_BR">Girar para o viewport</long>
+		<long xml:lang="ru">Вращение до кадрового окна</long>
+		<long xml:lang="sv">Rotera till skrivbordsvy</long>
+		<long xml:lang="zh_CN">旋转到视点</long>
+		<long xml:lang="zh_TW">往檢視區旋轉</long>
+	    </option>
+	    <option type="action" name="rotate_window">
+		<short>Rotate window</short>
+		<short xml:lang="sv">Rotera fönster</short>
+		<long>Rotate with window</long>
+		<long xml:lang="ca">Gira amb la finestra</long>
+		<long xml:lang="cs">Otočit s oknem</long>
+		<long xml:lang="da">Roter med vindue</long>
+		<long xml:lang="de">Mit Fenster drehen</long>
+		<long xml:lang="es">Girar con ventana</long>
+		<long xml:lang="fi">Kierrä ikkunan kanssa</long>
+		<long xml:lang="fr">Rotation avec la fenêtre</long>
+		<long xml:lang="hu">Forgatás az ablakkal együtt</long>
+		<long xml:lang="it">Ruota con finestra</long>
+		<long xml:lang="ja">ウィンドウとともに回転</long>
+		<long xml:lang="pl">Obraca z oknem</long>
+		<long xml:lang="pt_BR">Girar com a janela</long>
+		<long xml:lang="ru">Вращение вместе с окном</long>
+		<long xml:lang="sv">Rotera med fönster</long>
+		<long xml:lang="zh_CN">带窗口旋转</long>
+		<long xml:lang="zh_TW">隨視窗旋轉</long>
+	    </option>
+	    <option type="action" name="rotate_flip_left">
+		<short>Rotate Flip Left</short>
+		<short xml:lang="ca">Gira i inverteix cap a l'esquerra</short>
+		<short xml:lang="cs">Otočit překlopením vlevo</short>
+		<short xml:lang="da">Roter og vend til venstre</short>
+		<short xml:lang="de">Drehen (nach links kippen)</short>
+		<short xml:lang="es">Girar a inversión izquierda</short>
+		<short xml:lang="fi">Kierrä vasemmalle</short>
+		<short xml:lang="fr">Rotation sur le côté gauche</short>
+		<short xml:lang="hu">Forgatás balra</short>
+		<short xml:lang="it">Ruota capovolgimento verso sinistra</short>
+		<short xml:lang="ja">左にフリップ回転</short>
+		<short xml:lang="pl">Obróć i przełącz w lewo</short>
+		<short xml:lang="pt_BR">Girar para a Esquerda</short>
+		<short xml:lang="ru">Вращать с отражением влево</short>
+		<short xml:lang="zh_CN">旋转左翻</short>
+		<short xml:lang="zh_TW">往左旋轉翻轉</short>
+		<long>Flip to left viewport and warp pointer</long>
+		<long xml:lang="ca">Inverteix cap a l'àrea de visualització esquerra i deforma el punter</long>
+		<long xml:lang="cs">Překlopit na levé zorné pole a zdeformovat ukazatel</long>
+		<long xml:lang="da">Vend til venstre visningsområde, og bevar markøren på dens nuværende relative placering på skærmen</long>
+		<long xml:lang="de">Zum linken Viewport wechseln und Zeiger verzerren</long>
+		<long xml:lang="es">Invertir a viewport izquierdo y mover puntero</long>
+		<long xml:lang="fi">Vaihda vasempaan näkymään ja siirrä osoitin</long>
+		<long xml:lang="fr">Rotation sur le coté gauche avec le pointeur</long>
+		<long xml:lang="hu">Forgatás a bal oldali nézőpontig és mutató léptetése</long>
+		<long xml:lang="it">Capovolgi verso sinistra riquadro di visualizzazione e altera puntatore</long>
+		<long xml:lang="ja">左ビューポートとワープポインタにフリップ</long>
+		<long xml:lang="pl">Przełącz do widoku z lewej i przenieś wskaźnik na krawędź ekranu</long>
+		<long xml:lang="pt_BR">Inverter para o viewport esquerdo junto com o ponteiro</long>
+		<long xml:lang="ru">Отражение в левое кадровое окно и искажение курсора</long>
+		<long xml:lang="zh_CN">翻转至左视点并隐藏指针</long>
+		<long xml:lang="zh_TW">往左檢視區翻轉並使指標變形</long>
+		<allowed key="true" edgednd="true" edge="true" button="true"/>
+		<default>
+		    <edges left="true"/>
+		</default>
+	    </option>
+	    <option type="action" name="rotate_flip_right">
+		<short>Rotate Flip Right</short>
+		<short xml:lang="ca">Gira i inverteix cap a la dreta</short>
+		<short xml:lang="cs">Otočit překlopením vpravo</short>
+		<short xml:lang="da">Roter og vend til højre</short>
+		<short xml:lang="de">Drehen (nach rechts kippen)</short>
+		<short xml:lang="es">Girar a inversión derecha</short>
+		<short xml:lang="fi">Kierrä oikealle</short>
+		<short xml:lang="fr">Rotation sur le côté droit</short>
+		<short xml:lang="hu">Forgatás jobbra</short>
+		<short xml:lang="it">Ruota capovolgimento verso destra</short>
+		<short xml:lang="ja">右にフリップ回転</short>
+		<short xml:lang="pl">Obróć i przełącz w prawo</short>
+		<short xml:lang="pt_BR">Girar para a Direita</short>
+		<short xml:lang="ru">Вращать с отражением вправо</short>
+		<short xml:lang="zh_CN">旋转右翻</short>
+		<short xml:lang="zh_TW">往右旋轉翻轉</short>
+		<long>Flip to right viewport and warp pointer</long>
+		<long xml:lang="ca">Inverteix cap a l'àrea de visualització dreta i deforma el punter</long>
+		<long xml:lang="cs">Překlopit na pravé zorné pole a zdeformovat ukazatel</long>
+		<long xml:lang="da">Vend til højre visningsområde, og bevar markøren på dens nuværende relative placering på skærmen</long>
+		<long xml:lang="de">Zum rechten Viewport wechseln und Zeiger verzerren</long>
+		<long xml:lang="es">Invertir a viewport derecho y mover puntero</long>
+		<long xml:lang="fi">Vaihda oikeaan näkymään ja siirrä osoitin</long>
+		<long xml:lang="fr">Rotation sur le coté droit avec le pointeur</long>
+		<long xml:lang="hu">Forgatás a jobb oldali nézőpontig és mutató léptetése</long>
+		<long xml:lang="it">Capovolgi verso destra riquadro di visualizzazione e altera puntatore</long>
+		<long xml:lang="ja">右ビューポートとワープポインタにフリップ</long>
+		<long xml:lang="pl">Przełącz do widoku z prawej i przenieś wskaźnik na krawędź ekranu</long>
+		<long xml:lang="pt_BR">Inverter para o viewport direito junto com o ponteiro</long>
+		<long xml:lang="ru">Отражение в правое кадровое окно и искажение курсора</long>
+		<long xml:lang="zh_CN">翻转至右视点并隐藏指针</long>
+		<long xml:lang="zh_TW">往右檢視區翻轉並使指標變形</long>
+		<allowed key="true" edgednd="true" edge="true" button="true"/>
+		<default>
+		    <edges right="true"/>
+		</default>
+	    </option>
+	    <option type="bool" name="raise_on_rotate">
+		<short>Raise on rotate</short>
+		<long>Raise window when rotating</long>
+		<default>false</default>
+	    </option>
+	</display>
+	<screen>
+	    <option type="bool" name="invert_y">
+		<short>Pointer Invert Y</short>
+		<short xml:lang="ca">Punter inverteix Y</short>
+		<short xml:lang="cs">Pointer Invert Y</short>
+		<short xml:lang="da">Omvendt Y-akse for markør</short>
+		<short xml:lang="de">Y umkehren für Zeiger</short>
+		<short xml:lang="es">Invertir Y en puntero</short>
+		<short xml:lang="fi">Peilaa osoittimen Y-akseli</short>
+		<short xml:lang="fr">Inversion Y du pointeur</short>
+		<short xml:lang="hu">Y mutató invertálása</short>
+		<short xml:lang="it">Inversione puntatore Y</short>
+		<short xml:lang="ja">ポインタ反転Y</short>
+		<short xml:lang="pl">Odwrócenie osi Y dla wskaźnika</short>
+		<short xml:lang="pt">Inverter Y com o Ponteiro</short>
+		<short xml:lang="pt_BR">Inverter Y com o Ponteiro</short>
+		<short xml:lang="ru">Инвертировать для курсора ось Y</short>
+		<short xml:lang="sv">Invertera pekarens Y-axel</short>
+		<short xml:lang="zh_CN">指针反转 Y</short>
+		<short xml:lang="zh_TW">指標反轉 Y 軸</short>
+		<long>Invert Y axis for pointer movement</long>
+		<long xml:lang="ca">Inverteix l'eix Y per al moviment del punter</long>
+		<long xml:lang="cs">Invertovat osu Y pro pohyb ukazatele</long>
+		<long xml:lang="da">Vend Y-aksen for markørbevægelser</long>
+		<long xml:lang="de">Y-Achse für Zeigerbewegung umkehren</long>
+		<long xml:lang="es">Invertir eje Y para movimiento de puntero</long>
+		<long xml:lang="fi">Peilaa osoittimen Y-suuntainen liike</long>
+		<long xml:lang="fr">Insérer l'axe Y pour le mouvement du pointeur</long>
+		<long xml:lang="hu">Y tengely átalakítása a mutató mozgásához</long>
+		<long xml:lang="it">Inverti asse Y per spostamento puntatore</long>
+		<long xml:lang="ja">ポインタ移動用にY 軸を反転させる</long>
+		<long xml:lang="pl">Odwróć oś Y dla ruchu wskaźnika</long>
+		<long xml:lang="pt">Inverter o eixo Y para movimento do ponteiro</long>
+		<long xml:lang="pt_BR">Inverter o eixo Y para movimento do ponteiro</long>
+		<long xml:lang="ru">Инвертировать ось Y для перемещений курсора</long>
+		<long xml:lang="sv">Invertera Y-axeln för pekarens rörelser</long>
+		<long xml:lang="zh_CN">反转 Y 轴（对于指针移动）</long>
+		<long xml:lang="zh_TW">指標移動時反轉 Y 軸</long>
+		<default>false</default>
+	    </option>
+	    <option type="float" name="sensitivity">
+		<short>Pointer Sensitivity</short>
+		<short xml:lang="ca">Sensibilitat del punter</short>
+		<short xml:lang="cs">Citlivost ukazatele</short>
+		<short xml:lang="da">Markørfølsomhed</short>
+		<short xml:lang="de">Zeigerempfindlichkeit</short>
+		<short xml:lang="es">Sensibilidad del puntero</short>
+		<short xml:lang="fi">Osoittimen herkkyys</short>
+		<short xml:lang="fr">Sensibilité du pointeur</short>
+		<short xml:lang="hu">Mutató érzékenysége</short>
+		<short xml:lang="it">Sensibilità puntatore</short>
+		<short xml:lang="ja">ポインタ感度</short>
+		<short xml:lang="pl">Czułość wskaźnika</short>
+		<short xml:lang="pt">Sensibilidade do Ponteiro</short>
+		<short xml:lang="pt_BR">Sensibilidade do Ponteiro</short>
+		<short xml:lang="ru">Чувствительность курсора</short>
+		<short xml:lang="sv">Muspekarkänslighet</short>
+		<short xml:lang="zh_CN">指针灵敏度</short>
+		<short xml:lang="zh_TW">指標靈敏度</short>
+		<long>Sensitivity of pointer movement</long>
+		<long xml:lang="ca">Sensibilitat del moviment del punter</long>
+		<long xml:lang="cs">Citlivost pohybu ukazatele</long>
+		<long xml:lang="da">Det følsomhedsniveau, der skal anvendes til markørbevægelserne</long>
+		<long xml:lang="de">Empfindlichkeit bei Zeigerbewegung</long>
+		<long xml:lang="es">Sensibilidad de movimiento del puntero</long>
+		<long xml:lang="fi">Osoitinliikkeen herkkyys</long>
+		<long xml:lang="fr">Sensibilité du mouvement du pointeur</long>
+		<long xml:lang="hu">Mutatómozgatás érzékenysége</long>
+		<long xml:lang="it">Sensibilità spostamento puntatore</long>
+		<long xml:lang="ja">ポインタの移動感度</long>
+		<long xml:lang="pl">Czułość ruchu wskaźnika</long>
+		<long xml:lang="pt_BR">Sensibilidade de movimento do ponteiro</long>
+		<long xml:lang="ru">Чувствительность к перемещениям курсора</long>
+		<long xml:lang="zh_CN">指针移动灵敏度</long>
+		<long xml:lang="zh_TW">指標移動靈敏度</long>
+		<default>1.0</default>
+		<min>0.01</min>
+		<max>100.0</max>
+		<precision>0.01</precision>
+	    </option>
+	    <option type="float" name="acceleration">
+		<short>Acceleration</short>
+		<short xml:lang="ca">Acceleració</short>
+		<short xml:lang="cs">Akcelerace</short>
+		<short xml:lang="da">Acceleration</short>
+		<short xml:lang="de">Beschleunigung</short>
+		<short xml:lang="es">Aceleración</short>
+		<short xml:lang="fi">Kiihdytys</short>
+		<short xml:lang="fr">Accélération</short>
+		<short xml:lang="hu">Gyorsítás</short>
+		<short xml:lang="it">Accelerazione</short>
+		<short xml:lang="ja">アクセラレーション</short>
+		<short xml:lang="pl">Akceleracja</short>
+		<short xml:lang="pt">Aceleração</short>
+		<short xml:lang="pt_BR">Aceleração</short>
+		<short xml:lang="ru">Ускорение</short>
+		<short xml:lang="sv">Accelerering</short>
+		<short xml:lang="zh_CN">加速</short>
+		<short xml:lang="zh_TW">加速</short>
+		<long>Rotation Acceleration</long>
+		<long xml:lang="ca">Acceleració de gir</long>
+		<long xml:lang="cs">Zrychlení otáčení</long>
+		<long xml:lang="da">Rotationsacceleration</long>
+		<long xml:lang="de">Drehbeschleunigung</long>
+		<long xml:lang="es">Aceleración de giro</long>
+		<long xml:lang="fi">Kääntämiskiihdytys</long>
+		<long xml:lang="fr">Accélération de la rotation</long>
+		<long xml:lang="hu">Forgatás gyorsulása</long>
+		<long xml:lang="it">Accelerazione rotazione</long>
+		<long xml:lang="ja">回転アクセラレーション</long>
+		<long xml:lang="pl">Przyspieszenie obrotu</long>
+		<long xml:lang="pt_BR">Aceleração da Rotação</long>
+		<long xml:lang="ru">Ускорение вращения</long>
+		<long xml:lang="sv">Roteringsacceleration</long>
+		<long xml:lang="zh_CN">旋转加速</long>
+		<long xml:lang="zh_TW">旋轉加速</long>
+		<default>4.0</default>
+		<min>1.0</min>
+		<max>20.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="bool" name="snap_top">
+		<short>Snap To Top Face</short>
+		<short xml:lang="ca">Desplaça a la cara superior</short>
+		<short xml:lang="cs">Přichytávat k horní straně</short>
+		<short xml:lang="da">Fastgør til oversiden</short>
+		<short xml:lang="de">An Oberseite einrasten</short>
+		<short xml:lang="es">Solapar hacia la cara superior</short>
+		<short xml:lang="fi">Kiinnitä kattoon</short>
+		<short xml:lang="fr">Aligner sur la face supérieure</short>
+		<short xml:lang="hu">Felső oldalhoz ugrás</short>
+		<short xml:lang="it">Aggancia a faccia superiore</short>
+		<short xml:lang="ja">上面にスナップ</short>
+		<short xml:lang="pl">Przypnij do górnej ściany</short>
+		<short xml:lang="pt">Fechar na Face Superior</short>
+		<short xml:lang="pt_BR">Fechar na Face Superior</short>
+		<short xml:lang="ru">Привязать к верхней грани</short>
+		<short xml:lang="sv">Fäst mot översta ytan</short>
+		<short xml:lang="zh_CN">迅速移至顶面</short>
+		<short xml:lang="zh_TW">嵌入至頂面</short>
+		<long>Snap Cube Rotation to Top Face</long>
+		<long xml:lang="ca">Desplaça el gir del cub a la cara superior</long>
+		<long xml:lang="cs">Přichytávat otáčející se kostku za horní stranu</long>
+		<long xml:lang="da">Fastgør kubusrotation til oversiden</long>
+		<long xml:lang="de">Würfeldrehung an Oberseite einrasten</long>
+		<long xml:lang="es">Solapa el giro del cubo hacia la cara superior</long>
+		<long xml:lang="fi">Kiinnitä kääntäminen kuution kattoon</long>
+		<long xml:lang="fr">Aligner la rotation du cube sur la face supérieure</long>
+		<long xml:lang="hu">Hirtelen kockaforgatás a felső oldalra</long>
+		<long xml:lang="it">Aggancia rotazione cubo a faccia superiore</long>
+		<long xml:lang="ja">キューブ回転を上面にスナップ</long>
+		<long xml:lang="pl">Przyciągnij obrót kostki do górnej ściany</long>
+		<long xml:lang="pt">Fechar a Rotação do Cubo na Face Superior</long>
+		<long xml:lang="pt_BR">Fechar a Rotação do Cubo na Face Superior</long>
+		<long xml:lang="ru">Привязка вращения куба к верхней грани</long>
+		<long xml:lang="sv">Fäst kubroteringen mot översta ytan</long>
+		<long xml:lang="zh_CN">将立方体快速旋转到顶面</long>
+		<long xml:lang="zh_TW">嵌入立方體旋轉至頂面</long>
+		<default>false</default>
+	    </option>
+	    <option type="float" name="speed">
+		<short>Speed</short>
+		<short xml:lang="ca">Velocitat</short>
+		<short xml:lang="cs">Rychlost</short>
+		<short xml:lang="da">Hastighed</short>
+		<short xml:lang="de">Geschwindigkeit</short>
+		<short xml:lang="es">Velocidad</short>
+		<short xml:lang="fi">Nopeus</short>
+		<short xml:lang="fr">Vitesse</short>
+		<short xml:lang="hu">Sebesség</short>
+		<short xml:lang="it">Velocità</short>
+		<short xml:lang="ja">速度</short>
+		<short xml:lang="pl">Szybkość</short>
+		<short xml:lang="pt">Velocidade</short>
+		<short xml:lang="pt_BR">Velocidade</short>
+		<short xml:lang="ru">Скорость</short>
+		<short xml:lang="sv">Hastighet</short>
+		<short xml:lang="zh_CN">速度</short>
+		<short xml:lang="zh_TW">速度</short>
+		<long>Rotation Speed</long>
+		<long xml:lang="ca">Velocitat del gir</long>
+		<long xml:lang="cs">Rychlost otáčení</long>
+		<long xml:lang="da">Rotationshastighed</long>
+		<long xml:lang="de">Drehgeschwindigkeit</long>
+		<long xml:lang="es">Velocidad de giro</long>
+		<long xml:lang="fi">Kääntämisnopeus</long>
+		<long xml:lang="fr">Vitesse de la rotation</long>
+		<long xml:lang="hu">Forgatás sebessége</long>
+		<long xml:lang="it">Velocità di rotazione</long>
+		<long xml:lang="ja">回転速度</long>
+		<long xml:lang="pl">Szybkość obrotu</long>
+		<long xml:lang="pt_BR">Velocidade da Rotação</long>
+		<long xml:lang="ru">Скорость вращения</long>
+		<long xml:lang="sv">Roteringshastighet</long>
+		<long xml:lang="zh_CN">旋转速度</long>
+		<long xml:lang="zh_TW">旋轉速度</long>
+		<default>2.0</default>
+		<min>0.1</min>
+		<max>50.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="float" name="timestep">
+		<short>Timestep</short>
+		<short xml:lang="ca">Etapa</short>
+		<short xml:lang="cs">Časový krok</short>
+		<short xml:lang="da">Tidstrin</short>
+		<short xml:lang="de">Zeitintervall</short>
+		<short xml:lang="es">PAso</short>
+		<short xml:lang="fi">Aikaviive</short>
+		<short xml:lang="fr">Intervalle</short>
+		<short xml:lang="hu">Időköz</short>
+		<short xml:lang="it">Intervallo</short>
+		<short xml:lang="ja">タイムステップ</short>
+		<short xml:lang="pl">Opóźnienie</short>
+		<short xml:lang="pt">Timestep</short>
+		<short xml:lang="pt_BR">Timestep</short>
+		<short xml:lang="ru">Квант времени </short>
+		<short xml:lang="sv">Tidsintervall</short>
+		<short xml:lang="zh_CN">时间区间</short>
+		<short xml:lang="zh_TW">時間間隔</short>
+		<long>Rotation Timestep</long>
+		<long xml:lang="ca">Etapa del gir</long>
+		<long xml:lang="cs">Časový krok otáčení</long>
+		<long xml:lang="da">Tidstrin for rotation</long>
+		<long xml:lang="de">Drehintervall</long>
+		<long xml:lang="es">Paso de giro</long>
+		<long xml:lang="fi">Kääntämisaikaväli</long>
+		<long xml:lang="fr">Intervalle de la rotation</long>
+		<long xml:lang="hu">Forgatás időköze</long>
+		<long xml:lang="it">Intervallo di rotazione</long>
+		<long xml:lang="ja">回転タイムステップ</long>
+		<long xml:lang="pl">Opóźnienie obrotu</long>
+		<long xml:lang="pt_BR">Timestep da Rotação</long>
+		<long xml:lang="ru">Квант времени вращения</long>
+		<long xml:lang="sv">Tidsintervall för rotering</long>
+		<long xml:lang="zh_CN">旋转时间区间</long>
+		<long xml:lang="zh_TW">旋轉時間間隔</long>
+		<default>1.0</default>
+		<min>0.1</min>
+		<max>50.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="float" name="zoom">
+		<short>Zoom</short>
+		<short xml:lang="ca">Zoom</short>
+		<short xml:lang="cs">Zvětšení</short>
+		<short xml:lang="da">Zoom</short>
+		<short xml:lang="de">Zoom</short>
+		<short xml:lang="es">Ampliar/reducir</short>
+		<short xml:lang="fi">Zoom</short>
+		<short xml:lang="fr">Zoom</short>
+		<short xml:lang="hu">Nagyítás</short>
+		<short xml:lang="it">Zoom</short>
+		<short xml:lang="ja">ズーム</short>
+		<short xml:lang="pl">Powiększenie</short>
+		<short xml:lang="pt">Zoom</short>
+		<short xml:lang="pt_BR">Zoom</short>
+		<short xml:lang="ru">Изменить масштаб</short>
+		<short xml:lang="sv">Zoom</short>
+		<short xml:lang="zh_CN">缩放</short>
+		<short xml:lang="zh_TW">縮放</short>
+		<long>Rotation Zoom</long>
+		<default>0.0</default>
+		<min>0.0</min>
+		<max>2.0</max>
+		<precision>0.1</precision>
+	    </option>
+	</screen>
+    </plugin>
+</ecomp>

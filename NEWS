@@ -1,0 +1,203 @@
+Release 0.6.2 (2007-10-18 Danny Baumann <dannybaumann@web.de>)
+==============================================================
+Stable release.
+
+Support for automatically starting one decorator per screen.
+
+Various stacking problem fixes.
+
+Fixes for various focus issues.
+
+Minor other bug fixes.
+
+Release 0.6.0 (2007-10-01 Danny Baumann <dannybaumann@web.de>)
+==============================================================
+Third stable release of Compiz.
+
+Improved focus stealing prevention.
+
+Improved dynamic desktop resizing support.
+
+Added button action configuration options to gtk-window-decorator.
+
+Added UTF-8 window title support to kde-window-decorator.
+
+Various bug fixes and improvements.
+
+Release 0.5.2 (2007-08-03 David Reveman <davidr@novell.com>)
+============================================================
+Development release.
+
+Better support for multiple X-screens.
+
+XML-based meta-data system for handling of various kinds
+for meta-data like plugin descriptions, default option
+values, etc.
+
+Major improvements to option initialization based on the
+new meta-data system.
+
+Logging framework.
+
+Support for configurable button layout in metacity themes
+has been added to gtk-window-decorator.
+
+Glib plugin that allows plugins that use the glib main
+loop to integrate properly with the compiz main loop
+without waking up periodically to check for pending
+events.
+
+Plugin plugins that make it possible to adjust and extend
+the behavior of existing plugins through new plugins.
+
+More dynamic handling of output devices, which allows the
+output device configuration used when rendering to be
+changed between frames.
+
+Transparency support in cube plugin.
+
+Introspection support in dbus plugin.
+
+
+Release 0.5.0 (2007-04-02 David Reveman <davidr@novell.com>)
+============================================================
+Development release.
+
+Remove stencil buffer requirement.
+
+Focus stealing prevention support.
+
+Blur plugin that provide support for blurring windows and
+contents behind translucent windows.
+
+Fragment attribute interface that allow plugins
+to perform more advanced fragment shading effects and
+integrate properly with other plugins.
+
+Extensible window matching interface and new option type
+that provide advanced window selection functionality.
+
+Plugin that provide a composited video interface for
+efficient video playback.
+
+FUSE plugin that maps compiz options to a file-system and
+allow efficient manipulation of options by reading and
+writing files.
+
+Better occlusion detection and more efficient rendering.
+
+Flat file configuration backend.
+
+
+Release 0.3.6 (2006-12-31 David Reveman <davidr@novell.com>)
+============================================================
+Development release.
+
+Add support for unredirect of fullscreen windows when using
+the composite overlay window and make usage of the
+composite overlay window for output default.
+
+Add file notification API.
+
+Add inotify plugin that implements file notification API.
+
+A "GetPlugins" method has been added to dbus plugin
+and it can be used to retrieve a list of available plugins.
+
+A 'GetPluginMetadata' method has been added to dbus plugin
+and it returns metadata for available plugins.
+
+Add support for switching between windows without having
+the thumbnail window show up.
+
+Switcher thumbnails now include decorations and shadows.
+
+Basic drag and drop support has been added to scale plugin.
+
+It's now possible to initiate scale plugin for specific window
+groups.
+
+Window menu icon support has been added to gtk window decorator.
+
+Improved support for metacity themes.
+
+Add KDE window decorator with support for shadows and opacity
+has been added.
+
+
+Release 0.3.4 (2006-11-21 David Reveman <davidr@novell.com>)
+============================================================
+Development release.
+
+Edge button, which can be used to require a button press
+for edge actions to be triggered.
+
+Basic compiz event support.
+
+Zoom plugin now works without "largedesktop" feature.
+
+Cube plugin now handles desktop width less than 4 times
+the screen better.
+
+Support for multiple desktops (workspaces).
+
+Handling of _NET_DESKTOP_GEOMETRY client messages has
+been fixed.
+
+Much better multi-head support.
+
+Annotate plugin has been added.
+
+Clone plugin which can be used to clone outputs in a
+convenient way has been added. Currently more of a
+prototype as we need randr++ and input transformation
+in the server to do this properly.
+
+Shadow color option has been added.
+
+initiate_all option has been added to scale plugin.
+
+Zoom factor option has been added to zoom plugin.
+
+Support for new metacity theme version and support for
+metacity versions < 2.15.21.
+
+Event window placement when using some metacity
+themes has been fixed.
+
+Fix a number of issues related to minimizing windows
+with transients.
+
+
+Release 0.3.2 (2006-10-20 David Reveman <davidr@novell.com>)
+============================================================
+Development release.
+
+snap_inverted option has been added to wobbly plugin.
+
+Configuration support has been added to dbus plugin.
+
+Add 'command' option has been added to decoration plugin,
+which can be used to automatically launch a decorator
+when one isn't already running.
+
+Opacity support for metacity themes.
+
+A raise_window option has been added.
+
+Decorations on maximized windows are now rendered
+correctly when using metacity themes.
+
+An ignore_hints_when_maximized option, which makes compiz
+ignore size increment and aspect hints for maximized
+windows has been added and made default.
+
+Better default option values for rotate plugin.
+
+and much more...
+
+
+Release 0.2.0 (2006-10-02 David Reveman <davidr@novell.com>)
+============================================================
+First official release of compiz.
+

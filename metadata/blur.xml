@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecomp>
+    <plugin name="blur">
+	<short>Blur Windows</short>
+	<short xml:lang="hu">Ablak elmosása</short>
+	<short xml:lang="pl">Rozmywaj okna</short>
+	<long>Blur windows</long>
+	<long xml:lang="hu">Ablakok elmosása</long>
+	<long xml:lang="pl">Rozmywanie okien</long>
+	<feature>blur</feature>
+	<deps>
+	    <relation type="before">
+		<plugin>video</plugin>
+	    </relation>
+	    <relation type="after">
+		<plugin>decoration</plugin>
+	    </relation>
+	</deps>
+	<display>
+	    <option type="action" name="pulse">
+		<short>Pulse</short>
+		<short xml:lang="hu">Impulzus</short>
+		<short xml:lang="pl">Pulsowanie</short>
+		<short xml:lang="sv">Puls</short>
+		<long>Pulse effect</long>
+		<long xml:lang="hu">Impulzus effektus</long>
+		<long xml:lang="pl">Efekt pulsowania</long>
+		<long xml:lang="sv">Pulseffekt</long>
+		<allowed bell="true"/>
+	    </option>
+	</display>
+	<screen>
+	    <option type="float" name="blur_speed">
+		<short>Blur Speed</short>
+		<short xml:lang="hu">Elmosás sebessége</short>
+		<short xml:lang="pl">Rozmywanie z prędkością</short>
+		<short xml:lang="sv">Suddighetshastighet</short>
+		<long>Window blur speed</long>
+		<long xml:lang="hu">Ablak elmosásának sebessége</long>
+		<long xml:lang="pl">Szybkość rozmywania okien</long>
+		<default>3.5</default>
+		<min>0.1</min>
+		<max>10.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="match" name="focus_blur_match">
+		<short>Focus blur windows</short>
+		<long>Windows that should be affected by focus blur</long>
+		<default>toolbar | menu | utility | normal | dialog | modaldialog</default>
+	    </option>
+	    <option type="bool" name="focus_blur">
+		<short>Focus Blur</short>
+		<short xml:lang="hu">Fókuszelmosás</short>
+		<short xml:lang="pl">Rozmycie ostrości</short>
+		<long>Blur windows that doesn't have focus</long>
+		<long xml:lang="hu">Fókusszal nem rendelkező ablakok elmosása</long>
+		<long xml:lang="pl">Rozmywaj nieaktywne okna</long>
+		<default>false</default>
+	    </option>
+	    <option type="match" name="alpha_blur_match">
+		<short>Alpha blur windows</short>
+		<long>Windows that should be use alpha blur by default</long>
+		<default/>
+	    </option>
+	    <option type="bool" name="alpha_blur">
+		<short>Alpha Blur</short>
+		<short xml:lang="hu">Alfa elmosás</short>
+		<short xml:lang="pl">Rozmycie alfa</short>
+		<long>Blur behind translucent parts of windows</long>
+		<long xml:lang="hu">Elmosás az ablakok áttetsző részei mögött</long>
+		<long xml:lang="pl">Rozmycie za przezroczystymi częściami okien</long>
+		<default>true</default>
+	    </option>
+	    <option type="int" name="filter">
+		<short>Blur Filter</short>
+		<short xml:lang="hu">Elmosásszűrő</short>
+		<short xml:lang="pl">Filtr rozmywania</short>
+		<long>Filter method used for blurring</long>
+		<long xml:lang="hu">Az elmosáshoz használt szűrőmódszer</long>
+		<long xml:lang="pl">Metoda filtrowania dla rozmycia</long>
+		<default>0</default>
+		<min>0</min>
+		<max>2</max>
+		<desc>
+		    <value>0</value>
+		    <name>4xBilinear</name>
+		</desc>
+		<desc>
+		    <value>1</value>
+		    <name>Gaussian</name>
+		</desc>
+		<desc>
+		    <value>2</value>
+		    <name>Mipmap</name>
+		    <name xml:lang="ca">Mipmap</name>
+		    <name xml:lang="cs">Mipmap</name>
+		    <name xml:lang="da">Mipmap</name>
+		    <name xml:lang="de">Mipmap</name>
+		    <name xml:lang="es">Mipmap</name>
+		    <name xml:lang="fi">Mipmap</name>
+		    <name xml:lang="fr">Mipmap</name>
+		    <name xml:lang="hu">MIP térkép</name>
+		    <name xml:lang="it">Mipmap</name>
+		    <name xml:lang="ja">ミップマップ</name>
+		    <name xml:lang="pl">Mipmapa</name>
+		    <name xml:lang="pt">Mapa</name>
+		    <name xml:lang="pt_BR">Mapa</name>
+		    <name xml:lang="ru">Mipmap</name>
+		    <name xml:lang="sv">Mipmap</name>
+		    <name xml:lang="zh_CN">Mipmap</name>
+		    <name xml:lang="zh_TW">Mipmap</name>
+		</desc>
+	    </option>
+	    <option type="int" name="gaussian_radius">
+		<short>Gaussian Radius</short>
+		<short xml:lang="hu">Gauss-sugár</short>
+		<short xml:lang="pl">Promień rozmycia gaussowskiego</short>
+		<long>Gaussian radius</long>
+		<long xml:lang="hu">Gauss-sugár</long>
+		<long xml:lang="pl">Promień dla rozmycia gaussowskiego</long>
+		<default>3</default>
+		<min>1</min>
+		<max>15</max>
+	    </option>
+	    <option type="float" name="gaussian_strength">
+		<short>Gaussian Strength</short>
+		<long>Gaussian strength</long>
+		<default>1.0</default>
+		<min>0.0</min>
+		<max>1.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="float" name="mipmap_lod">
+		<short>Mipmap LOD</short>
+		<short xml:lang="hu">Mipmap részletesség</short>
+		<short xml:lang="pl">LOD mipmapy</short>
+		<long>Mipmap level-of-detail</long>
+		<long xml:lang="hu">Mipmap részletesség szintje</long>
+		<long xml:lang="pl">Poziom szczegółów mipmapy</long>
+		<default>2.5</default>
+		<min>0.1</min>
+		<max>5.0</max>
+		<precision>0.1</precision>
+	    </option>
+	    <option type="int" name="saturation">
+		<short>Blur Saturation</short>
+		<long>Blur saturation</long>
+		<default>100</default>
+		<min>0</min>
+		<max>100</max>
+	    </option>
+	    <option type="bool" name="occlusion">
+		<short>Blur Occlusion</short>
+		<long>Disable blurring of screen regions obscured by other windows.</long>
+		<default>true</default>
+	    </option>
+	</screen>
+    </plugin>
+</ecomp>

@@ -1,0 +1,12 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: ecomp
+Description: OpenGL compositing manager
+Version: 0.6.2
+
+Requires: xcomposite 		 xfixes	    		 xdamage    		 xrandr	    		 xinerama   		 ice	    		 sm	    		 libxml-2.0 		 libxslt 		 pango
+Libs:
+Cflags: -I/usr/include/libxml2 -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include    -I${includedir}/ecomp

@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: ecomp-scale
+Description: Scale plugin for ecomp
+Version: @VERSION@
+
+Requires: ecomp
+Libs:
+Cflags: @ECOMP_CFLAGS@ @GL_CFLAGS@ -I${includedir}/ecomp

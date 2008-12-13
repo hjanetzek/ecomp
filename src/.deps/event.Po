@@ -1,0 +1,229 @@
+event.o: event.c /usr/include/stdlib.h /usr/include/features.h \
+  /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h \
+  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h \
+  /usr/lib/gcc/i486-linux-gnu/4.3.2/include/stddef.h \
+  /usr/include/sys/types.h /usr/include/bits/types.h \
+  /usr/include/bits/typesizes.h /usr/include/time.h /usr/include/endian.h \
+  /usr/include/bits/endian.h /usr/include/sys/select.h \
+  /usr/include/bits/select.h /usr/include/bits/sigset.h \
+  /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+  /usr/include/bits/pthreadtypes.h /usr/include/alloca.h \
+  /usr/include/bits/stdlib.h /usr/include/string.h \
+  /usr/include/bits/string.h /usr/include/bits/string2.h \
+  /usr/include/bits/string3.h /usr/include/X11/Xlib.h \
+  /usr/include/X11/X.h /usr/include/X11/Xfuncproto.h \
+  /usr/include/X11/Xosdefs.h /usr/include/X11/Xatom.h \
+  /usr/include/X11/extensions/shape.h /usr/include/X11/Xutil.h \
+  /usr/include/X11/keysym.h /usr/include/X11/keysymdef.h \
+  /usr/include/X11/extensions/Xrandr.h \
+  /usr/include/X11/extensions/randr.h \
+  /usr/include/X11/extensions/Xfixes.h \
+  /usr/include/X11/extensions/xfixeswire.h ../include/ecomp.h \
+  /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+  /usr/include/wchar.h /usr/lib/gcc/i486-linux-gnu/4.3.2/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h /usr/include/bits/stdio2.h \
+  /usr/include/sys/time.h /usr/include/X11/extensions/Xdamage.h \
+  /usr/include/X11/extensions/damagewire.h \
+  /usr/include/X11/extensions/Xcomposite.h \
+  /usr/include/X11/extensions/composite.h \
+  /usr/include/X11/extensions/Xinerama.h \
+  /usr/include/X11/extensions/sync.h /usr/include/X11/Xregion.h \
+  /usr/include/X11/XKBlib.h /usr/include/X11/extensions/XKBstr.h \
+  /usr/include/X11/extensions/XKB.h /usr/include/libxml2/libxml/parser.h \
+  /usr/include/libxml2/libxml/xmlversion.h \
+  /usr/include/libxml2/libxml/xmlexports.h \
+  /usr/include/libxml2/libxml/tree.h \
+  /usr/include/libxml2/libxml/xmlstring.h \
+  /usr/include/libxml2/libxml/xmlregexp.h \
+  /usr/include/libxml2/libxml/dict.h /usr/include/libxml2/libxml/hash.h \
+  /usr/include/libxml2/libxml/valid.h \
+  /usr/include/libxml2/libxml/xmlerror.h \
+  /usr/include/libxml2/libxml/list.h \
+  /usr/include/libxml2/libxml/xmlautomata.h \
+  /usr/include/libxml2/libxml/entities.h \
+  /usr/include/libxml2/libxml/encoding.h /usr/include/iconv.h \
+  /usr/include/libxml2/libxml/xmlIO.h \
+  /usr/include/libxml2/libxml/globals.h /usr/include/libxml2/libxml/SAX.h \
+  /usr/include/libxml2/libxml/xlink.h /usr/include/libxml2/libxml/SAX2.h \
+  /usr/include/libxml2/libxml/xmlmemory.h \
+  /usr/include/libxml2/libxml/threads.h /usr/include/GL/gl.h \
+  /usr/include/GL/glext.h /usr/include/inttypes.h /usr/include/stdint.h \
+  /usr/include/bits/wchar.h /usr/include/GL/glx.h \
+  /usr/include/GL/glxext.h
+
+/usr/include/stdlib.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-32.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.3.2/include/stddef.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/time.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/bits/stdlib.h:
+
+/usr/include/string.h:
+
+/usr/include/bits/string.h:
+
+/usr/include/bits/string2.h:
+
+/usr/include/bits/string3.h:
+
+/usr/include/X11/Xlib.h:
+
+/usr/include/X11/X.h:
+
+/usr/include/X11/Xfuncproto.h:
+
+/usr/include/X11/Xosdefs.h:
+
+/usr/include/X11/Xatom.h:
+
+/usr/include/X11/extensions/shape.h:
+
+/usr/include/X11/Xutil.h:
+
+/usr/include/X11/keysym.h:
+
+/usr/include/X11/keysymdef.h:
+
+/usr/include/X11/extensions/Xrandr.h:
+
+/usr/include/X11/extensions/randr.h:
+
+/usr/include/X11/extensions/Xfixes.h:
+
+/usr/include/X11/extensions/xfixeswire.h:
+
+../include/ecomp.h:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.3.2/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/include/bits/stdio2.h:
+
+/usr/include/sys/time.h:
+
+/usr/include/X11/extensions/Xdamage.h:
+
+/usr/include/X11/extensions/damagewire.h:
+
+/usr/include/X11/extensions/Xcomposite.h:
+
+/usr/include/X11/extensions/composite.h:
+
+/usr/include/X11/extensions/Xinerama.h:
+
+/usr/include/X11/extensions/sync.h:
+
+/usr/include/X11/Xregion.h:
+
+/usr/include/X11/XKBlib.h:
+
+/usr/include/X11/extensions/XKBstr.h:
+
+/usr/include/X11/extensions/XKB.h:
+
+/usr/include/libxml2/libxml/parser.h:
+
+/usr/include/libxml2/libxml/xmlversion.h:
+
+/usr/include/libxml2/libxml/xmlexports.h:
+
+/usr/include/libxml2/libxml/tree.h:
+
+/usr/include/libxml2/libxml/xmlstring.h:
+
+/usr/include/libxml2/libxml/xmlregexp.h:
+
+/usr/include/libxml2/libxml/dict.h:
+
+/usr/include/libxml2/libxml/hash.h:
+
+/usr/include/libxml2/libxml/valid.h:
+
+/usr/include/libxml2/libxml/xmlerror.h:
+
+/usr/include/libxml2/libxml/list.h:
+
+/usr/include/libxml2/libxml/xmlautomata.h:
+
+/usr/include/libxml2/libxml/entities.h:
+
+/usr/include/libxml2/libxml/encoding.h:
+
+/usr/include/iconv.h:
+
+/usr/include/libxml2/libxml/xmlIO.h:
+
+/usr/include/libxml2/libxml/globals.h:
+
+/usr/include/libxml2/libxml/SAX.h:
+
+/usr/include/libxml2/libxml/xlink.h:
+
+/usr/include/libxml2/libxml/SAX2.h:
+
+/usr/include/libxml2/libxml/xmlmemory.h:
+
+/usr/include/libxml2/libxml/threads.h:
+
+/usr/include/GL/gl.h:
+
+/usr/include/GL/glext.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/GL/glx.h:
+
+/usr/include/GL/glxext.h:
