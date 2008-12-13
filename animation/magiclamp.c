@@ -64,7 +64,7 @@ void fxMagicLampInit(CompScreen * s, CompWindow * w)
     int maxWaves;
     float waveAmpMin, waveAmpMax;
 
-    /* if (aw->curAnimEffect == AnimEffectMagicLamp)
+    if (aw->curAnimEffect == AnimEffectMagicLamp)
     {
 	maxWaves = animGetI(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_MAX_WAVES);
 	waveAmpMin =
@@ -72,7 +72,7 @@ void fxMagicLampInit(CompScreen * s, CompWindow * w)
 	waveAmpMax =
 	    animGetF(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_WAVE_AMP_MAX);
     }
-    else*/
+    else
     {
 	maxWaves = 0;
 	waveAmpMin = 0;
