@@ -432,8 +432,8 @@ main (int argc, char **argv)
 
     compAddMetadataFromFile (&coreMetadata, "core");
 
-    if (!disableSm)
-	initSession (clientId);
+    //if (!disableSm)
+    //	initSession (clientId);
 
     if (!addDisplay (displayName))
 	return 1;
