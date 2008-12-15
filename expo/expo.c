@@ -954,7 +954,7 @@ expoPaintWall (CompScreen              *s,
 			   -output->region.extents.y1 / output->height, 0.0);
 
 	  paintTransformedOutput (s, sAttrib, &sTransform3, &s->region,
-				  output, mask);
+	  			  output, mask);
 
 	  if (!reflection)
 	    {
@@ -1236,9 +1236,6 @@ expoDonePaintScreen (CompScreen * s)
 
   if (es->doubleClick)
     {			
-      // es->selectedVX = i;
-      // es->selectedVY = j;
-
       CompAction *action;
 			
       es->clickTime   = 0;
@@ -1250,9 +1247,7 @@ expoDonePaintScreen (CompScreen * s)
 
       es->anyClick = FALSE;
       return;
-	
     }
-
 
   switch (es->dndState) {
   case DnDDuring:
@@ -1307,7 +1302,7 @@ expoDonePaintScreen (CompScreen * s)
 	      if (abs_y + w->attrib.height + dy >= s->vsize * s->height) 
 		dy = (s->vsize * s->height) - (abs_y + w->attrib.height);
 
-	      moveWindow (es->dndWindow, dx, dy, FALSE, FALSE); // TRUE,FALSE
+	      moveWindow (es->dndWindow, dx, dy, TRUE, FALSE); // TRUE,FALSE
 		    
 	      //expoGetExpoImmediateMove (s->display));
 	    }
@@ -1348,10 +1343,6 @@ expoDonePaintScreen (CompScreen * s)
 	  if(!w->clientId)  /* added */
 	    continue;
 
-	  //	if (!(w->type & (CompWindowTypeNormalMask |
-	  //			 CompWindowTypeFullscreenMask)))
-	  //   continue;
-
 	  xOffset = s->hsize * s->width;
 	  yOffset = s->vsize * s->height;
 
@@ -1370,6 +1361,7 @@ expoDonePaintScreen (CompScreen * s)
 	  if (!inWindow)
 	    continue;
 
+	  // (*s->windowGrabNotify) (w);
 	  es->dndState  = DnDDuring;
 	  es->dndWindow = w;
 
