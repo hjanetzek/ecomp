@@ -130,11 +130,8 @@ updateWindowClassHints (CompWindow *w)
 	  XFree (classHint.res_class);
   	}
 
-      if (((w->wmType == CompWindowTypeNormalMask) ||
-	   (w->wmType == CompWindowTypeUnknownMask) ||
-	   (w->wmType == CompWindowTypeUtilMask)) && 
-	  (!w->clientId))
-	{
+      if (!w->clientId && !(w->wmType & CompWindowTypeDropdownMenuMask))
+	{ 
 	  if ((!strcasecmp (w->resName, "gecko")) ||
 	      (!strcasecmp (w->resName, "popup")) ||
 	      (!strcasecmp (w->resName, "VCLSalFrame")))
