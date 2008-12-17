@@ -33,6 +33,7 @@ AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h sys/time.h unistd.h])
+# AC_CONFIG_MACRO_DIR([m4])
 
 ALL_LINGUAS="cs de es fi fr hu it ja pl pt_BR sv zh_CN zh_TW af ar bg bn bs ca cy da el en_GB en_US et gl gu he hi hr id ka km ko lo lt mk mr nb nl pa pt ro ru sk sl sr ta tr uk vi xh zu"
 AC_SUBST(ALL_LINGUAS)
@@ -370,6 +371,7 @@ dnl fi
 BCOP_BIN=../bcop/src/bcop.in
 AC_SUBST(BCOP_BIN)
 
+intltoolize --force || die "intltoolize failed"
 
 
 AC_OUTPUT([
@@ -395,12 +397,12 @@ cubereflex/Makefile
 scalefilter/Makefile
 scaleaddon/Makefile
 images/Makefile
-po/Makefile.in
 metadata/Makefile
 bcop/bcop.pc
 bcop/Makefile
 bcop/src/Makefile
 bcop/src/bcop
+po/Makefile.in
 ])
 
 echo ""
