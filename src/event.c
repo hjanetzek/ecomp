@@ -1433,13 +1433,13 @@ handleEvent (CompDisplay *d,
 	 if (w)
 	 freeWindowIcons (w);
 	 }*/
-    /*else if (event->xproperty.atom == XA_WM_CLASS)
+    else if (event->xproperty.atom == XA_WM_CLASS)
       {
-      D(("XA_WM_CLASS\n"));
-      w = findWindowAtDisplay (d, event->xproperty.window);
-      if (w)
-      updateWindowClassHints (w);
-      }*/
+	D(("XA_WM_CLASS\n"));
+	w = findWindowAtDisplay (d, event->xproperty.window);
+	if (w)
+	  updateWindowClassHints (w);
+      }
     else if (event->xproperty.atom == d->winDesktopAtom)
       {
 	C(("0x%x : PropertyNotify - ", (unsigned int)event->xproperty.window));
@@ -1529,7 +1529,7 @@ handleEvent (CompDisplay *d,
 		w->clientMapped = mapped;		    
 		if(mapped) 
 		  {
-		    handleWindowDamageRect (w, w->attrib.x, w->attrib.y,
+		    handleWindowDamageRect (w, 0, 0,
 					    w->attrib.width, w->attrib.height);
 		  }
 	      }
