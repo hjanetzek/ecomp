@@ -257,7 +257,6 @@ main (int argc, char **argv)
     char      *plugin[256];
     int	      i, nPlugin = 0;
     Bool      disableSm = FALSE;
-    char      *clientId = NULL;
     char      *refreshRateArg = NULL;
 
     programName = argv[0];
@@ -343,20 +342,6 @@ main (int argc, char **argv)
 	    useCow = FALSE;
 	}
 #endif
-
-	else if (!strcmp (argv[i], "--replace"))
-	{
-	    replaceCurrentWm = TRUE;
-	}
-	else if (!strcmp (argv[i], "--sm-disable"))
-	{
-	    disableSm = TRUE;
-	}
-	else if (!strcmp (argv[i], "--sm-client-id"))
-	{
-	    if (i + 1 < argc)
-		clientId = argv[++i];
-	}
 	else if (!strcmp (argv[i], "--no-detection"))
 	{
 	    noDetection = TRUE;

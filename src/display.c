@@ -954,6 +954,8 @@ eventLoop (void)
 	    lastPointerY = pointerY;
 	}
 
+ 	if (replaceCurrentWm) continue;
+	
 	for (s = display->screens; s; s = s->next)
 	{
 	    if (s->damageMask)
@@ -1663,7 +1665,6 @@ addDisplay (char *name)
 	Window		     newWmSnOwner = None, newCmSnOwner = None;
 	Atom		     wmSnAtom = 0, cmSnAtom = 0;
 	Time		     wmSnTimestamp = 0;
-	XEvent		     event;
 	XSetWindowAttributes attr;
 	Window		     currentWmSnOwner, currentCmSnOwner;
 	char		     buf[128];
@@ -1676,43 +1677,10 @@ addDisplay (char *name)
 
 	currentWmSnOwner = XGetSelectionOwner (dpy, wmSnAtom);
 
-        /*	if (currentWmSnOwner != None)
-	{
-	    if (!replaceCurrentWm)
-	    {
-		compLogMessage (d, "core", CompLogLevelError,
-				"Screen %d on display \"%s\" already "
-				"has a window manager; try using the "
-				"--replace option to replace the current "
-				"window manager.",
-				i, DisplayString (dpy));
-
-		continue;
-	    }
-
-	    XSelectInput (dpy, currentWmSnOwner,
-			  StructureNotifyMask);
-	}
-        */
 	sprintf (buf, "_NET_WM_CM_S%d", i);
 	cmSnAtom = XInternAtom (dpy, buf, 0);
 
 	currentCmSnOwner = XGetSelectionOwner (dpy, cmSnAtom);
-
-	if (currentCmSnOwner != None)
-	{
-	    if (!replaceCurrentWm)
-	    {
-		compLogMessage (d, "core", CompLogLevelError,
-				"Screen %d on display \"%s\" already "
-				"has a compositing manager; try using the "
-				"--replace option to replace the current "
-				"compositing manager.",
-				i, DisplayString (dpy));
-
-		continue;
-	    }
-	}
 
 	attr.override_redirect = TRUE;
 	attr.event_mask	       = PropertyChangeMask;
@@ -1725,62 +1693,7 @@ addDisplay (char *name)
 			   CWOverrideRedirect | CWEventMask,
 			   &attr);
 
-	XChangeProperty (dpy,
-			 newWmSnOwner,
-			 d->wmNameAtom,
-			 d->utf8StringAtom, 8,
-			 PropModeReplace,
-			 (unsigned char *) PACKAGE,
-			 strlen (PACKAGE));
 
-	XWindowEvent (dpy,
-		      newWmSnOwner,
-		      PropertyChangeMask,
-		      &event);
-	
-
-	wmSnTimestamp = event.xproperty.time;
-        /*
-	XSetSelectionOwner (dpy, wmSnAtom, newWmSnOwner, wmSnTimestamp);
-
-	if (XGetSelectionOwner (dpy, wmSnAtom) != newWmSnOwner)
-	{
-	    compLogMessage (d, "core", CompLogLevelError,
-			    "Could not acquire window manager "
-			    "selection on screen %d display \"%s\"",
-			    i, DisplayString (dpy));
-
-	    XDestroyWindow (dpy, newWmSnOwner);
-
-	    continue;
-	}
-        */
-	/* Send client message indicating that we are now the WM */
-        /*	event.xclient.type	   = ClientMessage;
-	event.xclient.window       = XRootWindow (dpy, i);
-	event.xclient.message_type = d->managerAtom;
-	event.xclient.format       = 32;
-	event.xclient.data.l[0]    = wmSnTimestamp;
-	event.xclient.data.l[1]    = wmSnAtom;
-	event.xclient.data.l[2]    = 0;
-	event.xclient.data.l[3]    = 0;
-	event.xclient.data.l[4]    = 0;
-
-	XSendEvent (dpy, XRootWindow (dpy, i), FALSE,
-		    StructureNotifyMask, &event);
-        */
-	/* Wait for old window manager to go away */
-	/*if (currentWmSnOwner != None)
-	{
-	    do {
-		XWindowEvent (dpy, currentWmSnOwner,
-			      StructureNotifyMask, &event);
-	    } while (event.type != DestroyNotify);
-	}
-
-	compCheckForError (dpy);
-        */
-        
 	XCompositeRedirectSubwindows (dpy, XRootWindow (dpy, i),
 				      CompositeRedirectManual);
 
@@ -1859,36 +1772,6 @@ addDisplay (char *name)
 	return FALSE;
     }
 
-    //setAudibleBell (d, d->opt[COMP_DISPLAY_OPTION_AUDIBLE_BELL].value.b);
-
-    //XGetInputFocus (dpy, &focus, &revertTo);
-
-    /* move input focus to root window so that we get a FocusIn event when
-       moving it to the default window */
-    /*XSetInputFocus (dpy, d->screens->root, RevertToPointerRoot, CurrentTime);
-
-    if (focus == None || focus == PointerRoot)
-    {
-	focusDefaultWindow (d);
-    }
-    else
-    {
-	CompWindow *w;
-
-	w = findWindowAtDisplay (d, focus);
-	if (w)
-	{
-	    moveInputFocusToWindow (w);
-	}
-	else
-	    focusDefaultWindow (d);
-    }
-    */
-    /*
-    d->pingHandle =
-	compAddTimeout (d->opt[COMP_DISPLAY_OPTION_PING_DELAY].value.i,
-			pingTimeout, d);
-    */
 
     return TRUE;
 }
@@ -2027,160 +1910,8 @@ findTopLevelWindowAtDisplay (CompDisplay *d,
 
     return 0;
 }
-/*
-static CompScreen *
-findScreenForSelection (CompDisplay *display,
-			Window       owner,
-			Atom         selection)
-{
-    CompScreen *s;
 
-    for (s = display->screens; s; s = s->next)
-    {
-	if (s->wmSnSelectionWindow == owner && s->wmSnAtom == selection)
-	    return s;
-    }
 
-    return NULL;
-}
-*/
-/* from fvwm2, Copyright Matthias Clasen, Dominik Vogt */
- /*static Bool
-convertProperty (CompDisplay *display,
-		 CompScreen  *screen,
-		 Window      w,
-		 Atom        target,
-		 Atom        property)
-{
-
-#define N_TARGETS 4
-
-    Atom conversionTargets[N_TARGETS];
-    long icccmVersion[] = { 2, 0 };
-
-    conversionTargets[0] = display->targetsAtom;
-    conversionTargets[1] = display->multipleAtom;
-    conversionTargets[2] = display->timestampAtom;
-    conversionTargets[3] = display->versionAtom;
-
-    if (target == display->targetsAtom)
-	XChangeProperty (display->display, w, property,
-			 XA_ATOM, 32, PropModeReplace,
-			 (unsigned char *) conversionTargets, N_TARGETS);
-    else if (target == display->timestampAtom)
-	XChangeProperty (display->display, w, property,
-			 XA_INTEGER, 32, PropModeReplace,
-			 (unsigned char *) &screen->wmSnTimestamp, 1);
-    else if (target == display->versionAtom)
-	XChangeProperty (display->display, w, property,
-			 XA_INTEGER, 32, PropModeReplace,
-			 (unsigned char *) icccmVersion, 2);
-    else
-	return FALSE;
-
- *//* Be sure the PropertyNotify has arrived so we
-     * can send SelectionNotify
-     *//*
-    XSync (display->display, FALSE);
-
-    return TRUE;
-}
-*/
-/* from fvwm2, Copyright Matthias Clasen, Dominik Vogt */
-/*void
-handleSelectionRequest (CompDisplay *display,
-			XEvent      *event)
-{
-    XSelectionEvent reply;
-    CompScreen      *screen;
-
-    screen = findScreenForSelection (display,
-				     event->xselectionrequest.owner,
-				     event->xselectionrequest.selection);
-    if (!screen)
-	return;
-
-    reply.type	    = SelectionNotify;
-    reply.display   = display->display;
-    reply.requestor = event->xselectionrequest.requestor;
-    reply.selection = event->xselectionrequest.selection;
-    reply.target    = event->xselectionrequest.target;
-    reply.property  = None;
-    reply.time	    = event->xselectionrequest.time;
-
-    if (event->xselectionrequest.target == display->multipleAtom)
-    {
-	if (event->xselectionrequest.property != None)
-	{
-	    Atom	  type, *adata;
-	    int		  i, format;
-	    unsigned long num, rest;
-	    unsigned char *data;
-
-	    if (XGetWindowProperty (display->display,
-				    event->xselectionrequest.requestor,
-				    event->xselectionrequest.property,
-				    0, 256, FALSE,
-				    display->atomPairAtom,
-				    &type, &format, &num, &rest,
-				    &data) != Success)
-		return;
-
-*//* FIXME: to be 100% correct, should deal with rest > 0,
-	     * but since we have 4 possible targets, we will hardly ever
-	     * meet multiple requests with a length > 8
-	     *//*
-	    adata = (Atom *) data;
-	    i = 0;
-	    while (i < (int) num)
-	    {
-		if (!convertProperty (display, screen,
-				      event->xselectionrequest.requestor,
-				      adata[i], adata[i + 1]))
-		    adata[i + 1] = None;
-
-		i += 2;
-	    }
-
-	    XChangeProperty (display->display,
-			     event->xselectionrequest.requestor,
-			     event->xselectionrequest.property,
-			     display->atomPairAtom,
-			     32, PropModeReplace, data, num);
-	}
-    }
-    else
-    {
-	if (event->xselectionrequest.property == None)
-	    event->xselectionrequest.property = event->xselectionrequest.target;
-
-	if (convertProperty (display, screen,
-			     event->xselectionrequest.requestor,
-			     event->xselectionrequest.target,
-			     event->xselectionrequest.property))
-	    reply.property = event->xselectionrequest.property;
-    }
-
-    XSendEvent (display->display,
-		event->xselectionrequest.requestor,
-		FALSE, 0L, (XEvent *) &reply);
-}
-	       *//*
-void
-handleSelectionClear (CompDisplay *display,
-		      XEvent      *event)
-{
-    *//* We need to unmanage the screen on which we lost the selection */
-      /*CompScreen *screen;
-
-    screen = findScreenForSelection (display,
-				     event->xselectionclear.window,
-				     event->xselectionclear.selection);
-
-    if (screen)
-	shutDown = TRUE;
-}
-*/
 void
 warpPointer (CompScreen *s,
 	     int	 dx,
@@ -2221,6 +1952,7 @@ warpPointer (CompScreen *s,
 	lastPointerY = pointerY;
     }
 }
+
 
 Bool
 setDisplayAction (CompDisplay     *display,

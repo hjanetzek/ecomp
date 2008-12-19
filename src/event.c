@@ -44,7 +44,14 @@ static Window xdndWindow = None;
 static Window edgeWindow = None;
 
 static Bool initialDamageTimeout(void *closure);
+static Bool restartWmTimeout(void *closure);
 
+static Bool restartWmTimeout(void *closure)
+{
+  replaceCurrentWm = FALSE;
+  
+  return FALSE;
+}
 
 static void
 handleWindowDamageRect (CompWindow *w,
@@ -1520,6 +1527,19 @@ handleEvent (CompDisplay *d,
 	       (unsigned int) win, type, 
 	       (unsigned int) event->xclient.data.l[2]);
 	
+	/* mapped:  0 */
+	/* state:   1 */
+	/* desktop: 2 */
+	/* restart: 3 */
+	if (type == 3)
+	  { 
+	    unsigned int restart = event->xclient.data.l[2];
+	    replaceCurrentWm = restart;                                                                             
+	    if(replaceCurrentWm)
+	      compAddTimeout(10000, restartWmTimeout, NULL);
+	    break;
+	  }
+	
 	w = findWindowAtDisplay (d, win);
 	if (w)
 	  {
@@ -1532,6 +1552,7 @@ handleEvent (CompDisplay *d,
 		    handleWindowDamageRect (w, 0, 0,
 					    w->attrib.width, w->attrib.height);
 		  }
+		break;
 	      }
 	    else if(type == 1)
 	      {
@@ -1547,6 +1568,7 @@ handleEvent (CompDisplay *d,
 		      }
 		    (*d->matchPropertyChanged) (d, w); 
 		  }
+		break;
 	      }
 	  }
       }
