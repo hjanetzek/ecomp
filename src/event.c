@@ -1418,15 +1418,7 @@ handleEvent (CompDisplay *d,
 
 	    //recalcWindowActions (w);
 	  }
-      }/*
-	 else if (event->xproperty.atom == d->wmProtocolsAtom)
-	 {
-	 D(("wmProtocolsAtom\n"));
-	  
-	 w = findWindowAtDisplay (d, event->xproperty.window);
-	 if (w)
-	 w->protocols = getProtocols (d, w->id);
-	 }*/
+      }
     else if (event->xproperty.atom == d->wmIconAtom) // TODO 
       {
 	D(("wmIconAtom\n"));
