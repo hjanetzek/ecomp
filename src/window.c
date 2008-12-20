@@ -246,6 +246,7 @@ windowStateFromString (const char *str)
     return 0;
 }
 
+/*TODO this can be send from e */
 unsigned int
 getWindowState (CompDisplay *display,
 		Window      id)
@@ -273,46 +274,8 @@ getWindowState (CompDisplay *display,
     return state;
 }
 
-void
-setWindowState (CompDisplay  *display,
-		unsigned int state,
-		Window       id)
-{
-    Atom data[32];
-    int	 i = 0;
 
-    if (state & CompWindowStateModalMask)
-	data[i++] = display->winStateModalAtom;
-    if (state & CompWindowStateStickyMask)
-	data[i++] = display->winStateStickyAtom;
-    if (state & CompWindowStateMaximizedVertMask)
-	data[i++] = display->winStateMaximizedVertAtom;
-    if (state & CompWindowStateMaximizedHorzMask)
-	data[i++] = display->winStateMaximizedHorzAtom;
-    if (state & CompWindowStateShadedMask)
-	data[i++] = display->winStateShadedAtom;
-    if (state & CompWindowStateSkipTaskbarMask)
-	data[i++] = display->winStateSkipTaskbarAtom;
-    if (state & CompWindowStateSkipPagerMask)
-	data[i++] = display->winStateSkipPagerAtom;
-    if (state & CompWindowStateHiddenMask)
-	data[i++] = display->winStateHiddenAtom;
-    if (state & CompWindowStateFullscreenMask)
-	data[i++] = display->winStateFullscreenAtom;
-    if (state & CompWindowStateAboveMask)
-	data[i++] = display->winStateAboveAtom;
-    if (state & CompWindowStateBelowMask)
-	data[i++] = display->winStateBelowAtom;
-    if (state & CompWindowStateDemandsAttentionMask)
-	data[i++] = display->winStateDemandsAttentionAtom;
-    if (state & CompWindowStateDisplayModalMask)
-	data[i++] = display->winStateDisplayModalAtom;
-
-    XChangeProperty (display->display, id, display->winStateAtom,
-		     XA_ATOM, 32, PropModeReplace,
-		     (unsigned char *) data, i);
-}
-
+/* TODO remove this*/
 void
 changeWindowState (CompWindow   *w,
 		   unsigned int newState)
@@ -329,6 +292,7 @@ changeWindowState (CompWindow   *w,
     (*d->matchPropertyChanged) (d, w);
 }
 
+
 /* FIXME where is this used ? */
 void
 getAllowedActionsForWindow (CompWindow   *w,
@@ -337,25 +301,6 @@ getAllowedActionsForWindow (CompWindow   *w,
 {
    *setActions   = 0;
    *clearActions = 0;
-}
-
-unsigned int
-constrainWindowState (unsigned int state,
-		      unsigned int actions)
-{
-    if (!(actions & CompWindowActionMaximizeHorzMask))
-	state &= ~CompWindowStateMaximizedHorzMask;
-
-    if (!(actions & CompWindowActionMaximizeVertMask))
-	state &= ~CompWindowStateMaximizedVertMask;
-
-    if (!(actions & CompWindowActionShadeMask))
-	state &= ~CompWindowStateShadedMask;
-
-    if (!(actions & CompWindowActionFullscreenMask))
-	state &= ~CompWindowStateFullscreenMask;
-
-    return state;
 }
 
 unsigned int
@@ -401,6 +346,7 @@ windowTypeFromString (const char *str)
     return 0;
 }
 
+/* TODO send this from e  */
 unsigned int
 getWindowType (CompDisplay *display,
 	       Window      id)
@@ -513,42 +459,6 @@ getMwmHints (CompDisplay  *display,
     }
 }
 
-unsigned int
-getProtocols (CompDisplay *display,
-	      Window      id)
-{
-    Atom	  actual;
-    int		  result, format;
-    unsigned long n, left;
-    unsigned char *data;
-    unsigned int  protocols = 0;
-
-    result = XGetWindowProperty (display->display, id, display->wmProtocolsAtom,
-				 0L, 20L, FALSE, XA_ATOM,
-				 &actual, &format, &n, &left, &data);
-
-    if (result == Success && n && data)
-    {
-	Atom *protocol = (Atom *) data;
-	int  i;
-
-	for (i = 0; i < n; i++)
-	{
-	    if (protocol[i] == display->wmDeleteWindowAtom)
-		protocols |= CompWindowProtocolDeleteMask;
-	    else if (protocol[i] == display->wmTakeFocusAtom)
-		protocols |= CompWindowProtocolTakeFocusMask;
-	    // else if (protocol[i] == display->wmPingAtom)
-	    //	protocols |= CompWindowProtocolPingMask;
-	    else if (protocol[i] == display->wmSyncRequestAtom)
-		protocols |= CompWindowProtocolSyncRequestMask;
-	}
-
-	XFree (data);
-    }
-
-    return protocols;
-}
 
 unsigned int
 getWindowProp (CompDisplay  *display,
@@ -1329,7 +1239,7 @@ addWindow (CompScreen *screen,
     w->actions   = 0;
     w->protocols = 0;
     w->type      = CompWindowTypeUnknownMask;
-    //w->lastPong  = screen->display->lastPing;
+
 
     if (screen->display->shapeExtension)
 	XShapeSelectInput (screen->display->display, id, ShapeNotifyMask);
@@ -1403,7 +1313,6 @@ addWindow (CompScreen *screen,
        w->clientId = clientId;
 
        w->wmType = getWindowType (screen->display, w->clientId);
-       w->protocols = getProtocols (screen->display, w->clientId);
        w->state = getWindowState (screen->display, w->clientId);
        updateWindowClassHints (w);
 
@@ -1448,7 +1357,6 @@ addWindow (CompScreen *screen,
     else
     {
       w->wmType    = getWindowType (screen->display, w->id);
-      w->protocols = getProtocols (screen->display, w->id);
       updateWindowClassHints (w);
       recalcWindowType (w);
     }
@@ -1529,9 +1437,6 @@ removeWindow (CompWindow *w)
     {
 	if (w->type == CompWindowTypeDesktopMask)
 	    w->screen->desktopWindowCount--;
-
-	//if (w->struts)
-	//    updateWorkareaForScreen (w->screen);
     }
 
     if (!w->redirected)
@@ -1566,64 +1471,6 @@ destroyWindow (CompWindow *w)
     }
 }
 
-void
-sendConfigureNotify (CompWindow *w)
-{
-    XConfigureEvent xev;
-
-    xev.type   = ConfigureNotify;
-    xev.event  = w->id;
-    xev.window = w->id;
-
-    /* normally we should never send configure notify events to override
-       redirect windows but if they support the _NET_WM_SYNC_REQUEST
-       protocol we need to do this when the window is mapped. however the
-       only way we can make sure that the attributes we send are correct
-       and is to grab the server. */
-    /****/
-    if (w->attrib.override_redirect)
-    {
-	XWindowAttributes attrib;
-
-	XGrabServer (w->screen->display->display);
-
-	if (XGetWindowAttributes (w->screen->display->display, w->id, &attrib))
-	{
-	  D(("sendConfigureNotify to override_redirect window\n"));
-	  
-	    xev.x	     = attrib.x;
-	    xev.y	     = attrib.y;
-	    xev.width	     = attrib.width;
-	    xev.height	     = attrib.height;
-	    xev.border_width = attrib.border_width;
-
-	    xev.above		  = (w->prev) ? w->prev->id : None;
-	    xev.override_redirect = TRUE;
-
-	    XSendEvent (w->screen->display->display, w->id, FALSE,
-			StructureNotifyMask, (XEvent *) &xev);
-	}
-
-	XUngrabServer (w->screen->display->display);
-    }
-    
-    /*
-    else
-    {
-       D(("sendConfigureNotify\n"));	  
-	xev.x		 = w->serverX;
-	xev.y		 = w->serverY;
-	xev.width	 = w->serverWidth;
-	xev.height	 = w->serverHeight;
-	xev.border_width = w->serverBorderWidth;
-
-	xev.above	      = (w->prev) ? w->prev->id : None;
-	xev.override_redirect = w->attrib.override_redirect;
-
-	XSendEvent (w->screen->display->display, w->id, FALSE,
-		    StructureNotifyMask, (XEvent *) &xev);
-     }*/
-}
 
 void
 mapWindow (CompWindow *w)
@@ -1656,12 +1503,6 @@ mapWindow (CompWindow *w)
     if (w->type & CompWindowTypeDesktopMask)
 	w->screen->desktopWindowCount++;
 
-    // if (w->protocols & CompWindowProtocolSyncRequestMask)
-    // {
-    //	sendSyncRequest (w);
-    //	sendConfigureNotify (w);
-    //}
-
     if (!w->attrib.override_redirect)
     {
 	if (!w->height)
@@ -1685,9 +1526,6 @@ unmapWindow (CompWindow *w)
     w->unmapRefCnt--;
     if (w->unmapRefCnt > 0)
 	return;
-
-    //if (w->struts)
-    //	updateWorkareaForScreen (w->screen);
 
     if (w->attrib.map_state != IsViewable)
 	return;
@@ -1809,10 +1647,8 @@ resizeWindow (CompWindow *w,
     else if (w->attrib.x != x || w->attrib.y != y)
        {
     	int dx, dy;
-    
     	dx = x - w->attrib.x;
     	dy = y - w->attrib.y;
-	/* FIXME needed ? */
     	moveWindow (w, dx, dy, TRUE, TRUE);
        }
     
@@ -1825,55 +1661,27 @@ configureWindow (CompWindow	 *w,
 {
   C(("- configureWindow %d:%d %dx%d\n", ce->x, ce->y, ce->width, ce->height));
   
-    if (w->clientId)
-      {
-	w->attrib.override_redirect = FALSE;
-      }
-    else
-      w->attrib.override_redirect = ce->override_redirect;
-
-    /*FIXME cleanup !!!*/
-    /*
-    int dy = (w->desktop / w->screen->hsize); 
-    int dx = (w->desktop - (dy * w->screen->hsize));
-
-    dx -= w->screen->x;
-    dy -= w->screen->y;
-    
-    dx *= w->screen->width;
-    dy *= w->screen->height;
-    
-    ce->x += dx;
-    ce->y += dy;
-    */
-    /*  if (w->syncWait)
+  /*XXX remove this*/
+  if (w->clientId)
     {
-	w->syncX	   = ce->x;
-	w->syncY	   = ce->y;
-	w->syncWidth       = ce->width;
-	w->syncHeight      = ce->height;
-	w->syncBorderWidth = ce->border_width;
+      w->attrib.override_redirect = FALSE;
     }
-    else*/
-    {
-      // if (w->attrib.override_redirect) /* check if this updated
-      //	w->serverWidth correctly (for getDefaultViewport)*/ 
-	{
-	    w->serverX		 = ce->x;
-	    w->serverY		 = ce->y;
-	    w->serverWidth       = ce->width;
-	    w->serverHeight      = ce->height;
-	    w->serverBorderWidth = ce->border_width;
-	}
-
-	resizeWindow (w, ce->x, ce->y, ce->width, ce->height,
-		      ce->border_width);
-    }
+  else
+    w->attrib.override_redirect = ce->override_redirect;
   
-    if (restackWindow (w, ce->above))
-      {
-	addWindowDamage (w);
-      }
+  w->serverX		 = ce->x;
+  w->serverY		 = ce->y;
+  w->serverWidth       = ce->width;
+  w->serverHeight      = ce->height;
+  w->serverBorderWidth = ce->border_width;
+
+  resizeWindow (w, ce->x, ce->y, ce->width, ce->height,
+		ce->border_width);
+  
+  if (restackWindow (w, ce->above))
+    {
+      addWindowDamage (w);
+    }
 }
 
 
@@ -1929,22 +1737,19 @@ syncWindowPosition (CompWindow *w)
 
     XMoveWindow (w->screen->display->display, w->id, w->attrib.x, w->attrib.y);
     /* we moved without resizing, so we have to send a configure notify */
-    sendConfigureNotify (w);
+    // XXX TESTING sendConfigureNotify (w);
 }
 
+
+/* TODO remove? */
 Bool
 focusWindow (CompWindow *w)
 {
-  //    if (w->attrib.override_redirect)
-  //	return FALSE;
-      
     if (!w->clientId)
 	return FALSE;
  
     if (!w->shaded && (w->state & CompWindowStateHiddenMask))
 	return FALSE;
-  
-    //D(("focusWindow: %d:%d\n",w->attrib.x,  w->attrib.y));
     
     if (w->attrib.x + w->width  <= 0	||
 	w->attrib.y + w->height <= 0	||
@@ -2025,87 +1830,6 @@ moveInputFocusToWindow (CompWindow *w)
     XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
 }
 
-static Bool
-stackLayerCheck (CompWindow *w,
-		 Window	    clientLeader,
-		 CompWindow *below)
-{
-   if (w->state & CompWindowStateAboveMask)
-   {
-	return TRUE;
-   }
-   else if (w->state & CompWindowStateBelowMask)
-   {
-	if (below->state & CompWindowStateBelowMask)
-	    return TRUE;
-   }
-   else if (!(below->state & CompWindowStateAboveMask))
-   {
-	return TRUE;
-   }
-
-   return FALSE;
-}
-
-/* goes through the stack, top-down until we find a window we should
-   stack above, normal windows can be stacked above fullscreen windows
-   if aboveFs is TRUE. */
-static CompWindow *
-findSiblingBelow (CompWindow *w,
-		  Bool	     aboveFs)
-{
-   CompWindow   *below;
-   Window	 clientLeader = None; //w->clientLeader;
-   unsigned int type = w->type;
-   unsigned int belowMask;
-
-   if (aboveFs)
-	belowMask = CompWindowTypeDockMask;
-   else
-	belowMask = CompWindowTypeDockMask | CompWindowTypeFullscreenMask;
-
-   /* normal stacking of fullscreen windows with below state */
-   //if ((type & CompWindowTypeFullscreenMask) &&
-	//	(w->state & CompWindowStateBelowMask))
-     //type = CompWindowTypeNormalMask;
-
-   for (below = w->screen->reverseWindows; below; below = below->prev)
-   {
-     if (below == w) // || avoidStackingRelativeTo (below))
-	    continue;
-
-	//always above desktop windows
-	if (below->type & CompWindowTypeDesktopMask)
-	    return below;
-
-	switch (type) {
-	case CompWindowTypeDesktopMask:  //desktop window layer
-	 break;
-	case CompWindowTypeFullscreenMask:
-	case CompWindowTypeDockMask:  //fullscreen and dock layer
-	 if (below->type & (CompWindowTypeFullscreenMask |
-			       CompWindowTypeDockMask))
-	    {
-		if (stackLayerCheck (w, clientLeader, below))
-		    return below;
-	    }
-	    else
-	    {
-		return below;
-	    }
-	    break;
-	default:  //fullscreen and normal layer
-	 if (!(below->type & belowMask))
-	    {
-		if (stackLayerCheck (w, clientLeader, below))
-		    return below;
-	    }
-	    break;
-	 }
-   }
-
-   return NULL;
-}
 
 void
 configureXWindow (CompWindow	 *w,
@@ -2128,81 +1852,8 @@ configureXWindow (CompWindow	 *w,
 
     if (valueMask & CWBorderWidth)
 	w->serverBorderWidth = xwc->border_width;
-
-
-    /**  YEAH this finally fixes the issue that dialog were not
-	 raised !!!!!! =)*/
-    /* if (valueMask)
-    {
-	XConfigureWindow (w->screen->display->display, w->id, valueMask, xwc);
-    	if (!(valueMask & (CWWidth | CWHeight)))
-	{
-	    // we have to send a configure notify event if we move or restack
-	     //  a window without resizing it according to ICCCM 4.1.5 
-    	    sendConfigureNotify (w);
-	}
-    }
-    */
 }
 
-static int
-addWindowStackChanges (CompWindow     *w,
-		       XWindowChanges *xwc,
-		       CompWindow     *sibling)
-{
-    int	mask = 0;
-
-    if (!sibling || sibling->id != w->id)
-    {
-      	if (w->prev)
-	{
-	    if (!sibling)
-	    {
-		XLowerWindow (w->screen->display->display, w->id);
-	    }
-	    else if (sibling->id != w->prev->id)
-	    {
-		mask |= CWSibling | CWStackMode;
-
-		xwc->stack_mode = Above;
-		xwc->sibling    = sibling->id;
-	    }
-	}
-	else
-      if (sibling)
-	{
-	    mask |= CWSibling | CWStackMode;
-
-	    xwc->stack_mode = Above;
-	    xwc->sibling    = sibling->id;
-	}
-    }
-    /**>>**/ 
-    /*if (sibling && mask)
-      {*/
-    	/* a normal window can be stacked above fullscreen windows but we
-    	   don't want normal windows to be stacked above dock window so if
-    	   the sibling we're stacking above is a fullscreen window we also
-    	   update all dock windows. */
-    /*	if ((sibling->type & CompWindowTypeFullscreenMask) &&
-    	    (!(w->type & (CompWindowTypeFullscreenMask |
-    			  CompWindowTypeDockMask))) &&
-    	    !isAncestorTo (w, sibling))
-    	{
-    	    CompWindow *dw;
-
-    	    for (dw = w->screen->reverseWindows; dw; dw = dw->prev)
-    		if (dw == sibling)
-    		    break;
-
-    	    for (; dw; dw = dw->prev)
-    		if (dw->type & CompWindowTypeDockMask)
-    		    configureXWindow (dw, mask, xwc);
-    	}
-	}*/
-    /**<<**/
-    return mask;
-}
 
 void
 raiseWindow (CompWindow *w)
@@ -2301,83 +1952,22 @@ restackWindowBelow (CompWindow *w,
 }
 
 
-/* TODO cleanup __________________________________________________ */
 void
 updateWindowAttributes (CompWindow             *w,
 			CompStackingUpdateMode stackingMode)
 {
   D(("0x%x : updateWindowAttributes\n", (unsigned int) w->id));
   
-    XWindowChanges xwc;
-    int		   mask = 0;
-
-    if (w->attrib.override_redirect || !w->clientId)
+    if (!w->clientId)
 	return;
 
     if (w->state & CompWindowStateShadedMask)
     {
 	hideWindow (w);
     }
-    else if (w->shaded)
+    else if (w->shaded) /* XXX huh?! test this */
     {
 	showWindow (w);
-    }
-
-     if (stackingMode != CompStackingUpdateModeNone)
-    {
-	Bool aboveFs;
-
-	aboveFs = (stackingMode == CompStackingUpdateModeAboveFullscreen);
-	mask |= addWindowStackChanges (w, &xwc, findSiblingBelow (w, aboveFs));
-    }
-    
-    if (stackingMode == CompStackingUpdateModeInitialMap)
-    {
-	  /* If we are called from the MapRequest handler, we have to
-		 immediately update the internal stack. If we don't do that,
-		 the internal stacking order is invalid until the ConfigureNotify
-		 arrives because we put the window at the top of the stack when
-		 it was created */
-	  if (mask & CWStackMode)
-		{
-		  Window above = (mask & CWSibling) ? xwc.sibling : 0;
-		  restackWindow (w, above);
-        }
-    }
-
-    //    mask |= addWindowSizeChanges (w, &xwc,
-    //				  w->serverX, w->serverY,
-    //				  w->serverWidth, w->serverHeight,
-    //				  w->serverBorderWidth);
-    
-    xwc.x = w->serverX;
-    xwc.y = w->serverY;
-    xwc.width = w->serverWidth;
-    xwc.height = w->serverHeight;
-
-    //    if (!mask)
-    //    	return;
-    //
-    //    if (w->mapNum && (mask & (CWWidth | CWHeight)))
-    //    	sendSyncRequest (w);
-    //    
-    //    /* if (mask & (CWSibling | CWStackMode))
-    //    {
-    //      // transient children above 
-    //	if (stackTransients (w, NULL, &xwc))
-    //	{
-    //	    configureXWindow (w, mask, &xwc);
-    //
-    //	    //ancestors, sibilings and sibiling transients below 
-    //	        stackAncestors (w, &xwc);
-    //		}
-    //    }
-    //    //else
-    //    /* TODO needed? */
-    //
-    //  if (!(mask & (CWSibling | CWStackMode )))
-    {
-    	configureXWindow (w, mask, &xwc);
     }
 }
 
