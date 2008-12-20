@@ -3214,51 +3214,6 @@ findGroupAtScreen (CompScreen *s,
     return NULL;
 }
 
-//void
-//applyStartupProperties (CompScreen *screen,
-//			CompWindow *window)
-//{
-//    CompStartupSequence *s;
-//    const char	        *startupId = window->startupId;
-//
-//    if (!startupId)
-//    {
-//	CompWindow *leader;
-//
-//	leader = findWindowAtScreen (screen, window->clientLeader);
-//	if (leader)
-//	    startupId = leader->startupId;
-//
-//	if (!startupId)
-//	    return;
-//    }
-//
-//    for (s = screen->startupSequences; s; s = s->next)
-//    {
-//	const char *id;
-//
-//	id = sn_startup_sequence_get_id (s->sequence);
-//	if (strcmp (id, startupId) == 0)
-//	    break;
-//    }
-//
-//    if (s)
-//    {
-//	int workspace;
-//
-//	window->initialViewportX = s->viewportX;
-//	window->initialViewportY = s->viewportY;
-//
-//	workspace = sn_startup_sequence_get_workspace (s->sequence);
-//	if (workspace >= 0)
-//	    window->desktop = workspace;
-//
-//	window->initialTimestamp    =
-//	    sn_startup_sequence_get_timestamp (s->sequence);
-//	window->initialTimestampSet = TRUE;
-//    }
-//}
-
 void
 sendWindowActivationRequest (CompScreen *s,
 			     Window	id)
@@ -3278,9 +3233,7 @@ sendWindowActivationRequest (CompScreen *s,
     xev.xclient.data.l[3] = 0;
     xev.xclient.data.l[4] = 0;
 
-    XSendEvent (s->display->display,
-		s->root,
-		FALSE,
+    XSendEvent (s->display->display, s->root, FALSE,
 		SubstructureRedirectMask | SubstructureNotifyMask,
 		&xev);
 }
@@ -3420,69 +3373,7 @@ getCurrentOutputExtents (CompScreen *s,
 	*y2 = s->outputDev[s->currentOutputDev].region.extents.y2;
 }
 
-void
-setNumberOfDesktops (CompScreen   *s,
-		     unsigned int nDesktop)
-{
-    CompWindow *w;
 
-    if (nDesktop < 1 || nDesktop >= 0xffffffff)
-	return;
-
-    if (nDesktop == s->nDesktop)
-	return;
-
-    if (s->currentDesktop >= nDesktop)
-	s->currentDesktop = nDesktop - 1;
-
-    for (w = s->windows; w; w = w->next)
-    {
-	if (w->desktop == 0xffffffff)
-	    continue;
-
-	//if (w->desktop >= nDesktop)
-	//    setDesktopForWindow (w, nDesktop - 1);
-    }
-
-    s->nDesktop = nDesktop;
-
-    setDesktopHints (s);
-}
-/*
-void
-setCurrentDesktop (CompScreen   *s,
-		   unsigned int desktop)
-{
-    unsigned long data;
-    CompWindow    *w;
-
-    if (desktop >= s->nDesktop)
-	return;
-
-    if (desktop == s->currentDesktop)
-	return;
-
-    s->currentDesktop = desktop;
-
-    for (w = s->windows; w; w = w->next)
-    {
-	if (w->desktop == 0xffffffff)
-	    continue;
-
-       	if (w->desktop == desktop)
-	    showWindow (w);
-	 else
-	    hideWindow (w);
-    }
-
-    data = desktop;
-
-    XChangeProperty (s->display->display, s->root,
-		     s->display->currentDesktopAtom,
-		     XA_CARDINAL, 32, PropModeReplace,
-		     (unsigned char *) &data, 1);
-}
-*/
 void
 getWorkareaForOutput (CompScreen *s,
 		      int	 output,
