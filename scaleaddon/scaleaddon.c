@@ -579,7 +579,7 @@ scaleaddonScalePaintDecoration (CompWindow              *w,
 	if (scaleaddonGetWindowHighlight (w->screen))
 	    scaleaddonDrawWindowHighlight (w);
 
-	if (as->textPixmap)
+	if (as->textPixmap && ss->state == SCALE_STATE_WAIT)
 	    scaleaddonDrawWindowTitle (w);
     }
 }

@@ -1069,6 +1069,17 @@ sendWindowToDeskMessage (CompWindow *w,
 		&xev);
 }
 
+static Bool
+scaleTerminateTimeout(void *closure)
+{ 
+  CompScreen *s = closure;
+  
+  SCALE_SCREEN (s);
+  ss->state = SCALE_STATE_IN;
+  damageScreen (s);
+  return FALSE;
+}
+
 
 static Bool
 scaleTerminate (CompDisplay     *d,
@@ -1178,10 +1189,11 @@ scaleTerminate (CompDisplay     *d,
  
 		    }
 		}
-
-	      ss->state = SCALE_STATE_IN;
-
-	      damageScreen (s);
+	      /* hack: wait for e to restack the window */
+	      compAddTimeout(50, scaleTerminateTimeout, s);
+	      
+	      /* ss->state = SCALE_STATE_IN;
+		 damageScreen (s);*/
 	    }
 
 	  sd->lastActiveNum = 0;
