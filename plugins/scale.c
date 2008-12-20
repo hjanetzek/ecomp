@@ -111,6 +111,9 @@ isScaleWin (CompWindow *w)
 
   if (w->state & CompWindowStateHiddenMask)
     return FALSE;
+
+  if (w->state & CompWindowStateShadedMask)
+    return FALSE;
     
   if (w->state & CompWindowStateSkipPagerMask)
     return FALSE;
@@ -1017,6 +1020,8 @@ sendDndStatusMessage (CompScreen *s,
     XSendEvent (s->display->display, source, FALSE, 0, &xev);
 }
 
+
+/* XXX move this to window - duplicate sendMoveResizeWindowMessage in expo */
 static void
 sendWindowToDeskMessage (CompWindow *w, 
 			 int x, int y)
@@ -1030,7 +1035,7 @@ sendWindowToDeskMessage (CompWindow *w,
     xev.xclient.message_type = w->screen->display->moveResizeWindowAtom;
     xev.xclient.window	     = w->id;
 
-    xev.xclient.data.l[0] = 0;
+    xev.xclient.data.l[0] = 2;
     xev.xclient.data.l[1] = (MOD(w->attrib.x, w->screen->width) +  (x * w->screen->width));
     xev.xclient.data.l[2] = (MOD(w->attrib.y, w->screen->height) + (y * w->screen->height));
     xev.xclient.data.l[3] = 0;
@@ -1042,6 +1047,7 @@ sendWindowToDeskMessage (CompWindow *w,
 		SubstructureRedirectMask | SubstructureNotifyMask,
 		&xev);
 }
+
 
 static Bool
 scaleTerminateTimeout(void *closure)
