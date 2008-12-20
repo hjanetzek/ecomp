@@ -585,8 +585,8 @@ wallHandleEvent (CompDisplay *d,
 		int dx, dy;
 
 		/* window must be placed */
-		if (!w->placed)
-		    break;
+		//if (!w->placed)
+		//    break;
 
 		if (otherScreenGrabExist (w->screen, "switcher", "scale", 0))
 		    break;

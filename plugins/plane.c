@@ -447,8 +447,8 @@ planeHandleEvent (CompDisplay *d,
 		s = w->screen;
 
 		/* window must be placed */
-		if (!w->placed)
-		    break;
+		//if (!w->placed)
+		//    break;
 
 		if (otherScreenGrabExist (s, "plane", "switcher", "cube", 0))
 		    break;
