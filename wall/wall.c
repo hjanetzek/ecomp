@@ -604,6 +604,8 @@ wallHandleEvent (CompDisplay *d,
 	    int        dx, dy;
 	    CompScreen *s;
 
+	    if (event->xclient.data.l[0]) break;
+
     	    s = findScreenAtDisplay (d, event->xclient.window);
 	    if (!s)
 		break;
@@ -611,8 +613,8 @@ wallHandleEvent (CompDisplay *d,
 	    if (otherScreenGrabExist (s, "switcher", "scale", 0))
 		break;
 
-    	    dx = event->xclient.data.l[0] / s->width - s->x;
-	    dy = event->xclient.data.l[1] / s->height - s->y;
+    	    dx = event->xclient.data.l[1] / s->width - s->x;
+	    dy = event->xclient.data.l[2] / s->height - s->y;
 
 	    if (!dx && !dy)
 		break;

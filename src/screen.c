@@ -91,7 +91,7 @@ freeScreenPrivateIndex (CompDisplay *display,
 		      index);
 }
 
-static Bool
+/*static Bool
 desktopHintEqual (CompScreen	*s,
 		  unsigned long *data,
 		  int		size,
@@ -108,8 +108,8 @@ desktopHintEqual (CompScreen	*s,
 
     return FALSE;
 }
-
-static void
+*/
+/*static void
 setDesktopHints (CompScreen *s)
 {
      CompDisplay   *d = s->display;
@@ -135,7 +135,7 @@ setDesktopHints (CompScreen *s)
 	XChangeProperty (d->display, s->root, d->desktopViewportAtom,
 			 XA_CARDINAL, 32, PropModeReplace,
   			 (unsigned char *) &data[offset], hintSize);
-  /*
+*//*
     offset += hintSize;
 
     for (i = 0; i < s->nDesktop; i++)
@@ -176,13 +176,13 @@ setDesktopHints (CompScreen *s)
 			 (unsigned char *) &data[offset], hintSize);
     */
 
-    if (s->desktopHintData)
+    /*  if (s->desktopHintData)
     free (s->desktopHintData);
 
     s->desktopHintData = data;
     s->desktopHintSize = size;
 }
-
+*/
 static void
 updateOutputDevices (CompScreen	*s)
 {
@@ -294,7 +294,7 @@ updateOutputDevices (CompScreen	*s)
 
     setCurrentOutput (s, s->currentOutputDev);
 
-    updateWorkareaForScreen (s);
+    //updateWorkareaForScreen (s);
 
     setDefaultViewport (s);
     damageScreen (s);
@@ -1044,105 +1044,6 @@ setSupportingWmCheck (CompScreen *s)
     */
 }
 
-//static void
-//setSupported (CompScreen *s)
-//{
-//  /* FIXME this is not needed i guess */
-//    CompDisplay *d = s->display;
-//    Atom	data[256];
-//    int		i = 0;
-//
-//    data[i++] = d->supportedAtom;
-//    //data[i++] = d->supportingWmCheckAtom;
-//
-//    data[i++] = d->utf8StringAtom;
-//
-//    data[i++] = d->clientListAtom;
-//    data[i++] = d->clientListStackingAtom;
-//
-//    data[i++] = d->winActiveAtom;
-//
-//    data[i++] = d->desktopViewportAtom;
-//    data[i++] = d->desktopGeometryAtom;
-//    data[i++] = d->currentDesktopAtom;
-//    data[i++] = d->numberOfDesktopsAtom;
-//    data[i++] = d->showingDesktopAtom;
-//
-//    data[i++] = d->workareaAtom;
-//
-//     //   data[i++] = d->wmNameAtom;
-///*
-//    data[i++] = d->wmVisibleNameAtom;
-//*/
-//
-//    data[i++] = d->wmStrutAtom;
-//    data[i++] = d->wmStrutPartialAtom;
-//
-///*
-//    data[i++] = d->wmPidAtom;
-//*/
-//
-//    data[i++] = d->wmUserTimeAtom;
-//    data[i++] = d->frameExtentsAtom;
-//    data[i++] = d->frameWindowAtom;
-//
-//    data[i++] = d->winStateModalAtom;
-//    data[i++] = d->winStateStickyAtom;
-//    data[i++] = d->winStateMaximizedVertAtom;
-//    data[i++] = d->winStateMaximizedHorzAtom;
-//    data[i++] = d->winStateShadedAtom;
-//    data[i++] = d->winStateSkipTaskbarAtom;
-//    data[i++] = d->winStateSkipPagerAtom;
-//    data[i++] = d->winStateHiddenAtom;
-//    data[i++] = d->winStateFullscreenAtom;
-//    data[i++] = d->winStateAboveAtom;
-//    data[i++] = d->winStateBelowAtom;
-//    data[i++] = d->winStateDemandsAttentionAtom;
-//
-//    data[i++] = d->winOpacityAtom;
-//    data[i++] = d->winBrightnessAtom;
-//
-//    if (s->canDoSaturated)
-//    {
-//	data[i++] = d->winSaturationAtom;
-//	data[i++] = d->winStateDisplayModalAtom;
-//    }
-//
-//    data[i++] = d->wmAllowedActionsAtom;
-//
-//    data[i++] = d->winActionMoveAtom;
-//    data[i++] = d->winActionResizeAtom;
-//    data[i++] = d->winActionStickAtom;
-//    data[i++] = d->winActionMinimizeAtom;
-//    data[i++] = d->winActionMaximizeHorzAtom;
-//    data[i++] = d->winActionMaximizeVertAtom;
-//    data[i++] = d->winActionFullscreenAtom;
-//    data[i++] = d->winActionCloseAtom;
-//    data[i++] = d->winActionShadeAtom;
-//    data[i++] = d->winActionChangeDesktopAtom;
-//    data[i++] = d->winActionAboveAtom;
-//    data[i++] = d->winActionBelowAtom;
-//
-//    data[i++] = d->winTypeAtom;
-//    data[i++] = d->winTypeDesktopAtom;
-//    data[i++] = d->winTypeDockAtom;
-//    data[i++] = d->winTypeToolbarAtom;
-//    data[i++] = d->winTypeMenuAtom;
-//    data[i++] = d->winTypeSplashAtom;
-//    data[i++] = d->winTypeDialogAtom;
-//    data[i++] = d->winTypeUtilAtom;
-//    data[i++] = d->winTypeNormalAtom;
-//
-//    data[i++] = d->wmDeleteWindowAtom;
-//    //data[i++] = d->wmPingAtom;
-//
-//    data[i++] = d->wmMoveResizeAtom;
-//    data[i++] = d->moveResizeWindowAtom;
-//    data[i++] = d->restackWindowAtom;
-//
-//    XChangeProperty (d->display, s->root, d->supportedAtom, XA_ATOM, 32,
-//		     PropModeReplace, (unsigned char *) data, i);
-//}
 
 static void
 getDesktopHints (CompScreen *s)
@@ -1154,21 +1055,6 @@ getDesktopHints (CompScreen *s)
     unsigned long n, left;
     unsigned char *propData;
 
-    /*result = XGetWindowProperty (s->display->display, s->root,
-				 d->numberOfDesktopsAtom, 0L, 1L, FALSE,
-				 XA_CARDINAL, &actual, &format,
-				 &n, &left, &propData);
-
-    if (result == Success && n && propData && useDesktopHints)
-    {
-	memcpy (data, propData, sizeof (unsigned long));
-	XFree (propData);
-
-	if (data[0] > 0 && data[0] < 0xffffffff)
-	    s->nDesktop = data[0];
-    }
-    */
-     
     result = XGetWindowProperty (s->display->display, s->root,
 				 d->desktopGeometryAtom, 0L, 2L,
 				 FALSE, XA_CARDINAL, &actual, &format,
@@ -2179,7 +2065,7 @@ addScreen (CompDisplay *display,
     
     updateScreenEdges (s);
 
-    //setDesktopHints (s);
+    //    setDesktopHints (s);
     setSupportingWmCheck (s);
     //setSupported (s);
 
@@ -2193,6 +2079,7 @@ addScreen (CompDisplay *display,
     s->filter[WINDOW_TRANS_FILTER]  = COMP_TEXTURE_FILTER_GOOD;
 
     D(("addScreen - end\n"));
+    
     return TRUE;
 }
 
@@ -2928,7 +2815,7 @@ computeWorkareaForBox (CompScreen *s,
     XDestroyRegion (region);
 }
 
-void
+/*void
 updateWorkareaForScreen (CompScreen *s)
 {
     XRectangle workArea;
@@ -2954,7 +2841,7 @@ updateWorkareaForScreen (CompScreen *s)
 	setDesktopHints (s);
     }
 }
-
+*/
 
 Window
 getActiveWindow (CompDisplay *display,
@@ -2978,6 +2865,29 @@ getActiveWindow (CompDisplay *display,
     }
 
     return w;
+}
+
+void
+sendScreenViewportMessage(CompScreen *s)
+{ 
+
+  printf ("sendMoveScreenViewportMessage %d:%d\n", s->x, s->y);
+  
+  CompDisplay *d = s->display;
+  XEvent ev;
+    
+  ev.type		    = ClientMessage;
+  ev.xclient.window	    = s->root;
+  ev.xclient.message_type = d->desktopViewportAtom;
+  ev.xclient.format	    = 32;
+  ev.xclient.data.l[0]    = 2; /* from ecomp to wm */
+  ev.xclient.data.l[1]    = s->x;
+  ev.xclient.data.l[2]    = s->y;
+  ev.xclient.data.l[3]    = 0;
+  ev.xclient.data.l[4]    = 0; 
+    
+  XSendEvent (d->display, s->root, FALSE, 
+	      SubstructureRedirectMask | StructureNotifyMask, &ev);
 }
 
 
@@ -3068,7 +2978,9 @@ moveScreenViewport (CompScreen *s,
 
     if (sync)
     {
-	setDesktopHints (s);
+       //setDesktopHints (s);
+        sendScreenViewportMessage(s);
+      
 
 	setCurrentActiveWindowHistory (s, s->x, s->y);
 

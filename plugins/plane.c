@@ -462,6 +462,7 @@ planeHandleEvent (CompDisplay *d,
 	}
 	else if (event->xclient.message_type == d->desktopViewportAtom)
 	{
+	    if (event->xclient.data.l[0]) break;
 	    int dx, dy;
 
 	    s = findScreenAtDisplay (d, event->xclient.window);
@@ -471,8 +472,8 @@ planeHandleEvent (CompDisplay *d,
 	    if (otherScreenGrabExist (s, "plane", "switcher", "cube", 0))
 		break;
 
-	    dx = event->xclient.data.l[0] / s->width - s->x;
-	    dy = event->xclient.data.l[1] / s->height - s->y;
+	    dx = event->xclient.data.l[1] / s->width - s->x;
+	    dy = event->xclient.data.l[2] / s->height - s->y;
 
 	    if (!dx && !dy)
 		break;

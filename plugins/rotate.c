@@ -769,7 +769,7 @@ rotateWithWindow (CompDisplay     *d,
   s = findScreenAtDisplay (d, xid);
   if (s)
     {
-	  Bool raise = rd->opt[ROTATE_DISPLAY_OPTION_RAISE_ON_ROTATE].value.b;
+      //Bool raise = rd->opt[ROTATE_DISPLAY_OPTION_RAISE_ON_ROTATE].value.b;
 	  int  direction;
 
 	  ROTATE_SCREEN (s);
@@ -1551,6 +1551,8 @@ rotateHandleEvent (CompDisplay *d,
 	}
 	else if (event->xclient.message_type == d->desktopViewportAtom)
 	{
+             if (event->xclient.data.l[0]) break;
+	  
 	    s = findScreenAtDisplay (d, event->xclient.window);
 	    if (s)
 	    {
@@ -1564,7 +1566,7 @@ rotateHandleEvent (CompDisplay *d,
 		/* reset movement */
 		rs->moveTo = 0.0f;
 
-		dx = event->xclient.data.l[0] / s->width - s->x;
+		dx = event->xclient.data.l[1] / s->width - s->x;
 		if (dx)
 		{
 		    Window	 win;

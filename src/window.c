@@ -1456,8 +1456,7 @@ addWindow (CompScreen *screen,
    /* XXX: think this whole section over again */
     if (w->attrib.map_state == IsViewable)
     {
-      //w->placed = TRUE;
-
+      /*
       if (w->clientId)
 	{
 	  if (getWmState (screen->display, w->clientId) == IconicState)
@@ -1468,31 +1467,18 @@ addWindow (CompScreen *screen,
 		w->minimized = TRUE;
 	    }
 	}
-
+      */
       w->attrib.map_state = IsUnmapped;
       w->pendingMaps++;
 
       mapWindow (w);
 
       updateWindowAttributes (w, CompStackingUpdateModeNormal);
-
-      /*if (w->minimized || w->inShowDesktopMode || w->hidden || w->shaded)
-	{
-	w->state |= CompWindowStateHiddenMask;
-
-	//w->pendingUnmaps++;
-
-	//XUnmapWindow (screen->display->display, w->id);
-
-	//setWindowState (screen->display, w->state, w->id); 
-	}*/
     }
-    else if (w->clientId) /* TODO check this again */
+    else if (w->clientId)
     {
       if (getWmState (screen->display, w->clientId) == IconicState)
 	{
-	  //w->placed  = TRUE;
-
 	  if (w->state & CompWindowStateHiddenMask)
 	    {
 	      if (w->state & CompWindowStateShadedMask)
@@ -1544,8 +1530,8 @@ removeWindow (CompWindow *w)
 	if (w->type == CompWindowTypeDesktopMask)
 	    w->screen->desktopWindowCount--;
 
-	if (w->struts)
-	    updateWorkareaForScreen (w->screen);
+	//if (w->struts)
+	//    updateWorkareaForScreen (w->screen);
     }
 
     if (!w->redirected)
@@ -2412,9 +2398,9 @@ sendViewportMoveRequest (CompScreen *s,
     xev.xclient.message_type = s->display->desktopViewportAtom;
     xev.xclient.window	     = s->root;
 
-    xev.xclient.data.l[0] = x;
-    xev.xclient.data.l[1] = y;
-    xev.xclient.data.l[2] = 0;
+    xev.xclient.data.l[0] = 0; /* from ecomp */
+    xev.xclient.data.l[1] = x;
+    xev.xclient.data.l[2] = y;
     xev.xclient.data.l[3] = 0;
     xev.xclient.data.l[4] = 0;
 

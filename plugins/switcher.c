@@ -458,11 +458,15 @@ switchToWindow (CompScreen *s,
 
 	if (ss->allWindows && ss->opt[SWITCH_SCREEN_OPTION_AUTO_ROTATE].value.b)
 	{
-	    XEvent xev;
-	    int	   x, y;
-
-	    defaultViewportForWindow (w, &x, &y);
-
+	  
+	  //sendViewportMoveRequest (s, w->initialViewportX, w->initialViewportY);
+	  
+	  XEvent xev;
+	  int x = w->initialViewportX;
+	  int y = w->initialViewportY;
+	  
+	    //defaultViewportForWindow (w, &x, &y);
+	    // XXXthis duplcates SendViewportMoveRequest 
 	    xev.xclient.type = ClientMessage;
 	    xev.xclient.display = s->display->display;
 	    xev.xclient.format = 32;
@@ -470,15 +474,16 @@ switchToWindow (CompScreen *s,
 	    xev.xclient.message_type = s->display->desktopViewportAtom;
 	    xev.xclient.window = s->root;
 
-	    xev.xclient.data.l[0] = x * s->width;
-	    xev.xclient.data.l[1] = y * s->height;
-	    xev.xclient.data.l[2] = 0;
+	    xev.xclient.data.l[0] = 0;
+	    xev.xclient.data.l[1] = x * s->height;
+	    xev.xclient.data.l[2] = y * s->width;
 	    xev.xclient.data.l[3] = 0;
 	    xev.xclient.data.l[4] = 0;
 
 	    XSendEvent (s->display->display, s->root, FALSE,
 			SubstructureRedirectMask | SubstructureNotifyMask,
 			&xev);
+	  
 	}
 
 	ss->lastActiveNum  = w->activeNum;

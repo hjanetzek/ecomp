@@ -369,7 +369,7 @@ sendMoveResizeWindowMessage (CompWindow *w, int x, int y, int width, int height)
   xev.xclient.message_type = w->screen->display->moveResizeWindowAtom;
   xev.xclient.window	     = w->id;
 
-  xev.xclient.data.l[0] = 0;
+  xev.xclient.data.l[0] = 2;
   xev.xclient.data.l[1] = (w->attrib.x + x) + (w->screen->x * w->screen->width);
   xev.xclient.data.l[2] = (w->attrib.y + y) + (w->screen->y * w->screen->height);
  
@@ -1270,9 +1270,10 @@ expoDonePaintScreen (CompScreen * s)
 	  int y = (vy - s->y) + ((cy - (w->attrib.y / s->height)) - vy);		
 
 	  if (es->moveToDesk || (w->state & (MAXIMIZE_STATE | CompWindowStateFullscreenMask)) ||
-	      (w->attrib.x == 0 && w->attrib.y == 0 && 
-	       w->attrib.width == s->width && 
-	       w->attrib.height == s->height))
+	      ((MOD(w->attrib.x, s->width) == 0) && 
+	       (MOD(w->attrib.y, s->height) == 0) && 
+	       (w->attrib.width == s->width) && 
+	       (w->attrib.height == s->height)))
 	    {
 
 	      if(x || y)
