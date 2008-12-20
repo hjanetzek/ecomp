@@ -2756,6 +2756,10 @@ updateWindowAttributes (CompWindow             *w,
 			CompStackingUpdateMode stackingMode);
 
 void
+updateWindowViewport(CompWindow *w, int initial);
+  
+
+void
 activateWindow (CompWindow *w);
 
 void

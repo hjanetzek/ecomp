@@ -1055,6 +1055,77 @@ setDefaultWindowAttributes (XWindowAttributes *wa)
 }
 
 void
+updateWindowViewport(CompWindow *w, int initial)
+{ 
+  int desk = 0;
+  CompScreen *s = w->screen;
+  CompDisplay *d = s->display;
+  
+  Atom	  actual;
+  int	  result, format;
+  unsigned long n, left;
+  unsigned char *data;
+  result = XGetWindowProperty (d->display, w->id,
+			       d->winDesktopAtom,
+			       0L, 1L, FALSE, XA_CARDINAL, &actual, &format,
+			       &n, &left, &data);
+
+  if (result == Success && n == 1 && data)
+    {
+      unsigned long *_desk = (unsigned long *) data;
+      desk = _desk[0];
+
+      XFree (data);
+		  	  
+      int dy = (int)desk / s->hsize; 
+      int dx = (int)desk - (dy * s->hsize);
+	      	      
+      w->initialViewportX = dx;
+      w->initialViewportY = dy;
+
+      if (initial) return;
+      		
+      int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
+      int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
+
+      C(("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n", 
+	 x,y,dx,dy, w->syncX, w->serverX, w->attrib.x));
+
+      if (x == w->attrib.x && y == w->attrib.y) return;
+      	      
+      int immediate = 1;
+      //int damage = 1;
+      int old_x = w->attrib.x;
+      int old_y = w->attrib.y;
+
+      //if (damage)
+	addWindowDamage (w);
+		      
+      w->attrib.x = x;
+      w->attrib.y = y;
+
+      XOffsetRegion (w->region, x - old_x, y - old_y);
+	
+      w->matrix = w->texture->matrix;
+      w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
+      w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
+
+      w->invisible = WINDOW_INVISIBLE (w);
+
+      w->desktop = desk;
+		  
+      (*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
+
+      //if (damage)
+      addWindowDamage (w);		
+
+      //moveWindow (w, (dx - cx) * w->screen->width, (dy - cy) * w->screen->height, TRUE, TRUE);
+      syncWindowPosition (w);
+    }
+}
+
+
+void
 addWindow (CompScreen *screen,
 	   Window     id,
 	   Window     aboveId)
@@ -1074,7 +1145,7 @@ addWindow (CompScreen *screen,
 
     w->frame = None;
 
-    w->placed		 = FALSE;
+    //w->placed		 = FALSE;
     w->minimized	 = FALSE;
     w->inShowDesktopMode = FALSE;
     w->shaded		 = FALSE;
@@ -1084,6 +1155,7 @@ addWindow (CompScreen *screen,
 
     w->desktop = screen->currentDesktop;
 
+    /* XXX rename to viewportX/Y */
     w->initialViewportX = screen->x;
     w->initialViewportY = screen->y;
 
@@ -1344,6 +1416,9 @@ addWindow (CompScreen *screen,
 
        recalcWindowType (w);
        
+
+       updateWindowViewport(w, 1);
+       
        w->opacityPropSet = readWindowProp32 (screen->display, w->id,
 					     screen->display->winOpacityAtom,
 					     &w->opacity);	   
@@ -1378,44 +1453,45 @@ addWindow (CompScreen *screen,
       recalcWindowType (w);
     }
   
+   /* XXX: think this whole section over again */
     if (w->attrib.map_state == IsViewable)
     {
-	w->placed = TRUE;
+      //w->placed = TRUE;
 
-	if (w->clientId)
+      if (w->clientId)
 	{
-	    if (getWmState (screen->display, w->clientId) == IconicState)
+	  if (getWmState (screen->display, w->clientId) == IconicState)
 	    {
-		if (w->state & CompWindowStateShadedMask)
-		    w->shaded = TRUE;
-		else
-		    w->minimized = TRUE;
+	      if (w->state & CompWindowStateShadedMask)
+		w->shaded = TRUE;
+	      else
+		w->minimized = TRUE;
 	    }
 	}
 
-	w->attrib.map_state = IsUnmapped;
-	w->pendingMaps++;
+      w->attrib.map_state = IsUnmapped;
+      w->pendingMaps++;
 
-	mapWindow (w);
+      mapWindow (w);
 
-	updateWindowAttributes (w, CompStackingUpdateModeNormal);
+      updateWindowAttributes (w, CompStackingUpdateModeNormal);
 
-	/*if (w->minimized || w->inShowDesktopMode || w->hidden || w->shaded)
+      /*if (w->minimized || w->inShowDesktopMode || w->hidden || w->shaded)
 	{
-	    w->state |= CompWindowStateHiddenMask;
+	w->state |= CompWindowStateHiddenMask;
 
-	    //w->pendingUnmaps++;
+	//w->pendingUnmaps++;
 
-	    //XUnmapWindow (screen->display->display, w->id);
+	//XUnmapWindow (screen->display->display, w->id);
 
-	    //setWindowState (screen->display, w->state, w->id); 
+	//setWindowState (screen->display, w->state, w->id); 
 	}*/
     }
     else if (w->clientId) /* TODO check this again */
     {
       if (getWmState (screen->display, w->clientId) == IconicState)
 	{
-	  w->placed  = TRUE;
+	  //w->placed  = TRUE;
 
 	  if (w->state & CompWindowStateHiddenMask)
 	    {
@@ -1873,8 +1949,8 @@ syncWindowPosition (CompWindow *w)
 Bool
 focusWindow (CompWindow *w)
 {
-    if (w->attrib.override_redirect)
-	return FALSE;
+  //    if (w->attrib.override_redirect)
+  //	return FALSE;
       
     if (!w->clientId)
 	return FALSE;
@@ -1882,7 +1958,7 @@ focusWindow (CompWindow *w)
     if (!w->shaded && (w->state & CompWindowStateHiddenMask))
 	return FALSE;
   
-    D(("focusWindow: %d:%d\n",w->attrib.x,  w->attrib.y));
+    //D(("focusWindow: %d:%d\n",w->attrib.x,  w->attrib.y));
     
     if (w->attrib.x + w->width  <= 0	||
 	w->attrib.y + w->height <= 0	||
@@ -1948,8 +2024,6 @@ moveInputFocusToWindow (CompWindow *w)
 {
     CompScreen  *s = w->screen;
     CompDisplay *d = s->display;
-    //CompWindow  *modalTransient;
-
     XEvent ev;
     
     ev.type		    = ClientMessage;
@@ -1963,7 +2037,6 @@ moveInputFocusToWindow (CompWindow *w)
     ev.xclient.data.l[4]    = 0;
     
     XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
-
 }
 
 static Bool

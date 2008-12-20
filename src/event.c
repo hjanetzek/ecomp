@@ -1232,7 +1232,7 @@ handleEvent (CompDisplay *d,
 		changeWindowState (w, w->state & ~CompWindowStateHiddenMask);
 	      }
 
-	    w->placed  = FALSE;
+	    //w->placed  = FALSE;
 	  }
 
 	unmapWindow (w);
@@ -1257,7 +1257,7 @@ handleEvent (CompDisplay *d,
     break;
   case CirculateNotify:
     D(("circulate notify event\n"));
-      
+    /* TODO check what this event is for */  
     w = findWindowAtDisplay (d, event->xcirculate.window);
     if (w)
       circulateWindow (w, &event->xcirculate);
@@ -1288,17 +1288,12 @@ handleEvent (CompDisplay *d,
 		w->wmType = type;
 
 		recalcWindowType (w);
-		// recalcWindowActions (w);
 
 		if (w->type & CompWindowTypeDesktopMask)
 		  {
 		    w->paint.opacity = OPAQUE;
 		  }
 		    
-		//  if (type & (CompWindowTypeDockMask |
-		//		CompWindowTypeDesktopMask))
-		//	setDesktopForWindow (w, 0xffffffff);
-
 		(*d->matchPropertyChanged) (d, w);
 	      }
 	  }
@@ -1431,15 +1426,15 @@ handleEvent (CompDisplay *d,
 	 w = findWindowAtDisplay (d, event->xproperty.window);
 	 if (w)
 	 w->protocols = getProtocols (d, w->id);
-	 }
-	 else if (event->xproperty.atom == d->wmIconAtom) // TODO 
-	 {
-	 D(("wmIconAtom\n"));
-	  
-	 w = findWindowAtDisplay (d, event->xproperty.window);
-	 if (w)
-	 freeWindowIcons (w);
 	 }*/
+    else if (event->xproperty.atom == d->wmIconAtom) // TODO 
+      {
+	D(("wmIconAtom\n"));
+	  
+	w = findWindowAtDisplay (d, event->xproperty.window);
+	if (w)
+	  freeWindowIcons (w);
+      }
     else if (event->xproperty.atom == XA_WM_CLASS)
       {
 	D(("XA_WM_CLASS\n"));
@@ -1450,68 +1445,11 @@ handleEvent (CompDisplay *d,
     else if (event->xproperty.atom == d->winDesktopAtom)
       {
 	C(("0x%x : PropertyNotify - ", (unsigned int)event->xproperty.window));
-	C(("winDesktopAtom:"));
-	  
+	C(("winDesktopAtom:\n"));
 	w = findWindowAtDisplay (d, event->xproperty.window);
 	if (w)
 	  {
-	    int desk = 0;
-	     
-	    Atom	  actual;
-	    int	  result, format;
-	    unsigned long n, left;
-	    unsigned char *data;
-	    result = XGetWindowProperty (d->display, w->id,
-					 d->winDesktopAtom,
-					 0L, 1L, FALSE, XA_CARDINAL, &actual, &format,
-					 &n, &left, &data);
-
-	    if (result == Success && n == 1 && data)
-	      {
-		unsigned long *_desk = (unsigned long *) data;
-		desk = _desk[0];
-
-		XFree (data);
-		  	  
-		int dy = (int)desk / w->screen->hsize; 
-		int dx = (int)desk - (dy * w->screen->hsize);
-	      	      
-		int x = MOD(w->attrib.x, w->screen->width)  + ((dx - w->screen->x) * w->screen->width);
-		int y = MOD(w->attrib.y, w->screen->height) + ((dy - w->screen->y) * w->screen->height);
-
-		C(("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n", 
-		   x,y,dx,dy, w->syncX, w->serverX, w->attrib.x));
-	      
-		int immediate = 1;
-		int damage = 1;
-		
-		if (damage)
-		  addWindowDamage (w);
-		      
-		int old_x = w->attrib.x;
-		int old_y = w->attrib.y;
-		      
-		w->attrib.x = x;
-		w->attrib.y = y;
-
-		XOffsetRegion (w->region, x - old_x, y - old_y);
-	
-		w->matrix = w->texture->matrix;
-		w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
-		w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
-
-		w->invisible = WINDOW_INVISIBLE (w);
-
-		w->desktop = desk;
-		  
-		(*w->screen->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
-
-		if (damage)
-		  addWindowDamage (w);		
-
-		//moveWindow (w, (dx - cx) * w->screen->width, (dy - cy) * w->screen->height, TRUE, TRUE);
-		syncWindowPosition (w);
-	      }
+	    updateWindowViewport(w, FALSE);
 	  }
       }  
     break;
