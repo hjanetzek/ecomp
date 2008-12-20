@@ -73,6 +73,7 @@ reallocScreenPrivate (int  size,
     return TRUE;
 }
 
+
 int
 allocateScreenPrivateIndex (CompDisplay *display)
 {
@@ -81,6 +82,7 @@ allocateScreenPrivateIndex (CompDisplay *display)
 				 reallocScreenPrivate,
 				 (void *) display);
 }
+
 
 void
 freeScreenPrivateIndex (CompDisplay *display,
@@ -91,98 +93,7 @@ freeScreenPrivateIndex (CompDisplay *display,
 		      index);
 }
 
-/*static Bool
-desktopHintEqual (CompScreen	*s,
-		  unsigned long *data,
-		  int		size,
-		  int		offset,
-		  int		hintSize)
-{
-    if (size != s->desktopHintSize)
-	return FALSE;
 
-    if (memcmp (data + offset,
-		s->desktopHintData + offset,
-		hintSize * sizeof (unsigned long)) == 0)
-	return TRUE;
-
-    return FALSE;
-}
-*/
-/*static void
-setDesktopHints (CompScreen *s)
-{
-     CompDisplay   *d = s->display;
-    unsigned long *data;
-    int		  size, offset, hintSize, i;
-
-    size = s->nDesktop * 2 + s->nDesktop * 2 + s->nDesktop * 4 + 1;
-
-    data = malloc (sizeof (unsigned long) * size);
-    if (!data)
-	return;
-
-    offset   = 0;
-    hintSize = s->nDesktop * 2;
-
-    for (i = 0; i < s->nDesktop; i++)
-    {
-	data[offset + i * 2 + 0] = s->x * s->width;
-	data[offset + i * 2 + 1] = s->y * s->height;
-    }
-  
-    if (!desktopHintEqual (s, data, size, offset, hintSize))
-	XChangeProperty (d->display, s->root, d->desktopViewportAtom,
-			 XA_CARDINAL, 32, PropModeReplace,
-  			 (unsigned char *) &data[offset], hintSize);
-*//*
-    offset += hintSize;
-
-    for (i = 0; i < s->nDesktop; i++)
-    {
-	data[offset + i * 2 + 0] = s->width  * s->hsize;
-	data[offset + i * 2 + 1] = s->height * s->vsize;
-    }
-
-    if (!desktopHintEqual (s, data, size, offset, hintSize))
-	XChangeProperty (d->display, s->root, d->desktopGeometryAtom,
-			 XA_CARDINAL, 32, PropModeReplace,
-			 (unsigned char *) &data[offset], hintSize);
-
-    offset += hintSize;
-    hintSize = s->nDesktop * 4;
-
-    for (i = 0; i < s->nDesktop; i++)
-    {
-	data[offset + i * 4 + 0] = s->workArea.x;
-	data[offset + i * 4 + 1] = s->workArea.y;
-	data[offset + i * 4 + 2] = s->workArea.width;
-	data[offset + i * 4 + 3] = s->workArea.height;
-    }
-
-    if (!desktopHintEqual (s, data, size, offset, hintSize))
-	XChangeProperty (d->display, s->root, d->workareaAtom,
-			 XA_CARDINAL, 32, PropModeReplace,
-			 (unsigned char *) &data[offset], hintSize);
-
-    offset += hintSize;
-
-    data[offset] = s->nDesktop;
-    hintSize = 1;
-
-    if (!desktopHintEqual (s, data, size, offset, hintSize))
-	XChangeProperty (d->display, s->root, d->numberOfDesktopsAtom,
-			 XA_CARDINAL, 32, PropModeReplace,
-			 (unsigned char *) &data[offset], hintSize);
-    */
-
-    /*  if (s->desktopHintData)
-    free (s->desktopHintData);
-
-    s->desktopHintData = data;
-    s->desktopHintSize = size;
-}
-*/
 static void
 updateOutputDevices (CompScreen	*s)
 {
@@ -578,127 +489,6 @@ const CompMetadataOptionInfo coreScreenOptionInfo[COMP_SCREEN_OPTION_NUM] = {
     { "opacity_matches", "list", "<type>match</type>", 0, 0 },
     { "opacity_values", "list", "<type>int</type>", 0, 0 }
 };
-
-//static void
-//updateStartupFeedback (CompScreen *s)
-//{
-//    if (s->startupSequences)
-//	XDefineCursor (s->display->display, s->root, s->busyCursor);
-//    else
-//	XDefineCursor (s->display->display, s->root, s->normalCursor);
-//}
-//
-//#define STARTUP_TIMEOUT_DELAY 15000
-//
-//static Bool
-//startupSequenceTimeout (void *data)
-//{
-//    CompScreen		*screen = data;
-//    CompStartupSequence *s;
-//    struct timeval	now, active;
-//    double		elapsed;
-//
-//    gettimeofday (&now, NULL);
-//
-//    for (s = screen->startupSequences; s; s = s->next)
-//    {
-//	sn_startup_sequence_get_last_active_time (s->sequence,
-//						  &active.tv_sec,
-//						  &active.tv_usec);
-//
-//	elapsed = ((((double) now.tv_sec - active.tv_sec) * 1000000.0 +
-//		    (now.tv_usec - active.tv_usec))) / 1000.0;
-//
-//	if (elapsed > STARTUP_TIMEOUT_DELAY)
-//	    sn_startup_sequence_complete (s->sequence);
-//    }
-//
-//    return TRUE;
-//}
-//
-//static void
-//addSequence (CompScreen        *screen,
-//	     SnStartupSequence *sequence)
-//{
-//    CompStartupSequence *s;
-//
-//    s = malloc (sizeof (CompStartupSequence));
-//    if (!s)
-//	return;
-//
-//    sn_startup_sequence_ref (sequence);
-//
-//    s->next     = screen->startupSequences;
-//    s->sequence = sequence;
-//    s->viewportX = screen->x;
-//    s->viewportY = screen->y;
-//
-//    screen->startupSequences = s;
-//
-//    if (!screen->startupSequenceTimeoutHandle)
-//	compAddTimeout (1000,
-//			startupSequenceTimeout,
-//			screen);
-//
-//    updateStartupFeedback (screen);
-//}
-//
-//static void
-//removeSequence (CompScreen        *screen,
-//		SnStartupSequence *sequence)
-//{
-//    CompStartupSequence *s, *p = NULL;
-//
-//    for (s = screen->startupSequences; s; s = s->next)
-//    {
-//	if (s->sequence == sequence)
-//	    break;
-//
-//	p = s;
-//    }
-//
-//    if (!s)
-//	return;
-//
-//    sn_startup_sequence_unref (sequence);
-//
-//    if (p)
-//	p->next = s->next;
-//    else
-//	screen->startupSequences = NULL;
-//
-//    free (s);
-//
-//    if (!screen->startupSequences && screen->startupSequenceTimeoutHandle)
-//    {
-//	compRemoveTimeout (screen->startupSequenceTimeoutHandle);
-//	screen->startupSequenceTimeoutHandle = 0;
-//    }
-//
-//    updateStartupFeedback (screen);
-//}
-//
-//static void
-//compScreenSnEvent (SnMonitorEvent *event,
-//		   void           *userData)
-//{
-//    CompScreen	      *screen = userData;
-//    SnStartupSequence *sequence;
-//
-//    sequence = sn_monitor_event_get_startup_sequence (event);
-//
-//    switch (sn_monitor_event_get_type (event)) {
-//    case SN_MONITOR_EVENT_INITIATED:
-//	addSequence (screen, sequence);
-//	break;
-//    case SN_MONITOR_EVENT_COMPLETED:
-//	removeSequence (screen, sn_monitor_event_get_startup_sequence (event));
-//	break;
-//    case SN_MONITOR_EVENT_CHANGED:
-//    case SN_MONITOR_EVENT_CANCELED:
-//	break;
-//    }
-//}
 
 static void
 updateScreenEdges (CompScreen *s)
@@ -2978,9 +2768,7 @@ moveScreenViewport (CompScreen *s,
 
     if (sync)
     {
-       //setDesktopHints (s);
         sendScreenViewportMessage(s);
-      
 
 	setCurrentActiveWindowHistory (s, s->x, s->y);
 
