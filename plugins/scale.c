@@ -21,6 +21,7 @@
  * WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * Author: David Reveman <davidr@novell.com>
+ * hacks by: Hannes Janetzek <hannes.janetzek@gmail.com>
  */
 
 #include <stdio.h>
@@ -90,54 +91,45 @@ scaleSetScreenOption (CompPlugin      *plugin,
 }
 
 static Bool
-isNeverScaleWin (CompWindow *w)
-{
-    if (w->attrib.override_redirect)
-  	return TRUE;
-
-    if (w->wmType & (CompWindowTypeDockMask | CompWindowTypeDesktopMask))
-	return TRUE;
-
-    return FALSE;
-}
-
-static Bool
 isScaleWin (CompWindow *w)
 {
-    if(!w->clientId) return FALSE;
+  if(!w->clientId || !w->clientMapped) return FALSE;
   
-    SCALE_SCREEN (w->screen);
-   
-    if (isNeverScaleWin (w))
-    	return FALSE;
+  SCALE_SCREEN (w->screen);
 
-        if (!ss->type || ss->type == ScaleTypeOutput)
+  if (ss->type == ScaleTypeNormal)
     {
-	if (!(*w->screen->focusWindow) (w))
-	    return FALSE;
+      if(w->initialViewportX != w->screen->x || 
+	 w->initialViewportY != w->screen->y) 
+	return FALSE;
+    }
+  else if (ss->type == ScaleTypeOutput)
+    {
+      if (!(*w->screen->focusWindow) (w))
+	return FALSE;
     }
     
-     if (w->state & CompWindowStateSkipPagerMask)
-	return FALSE;
+  if (w->state & CompWindowStateSkipPagerMask)
+    return FALSE;
 
-    if (w->state & CompWindowStateShadedMask)
-	return FALSE;
+  if (w->state & CompWindowStateShadedMask)
+    return FALSE;
 
-    if (!w->mapNum || w->attrib.map_state != IsViewable)
-	return FALSE;
+  /*  if (!w->mapNum || w->attrib.map_state != IsViewable)
+    return FALSE;
+  */
+  switch (ss->type) {
+  case ScaleTypeOutput:
+    if (outputDeviceForWindow(w) != w->screen->currentOutputDev)
+      return FALSE;
+  default:
+    break;
+  }
 
-    switch (ss->type) {
-    case ScaleTypeOutput:
-	if (outputDeviceForWindow(w) != w->screen->currentOutputDev)
-	    return FALSE;
-    default:
-	break;
-     }
-
-    if (!matchEval (ss->currentMatch, w))
-	return FALSE;
-
-    return TRUE;
+  if (!matchEval (ss->currentMatch, w))
+    return FALSE;
+    
+  return TRUE;
 }
 
 static void
@@ -336,7 +328,7 @@ setScaledPaintAttributes (CompWindow        *w,
 
      	/* hide windows on the outputs used for scaling 
 	   that are not in scale mode */
-	if (!isNeverScaleWin (w))
+	if (w->clientId) //(!isNeverScaleWin (w))
 	{
 	    int moMode;
 	    moMode = ss->opt[SCALE_SCREEN_OPTION_MULTIOUTPUT_MODE].value.i;
@@ -1134,13 +1126,17 @@ scaleTerminate (CompDisplay     *d,
 		    {
 		      int x, y, toDesk = 0;
 
-		      defaultViewportForWindow (w, &x, &y);
+		      //defaultViewportForWindow (w, &x, &y);
+		      x = w->initialViewportX;
+		      y = w->initialViewportY;
 
 		      if (x != s->x || y != s->y)
 			{	
 			  if (nOption == 2)
 			    toDesk = getIntOptionNamed (option, nOption, "todesk", 1);
-			    
+			  /* XXX this disabled the animation after
+			     scale... some people might like
+			     it. better add an option for this */
 			  if (toDesk)
 			    {
 			      SCALE_WINDOW (w);
@@ -1164,17 +1160,22 @@ scaleTerminate (CompDisplay     *d,
 			    }
 			}
 			
-		      activateWindow (w);
+		      //activateWindow (w);
+		      raiseWindow(w);
+		      
 		      sendWindowActivationRequest(s, w->id);
-			
+		      
 		      /* TODO make this an option. i.e. for
 			 viewportmove animation after selection 
+			 .. this here is not needed as the activation
+			 request will initiate the viewport change
 			 defaultViewportForWindow (w, &x, &y);
 
 			 if (x != s->x || y != s->y)
 			 sendViewportMoveRequest (s,
 			 x * s->width,
 			 y * s->height);*/
+ 
 		    }
 		}
 
