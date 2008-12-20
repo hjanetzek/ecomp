@@ -110,13 +110,10 @@ isScaleWin (CompWindow *w)
     }
 
   if (w->state & CompWindowStateHiddenMask)
+    return FALSE;
     
   if (w->state & CompWindowStateSkipPagerMask)
     return FALSE;
-
-  //  if (w->state & CompWindowStateShadedMask)
-  //  return FALSE;
-
 
   if (!w->mapNum || w->attrib.map_state != IsViewable)
     return FALSE;
@@ -1148,27 +1145,13 @@ scaleTerminate (CompDisplay     *d,
 			    }
 			}
 			
-		      //activateWindow (w);
 		      raiseWindow(w);
-		      
 		      sendWindowActivationRequest(s, w->id);
 		      
-		      /* TODO make this an option. i.e. for
-			 viewportmove animation after selection 
-			 .. this here is not needed as the activation
-			 request will initiate the viewport change
-			 defaultViewportForWindow (w, &x, &y);
-
-			 if (x != s->x || y != s->y)
-			 sendViewportMoveRequest (s,
-			 x * s->width,
-			 y * s->height);*/
- 
 		    }
 		}
 	      /* hack: wait for e to restack the window */
 	      compAddTimeout(50, scaleTerminateTimeout, s);
-	      
 	      /* ss->state = SCALE_STATE_IN;
 		 damageScreen (s);*/
 	    }
@@ -1945,21 +1928,6 @@ scaleHandleEvent (CompDisplay *d,
 		    {
 			scaleTerminate (d, action, 0, &o, 1);
 		    }
-		    /* FIXME show desktop causes troubles, and is a
-		     * dubious option anyway imo */
-		    /*else if (event->xbutton.x_root > s->workArea.x &&
-			     event->xbutton.x_root < (s->workArea.x +
-						      s->workArea.width) &&
-			     event->xbutton.y_root > s->workArea.y &&
-			     event->xbutton.y_root < (s->workArea.y +
-						      s->workArea.height))
-		    {
-			if (sd->opt[SCALE_DISPLAY_OPTION_SHOW_DESKTOP].value.b)
-			{
-			    scaleTerminate (d, action, 0, &o, 1);
-			    (*s->enterShowDesktopMode) (s);
-			}
-			}*/
 		}
 	    }
 	}
