@@ -108,16 +108,19 @@ isScaleWin (CompWindow *w)
       if (!(*w->screen->focusWindow) (w))
 	return FALSE;
     }
+
+  if (w->state & CompWindowStateHiddenMask)
     
   if (w->state & CompWindowStateSkipPagerMask)
     return FALSE;
 
-  if (w->state & CompWindowStateShadedMask)
-    return FALSE;
+  //  if (w->state & CompWindowStateShadedMask)
+  //  return FALSE;
 
-  /*  if (!w->mapNum || w->attrib.map_state != IsViewable)
+
+  if (!w->mapNum || w->attrib.map_state != IsViewable)
     return FALSE;
-  */
+  
   switch (ss->type) {
   case ScaleTypeOutput:
     if (outputDeviceForWindow(w) != w->screen->currentOutputDev)
@@ -991,34 +994,8 @@ scaleCheckForWindowAt (CompScreen *s,
 
     return 0;
 }
-/*
-static void
-sendViewportMoveRequest (CompScreen *s,
-			 int	    x,
-			 int	    y)
-{
-    XEvent xev;
 
-    xev.xclient.type    = ClientMessage;
-    xev.xclient.display = s->display->display;
-    xev.xclient.format  = 32;
 
-    xev.xclient.message_type = s->display->desktopViewportAtom;
-    xev.xclient.window	     = s->root;
-
-    xev.xclient.data.l[0] = x;
-    xev.xclient.data.l[1] = y;
-    xev.xclient.data.l[2] = 0;
-    xev.xclient.data.l[3] = 0;
-    xev.xclient.data.l[4] = 0;
-
-    XSendEvent (s->display->display,
-		s->root,
-		FALSE,
-		SubstructureRedirectMask | SubstructureNotifyMask,
-		&xev);
-}
-*/
 static void
 sendDndStatusMessage (CompScreen *s,
 		      Window	 source)
@@ -1920,7 +1897,25 @@ scaleHandleEvent (CompDisplay *d,
 		  scaleMoveFocusWindow (s, 0, -1);
 		else if (event->xkey.keycode == 45)
 		  scaleMoveFocusWindow (s, 0, 1);
+		
+		// m
+		else if (event->xkey.keycode == 58)
+		  { 
 
+		    CompAction *action =
+		      &sd->opt[SCALE_DISPLAY_OPTION_INITIATE].value.action;
+		    CompOption o[2];
+
+		    o[0].type    = CompOptionTypeInt;
+		    o[0].name    = "root";
+		    o[0].value.i = s->root;
+		    o[1].type    = CompOptionTypeInt;
+		    o[1].name    = "todesk";
+		    o[1].value.i = 1;
+
+		    scaleTerminate (d, action, 0, o, 2);
+
+		  }
 	    }
 	}
 	break;
@@ -1994,7 +1989,7 @@ scaleHandleEvent (CompDisplay *d,
 					     event->xbutton.y_root,
 					     TRUE))
 		    {
-			scaleTerminate (d, action, 0, o, 2);
+		      scaleTerminate (d, action, 0, o, 2);
 		    }
 		}
 	    }
