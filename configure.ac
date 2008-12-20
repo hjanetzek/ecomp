@@ -394,7 +394,6 @@ wall/Makefile
 animation/Makefile
 mblur/Makefile
 cubereflex/Makefile
-scalefilter/Makefile
 scaleaddon/Makefile
 images/Makefile
 metadata/Makefile
@@ -404,6 +403,8 @@ bcop/src/Makefile
 bcop/src/bcop
 po/Makefile.in
 ])
+
+#scalefilter/Makefile
 
 echo ""
 echo "the following optional plugins will be compiled:"
