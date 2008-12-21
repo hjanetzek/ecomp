@@ -101,7 +101,11 @@ isScaleWin (CompWindow *w)
     {
       if(w->initialViewportX != w->screen->x || 
 	 w->initialViewportY != w->screen->y) 
-	return FALSE;
+	{ 
+	  printf ("-- not on desk: 0x%x %d:%d\n",(unsigned int)w->clientId, 
+		  w->initialViewportX, w->initialViewportY);
+	  return FALSE;	  
+	}
     }
   else if (ss->type == ScaleTypeOutput)
     {
@@ -110,7 +114,10 @@ isScaleWin (CompWindow *w)
     }
 
   if (w->state & CompWindowStateHiddenMask)
-    return FALSE;
+    { 
+      printf ("-- hidden: 0x%x,\n",(unsigned int)w->clientId);
+      return FALSE;      
+    }
 
   if (w->state & CompWindowStateShadedMask)
     return FALSE;
@@ -119,8 +126,11 @@ isScaleWin (CompWindow *w)
     return FALSE;
 
   if (!w->mapNum || w->attrib.map_state != IsViewable)
-    return FALSE;
-  
+    { 
+      printf ("-- !mapNum: 0x%x,\n",(unsigned int)w->clientId);
+      return FALSE;      
+    }
+
   switch (ss->type) {
   case ScaleTypeOutput:
     if (outputDeviceForWindow(w) != w->screen->currentOutputDev)
@@ -1148,6 +1158,8 @@ scaleTerminate (CompDisplay     *d,
 				  sw->ty += (y - s->y) * s->height;
 				}
 			      moveScreenViewport (s, (s->x - x), (s->y - y), TRUE);
+			      /*XXX temporary? */
+			      sendScreenViewportMessage(s);
 			    }
 			}
 			
@@ -1876,15 +1888,14 @@ scaleHandleEvent (CompDisplay *d,
 		else if (event->xkey.keycode == 39)
 		  scaleMoveFocusWindow (s, 1, 0);
 
-		// j,i,k,l		 
-		else if (event->xkey.keycode == 44)
-		  scaleMoveFocusWindow (s, -1, 0);
-		else if (event->xkey.keycode == 46)
-		  scaleMoveFocusWindow (s, 1, 0);
-
-		else if (event->xkey.keycode == 31)
-		  scaleMoveFocusWindow (s, 0, -1);
+		// k,ö,o,l		 
 		else if (event->xkey.keycode == 45)
+		  scaleMoveFocusWindow (s, -1, 0);
+		else if (event->xkey.keycode == 47)
+		  scaleMoveFocusWindow (s, 1, 0);
+		else if (event->xkey.keycode == 32)
+		  scaleMoveFocusWindow (s, 0, -1);
+		else if (event->xkey.keycode == 46)
 		  scaleMoveFocusWindow (s, 0, 1);
 		
 		// m
@@ -1908,7 +1919,7 @@ scaleHandleEvent (CompDisplay *d,
 	    }
 	}
 	break;
-    case ButtonPress:
+    case ButtonRelease:
 	if (event->xbutton.button == Button1)
 	{
 	    s = findScreenAtDisplay (d, event->xbutton.root);

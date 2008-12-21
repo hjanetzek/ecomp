@@ -2176,6 +2176,10 @@ moveScreenViewport (CompScreen *s,
 		    Bool       sync);
 
 void
+sendScreenViewportMessage(CompScreen *s);
+  
+
+void
 moveWindowToViewportPosition (CompWindow *w,
 			      int	 x,
 			      int        y,
@@ -2495,9 +2499,6 @@ setWindowState (CompDisplay  *display,
 void
 changeWindowState (CompWindow   *w,
 		   unsigned int newState);
-
-void
-recalcWindowActions (CompWindow *w);
 
 unsigned int
 constrainWindowState (unsigned int state,

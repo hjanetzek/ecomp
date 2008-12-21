@@ -1763,6 +1763,9 @@ shiftTerm (CompScreen *s, Bool cancel)
 		    SHIFT_WINDOW (w2);
 
 		    moveScreenViewport (s, (s->x - x), (s->y - y), TRUE);
+		    /*XXX temporary? */
+		    sendScreenViewportMessage(s);
+		    
 
 		    for (i = 0; i < 2; i++)
 		    {

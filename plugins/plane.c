@@ -40,22 +40,6 @@ static int displayPrivateIndex;
 
 enum
 {
-    PLANE_DISPLAY_OPTION_LEFT,
-    PLANE_DISPLAY_OPTION_RIGHT,
-    PLANE_DISPLAY_OPTION_DOWN,
-    PLANE_DISPLAY_OPTION_UP,
-    PLANE_DISPLAY_OPTION_TO_1,
-    PLANE_DISPLAY_OPTION_TO_2,
-    PLANE_DISPLAY_OPTION_TO_3,
-    PLANE_DISPLAY_OPTION_TO_4,
-    PLANE_DISPLAY_OPTION_TO_5,
-    PLANE_DISPLAY_OPTION_TO_6,
-    PLANE_DISPLAY_OPTION_TO_7,
-    PLANE_DISPLAY_OPTION_TO_8,
-    PLANE_DISPLAY_OPTION_TO_9,
-    PLANE_DISPLAY_OPTION_TO_10,
-    PLANE_DISPLAY_OPTION_TO_11,
-    PLANE_DISPLAY_OPTION_TO_12,
     PLANE_N_DISPLAY_OPTIONS
 };
 
@@ -435,7 +419,7 @@ planeHandleEvent (CompDisplay *d,
 
     switch (event->type) {
     case ClientMessage:
-	if (event->xclient.message_type == d->winActiveAtom)
+      /*if (event->xclient.message_type == d->winActiveAtom)
 	{
 	    CompWindow *w;
 
@@ -445,10 +429,6 @@ planeHandleEvent (CompDisplay *d,
 		int dx, dy;
 
 		s = w->screen;
-
-		/* window must be placed */
-		//if (!w->placed)
-		//    break;
 
 		if (otherScreenGrabExist (s, "plane", "switcher", "cube", 0))
 		    break;
@@ -460,7 +440,8 @@ planeHandleEvent (CompDisplay *d,
 		moveViewport (s, dx, dy);
 	    }
 	}
-	else if (event->xclient.message_type == d->desktopViewportAtom)
+	else*/ 
+      if (event->xclient.message_type == d->desktopViewportAtom)
 	{
 	    if (event->xclient.data.l[0]) break;
 	    int dx, dy;
@@ -472,8 +453,8 @@ planeHandleEvent (CompDisplay *d,
 	    if (otherScreenGrabExist (s, "plane", "switcher", "cube", 0))
 		break;
 
-	    dx = event->xclient.data.l[1] / s->width - s->x;
-	    dy = event->xclient.data.l[2] / s->height - s->y;
+	    dx = (event->xclient.data.l[1] / s->width) - s->x;
+	    dy = (event->xclient.data.l[2] / s->height) - s->y;
 
 	    if (!dx && !dy)
 		break;
@@ -543,122 +524,8 @@ planeSetDisplayOption (CompPlugin      *plugin,
     return compSetDisplayOption (display, o, value);
 }
 
-static CompScreen *
-getScreen (CompDisplay *d,
-	   CompOption  *option,
-	   int	       n_options)
-{
-    XID rootWindow = getIntOptionNamed (option, n_options, "root", 0);
 
-    return findScreenAtDisplay (d, rootWindow);
-}
-
-static Bool
-planeLeft (CompDisplay		*d,
-	    CompAction		*action,
-	    CompActionState	state,
-	    CompOption		*option,
-	    int			n_options)
-{
-    CompScreen *screen = getScreen (d, option, n_options);
-
-    moveViewport (screen, -1, 0);
-    return FALSE;
-}
-
-static Bool
-planeRight (CompDisplay	    *d,
-	    CompAction	    *action,
-	    CompActionState state,
-	    CompOption	    *option,
-	    int		    n_options)
-{
-    CompScreen *screen = getScreen (d, option, n_options);
-
-    moveViewport (screen, 1, 0);
-    return FALSE;
-}
-
-static Bool
-planeUp (CompDisplay	 *d,
-	 CompAction	 *action,
-	 CompActionState state,
-	 CompOption	 *option,
-	 int		 n_options)
-{
-    CompScreen *screen = getScreen (d, option, n_options);
-
-    moveViewport (screen, 0, -1);
-    return FALSE;
-}
-
-static Bool
-planeDown (CompDisplay	   *d,
-	   CompAction	   *action,
-	   CompActionState state,
-	   CompOption	   *option,
-	   int		   n_options)
-{
-    CompScreen *screen = getScreen (d, option, n_options);
-
-    moveViewport (screen, 0, 1);
-    return FALSE;
-}
-
-static Bool
-planeTo (CompDisplay     *d,
-	 CompAction      *action,
-	 CompActionState state,
-	 CompOption      *option,
-	 int		  n_options)
-{
-    int i, new_x, new_y, cur_x, cur_y;
-    CompScreen *screen = getScreen (d, option, n_options);
-    PLANE_DISPLAY (d);
-
-    new_x = new_y = -1;
-    for (i = PLANE_DISPLAY_OPTION_TO_1; i <= PLANE_DISPLAY_OPTION_TO_12; ++i)
-    {
-	if (action == &pd->opt[i].value.action)
-	{
-	    int viewport_no = i - PLANE_DISPLAY_OPTION_TO_1;
-
-	    new_x = viewport_no % screen->hsize;
-	    new_y = viewport_no / screen->hsize;
-
-	    break;
-	}
-    }
-
-    if (new_x == -1 || new_y == -1)
-	return FALSE;
-
-    cur_x = screen->x;
-    cur_y = screen->y;
-
-    moveViewport (screen, new_x - cur_x, new_y - cur_y);
-
-    return FALSE;
-}
-
-static const CompMetadataOptionInfo planeDisplayOptionInfo[] = {
-    { "plane_left", "action", 0, planeLeft, 0 },
-    { "plane_right", "action", 0, planeRight, 0 },
-    { "plane_down", "action", 0, planeDown, 0 },
-    { "plane_up", "action", 0, planeUp, 0 },
-    { "plane_to_1", "action", 0, planeTo, 0 },
-    { "plane_to_2", "action", 0, planeTo, 0 },
-    { "plane_to_3", "action", 0, planeTo, 0 },
-    { "plane_to_4", "action", 0, planeTo, 0 },
-    { "plane_to_5", "action", 0, planeTo, 0 },
-    { "plane_to_6", "action", 0, planeTo, 0 },
-    { "plane_to_7", "action", 0, planeTo, 0 },
-    { "plane_to_8", "action", 0, planeTo, 0 },
-    { "plane_to_9", "action", 0, planeTo, 0 },
-    { "plane_to_10", "action", 0, planeTo, 0 },
-    { "plane_to_11", "action", 0, planeTo, 0 },
-    { "plane_to_12", "action", 0, planeTo, 0 }
-};
+static const CompMetadataOptionInfo planeDisplayOptionInfo[] = {};
 
 static Bool
 planeInitDisplay (CompPlugin  *p,

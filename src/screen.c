@@ -2605,33 +2605,6 @@ computeWorkareaForBox (CompScreen *s,
     XDestroyRegion (region);
 }
 
-/*void
-updateWorkareaForScreen (CompScreen *s)
-{
-    XRectangle workArea;
-    BoxRec     box;
-    int        i;
-
-    for (i = 0; i < s->nOutputDev; i++)
-	computeWorkareaForBox (s,
-			       &s->outputDev[i].region.extents,
-			       &s->outputDev[i].workArea);
-
-    box.x1 = 0;
-    box.y1 = 0;
-    box.x2 = s->width;
-    box.y2 = s->height;
-
-    computeWorkareaForBox (s, &box, &workArea);
-
-    if (memcmp (&workArea, &s->workArea, sizeof (XRectangle)))
-    {
-	s->workArea = workArea;
-
-	setDesktopHints (s);
-    }
-}
-*/
 
 Window
 getActiveWindow (CompDisplay *display,
@@ -2656,6 +2629,7 @@ getActiveWindow (CompDisplay *display,
 
     return w;
 }
+
 
 void
 sendScreenViewportMessage(CompScreen *s)
@@ -2690,6 +2664,7 @@ moveScreenViewport (CompScreen *s,
     CompWindow *w;
     int         m, wx, wy, vWidth, vHeight;
 
+    
     tx = s->x - tx;
     tx = MOD (tx, s->hsize);
     tx -= s->x;
@@ -2698,8 +2673,19 @@ moveScreenViewport (CompScreen *s,
     ty = MOD (ty, s->vsize);
     ty -= s->y;
 
-    if (!tx && !ty)
-	return;
+    if(sync) printf ("moveScreenViewport %d:%d - %d:%d\n", s->x, s->y, tx, tx);
+    if (!tx && !ty) /*XXX remove sync when not needed*/
+      { 
+	if (sync)
+	  for (w = s->windows; w; w = w->next)
+	    {
+	      if (w->clientId)
+		syncWindowPosition (w);
+	    }	
+	return;	
+      }
+    
+
 
     s->x += tx;
     s->y += ty;
@@ -2763,27 +2749,27 @@ moveScreenViewport (CompScreen *s,
 	moveWindow (w, wx, wy, sync, TRUE);
 
 	if (sync)
-	    syncWindowPosition (w);
+	  syncWindowPosition (w);
     }
 
     if (sync)
     {
-        sendScreenViewportMessage(s);
+        //sendScreenViewportMessage(s);
 
-	setCurrentActiveWindowHistory (s, s->x, s->y);
+	//setCurrentActiveWindowHistory (s, s->x, s->y);
 
-	w = findWindowAtDisplay (s->display, s->display->activeWindow);
+	/*w = findWindowAtDisplay (s->display, s->display->activeWindow);
 	if (w)
 	{
 	    int x, y;
 
 	    defaultViewportForWindow (w, &x, &y);
 
-	    /* add window to current history if it's default viewport is
-	       still the current one. */
+	    // add window to current history if it's default viewport is
+	    //   still the current one. 
 	    if (s->x == x && s->y == y)
 		addToCurrentActiveWindowHistory (s, w->id);
-	}
+	}*/
     }
 }
 

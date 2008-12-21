@@ -416,8 +416,6 @@ recalcWindowType (CompWindow *w)
 	type = CompWindowTypeUnknownMask;
       }
 
-    
-
     if (w->state & CompWindowStateFullscreenMask)
 	type = CompWindowTypeFullscreenMask;
 
@@ -1829,7 +1827,26 @@ moveInputFocusToWindow (CompWindow *w)
     
     XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
 }
-
+/* TODO */
+void
+uniconfiyWindow (CompWindow *w)
+{
+  CompScreen  *s = w->screen;
+  CompDisplay *d = s->display;
+  XEvent ev;
+    
+  ev.type		    = ClientMessage;
+  ev.xclient.window	    = w->id;
+  ev.xclient.message_type = d->winActiveAtom;
+  ev.xclient.format	    = 32;
+  ev.xclient.data.l[0]    = 2;
+  ev.xclient.data.l[1]    = getCurrentTimeFromDisplay (d);
+  ev.xclient.data.l[2]    = 1;
+  ev.xclient.data.l[3]    = 0;
+  ev.xclient.data.l[4]    = 0;
+    
+  XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
+}
 
 void
 configureXWindow (CompWindow	 *w,
@@ -1965,10 +1982,12 @@ updateWindowAttributes (CompWindow             *w,
     {
 	hideWindow (w);
     }
-    else if (w->shaded) /* XXX huh?! test this */
+    
+    /* XXX huh?! test this */
+    /*else if (w->shaded) 
     {
 	showWindow (w);
-    }
+    }*/
 }
 
 
@@ -2005,45 +2024,22 @@ void
 activateWindow (CompWindow *w)
 {
   D(("activateWindow %s\n", w->resClass));
-
-  XEvent ev;
   int x,y;
-
-  //setCurrentDesktop (w->screen, w->desktop);
 
   CompScreen *s = w->screen;
 
-  //forEachWindowOnScreen (s, revealAncestors, (void *) w);
-  //revealWindow (w);
-
-  if (w->state & CompWindowStateHiddenMask)
+  /*  if (w->state & CompWindowStateHiddenMask)
     {
       w->state &= ~CompWindowStateShadedMask;
       if (w->shaded)
 	showWindow (w);
     }
-
+  
   if (w->state & CompWindowStateHiddenMask)
     return;
+  */
 
-  //if (!onCurrentDesktop (w)) return;
-
-  //ensureWindowVisibility (w);
-  //updateWindowAttributes (w, CompStackingUpdateModeAboveFullscreen);
- 
-  ev.type		  = ClientMessage;
-  ev.xclient.window	  = w->id;
-  ev.xclient.message_type = s->display->restackWindowAtom;
-  ev.xclient.format	  = 32;
-  ev.xclient.data.l[0]    = 2;
-  ev.xclient.data.l[1]    = 0;
-  ev.xclient.data.l[2]    = Above;
-  ev.xclient.data.l[3]    = 1;
-  ev.xclient.data.l[4]    = 0;
-
-  XSendEvent (s->display->display, s->root, FALSE, 
-	      SubstructureRedirectMask | StructureNotifyMask, 
-	      &ev);
+  raiseWindow(w);
   
   defaultViewportForWindow (w, &x, &y);
 
@@ -2085,8 +2081,9 @@ hideWindow (CompWindow *w)
 
     w->pendingUnmaps++;
 
-    if (w->shaded && w->id == w->screen->display->activeWindow)
-	moveInputFocusToWindow (w);
+    /*XXX what is this for?!*/
+    //if (w->shaded && w->id == w->screen->display->activeWindow)
+    //	moveInputFocusToWindow (w);
 
     //XUnmapWindow (w->screen->display->display, w->id);
 
@@ -2138,7 +2135,7 @@ showWindow (CompWindow *w)
 
     w->pendingMaps++;
 
-    XMapWindow (w->screen->display->display, w->id);
+    //XMapWindow (w->screen->display->display, w->id);
 
     changeWindowState (w, w->state & ~CompWindowStateHiddenMask);
 }
@@ -2356,7 +2353,7 @@ onCurrentDesktop (CompWindow *w)
   //return FALSE;
 }
 
-void
+/*void
 setDesktopForWindow (CompWindow   *w,
 		     unsigned int desktop)
 {
@@ -2383,7 +2380,7 @@ setDesktopForWindow (CompWindow   *w,
 		   w->screen->display->winDesktopAtom,
 		   w->desktop);
 }
-
+*/
 /* The compareWindowActiveness function compares the two windows 'w1'
    and 'w2'. It returns an integer less than, equal to, or greater
    than zero if 'w1' is found, respectively, to activated longer time

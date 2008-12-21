@@ -179,7 +179,9 @@ expoTermExpo (CompDisplay     *d,
 	{
 	  moveScreenViewport (s, s->x - es->selectedVX, 
 			      s->y - es->selectedVY, TRUE);
-	  focusDefaultWindow (s->display);
+	  /*XXX temporary? */
+	  sendScreenViewportMessage(s);
+	  // focusDefaultWindow (s->display);
 	  es->vpUpdateMode = VPUpdateNone;
 	}
 	
@@ -357,6 +359,7 @@ expoPrev (CompDisplay     *d,
   return ret;
 }
 
+/* XXX move this to window - duplicates scale */
 static void
 sendMoveResizeWindowMessage (CompWindow *w, int x, int y, int width, int height)
 {  
@@ -370,13 +373,13 @@ sendMoveResizeWindowMessage (CompWindow *w, int x, int y, int width, int height)
   xev.xclient.window	     = w->id;
 
   xev.xclient.data.l[0] = 2;
-  xev.xclient.data.l[1] = (w->attrib.x + x) + (w->screen->x * w->screen->width);
-  xev.xclient.data.l[2] = (w->attrib.y + y) + (w->screen->y * w->screen->height);
+  xev.xclient.data.l[1] = w->attrib.x + (w->screen->x * w->screen->width);
+  xev.xclient.data.l[2] = w->attrib.y + (w->screen->y * w->screen->height);
  
   if(width || height)
     {
-      xev.xclient.data.l[3] = w->attrib.width + width;
-      xev.xclient.data.l[4] = w->attrib.height + height;
+      xev.xclient.data.l[3] = w->attrib.width;
+      xev.xclient.data.l[4] = w->attrib.height;
     }
   else
     {
@@ -405,6 +408,8 @@ expoFinishWindowMovement (CompWindow *w)
 
   moveScreenViewport (s, s->x - es->selectedVX,
 		      s->y - es->selectedVY, TRUE);
+  /*XXX temporary? */
+  sendScreenViewportMessage(s);
 
   /* update saved window attributes in case we moved the
      window to a new viewport */
@@ -1209,12 +1214,16 @@ expoDonePaintScreen (CompScreen * s)
   case VPUpdateMouseOver:
     moveScreenViewport (s, s->x - es->selectedVX, 
 			s->y - es->selectedVY, TRUE);
+    /*XXX temporary? */
+    sendScreenViewportMessage(s);
     focusDefaultWindow (s->display);
     es->vpUpdateMode = VPUpdateNone;
     break;
   case VPUpdatePrevious:
     moveScreenViewport (s, s->x - es->origVX, s->y - es->origVY, TRUE);
-    focusDefaultWindow (s->display);
+    /*XXX temporary? */
+    sendScreenViewportMessage(s);
+    //focusDefaultWindow (s->display);
     es->vpUpdateMode = VPUpdateNone;
     break;
   default:

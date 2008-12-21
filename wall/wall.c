@@ -517,16 +517,14 @@ wallMoveViewport (CompScreen *s,
 	    w = findWindowAtScreen (s, moveWindow);
 	    if (w)
     	    {
-		if (!(w->type & (CompWindowTypeDesktopMask |
-				 CompWindowTypeDockMask)))
+	      printf ("got move window !!!!!\n");
+	      
+	      if (!(w->state & CompWindowStateStickyMask))
 		{
-		    if (!(w->state & CompWindowStateStickyMask))
-		    {
 			ws->moveWindow = w->id;
 			ws->moveWindowX = w->attrib.x;
 			ws->moveWindowY = w->attrib.y;
 			raiseWindow (w);
-		    }
 		}
 	    }
 	}
@@ -540,6 +538,7 @@ wallMoveViewport (CompScreen *s,
 	ws->gotoY = s->y - y;
 
 	moveScreenViewport (s, x, y, TRUE);
+	//moveScreenViewport (s, x, y, FALSE);
 
 	ws->moving = TRUE;
 	ws->boxOutputDevice = s->currentOutputDev;
@@ -575,36 +574,34 @@ wallHandleEvent (CompDisplay *d,
     switch (event->type)
     {
     case ClientMessage:
-	if (event->xclient.message_type == d->winActiveAtom)
+      /*if (event->xclient.message_type == d->winActiveAtom)
 	{
 	    CompWindow *w;
 
 	    w = findWindowAtDisplay (d, event->xclient.window);
 	    if (w)
     	    {
-		int dx, dy;
+	      int dx, dy;
 
-		/* window must be placed */
-		//if (!w->placed)
-		//    break;
+	      if (otherScreenGrabExist (w->screen, "switcher", "scale", 0))
+		break;
 
-		if (otherScreenGrabExist (w->screen, "switcher", "scale", 0))
-		    break;
-
-		defaultViewportForWindow (w, &dx, &dy);
-		dx -= w->screen->x;
-		dy -= w->screen->y;
+	      defaultViewportForWindow (w, &dx, &dy);
+	      dx -= w->screen->x;
+	      dy -= w->screen->y;
 	
 		if (dx || dy)
 		    wallMoveViewport (w->screen, -dx, -dy, None);
 	    }
 	}
-	else if (event->xclient.message_type == d->desktopViewportAtom)
+	else*/ 
+	if (event->xclient.message_type == d->desktopViewportAtom)
 	{
 	    int        dx, dy;
 	    CompScreen *s;
 
 	    if (event->xclient.data.l[0]) break;
+
 
     	    s = findScreenAtDisplay (d, event->xclient.window);
 	    if (!s)
@@ -612,14 +609,17 @@ wallHandleEvent (CompDisplay *d,
 
 	    if (otherScreenGrabExist (s, "switcher", "scale", 0))
 		break;
+	    printf ("wall: desktopViewportAtom %d:%d\n", 
+		    (event->xclient.data.l[1] / s->width),
+		    (event->xclient.data.l[2] / s->height));
 
-    	    dx = event->xclient.data.l[1] / s->width - s->x;
-	    dy = event->xclient.data.l[2] / s->height - s->y;
+    	    dx = (event->xclient.data.l[1] / s->width) - s->x;
+	    dy = (event->xclient.data.l[2] / s->height) - s->y;
 
 	    if (!dx && !dy)
 		break;
-
-	    wallMoveViewport (s, -dx, -dy, None);
+	    
+	    wallMoveViewport (s, -dx, -dy, event->xclient.data.l[3]);
 	}
 	break;
     }
@@ -629,44 +629,7 @@ wallHandleEvent (CompDisplay *d,
     WRAP (wd, d, handleEvent, wallHandleEvent);
 }
 
-static Bool
-wallNext (CompDisplay     *d,
-	  CompAction      *action,
-	  CompActionState state,
-	  CompOption      *option,
-	  int             nOption)
-{
-    GET_SCREEN;
-
-    if ((s->x == s->hsize - 1) && (s->y == s->vsize - 1))
-	wallMoveViewport (s, s->hsize - 1, s->vsize - 1, None);
-    else if (s->x == s->hsize - 1)
-	wallMoveViewport (s, s->hsize - 1, -1, None);
-    else
-	wallMoveViewport (s, -1, 0, None);
-
-    return TRUE;
-}
-
-static Bool
-wallPrev (CompDisplay     *d,
-	  CompAction      *action,
-	  CompActionState state,
-	  CompOption      *option,
-	  int             nOption)
-{
-    GET_SCREEN;
-
-    if ((s->x == 0) && (s->y == 0))
-	wallMoveViewport (s, -(s->hsize - 1), -(s->vsize - 1), None);
-    else if (s->x == 0)
-	wallMoveViewport (s, -(s->hsize - 1), 1, None);
-    else
-	wallMoveViewport (s, 1, 0, None);
-
-    return TRUE;
-}
-
+/*
 static void
 wallCheckAmount (CompScreen *s,
 		 int        dx,
@@ -691,6 +654,7 @@ wallCheckAmount (CompScreen *s,
     }
 }
 
+
 static Bool
 wallInitiate (CompScreen *s,
 	      int        dx,
@@ -704,253 +668,7 @@ wallInitiate (CompScreen *s,
 
     return TRUE;
 }
-
-static Bool
-wallInitiateFlip (CompScreen *s,
-		  Direction  direction,
-		  Bool       dnd)
-{
-    int dx, dy;
-    int amountX, amountY;
-
-    if (otherScreenGrabExist (s, "wall", "move", "group-drag", 0))
-	return FALSE;
-
-    if (dnd)
-    {
-	if (!wallGetEdgeflipDnd (s))
-	    return FALSE;
-
-	if (otherScreenGrabExist (s, "wall", 0))
-	    return FALSE;
-    }
-    else if (otherScreenGrabExist (s, "wall", "group-drag", 0))
-    {
-	/* not wall or group means move */
-	if (!wallGetEdgeflipMove (s))
-	    return FALSE;
-    }
-    else if (otherScreenGrabExist (s, "wall", 0))
-    {
-	/* move was ruled out before, so we have group */
-	if (!wallGetEdgeflipDnd (s))
-	    return FALSE;
-    }
-    else if (!wallGetEdgeflipPointer (s))
-	return FALSE;
-
-    switch (direction)
-    {
-    case Left:
-	dx = -1; dy = 0;
-	break;
-    case Right:
-	dx = 1; dy = 0;
-	break;
-    case Up:
-	dx = 0; dy = -1;
-	break;
-    case Down:
-	dx = 0; dy = 1;
-	break;
-    default:
-	dx = 0; dy = 0;
-	break;
-    }
-
-    wallCheckAmount (s, dx, dy, &amountX, &amountY);
-    if (wallMoveViewport (s, amountX, amountY, None))
-    {
-	int offsetX, offsetY;
-	int warpX, warpY;
-
-	if (dx < 0)
-	{
-	    offsetX = s->width - 10;
-	    warpX = pointerX + s->width;
-	}
-	else if (dx > 0)
-	{
-	    offsetX = 1- s->width;
-	    warpX = pointerX - s->width;
-	}
-	else
-	{
-	    offsetX = 0;
-	    warpX = lastPointerX;
-	}
-
-	if (dy < 0)
-	{
-	    offsetY = s->height - 10;
-	    warpY = pointerY + s->height;
-	}
-	else if (dy > 0)
-	{
-	    offsetY = 1- s->height;
-	    warpY = pointerY - s->height;
-	}
-	else
-	{
-	    offsetY = 0;
-	    warpY = lastPointerY;
-	}
-
-	warpPointer (s, offsetX, offsetY);
-	lastPointerX = warpX;
-	lastPointerY = warpY;
-    }
-
-    return TRUE;
-}
-
-static Bool
-wallLeft (CompDisplay     *d,
-	  CompAction      *action,
-	  CompActionState state,
-	  CompOption      *option,
-	  int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiate (s, -1, 0, None);
-}
-
-static Bool
-wallRight (CompDisplay     *d,
-	   CompAction      *action,
-	   CompActionState state,
-	   CompOption      *option,
-	   int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiate (s, 1, 0, None);
-}
-
-static Bool
-wallUp (CompDisplay     *d,
-	CompAction      *action,
-	CompActionState state,
-	CompOption      *option,
-	int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiate (s, 0, -1, None);
-}
-
-static Bool
-wallDown (CompDisplay     *d,
-	  CompAction      *action,
-	  CompActionState state,
-	  CompOption      *option,
-	  int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiate (s, 0, 1, None);
-}
-
-static Bool
-wallFlipLeft (CompDisplay     *d,
-	      CompAction      *action,
-	      CompActionState state,
-	      CompOption      *option,
-	      int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiateFlip (s, Left, (state & CompActionStateInitEdgeDnd));
-}
-
-static Bool
-wallFlipRight (CompDisplay     *d,
-	       CompAction      *action,
-	       CompActionState state,
-	       CompOption      *option,
-	       int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiateFlip (s, Right, (state & CompActionStateInitEdgeDnd));
-}
-
-static Bool
-wallFlipUp (CompDisplay     *d,
-	    CompAction      *action,
-	    CompActionState state,
-	    CompOption      *option,
-	    int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiateFlip (s, Up, (state & CompActionStateInitEdgeDnd));
-}
-
-static Bool
-wallFlipDown (CompDisplay     *d,
-	      CompAction      *action,
-	      CompActionState state,
-	      CompOption      *option,
-	      int             nOption)
-{
-    GET_SCREEN;
-
-    return wallInitiateFlip (s, Down, (state & CompActionStateInitEdgeDnd));
-}
-
-static Bool
-wallLeftWithWindow (CompDisplay     *d,
-		    CompAction      *action,
-		    CompActionState state,
-		    CompOption      *option,
-		    int             nOption)
-{
-    GET_SCREEN;
-    Window win = getIntOptionNamed (option, nOption, "window", 0);
-
-    return wallInitiate (s, -1, 0, win);
-}
-
-static Bool
-wallRightWithWindow (CompDisplay     *d,
-		     CompAction      *action,
-		     CompActionState state,
-		     CompOption      *option,
-		     int             nOption)
-{
-    GET_SCREEN;
-    Window win = getIntOptionNamed (option, nOption, "window", 0);
-
-    return wallInitiate (s, 1, 0, win);
-}
-
-static Bool
-wallUpWithWindow (CompDisplay     *d,
-		  CompAction      *action,
-		  CompActionState state,
-		  CompOption      *option,
-		  int             nOption)
-{
-    GET_SCREEN;
-    Window win = getIntOptionNamed (option, nOption, "window", 0);
-
-    return wallInitiate (s, 0, -1, win);
-}
-
-static Bool
-wallDownWithWindow (CompDisplay     *d,
-		    CompAction      *action,
-		    CompActionState state,
-		    CompOption      *option,
-		    int             nOption)
-{
-    GET_SCREEN;
-    Window win = getIntOptionNamed (option, nOption, "window", 0);
-
-    return wallInitiate (s, 0, 1, win);
-}
+*/
 
 static inline void
 wallDrawQuad (CompMatrix *matrix, BOX *box)
@@ -1323,6 +1041,8 @@ static void
 wallPreparePaintScreen (CompScreen *s,
 			int        msSinceLastPaint)
 {
+  CompWindow *w;
+
     WALL_SCREEN (s);
 
     if (!ws->moving && ws->boxTimeout)
@@ -1333,7 +1053,6 @@ wallPreparePaintScreen (CompScreen *s,
 
     if (ws->moving)
     {
-      CompWindow *w;
       float dx, dy;
 
       dx = ws->gotoX - ws->curPosX;
@@ -1346,40 +1065,35 @@ wallPreparePaintScreen (CompScreen *s,
 	    w = findWindowAtScreen (s, ws->moveWindow);
 	    if (w)
     	    {
-
 		moveWindowToViewportPosition (w,
-					      ws->moveWindowX - s->width * ws->curPosX, //dx,
-					      ws->moveWindowY - s->height * ws->curPosY, //dy,
-					      TRUE);
+					      ws->moveWindowX - s->width * dx,
+					      ws->moveWindowY - s->height * dy,
+					      FALSE);
 	    }
 	}
-	/*for (w = s->windows; w; w = w->next)
-	  {
-	    if(w->type & CompWindowTypeDesktopMask)
-	      {
-		printf("paint window %fx%f\n",
-		       ws->curPosX * s->width, 
-		       ws->curPosY * s->height);
-	    
-		moveWindowToViewportPosition (w,
-			     - s->width * ws->curPosX,
-			     - s->height * ws->curPosY,
-			    TRUE);
-	    
-		 }
-	  }*/
     }
-    /* move override windows here */
 
     if (ws->moving && ws->curPosX == ws->gotoX && ws->curPosY == ws->gotoY)
     {
 	ws->moving = FALSE;
 	ws->timer  = 0;
 
+	int x = - (s->x - ws->gotoX);
+	int y = - (s->y - ws->gotoY);
+	
 	if (ws->moveWindow)
+	  {
+	    w = findWindowAtScreen (s, ws->moveWindow);
+	    if (w)
+	      {
+		moveWindowToViewportPosition (w,
+					      ws->moveWindowX,
+					      ws->moveWindowY,
+					      TRUE);
+	      }
 	    wallReleaseMoveWindow (s);
-	else
-	    focusDefaultWindow (s->display);
+	  }
+	moveScreenViewport (s, x, y, TRUE);
     }
 
     UNWRAP (ws, s, preparePaintScreen);
@@ -1512,29 +1226,8 @@ wallPaintWindow(CompWindow              *w,
 
 	WALL_SCREEN (s);
 
-	//if(ws->moving)
-	  /*
-	if(w->type & CompWindowTypeDesktopMask)
-	  {
-	    float dx, dy;
-
-	    dx = ws->gotoX - ws->curPosX;
-	    dy = ws->gotoY - ws->curPosY;
-	    
-	    printf("paint window %dx%d\n", s->x, s->y);
-	    
-	    moveWindowToViewportPosition (w,
-					  - dx * s->width,
-					  - dy * s->height,
-					  FALSE);
-	    
-	  }
-	  */
-	
 	if (ws->miniScreen)
 	{
-
-
 	    WindowPaintAttrib pA = *attrib;
 
 	    pA.opacity = attrib->opacity *
@@ -1707,21 +1400,6 @@ wallInitDisplay (CompPlugin  *p,
 	free (wd);
  	return FALSE;
     }
-
-    wallSetLeftInitiate (d, wallLeft);
-    wallSetRightInitiate (d, wallRight);
-    wallSetUpInitiate (d, wallUp);
-    wallSetDownInitiate (d, wallDown);
-    wallSetNextInitiate (d, wallNext);
-    wallSetPrevInitiate (d, wallPrev);
-    wallSetLeftWindowInitiate (d, wallLeftWithWindow);
-    wallSetRightWindowInitiate (d, wallRightWithWindow);
-    wallSetUpWindowInitiate (d, wallUpWithWindow);
-    wallSetDownWindowInitiate (d, wallDownWithWindow);
-    wallSetFlipLeftInitiate (d, wallFlipLeft);
-    wallSetFlipRightInitiate (d, wallFlipRight);
-    wallSetFlipUpInitiate (d, wallFlipUp);
-    wallSetFlipDownInitiate (d, wallFlipDown);
 
     wallSetEdgeRadiusNotify (d, wallDisplayOptionChanged);
     wallSetOutlineColorNotify (d, wallDisplayOptionChanged);
