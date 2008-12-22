@@ -316,7 +316,8 @@ rotatePreparePaintScreen (CompScreen *s,
 
 		    /* flag end of rotation */
 		    cs->rotationState = RotationNone;
-
+		    printf ("rotate moveScreenViewport\n");
+		    
 		    moveScreenViewport (s, tx, 0, TRUE);
 
 		    rs->xrot = 0.0f;
@@ -326,8 +327,8 @@ rotatePreparePaintScreen (CompScreen *s,
 
 		    if (rs->grabIndex)
 		    {
-		      //removeScreenGrab (s, rs->grabIndex, &rs->savedPointer);
-			rs->grabIndex = 0;
+		      removeScreenGrab (s, rs->grabIndex, &rs->savedPointer);
+		      rs->grabIndex = 0;
 		    }
 
 		    if (rs->moveWindow)
@@ -586,9 +587,9 @@ rotateInitiate (CompDisplay     *d,
 
 	if (!rs->grabIndex)
 	{
-	  //rs->grabIndex = pushScreenGrab (s, s->invisibleCursor,
-	  //"rotate");
-	  rs->grabIndex = 1;
+	  rs->grabIndex = pushScreenGrab (s, s->invisibleCursor,
+	  "rotate");
+	  //rs->grabIndex = 1;
 	  
 	    if (rs->grabIndex)
 	    {
@@ -936,7 +937,12 @@ rotateHandleEvent (CompDisplay *d,
 	{
 	  /* ingnore messages sent to e */
 	  if (event->xclient.data.l[0]) break;
-	  
+	  if (event->xclient.data.l[3]) break; /* handled by plane or
+						  wall*/
+
+	  printf ("rotate got desktopViewportAtom\n");
+
+	  event->xclient.data.l[3] = 1;
 	    s = findScreenAtDisplay (d, event->xclient.window);
 	    if (s)
 	    {
@@ -950,15 +956,15 @@ rotateHandleEvent (CompDisplay *d,
 		/* reset movement */
 
 
-		if (rs->moving)
+		/*if (rs->moving)
 		  { 
 		    cx = rs->destX;
 		  }
 		else
-		  { 
+		{*/ 
 		    rs->moveTo = 0.0f; /* why*/
 		    cx = s->x;
-		  }
+		    // }
 		
 
 
