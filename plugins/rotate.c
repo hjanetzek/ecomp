@@ -100,6 +100,9 @@ typedef struct _RotateScreen {
 
     GLfloat zoomTranslate;
     GLfloat zoomVelocity;
+
+    int destX;
+  
 } RotateScreen;
 
 #define GET_ROTATE_DISPLAY(d)				       \
@@ -323,7 +326,7 @@ rotatePreparePaintScreen (CompScreen *s,
 
 		    if (rs->grabIndex)
 		    {
-			removeScreenGrab (s, rs->grabIndex, &rs->savedPointer);
+		      //removeScreenGrab (s, rs->grabIndex, &rs->savedPointer);
 			rs->grabIndex = 0;
 		    }
 
@@ -583,7 +586,10 @@ rotateInitiate (CompDisplay     *d,
 
 	if (!rs->grabIndex)
 	{
-	    rs->grabIndex = pushScreenGrab (s, s->invisibleCursor, "rotate");
+	  //rs->grabIndex = pushScreenGrab (s, s->invisibleCursor,
+	  //"rotate");
+	  rs->grabIndex = 1;
+	  
 	    if (rs->grabIndex)
 	    {
 		int x, y;
@@ -724,7 +730,7 @@ rotateWithWindow (CompDisplay     *d,
   CompScreen *s;
   Window     xid;
   printf ("rotateWithWindow 1\n");
-  ROTATE_DISPLAY (d);
+  //ROTATE_DISPLAY (d);
 
   xid = getIntOptionNamed (option, nOption, "root", 0);
 
@@ -766,7 +772,6 @@ rotateWithWindow (CompDisplay     *d,
 		      rs->moveWindowX = w->attrib.x;
 
 		      /*if (raise)
-		      //printf("TODO: scale calls raise\n");	
 		      //raiseWindow (w);*/
 		    }
 		}
@@ -935,7 +940,7 @@ rotateHandleEvent (CompDisplay *d,
 	    s = findScreenAtDisplay (d, event->xclient.window);
 	    if (s)
 	    {
-	      int dx, dy, toX, toY;
+	      int dx, dy, toX, toY, cx;
 
 		ROTATE_SCREEN (s);
 
@@ -943,13 +948,29 @@ rotateHandleEvent (CompDisplay *d,
 		    break;
 
 		/* reset movement */
-		rs->moveTo = 0.0f;
+
+
+		if (rs->moving)
+		  { 
+		    cx = rs->destX;
+		  }
+		else
+		  { 
+		    rs->moveTo = 0.0f; /* why*/
+		    cx = s->x;
+		  }
+		
+
 
 		toX = event->xclient.data.l[1] / s->width;
-		dx = toX - s->x;
+		dx = toX - cx; //s->x;
 
+		rs->destX = toX;
+		
 		toY = event->xclient.data.l[2] / s->height;
 		dy = toY - s->y;
+
+
 
 		if (dy)
 		  { 
