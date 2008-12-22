@@ -1434,7 +1434,7 @@ handleEvent (CompDisplay *d,
 	if (w)
 	  updateWindowClassHints (w);
       }
-    else if (event->xproperty.atom == d->winDesktopAtom)
+    /*else if (event->xproperty.atom == d->winDesktopAtom)
       {
 	C(("0x%x : PropertyNotify - ", (unsigned int)event->xproperty.window));
 	C(("winDesktopAtom:\n"));
@@ -1443,7 +1443,7 @@ handleEvent (CompDisplay *d,
 	  {
 	    updateWindowViewport(w, FALSE);
 	  }
-      }  
+	  }*/  
     break;
   case MotionNotify:
     break;
@@ -1461,7 +1461,7 @@ handleEvent (CompDisplay *d,
 	/* state:   1 */
 	/* desktop: 2 */
 	/* restart: 3 */
-	if (type == 3)
+	if (type == 3) /* RESTART */
 	  { 
 	    unsigned int restart = event->xclient.data.l[2];
 	    replaceCurrentWm = restart;                                                                             
@@ -1473,7 +1473,7 @@ handleEvent (CompDisplay *d,
 	w = findWindowAtDisplay (d, win);
 	if (w)
 	  {
-	    if(type == 0)
+	    if(type == 0) /* FIRST DAMAGE (MAPPED) */
 	      {
 		unsigned int mapped = event->xclient.data.l[2];
 		w->clientMapped = mapped;		    
@@ -1484,7 +1484,7 @@ handleEvent (CompDisplay *d,
 		  }
 		break;
 	      }
-	    else if(type == 1)
+	    else if(type == 1) /* STATE*/
 	      {
 		printf("set state\n");
 		unsigned int state = event->xclient.data.l[2];
@@ -1498,6 +1498,54 @@ handleEvent (CompDisplay *d,
 		      }
 		    (*d->matchPropertyChanged) (d, w); 
 		  }
+		break;
+	      }
+	    else if(type == 2) /* DESK*/
+	      {
+		printf("set desk\n");
+		s = w->screen;
+		
+		int dx = event->xclient.data.l[2];
+		int dy = event->xclient.data.l[3];
+
+		w->initialViewportX = dx;
+		w->initialViewportY = dy;
+		
+		if(event->xclient.data.l[4]) break; /* window is grabbed and moved */
+		
+		int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
+		int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
+
+		printf("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n", 
+		   x,y,dx,dy, w->syncX, w->serverX, w->attrib.x);
+
+		if (x == w->attrib.x && y == w->attrib.y) break;
+	
+		int immediate = 1;
+		int old_x = w->attrib.x;
+		int old_y = w->attrib.y;
+
+		/*if visible ?*/
+		addWindowDamage (w);
+		      
+		w->attrib.x = x;
+		w->attrib.y = y;
+
+		XOffsetRegion (w->region, x - old_x, y - old_y);
+	
+		w->matrix = w->texture->matrix;
+		w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
+		w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
+
+		w->invisible = WINDOW_INVISIBLE (w); /* XXX what does this?*/
+
+		(*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
+
+		/*if visible ?*/
+		addWindowDamage (w);		
+
+		syncWindowPosition (w);
+
 		break;
 	      }
 	  }

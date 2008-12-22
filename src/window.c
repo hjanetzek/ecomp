@@ -1002,12 +1002,11 @@ updateWindowViewport(CompWindow *w, int initial)
       if (x == w->attrib.x && y == w->attrib.y) return;
       	      
       int immediate = 1;
-      //int damage = 1;
       int old_x = w->attrib.x;
       int old_y = w->attrib.y;
 
-      //if (damage)
-	addWindowDamage (w);
+      /*if visible ?*/
+      addWindowDamage (w);
 		      
       w->attrib.x = x;
       w->attrib.y = y;
@@ -1018,16 +1017,15 @@ updateWindowViewport(CompWindow *w, int initial)
       w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
       w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
 
-      w->invisible = WINDOW_INVISIBLE (w);
+      w->invisible = WINDOW_INVISIBLE (w); /* XXX what does this?*/
 
-      w->desktop = desk;
+      //w->desktop = desk;
 		  
       (*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
 
-      //if (damage)
+      /*if visible ?*/
       addWindowDamage (w);		
 
-      //moveWindow (w, (dx - cx) * w->screen->width, (dy - cy) * w->screen->height, TRUE, TRUE);
       syncWindowPosition (w);
     }
 }
