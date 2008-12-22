@@ -112,13 +112,14 @@ isScaleWin (CompWindow *w)
       if (!(*w->screen->focusWindow) (w))
 	return FALSE;
     }
-
-  if (w->state & CompWindowStateHiddenMask)
+  /* XXX ignore this for now as e does not update the hidden state atm
+     correctly on restart of e */
+  /*if (w->state & CompWindowStateHiddenMask)
     { 
       printf ("-- hidden: 0x%x,\n",(unsigned int)w->clientId);
       return FALSE;      
     }
-
+  */
   if (w->state & CompWindowStateShadedMask)
     return FALSE;
     
