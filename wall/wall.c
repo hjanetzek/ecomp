@@ -599,9 +599,12 @@ wallHandleEvent (CompDisplay *d,
 	{
 	    int        dx, dy;
 	    CompScreen *s;
-
+	    Window win;
+	    CompWindow *w;
+	    
 	    if (event->xclient.data.l[0]) break;
 
+	    printf ("wall got desktopViewportAtom\n");
 
     	    s = findScreenAtDisplay (d, event->xclient.window);
 	    if (!s)
@@ -618,8 +621,31 @@ wallHandleEvent (CompDisplay *d,
 
 	    if (!dx && !dy)
 		break;
+
+	    win = event->xclient.data.l[3];		
+	    unsigned int moveType = event->xclient.data.l[4];
 	    
-	    wallMoveViewport (s, -dx, -dy, event->xclient.data.l[3]);
+	    printf ("-------- %d\n", moveType);
+
+	    if(moveType == 0)
+	      { 		
+		wallMoveViewport (s, -dx, -dy, None);		
+	      }
+	    else if(moveType == 1)
+	      { 
+		printf ("move with window_____\n");
+		w = findWindowAtScreen(s, win);
+		if(w)
+		  { 
+		    moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
+		  }
+		wallMoveViewport (s, -dx, -dy, win);		
+		}
+	    else if(moveType == 2)
+	      { 
+		printf ("move window by_____\n");
+		wallMoveViewport (s, -dx, -dy, win);		
+	      }
 	}
 	break;
     }
@@ -1093,7 +1119,8 @@ wallPreparePaintScreen (CompScreen *s,
 	      }
 	    wallReleaseMoveWindow (s);
 	  }
-	moveScreenViewport (s, x, y, TRUE);
+
+	//moveScreenViewport (s, x, y, TRUE);
     }
 
     UNWRAP (ws, s, preparePaintScreen);
