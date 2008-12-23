@@ -395,6 +395,7 @@ animation/Makefile
 mblur/Makefile
 cubereflex/Makefile
 scaleaddon/Makefile
+staticswitcher/Makefile
 images/Makefile
 metadata/Makefile
 bcop/bcop.pc
