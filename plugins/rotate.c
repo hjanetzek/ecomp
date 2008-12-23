@@ -937,8 +937,8 @@ rotateHandleEvent (CompDisplay *d,
 	{
 	  /* ingnore messages sent to e */
 	  if (event->xclient.data.l[0]) break;
-	  if (event->xclient.data.l[3]) break; /* handled by plane or
-						  wall*/
+	  //if (event->xclient.data.l[3]) break; /* handled by plane or
+	  //					  wall*/
 
 	  printf ("rotate got desktopViewportAtom\n");
 
@@ -1024,14 +1024,32 @@ rotateHandleEvent (CompDisplay *d,
 		    o[3].value.i = dx;
 		    
 		    win = event->xclient.data.l[3];
-		    
-		    if(win)
+		    unsigned int moveType = event->xclient.data.l[4];
+	    
+		    if(win && moveType == 2) /* move window by */
 		      { 
 			o[4].type	 = CompOptionTypeInt;
 			o[4].name	 = "window";
 			o[4].value.i     = win;
-			  
+			CompWindow *w;
+			
+			w = findWindowAtScreen(s, win);
+			if(w)
+			  { 
+			    moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
+			  }
 			rotateWithWindow (d, NULL, 0, o, 5);
+		      }
+		    else if(win && moveType == 1) /*move with window */
+		      { 
+			/*CompWindow *w;
+			
+			w = findWindowAtScreen(s, win);
+			if(w)
+			  { 
+			    moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
+			    }*/
+			rotate (d, NULL, 0, o, 4);
 		      }
 		    else
 		      rotate (d, NULL, 0, o, 4);
