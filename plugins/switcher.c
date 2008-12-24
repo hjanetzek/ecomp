@@ -232,7 +232,7 @@ switchSetScreenOption (CompPlugin *plugin,
     case SWITCH_SCREEN_OPTION_ZOOM:
 	if (compSetFloatOption (o, value))
 	{
-	    if (o->value.f < 0.05f)
+	  if (o->value.f < 0.05f)
 	    {
 		ss->zooming = FALSE;
 		ss->zoom    = 0.0f;
@@ -269,12 +269,17 @@ isSwitchWin (CompWindow *w)
 {
     SWITCH_SCREEN (w->screen);
 
-    if (!w->mapNum || w->attrib.map_state != IsViewable)
+    if (!w->clientId) return FALSE;
+    
+
+    if (!w->mapNum) // || w->attrib.map_state != IsViewable)
     {
 	if (ss->opt[SWITCH_SCREEN_OPTION_MINIMIZED].value.b)
 	{
-	    if (!w->minimized && !w->inShowDesktopMode && !w->shaded)
-		return FALSE;
+	  //if (!w->minimized && !w->inShowDesktopMode && !w->shaded)
+	  //	return FALSE;
+	  ;
+	  
 	}
 	else
 	{
@@ -282,12 +287,12 @@ isSwitchWin (CompWindow *w)
 	}
     }
 
-    if (w->attrib.override_redirect)
-	return FALSE;
-
+    //if (w->attrib.override_redirect)
+    //	return FALSE;
+    /*
     if (w->wmType & (CompWindowTypeDockMask | CompWindowTypeDesktopMask))
 	return FALSE;
-
+    */
     if (w->state & CompWindowStateSkipTaskbarMask)
 	return FALSE;
 
@@ -456,7 +461,7 @@ switchToWindow (CompScreen *s,
     {
 	Window old = ss->selectedWindow;
 
-	if (ss->allWindows && ss->opt[SWITCH_SCREEN_OPTION_AUTO_ROTATE].value.b)
+	/*	if (ss->allWindows && ss->opt[SWITCH_SCREEN_OPTION_AUTO_ROTATE].value.b)
 	{
 	  
 	  //sendViewportMoveRequest (s, w->initialViewportX, w->initialViewportY);
@@ -484,7 +489,7 @@ switchToWindow (CompScreen *s,
 			SubstructureRedirectMask | SubstructureNotifyMask,
 			&xev);
 	  
-	}
+			}*/
 
 	ss->lastActiveNum  = w->activeNum;
 	ss->selectedWindow = w->id;
@@ -754,7 +759,7 @@ switchTerminate (CompDisplay     *d,
 	      w = findWindowAtScreen (s, ss->selectedWindow);
 	      if (w)
 		{
-		  activateWindow (w); /* FIXME ?*/
+		  activateWindow (w);
 		  //sendWindowActivationRequest (w->screen, w->id);
 		}
 	    }
@@ -1927,7 +1932,7 @@ static const CompMetadataOptionInfo switchScreenOptionInfo[] = {
     { "brightness", "int", "<min>0</min><max>100</max>", 0, 0 },
     { "opacity", "int", "<min>0</min><max>100</max>", 0, 0 },
     { "bring_to_front", "bool", 0, 0, 0 },
-    { "zoom", "float", "<min>0</min>", 0, 0 },
+    { "zoom", "float", "<min>0</min><max>0</max>", 0, 0 },
     { "icon", "bool", 0, 0, 0 },
     { "minimized", "bool", 0, 0, 0 },
     { "auto_rotate", "bool", 0, 0, 0 }
