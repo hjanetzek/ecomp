@@ -92,7 +92,7 @@ endMove (void *data)
     PLANE_SCREEN (screen);
 
     moveScreenViewport (screen, -ps->dest_x, -ps->dest_y, TRUE);
-    focusDefaultWindow (screen->display);
+    //focusDefaultWindow (screen->display);
 
     ps->dest_x = 0;
     ps->dest_y = 0;
@@ -443,7 +443,8 @@ planeHandleEvent (CompDisplay *d,
 	else*/ 
       if (event->xclient.message_type == d->desktopViewportAtom)
 	{
-	    if (event->xclient.data.l[0]) break;
+	  if (event->xclient.data.l[0]) break;
+	  
 	    int dx, dy;
 
 	    s = findScreenAtDisplay (d, event->xclient.window);
