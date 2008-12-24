@@ -329,6 +329,7 @@ rotatePreparePaintScreen (CompScreen *s,
 		    {
 		      removeScreenGrab (s, rs->grabIndex, &rs->savedPointer);
 		      rs->grabIndex = 0;
+		      sendScreenViewportMessage(s);
 		    }
 
 		    if (rs->moveWindow)
@@ -353,8 +354,8 @@ rotatePreparePaintScreen (CompScreen *s,
 				break;
 
 			/* only focus default window if switcher isn't active */
-			if (i == s->maxGrab)
-			    focusDefaultWindow (s->display);
+			//if (i == s->maxGrab)
+			//   focusDefaultWindow (s->display);
 		    }
 
 		    rs->moveWindow = 0;
@@ -649,6 +650,7 @@ rotateTerminate (CompDisplay     *d,
 
 	    rs->grabbed = FALSE;
 	    damageScreen (s);
+	    
 	}
     }
 
@@ -937,8 +939,6 @@ rotateHandleEvent (CompDisplay *d,
 	{
 	  /* ingnore messages sent to e */
 	  if (event->xclient.data.l[0]) break;
-	  //if (event->xclient.data.l[3]) break; /* handled by plane or
-	  //					  wall*/
 
 	  printf ("rotate got desktopViewportAtom\n");
 
@@ -953,20 +953,16 @@ rotateHandleEvent (CompDisplay *d,
 		if (otherScreenGrabExist (s, "rotate", "switcher", "cube", 0))
 		    break;
 
-		/* reset movement */
-
-
-		/*if (rs->moving)
+		if (rs->moving)
 		  { 
 		    cx = rs->destX;
 		  }
 		else
-		{*/ 
-		    rs->moveTo = 0.0f; /* why*/
+		  { 
 		    cx = s->x;
-		    // }
-		
-
+		    /* reset movement */
+		    rs->moveTo = 0.0f;
+		  }
 
 		toX = event->xclient.data.l[1] / s->width;
 		dx = toX - cx; //s->x;
@@ -980,9 +976,11 @@ rotateHandleEvent (CompDisplay *d,
 
 		if (dy)
 		  { 
-		    printf ("switch viewPort vertically\n");
+		    printf ("switch viewPort vertically %d:%d - %d:%d\n",
+			    toX, toY, dx, dy);
+		    rs->moveTo = 0.0;
 		    
-		    moveScreenViewport (s, dx, dy, TRUE);
+		    moveScreenViewport (s, -dx, -dy, TRUE);
 		  }
 		else if (dx)
 		{
@@ -995,8 +993,8 @@ rotateHandleEvent (CompDisplay *d,
 		    XQueryPointer (d->display, s->root,
 				   &win, &win, &x, &y, &i, &i, &ui);
 
-		    if ((toX == 0) && (s->x == s->hsize - 1)) dx = 1;
-		    if ((toX == s->hsize - 1) && (s->x == 0)) dx = -1;
+		    //if ((toX == 0) && (cx == s->hsize - 1)) dx = 1;
+		    //if ((toX == s->hsize - 1) && (cx == 0)) dx = -1;
 		    
 		    printf ("switch viewPort horizontally sx:%d, hs:%d, tx:%d, dx:%d\n",
 			    s->x, s->hsize, toX, dx);
