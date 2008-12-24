@@ -97,7 +97,9 @@ typedef struct _WallScreen
     float curPosY;
     int   gotoX;
     int   gotoY;
-
+    int   fromX;
+    int fromY;
+  
     int boxTimeout;
     int boxOutputDevice;
 
@@ -123,6 +125,13 @@ typedef struct _WallScreen
     WallCairoContext highlightContext;
     WallCairoContext arrowContext;
 } WallScreen;
+
+typedef struct _WallWindow
+{ 
+  
+} WallWindow;
+
+  
 
 /* Helpers */
 #define GET_WALL_DISPLAY(d)						\
@@ -517,8 +526,6 @@ wallMoveViewport (CompScreen *s,
 	    w = findWindowAtScreen (s, moveWindow);
 	    if (w)
     	    {
-	      printf ("got move window !!!!!\n");
-	      
 	      if (!(w->state & CompWindowStateStickyMask))
 		{
 			ws->moveWindow = w->id;
@@ -565,6 +572,32 @@ wallMoveViewport (CompScreen *s,
     return ws->moving;
 }
 
+
+static void
+wallCheckAmount (CompScreen *s,
+		 int        dx,
+		 int        dy,
+		 int        *amountX,
+		 int        *amountY)
+{
+  *amountX = -dx;
+  *amountY = -dy;
+
+  //if (wallGetAllowWraparound (s->display))
+    {
+      if ((s->x + dx) < 0)
+	*amountX = -(s->hsize + dx);
+      else if ((s->x + dx) >= s->hsize)
+	*amountX = s->hsize - dx;
+
+      if ((s->y + dy) < 0)
+	*amountY = -(s->vsize + dy);
+      else if ((s->y + dy) >= s->vsize)
+	*amountY = s->vsize - dy;
+    }
+}
+
+
 static void
 wallHandleEvent (CompDisplay *d,
 		 XEvent      *event)
@@ -597,7 +630,8 @@ wallHandleEvent (CompDisplay *d,
 	else*/ 
 	if (event->xclient.message_type == d->desktopViewportAtom)
 	{
-	    int        dx, dy;
+	  int        dx, dy, toX, toY;
+	    int amountX = 0, amountY = 0;
 	    CompScreen *s;
 	    Window win;
 	    CompWindow *w;
@@ -616,35 +650,44 @@ wallHandleEvent (CompDisplay *d,
 		    (event->xclient.data.l[1] / s->width),
 		    (event->xclient.data.l[2] / s->height));
 
-    	    dx = (event->xclient.data.l[1] / s->width) - s->x;
-	    dy = (event->xclient.data.l[2] / s->height) - s->y;
+	    toX = event->xclient.data.l[1] / s->width;
+	    dx = toX - s->x;
+
+	    toY = event->xclient.data.l[2] / s->height;
+	    dy = toY - s->y;
 
 	    if (!dx && !dy)
 		break;
+	    /*
+	    if ((toX == 0) && (s->x == s->hsize - 1)) dx = 1;
+	    if ((toX == s->hsize - 1) && (s->x == 0)) dx = -1;
+	    if ((toY == 0) && (s->y == s->vsize - 1)) dy = 1;
+	    if ((toY == s->vsize - 1) && (s->y == 0)) dy = -1;
+	    */
+	    wallCheckAmount(s, dx, dy, &amountX, &amountY);
+	    
 
 	    win = event->xclient.data.l[3];		
 	    unsigned int moveType = event->xclient.data.l[4];
 	    
-	    printf ("-------- %d\n", moveType);
-
 	    if(moveType == 0)
 	      { 		
-		wallMoveViewport (s, -dx, -dy, None);		
+		wallMoveViewport (s, amountX, amountY, None);		
 	      }
 	    else if(moveType == 1)
 	      { 
-		printf ("move with window_____\n");
+		printf ("move with window\n");
 		w = findWindowAtScreen(s, win);
 		if(w)
 		  { 
 		    moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
 		  }
-		wallMoveViewport (s, -dx, -dy, win);		
+		wallMoveViewport (s, amountX, amountY, win);		
 		}
 	    else if(moveType == 2)
 	      { 
-		printf ("move window by_____\n");
-		wallMoveViewport (s, -dx, -dy, win);		
+		printf ("move window by\n");
+		wallMoveViewport (s, amountX, amountY, win);		
 	      }
 	}
 	break;
@@ -655,39 +698,16 @@ wallHandleEvent (CompDisplay *d,
     WRAP (wd, d, handleEvent, wallHandleEvent);
 }
 
+
+
 /*
-static void
-wallCheckAmount (CompScreen *s,
-		 int        dx,
-		 int        dy,
-		 int        *amountX,
-		 int        *amountY)
-{
-    *amountX = -dx;
-    *amountY = -dy;
-
-    if (wallGetAllowWraparound (s->display))
-    {
-	if ((s->x + dx) < 0)
-	    *amountX = -(s->hsize + dx);
-	else if ((s->x + dx) >= s->hsize)
-	    *amountX = s->hsize - dx;
-
-	if ((s->y + dy) < 0)
-	    *amountY = -(s->vsize + dy);
-	else if ((s->y + dy) >= s->vsize)
-	    *amountY = s->vsize - dy;
-    }
-}
-
-
 static Bool
 wallInitiate (CompScreen *s,
 	      int        dx,
 	      int        dy,
 	      Window     win)
 {
-    int amountX, amountY;
+int amountX, amountY;
 
     wallCheckAmount (s, dx, dy, &amountX, &amountY);
     wallMoveViewport (s, amountX, amountY, win);
@@ -1255,7 +1275,7 @@ wallPaintWindow(CompWindow              *w,
 
 	if (ws->miniScreen)
 	{
-	    WindowPaintAttrib pA = *attrib;
+	  WindowPaintAttrib pA = *attrib;
 
 	    pA.opacity = attrib->opacity *
 		         ((float)ws->mSAttribs.opacity / OPAQUE);
@@ -1272,11 +1292,12 @@ wallPaintWindow(CompWindow              *w,
 	    WRAP (ws, s, paintWindow, wallPaintWindow);
 	}
 	else
-	{
+	  { 
 	    UNWRAP (ws, s, paintWindow);
 	    status = (*s->paintWindow) (w, attrib, transform, region, mask);
 	    WRAP (ws, s, paintWindow, wallPaintWindow);
-	}
+	  }
+	
 
 	return status;
 }
