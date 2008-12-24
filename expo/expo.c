@@ -189,7 +189,7 @@ expoTermExpo (CompDisplay     *d,
       es->dndWindow = 0;
 
       damageScreen (s);
-      focusDefaultWindow (s->display);
+      // focusDefaultWindow (s->display);
     }
 
   if (state & CompActionStateTermButton)
@@ -1216,7 +1216,7 @@ expoDonePaintScreen (CompScreen * s)
 			s->y - es->selectedVY, TRUE);
     /*XXX temporary? */
     sendScreenViewportMessage(s);
-    focusDefaultWindow (s->display);
+    //focusDefaultWindow (s->display);
     es->vpUpdateMode = VPUpdateNone;
     break;
   case VPUpdatePrevious:
