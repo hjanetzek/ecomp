@@ -99,18 +99,6 @@ updateWindowClassHints (CompWindow *w)
   XClassHint classHint;
   int	       status;
 
-  if (w->resName)
-    {
-      free (w->resName);
-      w->resName = NULL;
-    }
-
-  if (w->resClass)
-    {
-      free (w->resClass);
-      w->resClass = NULL;
-    }
-
   if(w->clientId)
     status = XGetClassHint (w->screen->display->display, w->clientId, &classHint);
   else
@@ -120,39 +108,45 @@ updateWindowClassHints (CompWindow *w)
     {
       if (classHint.res_name)
 	{
-	  w->resName = strdup (classHint.res_name);
+	  if (w->resName && strcmp(w->resName, classHint.res_name))
+	    {
+	      free (w->resName);
+	      w->resName = strdup (classHint.res_name);
+	    }
+	  else if (!w->resName)
+	    w->resName = strdup (classHint.res_name);
+
 	  XFree (classHint.res_name);
 	}
 
       if (classHint.res_class)
 	{
-	  w->resClass = strdup (classHint.res_class);
+	  if (w->resClass && strcmp(w->resClass, classHint.res_class))
+	    {
+	      free (w->resClass);
+	      w->resClass = strdup (classHint.res_class);
+	    }
+	  else if(!w->resClass)
+	    w->resClass = strdup (classHint.res_class);
+	    
 	  XFree (classHint.res_class);
   	}
-
-      if (!w->clientId && !(w->wmType & CompWindowTypeDropdownMenuMask))
+    }
+  else
+    { 
+      if (w->resName)
 	{ 
-	  if ((!strcasecmp (w->resName, "gecko")) ||
-	      (!strcasecmp (w->resName, "popup")) ||
-	      (!strcasecmp (w->resName, "VCLSalFrame")))
-	    {
-	      w->wmType = CompWindowTypeDropdownMenuMask;
-	    }
+	  free(w->resName);
+	  w->resName = NULL;
 	}
-      else if ((!strcmp (w->resName, "sun-awt-X11-XMenuWindow")) ||
-	       (!strcmp (w->resName, "sun-awt-X11-XWindowPeer")))
-	{
-	  w->wmType = CompWindowTypeDropdownMenuMask;
-	}
-      else if (!strcmp (w->resName, "sun-awt-X11-XDialogPeer"))
-	{
-	  w->wmType = CompWindowTypeDialogMask;
-	}
-      else if (!strcmp (w->resName, "sun-awt-X11-XFramePeer"))
-	{
-	  w->wmType = CompWindowTypeNormalMask;
+      if (w->resClass)
+	{ 
+	  free(w->resClass);
+	  w->resClass = NULL;
 	}
     }
+
+  //  printf ("updateWindowClassHints %s, %s\n", w->resName, w->resClass);  
 }
 
 
@@ -406,6 +400,33 @@ recalcWindowType (CompWindow *w)
     unsigned int type;
 
     type = w->wmType;
+
+    /* XXX workarounds */
+    if (w->resName)
+      { 
+	if (!w->clientId && !(w->wmType & CompWindowTypeDropdownMenuMask))
+	  { 
+	    if ((!strcmp (w->resName, "gecko")) ||
+		(!strcmp (w->resName, "Popup")) ||
+		(!strcmp (w->resName, "VCLSalFrame")))
+	      {
+		type = CompWindowTypeDropdownMenuMask;
+	      }
+	  }
+	else if ((!strcmp (w->resName, "sun-awt-X11-XMenuWindow")) ||
+		 (!strcmp (w->resName, "sun-awt-X11-XWindowPeer")))
+	  {
+	    type = CompWindowTypeDropdownMenuMask;
+	  }
+	else if (!strcmp (w->resName, "sun-awt-X11-XDialogPeer"))
+	  {
+	    type = CompWindowTypeDialogMask;
+	  }
+	else if (!strcmp (w->resName, "sun-awt-X11-XFramePeer"))
+	  {
+	    type = CompWindowTypeNormalMask;
+	  }
+      }
     
     if (w->clientId && (w->wmType == CompWindowTypeUnknownMask))
       {
@@ -990,7 +1011,8 @@ updateWindowViewport(CompWindow *w, int initial)
 	      	      
       w->initialViewportX = dx;
       w->initialViewportY = dy;
-
+      printf ("- viewport: %d:%d\n", dx, dy);
+      
       if (initial) return;
       		
       int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
@@ -1019,7 +1041,7 @@ updateWindowViewport(CompWindow *w, int initial)
 
       w->invisible = WINDOW_INVISIBLE (w); /* XXX what does this?*/
 
-      //w->desktop = desk;
+      w->desktop = desk;
 		  
       (*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
 
@@ -1311,7 +1333,8 @@ addWindow (CompScreen *screen,
        w->wmType = getWindowType (screen->display, w->clientId);
        w->state = getWindowState (screen->display, w->clientId);
        updateWindowClassHints (w);
-
+       if(w->resClass) printf ("- %s\n", w->resClass);
+       
        //w->state = getWmState
        //updateNormalHints (w);
        //updateWindowStruts (w);
@@ -1658,11 +1681,11 @@ configureWindow (CompWindow	 *w,
   C(("- configureWindow %d:%d %dx%d\n", ce->x, ce->y, ce->width, ce->height));
   
   /*XXX remove this*/
-  if (w->clientId)
+  /*  if (w->clientId)
     {
       w->attrib.override_redirect = FALSE;
-    }
-  else
+      }*/
+  if(!w->clientId)
     w->attrib.override_redirect = ce->override_redirect;
   
   w->serverX		 = ce->x;
@@ -1826,7 +1849,7 @@ moveInputFocusToWindow (CompWindow *w)
     XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
 }
 /* TODO */
-void
+/*void
 uniconfiyWindow (CompWindow *w)
 {
   CompScreen  *s = w->screen;
@@ -1845,7 +1868,7 @@ uniconfiyWindow (CompWindow *w)
     
   XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
 }
-
+*/
 void
 configureXWindow (CompWindow	 *w,
 		  unsigned int	 valueMask,
@@ -2021,28 +2044,9 @@ sendViewportMoveRequest (CompScreen *s,
 void
 activateWindow (CompWindow *w)
 {
-  D(("activateWindow %s\n", w->resClass));
-  int x,y;
-
-  CompScreen *s = w->screen;
-
-  /*  if (w->state & CompWindowStateHiddenMask)
-    {
-      w->state &= ~CompWindowStateShadedMask;
-      if (w->shaded)
-	showWindow (w);
-    }
+  printf("activateWindow %s\n", w->resClass);
   
-  if (w->state & CompWindowStateHiddenMask)
-    return;
-  */
-
   raiseWindow(w);
-  
-  defaultViewportForWindow (w, &x, &y);
-
-  if (x != s->x || y != s->y)
-    sendViewportMoveRequest (s, x * s->width, y * s->height);
 
   moveInputFocusToWindow (w);
 }
