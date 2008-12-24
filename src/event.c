@@ -1152,15 +1152,9 @@ handleEvent (CompDisplay *d,
 	  }
       }
     break;
-    /*  case SelectionRequest: */
-    /* 	handleSelectionRequest (d, event); */
-    /* 	break; */
-    /* case SelectionClear: */
-    /* 	handleSelectionClear (d, event); */
-    /* 	break; */
+
   case ConfigureNotify:
     C(("0x%x : ConfigureNotify event ", (unsigned int)event->xconfigure.window));
-      
     w = findWindowAtDisplay (d, event->xconfigure.window);
     if (w)
       {
@@ -1173,9 +1167,9 @@ handleEvent (CompDisplay *d,
 	  configureScreen (s, &event->xconfigure);
       }
     break;
+
   case CreateNotify:
     C(("0x%x : CreateNotify event\n", (unsigned int)event->xcreatewindow.window));
-      
     s = findScreenAtDisplay (d, event->xcreatewindow.parent);
     if (s)
       {
@@ -1187,30 +1181,25 @@ handleEvent (CompDisplay *d,
 	  addWindow (s, event->xcreatewindow.window, getTopWindow (s));
       }
     break;
+
   case DestroyNotify:
     D(("0x%x : DestroyNotify event\n", (unsigned int)event->xdestroywindow.window));
-      
     w = findWindowAtDisplay (d, event->xdestroywindow.window);
     if (w)
       {
-	//moveInputFocusToOtherWindow (w);
 	destroyWindow (w);
       }
     break;
+
   case MapNotify: 
     w = findWindowAtDisplay (d, event->xmap.window);
     if (w)
       {
 	C(("0x%x : MapNotify event\n", (unsigned int)event->xmap.window));
-	/* been shaded */
-	//	    if (w->height == 0)
-	//	    {
-	//		if (w->id == d->activeWindow)
-	//		    moveInputFocusToWindow (w);
-	//	    }
 	mapWindow (w);
       }
     break;
+
   case UnmapNotify:
     w = findWindowAtDisplay (d, event->xunmap.window);
     if (w)
@@ -1231,16 +1220,14 @@ handleEvent (CompDisplay *d,
 
 		changeWindowState (w, w->state & ~CompWindowStateHiddenMask);
 	      }
-
-	    //w->placed  = FALSE;
 	  }
 
 	unmapWindow (w);
       }
     break;
+
   case ReparentNotify:
     C(("0x%x : ReparentNotify\n", (unsigned int)event->xreparent.window));
-      
     w = findWindowAtDisplay (d, event->xreparent.window);
     s = findScreenAtDisplay (d, event->xreparent.parent);
     if (s && !w)
@@ -1255,6 +1242,7 @@ handleEvent (CompDisplay *d,
 	destroyWindow (w);
       }
     break;
+
   case CirculateNotify:
     D(("circulate notify event\n"));
     /* TODO check what this event is for */  
@@ -1262,69 +1250,43 @@ handleEvent (CompDisplay *d,
     if (w)
       circulateWindow (w, &event->xcirculate);
     break;
-    /* TODO client state changed notify from e whenever client properties chenged... */
+
   case PropertyNotify:       
+
+    w = findWindowAtDisplay (d, event->xproperty.window);
+    if (!w) break;
+    
     if (event->xproperty.atom == d->winTypeAtom)
       {
-	E(("0x%x : PropertyNotify - ", (unsigned int)event->xproperty.window));
-	E(("winTypeAtom\n"));
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w)
+	unsigned int type;
+
+	type = getWindowType (d, w->id);
+
+	if (type != w->wmType)
 	  {
-	    unsigned int type;
-
-	    type = getWindowType (d, w->id);
-
-	    if (type != w->wmType)
+	    if (w->attrib.map_state == IsViewable)
 	      {
-		if (w->attrib.map_state == IsViewable)
-		  {
-		    if (w->type == CompWindowTypeDesktopMask)
-		      w->screen->desktopWindowCount--;
-		    else if (type == CompWindowTypeDesktopMask)
-		      w->screen->desktopWindowCount++;
-		  }
-
-		w->wmType = type;
-
-		recalcWindowType (w);
-
-		if (w->type & CompWindowTypeDesktopMask)
-		  {
-		    w->paint.opacity = OPAQUE;
-		  }
-		    
-		(*d->matchPropertyChanged) (d, w);
+		if (w->type == CompWindowTypeDesktopMask)
+		  w->screen->desktopWindowCount--;
+		else if (type == CompWindowTypeDesktopMask)
+		  w->screen->desktopWindowCount++;
 	      }
+
+	    w->wmType = type;
+
+	    recalcWindowType (w);
+
+	    if (w->type & CompWindowTypeDesktopMask)
+	      {
+		w->paint.opacity = OPAQUE;
+	      }
+		    
+	    (*d->matchPropertyChanged) (d, w);
 	  }
       }
-
-    /* else if (event->xproperty.atom == XA_WM_NORMAL_HINTS)
-       {
-       D(("XA_WM_NORMAL_HINTS\n");
-	  
-       w = findWindowAtDisplay (d, event->xproperty.window);
-       if (w)
-       {
-       updateNormalHints (w);
-       recalcWindowActions (w);
-       }
-       }
-       else if (event->xproperty.atom == XA_WM_HINTS)
-       {
-       D(("XA_WM_HINTS\n");
-	  
-       w = findWindowAtDisplay (d, event->xproperty.window);
-       if (w)
-       updateWmHints (w);
-       }
-
-       }*/
-	
     else if (event->xproperty.atom == d->winOpacityAtom)
       {
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w && (w->type & CompWindowTypeDesktopMask) == 0)
+	if ((w->type & CompWindowTypeDesktopMask) == 0)
 	  {
 	    w->opacity	  = OPAQUE;
 	    w->opacityPropSet =
@@ -1337,36 +1299,27 @@ handleEvent (CompDisplay *d,
       }
     else if (event->xproperty.atom == d->winBrightnessAtom)
       {
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w)
+	GLushort brightness;
+
+	brightness = getWindowProp32 (d, w->id, d->winBrightnessAtom, BRIGHT);
+
+	if (brightness != w->brightness)
 	  {
-	    GLushort brightness;
-
-	    brightness = getWindowProp32 (d, w->id, 
-					  d->winBrightnessAtom,
-					  BRIGHT);
-
-	    if (brightness != w->brightness)
+	    w->brightness = brightness;
+	    if (w->alive)
 	      {
-		w->brightness = brightness;
-		if (w->alive)
-		  {
-		    w->paint.brightness = w->brightness;
-		    addWindowDamage (w);
-		  }
+		w->paint.brightness = w->brightness;
+		addWindowDamage (w);
 	      }
 	  }
       }
     else if (event->xproperty.atom == d->winSaturationAtom)
       {
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w && w->screen->canDoSaturated)
+	if (w->screen->canDoSaturated)
 	  {
 	    GLushort saturation;
 
-	    saturation = getWindowProp32 (d, w->id, 
-					  d->winSaturationAtom,
-					  COLOR);
+	    saturation = getWindowProp32 (d, w->id, d->winSaturationAtom, COLOR);
 
 	    if (saturation != w->saturation)
 	      {
@@ -1379,74 +1332,24 @@ handleEvent (CompDisplay *d,
 	      }
 	  }
       }
-    /*else if (event->xproperty.atom == d->xBackgroundAtom[0] ||
-      event->xproperty.atom == d->xBackgroundAtom[1])
-      {
-      s = findScreenAtDisplay (d, event->xproperty.window);
-      if (s)
-      {
-      finiTexture (s, &s->backgroundTexture);
-      initTexture (s, &s->backgroundTexture);
-
-      if (s->backgroundLoaded)
-      {
-      s->backgroundLoaded = FALSE;
-      damageScreen (s);
-      }
-      }
-      }
-      else if (event->xproperty.atom == d->wmStrutAtom ||
-      event->xproperty.atom == d->wmStrutPartialAtom)
-      {
-      D(("wmStrutAtom\n"));
-	  
-      w = findWindowAtDisplay (d, event->xproperty.window);
-      if (w)
-      {
-      if (updateWindowStruts (w))
-      updateWorkareaForScreen (w->screen);
-      }
-      }*/
     else if (event->xproperty.atom == d->mwmHintsAtom)
       {
-	D(("mwmHintsAtom\n"));
-	  
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w)
-	  {
-	    getMwmHints (d, w->id, &w->mwmFunc, &w->mwmDecor);
-
-	    //recalcWindowActions (w);
-	  }
+	/*XXX remove?*/
+	getMwmHints (d, w->id, &w->mwmFunc, &w->mwmDecor);
       }
     else if (event->xproperty.atom == d->wmIconAtom) // TODO 
       {
-	D(("wmIconAtom\n"));
-	  
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w)
-	  freeWindowIcons (w);
+	freeWindowIcons (w);
       }
     else if (event->xproperty.atom == XA_WM_CLASS)
       {
-	D(("XA_WM_CLASS\n"));
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w)
-	  updateWindowClassHints (w);
+	updateWindowClassHints (w);
       }
-    /*else if (event->xproperty.atom == d->winDesktopAtom)
-      {
-	C(("0x%x : PropertyNotify - ", (unsigned int)event->xproperty.window));
-	C(("winDesktopAtom:\n"));
-	w = findWindowAtDisplay (d, event->xproperty.window);
-	if (w)
-	  {
-	    updateWindowViewport(w, FALSE);
-	  }
-	  }*/  
     break;
+
   case MotionNotify:
     break;
+
   case ClientMessage:
     if (event->xclient.message_type == d->eManagedAtom)
       {
@@ -1548,6 +1451,12 @@ handleEvent (CompDisplay *d,
 
 		break;
 	      }
+	    /*else if(type == 4) // WINDOW POSITION
+	      {
+		printf("set window position\n");
+		s = w->screen;
+	      }
+	    */
 	  }
       }
     else if (event->xclient.message_type == d->winActiveAtom)
@@ -1595,66 +1504,7 @@ handleEvent (CompDisplay *d,
 
 	    setWindowProp32 (d, w->id, d->winSaturationAtom, saturation);
 	  }
-      }/*
-	 else if (event->xclient.message_type == d->winStateAtom)
-	 {
-	 w = findWindowAtDisplay (d, event->xclient.window);
-	 if (w)
-	 {
-	 unsigned long wState, state;
-	 int	      i;
-
-	 wState = w->state;
-
-	 for (i = 1; i < 3; i++)
-	 {
-	 state = windowStateMask (d, event->xclient.data.l[i]);
-	 if (state & ~CompWindowStateHiddenMask)
-	 {
-
-	 #define _NET_WM_STATE_REMOVE 0
-	 #define _NET_WM_STATE_ADD    1
-	 #define _NET_WM_STATE_TOGGLE 2
-
-	 switch (event->xclient.data.l[0]) {
-	 case _NET_WM_STATE_REMOVE:
-	 wState &= ~state;
-	 break;
-	 case _NET_WM_STATE_ADD:
-	 wState |= state;
-	 break;
-	 case _NET_WM_STATE_TOGGLE:
-	 wState ^= state;
-	 break;
-	 }
-	 }
-	 }
-
-	 wState = constrainWindowState (wState, w->actions);
-
-	 if (wState != w->state)
-	 {
-	 CompStackingUpdateMode stackingUpdateMode;
-	 unsigned long          dState = wState ^ w->state;
-
-	 stackingUpdateMode = CompStackingUpdateModeNone;
-
-	 changeWindowState (w, wState);
-
-	 recalcWindowType (w);
-	 recalcWindowActions (w);
-
-	 updateWindowAttributes (w, stackingUpdateMode);
-	 }
-	 }
-	 }
-       
-	 else if (event->xclient.message_type == d->closeWindowAtom)
-	 {
-	 w = findWindowAtDisplay (d, event->xclient.window);
-	 if (w)
-	 closeWindow (w, event->xclient.data.l[0]);
-	 }*/
+      }
     else if (event->xclient.message_type == d->desktopGeometryAtom)
       {
 	s = findScreenAtDisplay (d, event->xclient.window);
@@ -1667,78 +1517,14 @@ handleEvent (CompDisplay *d,
 
 	    s->vsize = v;
 	    s->hsize = h;
-	    
-	    //setVirtualScreenSize (s, h, v);
 	  }
       }
-    /*else if (event->xclient.message_type == d->wmChangeStateAtom)
-      {
-      w = findWindowAtDisplay (d, event->xclient.window);
-      if (w && w->type & CompWindowTypeNormalMask)
-      {
-      if (event->xclient.data.l[0] == IconicState)
-      {
-      minimizeWindow (w);
-      }
-		
-      else if (event->xclient.data.l[0] == NormalState)
-      {
-      unminimizeWindow (w);
-      }
-      }
-      }*/
-    /*	else if (event->xclient.message_type == d->showingDesktopAtom)
-	{
-	for (s = d->screens; s; s = s->next)
-	{
-	if (event->xclient.window == s->root ||
-	event->xclient.window == None)
-	{
-	if (event->xclient.data.l[0])
-	(*s->enterShowDesktopMode) (s);
-	else
-	(*s->leaveShowDesktopMode) (s, NULL);
-	}
-	}
-	}
-	else if (event->xclient.message_type == d->numberOfDesktopsAtom)
-	{
-	s = findScreenAtDisplay (d, event->xclient.window);
-	if (s)
-	{
-	CompOptionValue value;
-
-	value.i = event->xclient.data.l[0];
-
-	(*s->setScreenOption) (s, "number_of_desktops", &value);
-	}
-	}
-	else if (event->xclient.message_type == d->currentDesktopAtom)
-	{
-	s = findScreenAtDisplay (d, event->xclient.window);
-	if (s)
-	setCurrentDesktop (s, event->xclient.data.l[0]);
-	}
-	else */
-      
-    /* note this in no way conform to the NET_WM_DESKTOP spec ;) */
-    /* if (event->xclient.message_type == d->winDesktopAtom)
-       {
-       w = findWindowAtDisplay (d, event->xclient.window);
-       if (w)
-       {
-       int dx = event->xclient.data.l[0] * w->screen->width;
-       int dy = event->xclient.data.l[1] * w->screen->height;
-
-       moveWindow (w, dx, dy, TRUE, TRUE);
-       syncWindowPosition (w);
-       }
-       }*/
     break;
   case MappingNotify:
   case ConfigureRequest:
   case CirculateRequest:
     break;
+
   case FocusIn:
     C(("focus in event \n"));
 	
@@ -1755,11 +1541,6 @@ handleEvent (CompDisplay *d,
 		w->activeNum = w->screen->activeNum++;
 	
 		addToCurrentActiveWindowHistory (w->screen, w->id);
-	
-		//XChangeProperty (d->display, w->screen->root,
-		//		     d->winActiveAtom,
-		//		     XA_WINDOW, 32, PropModeReplace,
-		//		     (unsigned char *) &w->id, 1);
 	      }
 	
 	    state &= ~CompWindowStateDemandsAttentionMask;
@@ -1769,6 +1550,7 @@ handleEvent (CompDisplay *d,
 	  }
       }
     break;
+
   default:
     if (event->type == d->damageEvent + XDamageNotify)
       {
@@ -1848,22 +1630,6 @@ handleEvent (CompDisplay *d,
 	if (s)
 	  detectRefreshRateOfScreen (s);
       }
-    //else if (event->type == d->syncEvent + XSyncAlarmNotify)
-    //	{
-    //	    XSyncAlarmNotifyEvent *sa;
-    //
-    //	    sa = (XSyncAlarmNotifyEvent *) event;
-    //
-    //	    w = NULL;
-    //
-    //	    for (s = d->screens; s; s = s->next)
-    //		for (w = s->windows; w; w = w->next)
-    //		    if (w->syncAlarm == sa->alarm)
-    //			break;
-    //
-    //	    if (w)
-    //		handleSyncAlarm (w);
-    //	}
     break;
   }
 }
