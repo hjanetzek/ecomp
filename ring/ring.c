@@ -158,19 +158,25 @@ static Bool
 isRingWin (CompWindow *w)
 {
     RING_SCREEN (w->screen);
-
+    
+    if (!w->clientId) return FALSE;
+    
+    /*
     if (w->attrib.override_redirect)
 	return FALSE;
-
+    */
+    /*
     if (w->wmType & (CompWindowTypeDockMask | CompWindowTypeDesktopMask))
 	return FALSE;
-
-    if (!w->mapNum || w->attrib.map_state != IsViewable)
+    */
+    if (!w->mapNum) //  || w->attrib.map_state != IsViewable)
     {
 	if (ringGetMinimized (w->screen))
 	{
-	    if (!w->minimized && !w->inShowDesktopMode && !w->shaded)
-		return FALSE;
+	  //if (!w->minimized && !w->inShowDesktopMode && !w->shaded)
+	  //	return FALSE;
+	  ;
+	  
 	}
 	else
     	    return FALSE;
@@ -195,10 +201,10 @@ isRingWin (CompWindow *w)
 
     if (w->state & CompWindowStateSkipTaskbarMask)
 	return FALSE;
-
+    
     if (w->state & CompWindowStateShadedMask)
 	return FALSE;
-
+    
     if (!matchEval (rs->currentMatch, w))
 	return FALSE;
 
@@ -1174,7 +1180,8 @@ ringTerminate (CompDisplay     *d,
 	    {
 		w = findWindowAtScreen (s, rs->selectedWindow);
 		if (w)
-		    sendWindowActivationRequest (s, w->id);
+		  activateWindow (w);
+		  //sendWindowActivationRequest (s, w->id);
 	    }
 	}
     }
