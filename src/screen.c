@@ -1076,7 +1076,7 @@ leaveShowDesktopMode (CompScreen *s,
 
 	/* focus default window - most likely this will be the window
 	   which had focus before entering showdesktop mode */
-	focusDefaultWindow (s->display);
+	//focusDefaultWindow (s->display);
     }
 
     XChangeProperty (s->display->display, s->root,
@@ -2503,108 +2503,6 @@ updatePassiveGrabs (CompScreen *s)
     updatePassiveKeyGrabs (s);
 }
 
-static void
-computeWorkareaForBox (CompScreen *s,
-		       BoxPtr     pBox,
-		       XRectangle *area)
-{
-    CompWindow *w;
-    Region     region;
-    REGION     r;
-    int	       x1, y1, x2, y2;
-
-    region = XCreateRegion ();
-    if (!region)
-    {
-	area->x      = pBox->x1;
-	area->y      = pBox->y1;
-	area->width  = pBox->x1 - pBox->x1;
-	area->height = pBox->y2 - pBox->y1;
-
-	return;
-    }
-
-    r.rects    = &r.extents;
-    r.numRects = r.size = 1;
-    r.extents  = *pBox;
-
-    XUnionRegion (&r, region, region);
-
-    for (w = s->windows; w; w = w->next)
-    {
-	if (!w->mapNum)
-	    continue;
-
-	if (w->struts)
-	{
-	    r.extents.y1 = pBox->y1;
-	    r.extents.y2 = pBox->y2;
-
-	    x1 = w->struts->left.x;
-	    y1 = w->struts->left.y;
-	    x2 = x1 + w->struts->left.width;
-	    y2 = y1 + w->struts->left.height;
-
-	    if (y1 < pBox->y2 && y2 > pBox->y1)
-	    {
-		r.extents.x1 = x1;
-		r.extents.x2 = x2;
-
-		XSubtractRegion (region, &r, region);
-	    }
-
-	    x1 = w->struts->right.x;
-	    y1 = w->struts->right.y;
-	    x2 = x1 + w->struts->right.width;
-	    y2 = y1 + w->struts->right.height;
-
-	    if (y1 < pBox->y2 && y2 > pBox->y1)
-	    {
-		r.extents.x1 = x1;
-		r.extents.x2 = x2;
-
-		XSubtractRegion (region, &r, region);
-	    }
-
-	    r.extents.x1 = pBox->x1;
-	    r.extents.x2 = pBox->x2;
-
-	    x1 = w->struts->top.x;
-	    y1 = w->struts->top.y;
-	    x2 = x1 + w->struts->top.width;
-	    y2 = y1 + w->struts->top.height;
-
-	    if (x1 < pBox->x2 && x2 > pBox->x1)
-	    {
-		r.extents.y1 = y1;
-		r.extents.y2 = y2;
-
-		XSubtractRegion (region, &r, region);
-	    }
-
-	    x1 = w->struts->bottom.x;
-	    y1 = w->struts->bottom.y;
-	    x2 = x1 + w->struts->bottom.width;
-	    y2 = y1 + w->struts->bottom.height;
-
-	    if (x1 < pBox->x2 && x2 > pBox->x1)
-	    {
-		r.extents.y1 = y1;
-		r.extents.y2 = y2;
-
-		XSubtractRegion (region, &r, region);
-	    }
-	}
-    }
-
-    area->x      = region->extents.x1;
-    area->y      = region->extents.y1;
-    area->width  = region->extents.x2 - region->extents.x1;
-    area->height = region->extents.y2 - region->extents.y1;
-
-    XDestroyRegion (region);
-}
-
 
 Window
 getActiveWindow (CompDisplay *display,
@@ -2673,7 +2571,7 @@ moveScreenViewport (CompScreen *s,
     ty = MOD (ty, s->vsize);
     ty -= s->y;
 
-    if(sync) printf ("moveScreenViewport %d:%d - %d:%d\n", s->x, s->y, tx, tx);
+    if(sync) printf ("moveScreenViewport - current %d:%d, move %d:%d\n", s->x, s->y, tx, ty);
     if (!tx && !ty) /*XXX remove sync when not needed*/
       { 
 	if (sync)
