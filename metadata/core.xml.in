@@ -46,20 +46,6 @@
 		<min>1</min>
 		<max>200</max>
 	    </option>
-	    <option name="hsize" type="int">
-		<_short>Horizontal Virtual Size</_short>
-		<_long>Screen size multiplier for horizontal virtual size</_long>
-		<default>4</default>
-		<min>1</min>
-		<max>32</max>
-	    </option>
-	    <option name="vsize" type="int">
-		<_short>Vertical Virtual Size</_short>
-		<_long>Screen size multiplier for vertical virtual size</_long>
-		<default>1</default>
-		<min>1</min>
-		<max>32</max>
-	    </option>
 	    <option name="opacity_step" type="int">
 		<_short>Opacity Step</_short>
 		<_long>Opacity change step</_long>
