@@ -1452,32 +1452,9 @@ handleEvent (CompDisplay *d,
 
 		break;
 	      }
-	    else if(type == 4) // WINDOW GRAB
-	      {
-		unsigned int state = event->xclient.data.l[2];
-		printf(" window grab 0x%x\n", state);
-		s = w->screen;
-		int mods = 0;
-		int x =  w->attrib.x + (w->width / 2);
-		int y = w->attrib.y + (w->height / 2);
-		if (state)
-		  { 
-		    (s->windowGrabNotify) (w, x, y, mods,
-					   CompWindowGrabMoveMask |
-					   CompWindowGrabButtonMask);
-		    w->opacity = (50 * OPAQUE) / 100;
-		  }
-		
-		else
-		  { 
-		    (s->windowUngrabNotify) (w);		    
-		    w->opacity = OPAQUE;
-		    
-		  }
-	      }
-	   
 	  }
       }
+    
     else if (event->xclient.message_type == d->winActiveAtom)
       {
 	printf("got winActive client massage\n");

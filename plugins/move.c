@@ -149,8 +149,8 @@ moveInitiate (CompDisplay     *d,
 	if (w->attrib.override_redirect)
 	    return FALSE;
 	
-	if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
+	//if (state & CompActionStateInitButton)
+	//    action->state |= CompActionStateTermButton;
 
 	if (md->region)
 	{
@@ -179,11 +179,11 @@ moveInitiate (CompDisplay     *d,
 	ms->snapOffY  = y - workArea.y;
 
 	if (!ms->grabIndex)
-#ifdef KEYBINDING	  
-	    ms->grabIndex = pushScreenGrab (w->screen, ms->moveCursor, "move");
-#else
+	  //#ifdef KEYBINDING	  
+	  //  ms->grabIndex = pushScreenGrab (w->screen, ms->moveCursor, "move");
+	  //#else
 	ms->grabIndex = 1;
-#endif
+	//#endif
 	
 	if (ms->grabIndex)
 	{
@@ -241,9 +241,9 @@ moveTerminate (CompDisplay     *d,
 
 	if (ms->grabIndex)
 	{
-#ifdef KEYBINDING
-	    removeScreenGrab (md->w->screen, ms->grabIndex, NULL);
-#endif
+	  //#ifdef KEYBINDING
+	  // removeScreenGrab (md->w->screen, ms->grabIndex, NULL);
+	  //#endif
 	    ms->grabIndex = 0;
 	}
 
@@ -253,347 +253,12 @@ moveTerminate (CompDisplay     *d,
 	md->w = 0;
     }
 
-    action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
+    //    action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
 
     return FALSE;
 }
 
-/* creates a region containing top and bottom struts. only struts that are
-   outside the screen workarea are considered. */
-static Region
-moveGetYConstrainRegion (CompScreen *s)
-{
-    CompWindow *w;
-    Region     region;
-    REGION     r;
-    XRectangle workArea;
-    BoxRec     extents;
-    int	       i;
 
-    region = XCreateRegion ();
-    if (!region)
-	return NULL;
-
-    r.rects    = &r.extents;
-    r.numRects = r.size = 1;
-
-    r.extents.x1 = MINSHORT;
-    r.extents.y1 = 0;
-    r.extents.x2 = 0;
-    r.extents.y2 = s->height;
-
-    XUnionRegion (&r, region, region);
-
-    r.extents.x1 = s->width;
-    r.extents.x2 = MAXSHORT;
-
-    XUnionRegion (&r, region, region);
-
-    for (i = 0; i < s->nOutputDev; i++)
-    {
-	XUnionRegion (&s->outputDev[i].region, region, region);
-
-	getWorkareaForOutput (s, i, &workArea);
-	extents = s->outputDev[i].region.extents;
-
-	for (w = s->windows; w; w = w->next)
-	{
-	    if (!w->mapNum)
-		continue;
-
-	    if (w->struts)
-	    {
-		r.extents.x1 = w->struts->top.x;
-		r.extents.y1 = w->struts->top.y;
-		r.extents.x2 = r.extents.x1 + w->struts->top.width;
-		r.extents.y2 = r.extents.y1 + w->struts->top.height;
-
-		if (r.extents.x1 < extents.x1)
-		    r.extents.x1 = extents.x1;
-		if (r.extents.x2 > extents.x2)
-		    r.extents.x2 = extents.x2;
-		if (r.extents.y1 < extents.y1)
-		    r.extents.y1 = extents.y1;
-		if (r.extents.y2 > extents.y2)
-		    r.extents.y2 = extents.y2;
-
-		if (r.extents.x1 < r.extents.x2 && r.extents.y1 < r.extents.y2)
-		{
-		    if (r.extents.y2 <= workArea.y)
-			XSubtractRegion (region, &r, region);
-		}
-
-		r.extents.x1 = w->struts->bottom.x;
-		r.extents.y1 = w->struts->bottom.y;
-		r.extents.x2 = r.extents.x1 + w->struts->bottom.width;
-		r.extents.y2 = r.extents.y1 + w->struts->bottom.height;
-
-		if (r.extents.x1 < extents.x1)
-		    r.extents.x1 = extents.x1;
-		if (r.extents.x2 > extents.x2)
-		    r.extents.x2 = extents.x2;
-		if (r.extents.y1 < extents.y1)
-		    r.extents.y1 = extents.y1;
-		if (r.extents.y2 > extents.y2)
-		    r.extents.y2 = extents.y2;
-
-		if (r.extents.x1 < r.extents.x2 && r.extents.y1 < r.extents.y2)
-		{
-		    if (r.extents.y1 >= (workArea.y + workArea.height))
-			XSubtractRegion (region, &r, region);
-		}
-	    }
-	}
-    }
-
-    return region;
-}
-static void
-sendMoveResizeWindowMessage (CompWindow *w, int x, int y, int width, int height)
-{  
-    XEvent xev;
-
-    xev.xclient.type    = ClientMessage;
-    xev.xclient.display = w->screen->display->display;
-    xev.xclient.format  = 32;
-
-    xev.xclient.message_type = w->screen->display->moveResizeWindowAtom;
-    xev.xclient.window	     = w->id;
-
-    xev.xclient.data.l[0] = 0;
-    xev.xclient.data.l[1] = (w->attrib.x + x) + (w->screen->x * w->screen->width);
-    //  xev.xclient.data.l[1] = (w->serverX + x) + (w->screen->x * w->screen->width);
-    xev.xclient.data.l[2] = (w->attrib.y + y) + (w->screen->y * w->screen->height);
-    // xev.xclient.data.l[2] = (w->serverY + y) + (w->screen->y * w->screen->height);
-     
-    if(width || height)
-      {
-	xev.xclient.data.l[3] = w->attrib.width + width;
-	xev.xclient.data.l[4] = w->attrib.height + height;
-      }
-    else
-      {
-	xev.xclient.data.l[3] = 0;
-	xev.xclient.data.l[4] = 0;
-      }
-    
-    XSendEvent (w->screen->display->display,
-		w->screen->root,
-		FALSE,
-		SubstructureRedirectMask | SubstructureNotifyMask,
-		&xev);
-}
-
-
-static void
-moveHandleMotionEvent (CompScreen *s,
-		       int	  xRoot,
-		       int	  yRoot)
-{
-    MOVE_SCREEN (s);
-
-    if (ms->grabIndex)
-    {
-	CompWindow *w;
-	int	   dx, dy;
-	int	   wX, wY;
-	int	   wWidth, wHeight;
-
-	MOVE_DISPLAY (s->display);
-
-	w = md->w;
-
-	wX      = w->serverX;
-	wY      = w->serverY;
-	wWidth  = w->serverWidth  + w->serverBorderWidth * 2;
-	wHeight = w->serverHeight + w->serverBorderWidth * 2;
-
-	md->x += xRoot - lastPointerX;
-	md->y += yRoot - lastPointerY;
-
-	//return;
-	
-	if (w->type & CompWindowTypeFullscreenMask)
-	{
-	    dx = dy = 0;
-	}
-	else
-	{
-	    XRectangle workArea;
-	    int	       min, max;
-
-	    dx = md->x;
-	    dy = md->y;
-
-	    getWorkareaForOutput (s,
-				  outputDeviceForWindow (w),
-				  &workArea);
-
-	    if (md->opt[MOVE_DISPLAY_OPTION_CONSTRAIN_Y].value.b)
-	    {
-		if (!md->region)
-		    md->region = moveGetYConstrainRegion (s);
-
-		/* make sure that the top frame extents or the top row of
-		   pixels are within what is currently our valid screen
-		   region */
-		if (md->region)
-		{
-		    int x, y, width, height;
-		    int status;
-
-		    x	   = wX + dx - w->input.left;
-		    y	   = wY + dy - w->input.top;
-		    width  = wWidth + w->input.left + w->input.right;
-		    height = w->input.top ? w->input.top : 1;
-
-		    status = XRectInRegion (md->region, x, y, width, height);
-
-		    /* only constrain movement if previous position was valid */
-		    if (md->status == RectangleIn)
-		    {
-			int xStatus = status;
-
-			while (dx && xStatus != RectangleIn)
-			{
-			    xStatus = XRectInRegion (md->region,
-						     x, y - dy,
-						     width, height);
-
-			    if (xStatus != RectangleIn)
-				dx += (dx < 0) ? 1 : -1;
-
-			    x = wX + dx - w->input.left;
-			}
-
-			while (dy && status != RectangleIn)
-			{
-			    status = XRectInRegion (md->region,
-						    x, y,
-						    width, height);
-
-			    if (status != RectangleIn)
-				dy += (dy < 0) ? 1 : -1;
-
-			    y = wY + dy - w->input.top;
-			}
-		    }
-		    else
-		    {
-			md->status = status;
-		    }
-		}
-	    }
-
-	    if (md->opt[MOVE_DISPLAY_OPTION_SNAPOFF_MAXIMIZED].value.b)
-	    {
-		if (w->state & CompWindowStateMaximizedVertMask)
-		{
-		    if ((yRoot - workArea.y) - ms->snapOffY >= SNAP_OFF)
-		    {
-			if (!otherScreenGrabExist (s, "move", 0))
-			{
-			    int width = w->serverWidth;
-
-			    w->saveMask |= CWX | CWY;
-
-			    if (w->saveMask & CWWidth)
-				width = w->saveWc.width;
-
-			    w->saveWc.x = xRoot - (width >> 1);
-			    w->saveWc.y = yRoot + (w->input.top >> 1);
-
-			    md->x = md->y = 0;
-
-			    maximizeWindow (w, 0);
-
-			    ms->snapOffY = ms->snapBackY;
-
-			    return;
-			}
-		    }
-		}
-		else if (ms->origState & CompWindowStateMaximizedVertMask)
-		{
-		    if ((yRoot - workArea.y) - ms->snapBackY < SNAP_BACK)
-		    {
-			if (!otherScreenGrabExist (s, "move", 0))
-			{
-			    int wy;
-
-			    /* update server position before maximizing
-			       window again so that it is maximized on
-			       correct output */
-			    syncWindowPosition (w);
-
-			    maximizeWindow (w, ms->origState);
-
-			    wy  = workArea.y + (w->input.top >> 1);
-			    wy += w->sizeHints.height_inc >> 1;
-
-			    warpPointer (s, 0, wy - pointerY);
-
-			    return;
-			}
-		    }
-		}
-	    }
-
-	    if (w->state & CompWindowStateMaximizedVertMask)
-	    {
-		min = workArea.y + w->input.top;
-		max = workArea.y + workArea.height - w->input.bottom - wHeight;
-
-		if (wY + dy < min)
-		    dy = min - wY;
-		else if (wY + dy > max)
-		    dy = max - wY;
-	    }
-
-	    if (w->state & CompWindowStateMaximizedHorzMask)
-	    {
-		if (wX > s->width || wX + w->width < 0)
-		    return;
-
-		if (wX + wWidth < 0)
-		    return;
-
-		min = workArea.x + w->input.left;
-		max = workArea.x + workArea.width - w->input.right - wWidth;
-
-		if (wX + dx < min)
-		    dx = min - wX;
-		else if (wX + dx > max)
-		    dx = max - wX;
-	    }
-	}
-
-	if (dx || dy)
-	{
-	    moveWindow (w,
-			wX + dx - w->attrib.x,
-			wY + dy - w->attrib.y,
-			TRUE, FALSE);
-
-	    if (md->opt[MOVE_DISPLAY_OPTION_LAZY_POSITIONING].value.b)
-	    {
-		/* FIXME: This form of lazy positioning is broken and should
-		   be replaced asap. Current code exists just to avoid a
-		   major performance regression in the 0.5.2 release. */
-		w->serverX = w->attrib.x;
-		w->serverY = w->attrib.y;
-	    }
-	    else
-	    {
-		syncWindowPosition (w);
-	    }
-	    sendMoveResizeWindowMessage (w, 0, 0, 0,0);
-	    
-	    md->x -= dx;
-	    md->y -= dy;
-	}
-    }
-}
 
 static void
 moveHandleEvent (CompDisplay *d,
@@ -603,133 +268,92 @@ moveHandleEvent (CompDisplay *d,
 
     MOVE_DISPLAY (d);
 
-    switch (event->type) {
-    case ButtonPress:
-	s = findScreenAtDisplay (d, event->xbutton.root);
-	if (s)
-	{
-	    MOVE_SCREEN (s);
-
-	    if (ms->grabIndex)
-	    {
-		moveTerminate (d,
-			       &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action,
-			       0, NULL, 0);
-	    }
-	}
-	break;
-    case KeyPress:
-    case KeyRelease:
-	s = findScreenAtDisplay (d, event->xkey.root);
-	if (s)
-	{
-	    MOVE_SCREEN (s);
-
-	    if (ms->grabIndex && event->type == KeyPress)
-	    {
-		int i;
-
-		for (i = 0; i < NUM_KEYS; i++)
-		{
-		    if (event->xkey.keycode == md->key[i])
-		    {
-			XWarpPointer (d->display, None, None, 0, 0, 0, 0,
-				      mKeys[i].dx * KEY_MOVE_INC,
-				      mKeys[i].dy * KEY_MOVE_INC);
-			break;
-		    }
-		}
-	    }
-	}
-	break;
-    case MotionNotify:
-	s = findScreenAtDisplay (d, event->xmotion.root);
-	if (s)
-	    moveHandleMotionEvent (s, pointerX, pointerY);
-	break;
-    case EnterNotify:
-    case LeaveNotify:
-	s = findScreenAtDisplay (d, event->xcrossing.root);
-	if (s)
-	    moveHandleMotionEvent (s, pointerX, pointerY);
-	break;
-    case ClientMessage:
-	if (event->xclient.message_type == d->wmMoveResizeAtom)
-	{
+    switch (event->type) 
+      {
+      case ClientMessage:
+	if (event->xclient.message_type == d->eManagedAtom)
+	  { 
 	    CompWindow *w;
-
-	    if (event->xclient.data.l[2] == WmMoveResizeMove ||
-		event->xclient.data.l[2] == WmMoveResizeMoveKeyboard)
-	    {
-		w = findWindowAtDisplay (d, event->xclient.window);
-		if (w)
-		{
+	    
+	    Window win = event->xclient.data.l[0];
+	    unsigned int type = event->xclient.data.l[1];
+	    if (type != 4) break;
+	    
+	    printf("got eManaged client massage, 0x%x 0x%x, 0x%x\n", 
+		   (unsigned int) win, type, 
+		   (unsigned int) event->xclient.data.l[2]);
+	    w = findWindowAtDisplay (d, win);
+	    if (w)
+	      {
+		unsigned int state = event->xclient.data.l[2];
+		printf(" window grab 0x%x\n", state);
+		s = w->screen;
+	
+		if(state)
+		  { 
 		    CompOption o[4];
 		    int	       xRoot, yRoot;
-		    CompAction *action =
-			&md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action;
+		    CompAction *action = NULL;
+		    
+		    //  &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action;
 
 		    o[0].type    = CompOptionTypeInt;
 		    o[0].name    = "window";
-		    o[0].value.i = event->xclient.window;
+		    o[0].value.i = w->id;
 
-		    if (event->xclient.data.l[2] == WmMoveResizeMoveKeyboard)
-		    {
-			moveInitiate (d, action,
-				      CompActionStateInitKey,
-				      o, 1);
-		    }
-		    else
-		    {
-			unsigned int mods;
-			Window	     root, child;
-			int	     i;
 
-			XQueryPointer (d->display, w->screen->root,
-				       &root, &child, &xRoot, &yRoot,
-				       &i, &i, &mods);
+		    unsigned int mods;
+		    Window	     root, child;
+		    int	     i;
 
-			/* TODO: not only button 1 */
-			if (mods & Button1Mask)
-			{
-			    o[1].type	 = CompOptionTypeInt;
-			    o[1].name	 = "modifiers";
-			    o[1].value.i = mods;
+		    XQueryPointer (d->display, w->screen->root,
+				   &root, &child, &xRoot, &yRoot,
+				   &i, &i, &mods);
 
-			    o[2].type	 = CompOptionTypeInt;
-			    o[2].name	 = "x";
-			    o[2].value.i = event->xclient.data.l[0];
+		    /* TODO: not only button 1 */
+		    //if (mods & Button1Mask)
+		    // {
+		    o[1].type	 = CompOptionTypeInt;
+		    o[1].name	 = "modifiers";
+		    o[1].value.i = mods;
 
-			    o[3].type	 = CompOptionTypeInt;
-			    o[3].name	 = "y";
-			    o[3].value.i = event->xclient.data.l[1];
+		    /* o[2].type	 = CompOptionTypeInt;
+		       o[2].name	 = "x";
+		       o[2].value.i = event->xclient.data.l[0];
 
-			    moveInitiate (d,
-					  action,
-					  CompActionStateInitButton,
-					  o, 4);
-
-			    moveHandleMotionEvent (w->screen, xRoot, yRoot);
-			}
-		    }
-		}
-	    }
-	}
+		       o[3].type	 = CompOptionTypeInt;
+		       o[3].name	 = "y";
+		       o[3].value.i = event->xclient.data.l[1];
+		    */
+		    moveInitiate (d,
+				  action,
+				  CompActionStateInitButton,
+				  o, 2);
+		  }
+		else
+		  { 
+		    moveTerminate (d,
+				   NULL,
+				   0, NULL, 0);  
+		  }
+	      }
+	  }
+	
 	break;
-    case DestroyNotify:
+      case DestroyNotify:
 	if (md->w && md->w->id == event->xdestroywindow.window)
-	    moveTerminate (d,
-			   &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action,
-			   0, NULL, 0);
+	  moveTerminate (d,
+			 &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action,
+			 0, NULL, 0);
 	break;
-    case UnmapNotify:
+      case UnmapNotify:
 	if (md->w && md->w->id == event->xunmap.window)
-	    moveTerminate (d,
-			   &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action,
-			   0, NULL, 0);
-    default:
+	  moveTerminate (d,
+			 &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action,
+			 0, NULL, 0);
+      default:
 	break;
-    }
+      }
 
     UNWRAP (md, d, handleEvent);
     (*d->handleEvent) (d, event);

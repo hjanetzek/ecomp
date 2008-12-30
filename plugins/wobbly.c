@@ -2154,9 +2154,9 @@ wobblyHandleEvent (CompDisplay *d,
     (*d->handleEvent) (d, event);
     WRAP (wd, d, handleEvent, wobblyHandleEvent);
 
-    switch (event->type) {
+    /* switch (event->type) {
     case MotionNotify:
-	s = findScreenAtDisplay (d, event->xmotion.root);
+    s = findScreenAtDisplay (d, event->xmotion.root);
 	if (s)
 	{
 	    WOBBLY_SCREEN (s);
@@ -2193,10 +2193,11 @@ wobblyHandleEvent (CompDisplay *d,
 		    }
 		}
 	    }
-	}
+	    }
     default:
 	break;
     }
+    */
 
     if (d->activeWindow != activeWindow)
     {
