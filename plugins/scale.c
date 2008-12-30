@@ -1160,7 +1160,7 @@ scaleTerminate (CompDisplay     *d,
 				}
 			      moveScreenViewport (s, (s->x - x), (s->y - y), TRUE);
 			      /*XXX temporary? */
-			      //sendScreenViewportMessage(s);
+			      sendScreenViewportMessage(s);
 			    }
 			}
 			
