@@ -1668,7 +1668,8 @@ resizeWindow (CompWindow *w,
     	int dx, dy;
     	dx = x - w->attrib.x;
     	dy = y - w->attrib.y;
-    	moveWindow (w, dx, dy, TRUE, TRUE);
+    	moveWindow (w, dx, dy, TRUE, !w->grabbed); /*XXX !w->grabbed
+						     -> was TRUE*/
        }
     
     return TRUE;
@@ -1685,7 +1686,7 @@ configureWindow (CompWindow	 *w,
     {
       w->attrib.override_redirect = FALSE;
       }*/
-  if(!w->clientId)
+  if(!w->clientId) /* XXX */
     w->attrib.override_redirect = ce->override_redirect;
   
   w->serverX		 = ce->x;
@@ -1696,7 +1697,9 @@ configureWindow (CompWindow	 *w,
 
   resizeWindow (w, ce->x, ce->y, ce->width, ce->height,
 		ce->border_width);
-  
+  //if(w->grabbed)
+  //  (*w->screen->windowMoveNotify) (w, dx, dy, immediate);
+
   if (restackWindow (w, ce->above))
     {
       addWindowDamage (w);

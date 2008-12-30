@@ -2420,7 +2420,6 @@ wobblyWindowMoveNotify (CompWindow *w,
 	    if (ww->state & MAXIMIZE_STATE)
 	    {
 		int i;
-
 		for (i = 0; i < ww->model->numObjects; i++)
 		{
 		    if (ww->model->objects[i].immobile)
@@ -2442,7 +2441,11 @@ wobblyWindowMoveNotify (CompWindow *w,
 	    damagePendingOnScreen (w->screen);
 	}
 	else
-	    modelMove (ww->model, dx, dy);
+	  { 
+	    modelMove (ww->model, dx, dy);	    
+	  }
+	
+
     }
 
     UNWRAP (ws, w->screen, windowMoveNotify);

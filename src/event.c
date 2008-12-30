@@ -1364,6 +1364,7 @@ handleEvent (CompDisplay *d,
 	/* state:   1 */
 	/* desktop: 2 */
 	/* restart: 3 */
+	/* grab:    4 */
 	if (type == 3) /* RESTART */
 	  { 
 	    unsigned int restart = event->xclient.data.l[2];
@@ -1451,12 +1452,30 @@ handleEvent (CompDisplay *d,
 
 		break;
 	      }
-	    /*else if(type == 4) // WINDOW POSITION
+	    else if(type == 4) // WINDOW GRAB
 	      {
-		printf("set window position\n");
+		unsigned int state = event->xclient.data.l[2];
+		printf(" window grab 0x%x\n", state);
 		s = w->screen;
+		int mods = 0;
+		int x =  w->attrib.x + (w->width / 2);
+		int y = w->attrib.y + (w->height / 2);
+		if (state)
+		  { 
+		    (s->windowGrabNotify) (w, x, y, mods,
+					   CompWindowGrabMoveMask |
+					   CompWindowGrabButtonMask);
+		    w->opacity = (50 * OPAQUE) / 100;
+		  }
+		
+		else
+		  { 
+		    (s->windowUngrabNotify) (w);		    
+		    w->opacity = OPAQUE;
+		    
+		  }
 	      }
-	    */
+	   
 	  }
       }
     else if (event->xclient.message_type == d->winActiveAtom)

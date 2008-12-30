@@ -1477,7 +1477,7 @@ addDisplay (char *name)
     d->winStateDisplayModalAtom	    =
 	XInternAtom (dpy, "_NET_WM_STATE_DISPLAY_MODAL", 0);
 
-    d->winActionMoveAtom	  = XInternAtom (dpy, "_NET_WM_ACTION_MOVE", 0);
+    /*d->winActionMoveAtom	  = XInternAtom (dpy, "_NET_WM_ACTION_MOVE", 0);
     d->winActionResizeAtom	  =
 	XInternAtom (dpy, "_NET_WM_ACTION_RESIZE", 0);
     d->winActionStickAtom	  =
@@ -1500,12 +1500,12 @@ addDisplay (char *name)
 	XInternAtom (dpy, "_NET_WM_ACTION_ABOVE", 0);
     d->winActionBelowAtom	  =
 	XInternAtom (dpy, "_NET_WM_ACTION_BELOW", 0);
-
+    
     d->wmAllowedActionsAtom = XInternAtom (dpy, "_NET_WM_ALLOWED_ACTIONS", 0);
-
+    
     d->wmStrutAtom	  = XInternAtom (dpy, "_NET_WM_STRUT", 0);
     d->wmStrutPartialAtom = XInternAtom (dpy, "_NET_WM_STRUT_PARTIAL", 0);
-
+    */
     d->wmUserTimeAtom = XInternAtom (dpy, "_NET_WM_USER_TIME", 0);
 
     d->wmIconAtom = XInternAtom (dpy,"_NET_WM_ICON", 0);
