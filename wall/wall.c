@@ -602,100 +602,98 @@ static void
 wallHandleEvent (CompDisplay *d,
 		 XEvent      *event)
 {
-    WALL_DISPLAY (d);
+  WALL_DISPLAY (d);
 
-    switch (event->type)
+  switch (event->type)
     {
     case ClientMessage:
       /*if (event->xclient.message_type == d->winActiveAtom)
 	{
-	    CompWindow *w;
+	CompWindow *w;
 
-	    w = findWindowAtDisplay (d, event->xclient.window);
-	    if (w)
-    	    {
-	      int dx, dy;
+	w = findWindowAtDisplay (d, event->xclient.window);
+	if (w)
+	{
+	int dx, dy;
 
-	      if (otherScreenGrabExist (w->screen, "switcher", "scale", 0))
-		break;
+	if (otherScreenGrabExist (w->screen, "switcher", "scale", 0))
+	break;
 
-	      defaultViewportForWindow (w, &dx, &dy);
-	      dx -= w->screen->x;
-	      dy -= w->screen->y;
+	defaultViewportForWindow (w, &dx, &dy);
+	dx -= w->screen->x;
+	dy -= w->screen->y;
 	
-		if (dx || dy)
-		    wallMoveViewport (w->screen, -dx, -dy, None);
-	    }
+	if (dx || dy)
+	wallMoveViewport (w->screen, -dx, -dy, None);
+	}
 	}
 	else*/ 
-	if (event->xclient.message_type == d->desktopViewportAtom)
+      if (event->xclient.message_type == d->desktopViewportAtom)
 	{
 	  int        dx, dy, toX, toY;
-	    int amountX = 0, amountY = 0;
-	    CompScreen *s;
-	    Window win;
-	    CompWindow *w;
+	  int amountX = 0, amountY = 0;
+	  CompScreen *s;
+	  Window win;
+	  CompWindow *w;
 	    
-	    if (event->xclient.data.l[0]) break;
+	  if (event->xclient.data.l[0]) break;
 
-	    printf ("wall got desktopViewportAtom\n");
+	  s = findScreenAtDisplay (d, event->xclient.window);
+	  if (!s)
+	    break;
 
-    	    s = findScreenAtDisplay (d, event->xclient.window);
-	    if (!s)
-		break;
+	  if (otherScreenGrabExist (s, "switcher", "scale", 0))
+	    break;
+	  printf ("wall: desktopViewportAtom %d:%d\n", 
+		  (event->xclient.data.l[1] / s->width),
+		  (event->xclient.data.l[2] / s->height));
 
-	    if (otherScreenGrabExist (s, "switcher", "scale", 0))
-		break;
-	    printf ("wall: desktopViewportAtom %d:%d\n", 
-		    (event->xclient.data.l[1] / s->width),
-		    (event->xclient.data.l[2] / s->height));
+	  toX = event->xclient.data.l[1] / s->width;
+	  dx = toX - s->x;
 
-	    toX = event->xclient.data.l[1] / s->width;
-	    dx = toX - s->x;
+	  toY = event->xclient.data.l[2] / s->height;
+	  dy = toY - s->y;
 
-	    toY = event->xclient.data.l[2] / s->height;
-	    dy = toY - s->y;
-
-	    if (!dx && !dy)
-		break;
-	    /*
+	  if (!dx && !dy)
+	    break;
+	  /*
 	    if ((toX == 0) && (s->x == s->hsize - 1)) dx = 1;
 	    if ((toX == s->hsize - 1) && (s->x == 0)) dx = -1;
 	    if ((toY == 0) && (s->y == s->vsize - 1)) dy = 1;
 	    if ((toY == s->vsize - 1) && (s->y == 0)) dy = -1;
-	    */
-	    wallCheckAmount(s, dx, dy, &amountX, &amountY);
+	  */
+	  wallCheckAmount(s, dx, dy, &amountX, &amountY);
 	    
 
-	    win = event->xclient.data.l[3];		
-	    unsigned int moveType = event->xclient.data.l[4];
+	  win = event->xclient.data.l[3];		
+	  unsigned int moveType = event->xclient.data.l[4];
 	    
-	    if(moveType == 0)
-	      { 		
-		wallMoveViewport (s, amountX, amountY, None);		
-	      }
-	    else if(moveType == 1)
-	      { 
-		printf ("move with window\n");
-		w = findWindowAtScreen(s, win);
-		if(w)
-		  { 
-		    moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
-		  }
-		wallMoveViewport (s, amountX, amountY, win);		
+	  if(moveType == 0)
+	    { 		
+	      wallMoveViewport (s, amountX, amountY, None);		
+	    }
+	  else if(moveType == 1)
+	    { 
+	      printf ("move with window\n");
+	      w = findWindowAtScreen(s, win);
+	      if(w)
+		{ 
+		  moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
 		}
-	    else if(moveType == 2)
-	      { 
-		printf ("move window by\n");
-		wallMoveViewport (s, amountX, amountY, win);		
-	      }
+	      wallMoveViewport (s, amountX, amountY, win);		
+	    }
+	  else if(moveType == 2)
+	    { 
+	      printf ("move window by\n");
+	      wallMoveViewport (s, amountX, amountY, win);		
+	    }
 	}
-	break;
+      break;
     }
 
-    UNWRAP (wd, d, handleEvent);
-    (*d->handleEvent) (d, event);
-    WRAP (wd, d, handleEvent, wallHandleEvent);
+  UNWRAP (wd, d, handleEvent);
+  (*d->handleEvent) (d, event);
+  WRAP (wd, d, handleEvent, wallHandleEvent);
 }
 
 
@@ -1202,62 +1200,101 @@ wallPaintTransformedOutput (CompScreen              *s,
 
     if (ws->moving)
     {
-	ScreenPaintAttrib sA = *sAttrib;
-	int               origx = s->x;
-	int               origy = s->y;
-	float             px, py;
-	int               tx, ty;
+      ScreenPaintAttrib sA = *sAttrib;
+      int               origx = s->x;
+      int               origy = s->y;
+      float             px, py;
+      int               tx, ty;
+      CompWindow *w;
+	
+      clearTargetOutput (s->display, GL_COLOR_BUFFER_BIT);
 
-	clearTargetOutput (s->display, GL_COLOR_BUFFER_BIT);
+      if(!wallGetMoveBackground(s->display))
+	{ 
+	  px = ws->curPosX - (float)origx;
+	  py = ws->curPosY - (float)origy;
 
-	px = ws->curPosX;
-	py = ws->curPosY;
+	  for (w = s->windows; w; w = w->next)
+	    if (w->clientId && !(w->state & CompWindowStateStickyMask))
+	      moveWindow(w, 
+			 - (px * (float)s->width), 
+			 - (py * (float)s->height), 
+			 FALSE, FALSE);
 
-	if (floor (py) != ceil (py))
-	{
-	    ty = ceil (py) - s->y;
-	    sA.yTranslate = fmod (py, 1) - 1;
-	    if (floor (px) != ceil (px))
+	  (*s->paintTransformedOutput) (s, sAttrib, &sTransform,
+					region, output, mask);
+	  for (w = s->windows; w; w = w->next)
+	    if (w->clientId && !(w->state & CompWindowStateStickyMask))
+	      moveWindow(w, 
+			 (px * (float)s->width), 
+			 (py * (float)s->height), 
+			 FALSE, FALSE);
+	}
+      else
+	{ 
+	  px = ws->curPosX;
+	  py = ws->curPosY;
+	  // viewport moves vertically 
+	  if (floor (py) != ceil (py))
 	    {
-		tx = ceil (px) - s->x;
-		moveScreenViewport (s, -tx, -ty, FALSE);
-		sA.xTranslate = 1 - fmod (px,1);
-		(*s->paintTransformedOutput) (s, &sA, &sTransform,
-					      &output->region, output, mask);
-		moveScreenViewport (s, tx, ty, FALSE);
+	      ty = ceil (py) - s->y;
+	      sA.yTranslate = fmod (py, 1) - 1;
+	      if (floor (px) != ceil (px))
+		{
+		  tx = ceil (px) - s->x;
+		  moveScreenViewport (s, -tx, -ty, FALSE);
+		  sA.xTranslate = 1 - fmod (px,1);
+
+		  (*s->paintTransformedOutput) (s, &sA, &sTransform,
+						&output->region, output, mask);
+		  moveScreenViewport (s, tx, ty, FALSE);
+		}
+	      tx = floor (px) - s->x;
+	      moveScreenViewport (s, -tx, -ty, FALSE);
+	      sA.xTranslate = -fmod (px,1);
+
+	      (*s->paintTransformedOutput) (s, &sA, &sTransform,
+					    &output->region, output, mask);
+	    
+	      moveScreenViewport (s, tx, ty, FALSE);
 	    }
-	    tx = floor (px) - s->x;
-	    moveScreenViewport (s, -tx, -ty, FALSE);
-	    sA.xTranslate = -fmod (px,1);
-	    (*s->paintTransformedOutput) (s, &sA, &sTransform,
-					  &output->region, output, mask);
-	    moveScreenViewport (s, tx, ty, FALSE);
-	}
 
-	ty = floor (py) - s->y;
-	sA.yTranslate = fmod (py,1);
-	if (floor (px) != ceil (px))
-	{
-	    tx = ceil (px) - s->x;
-	    moveScreenViewport (s, -tx, -ty, FALSE);
-	    sA.xTranslate = 1 - fmod (px,1);
-	    (*s->paintTransformedOutput) (s, &sA, &sTransform,
-					  &output->region, output, mask);
-	    moveScreenViewport (s, tx, ty, FALSE);
-	}
-	tx = floor (px) - s->x;
-	moveScreenViewport (s, - tx, -ty, FALSE);
-	sA.xTranslate = -fmod (px,1);
-	(*s->paintTransformedOutput) (s, &sA, &sTransform,
-				      &output->region, output, mask);
-	moveScreenViewport (s, tx, ty, FALSE);
+	  ty = floor (py) - s->y;
+	  sA.yTranslate = fmod (py,1);
 
-	while (s->x != origx)
+	  // viewport moves horizontally
+	  if (floor (px) != ceil (px))
+	    {
+	  
+	  
+	      tx = ceil (px) - s->x;
+	      moveScreenViewport (s, -tx, -ty, FALSE);
+	      sA.xTranslate = 1 - fmod (px,1);
+
+	      (*s->paintTransformedOutput) (s, &sA, &sTransform,
+					    &output->region, output, mask);
+	      moveScreenViewport (s, tx, ty, FALSE);
+
+	  
+	    }
+	  tx = floor (px) - s->x;
+	  moveScreenViewport (s, - tx, -ty, FALSE);
+	  sA.xTranslate = -fmod (px,1);
+
+	  (*s->paintTransformedOutput) (s, &sA, &sTransform,
+					&output->region, output, mask);
+
+	  moveScreenViewport (s, tx, ty, FALSE);
+
+	
+
+	  while (s->x != origx)
 	    moveScreenViewport (s, -1, 0, FALSE);
-	while (s->y != origy)
+	  while (s->y != origy)
 	    moveScreenViewport (s, 0, 1, FALSE);
+	}
     }
-
+    
     WRAP (ws, s, paintTransformedOutput, wallPaintTransformedOutput);
 }
 

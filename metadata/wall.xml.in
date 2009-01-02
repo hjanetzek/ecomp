@@ -166,6 +166,11 @@
 					<_long>Allow wrap-around when moving the wall up/down/left/right</_long>
 					<default>false</default>
 				</option>
+				<option name="move_background" type="bool">
+					<_short>Move Background and Popup Windows</_short>
+					<_long>Move Desktop Background and not Managed ('Override Redirect') Windows </_long>
+					<default>false</default>
+				</option>
 				<option name="slide_duration" type="float">
 					<_short>Wall Sliding Duration</_short>
 					<_long>Duration (in s) for wall sliding viewport switching animation</_long>
