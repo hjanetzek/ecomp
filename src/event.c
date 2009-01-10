@@ -1507,12 +1507,19 @@ handleEvent (CompDisplay *d,
 	if (s)
 	  {
 	    int v, h;
+	    CompOptionValue value;
 
 	    h = event->xclient.data.l[0] / s->width;
 	    v = event->xclient.data.l[1] / s->height;
 
 	    s->vsize = v;
 	    s->hsize = h;
+
+	    value.i = v;
+	    s->setScreenOption(s, "vsize", &value);
+   
+	    value.i = h;
+	    s->setScreenOption(s,"hsize", &value);
 	  }
       }
     break;
