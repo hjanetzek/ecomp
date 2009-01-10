@@ -1,0 +1,15 @@
+Source: ecsm
+Section: python
+Priority: extra
+Maintainer: quaker <quaker66@gmail.com>
+Build-Depends: cdbs, debhelper (>= 6), python-all-dev (>= 2.4), python-support (>= 0.7), python-setuptools, ecomorph-core, python-ecompconfig, libecompconfig0
+Standards-Version: 3.7.3
+Homepage: http://enlightenment.org
+
+Package: ecsm
+Architecture: any
+XB-Python-Version: ${python:Versions}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, ecomorph-core, python-ecompconfig
+Provides: ${python:Provides}
+Description: A compiz port for E17
+ This package provides an EcompConfig settings manager.
