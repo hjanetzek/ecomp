@@ -3,6 +3,9 @@
 	<_short>Wobbly Windows</_short>
 	<_long>Use spring model for wobbly window effect</_long>
 	<deps>
+	    <requirement>
+		<plugin>move</plugin>
+	    </requirement>
 	    <relation type="before">
 		<plugin>fade</plugin>
 		<plugin>cube</plugin>
