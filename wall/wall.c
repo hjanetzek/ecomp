@@ -1215,20 +1215,35 @@ wallPaintTransformedOutput (CompScreen              *s,
 	  py = ws->curPosY - (float)origy;
 
 	  for (w = s->windows; w; w = w->next)
-	    if (w->clientId && !(w->state & CompWindowStateStickyMask))
-	      moveWindow(w, 
-			 - (px * (float)s->width), 
-			 - (py * (float)s->height), 
-			 FALSE, FALSE);
-
+	    { 
+	    if (w->clientId &&
+		(!(w->state & CompWindowStateStickyMask)) &&
+		/* dont move windows that are grabbed, i.e. while it is
+		 dragged to another desk */
+		(w->id != ws->moveWindow || !w->grabbed))
+	      { 
+		moveWindow(w, 
+			   - (px * (float)s->width), 
+			   - (py * (float)s->height), 
+			   FALSE, FALSE);
+	      }
+	    }
+	  
 	  (*s->paintTransformedOutput) (s, sAttrib, &sTransform,
 					region, output, mask);
+
 	  for (w = s->windows; w; w = w->next)
-	    if (w->clientId && !(w->state & CompWindowStateStickyMask))
-	      moveWindow(w, 
-			 (px * (float)s->width), 
-			 (py * (float)s->height), 
-			 FALSE, FALSE);
+	    { 
+	      if (w->clientId &&
+		  (!(w->state & CompWindowStateStickyMask)) &&
+		  (w->id != ws->moveWindow || !w->grabbed))
+		{ 
+		  moveWindow(w, 
+			     (px * (float)s->width), 
+			     (py * (float)s->height), 
+			     FALSE, FALSE);
+		}
+	    }
 	}
       else
 	{ 
