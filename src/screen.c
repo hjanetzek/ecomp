@@ -818,7 +818,9 @@ setSupportingWmCheck (CompScreen *s)
     /*XChangeProperty (d->display, s->grabWindow, d->wmNameAtom,
 		     d->utf8StringAtom, 8, PropModeReplace,
 		     (unsigned char *) PACKAGE, strlen (PACKAGE));*/
-    XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
+ 
+    /*
+   XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
 		     XA_ATOM, 32, PropModeReplace,
 		     (unsigned char *) &d->winStateSkipTaskbarAtom, 1);
     XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
@@ -827,6 +829,7 @@ setSupportingWmCheck (CompScreen *s)
     XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
 		     XA_ATOM, 32, PropModeAppend,
 		     (unsigned char *) &d->winStateHiddenAtom, 1);
+    */
     /*
     XChangeProperty (d->display, s->root, d->supportingWmCheckAtom,
 		     XA_WINDOW, 32, PropModeReplace,
@@ -1186,8 +1189,8 @@ addScreen (CompDisplay *display,
     s->y     = 0;
     
     /* get this info from e */
-    s->hsize = 1; //s->opt[COMP_SCREEN_OPTION_HSIZE].value.i;
-    s->vsize = 1; //s->opt[COMP_SCREEN_OPTION_VSIZE].value.i;
+    s->hsize = 1; 
+    s->vsize = 1; 
 
     s->nDesktop	      = 1;
     s->currentDesktop = 0;
@@ -1220,19 +1223,6 @@ addScreen (CompDisplay *display,
     s->activeNum = 1;
 
     s->groups = NULL;
-
-    //s->snContext = NULL; 
-    //sn_monitor_context_new (display->snDisplay,
-    //					   screenNum,
-    //					   compScreenSnEvent, s,
-    //					   NULL);
-
-    //s->startupSequences		    = NULL;
-    //s->startupSequenceTimeoutHandle = 0;
-
-    //s->wmSnSelectionWindow = wmSnSelectionWindow;
-    //s->wmSnAtom		   = wmSnAtom;
-    //s->wmSnTimestamp	   = wmSnTimestamp;
 
     s->damageMask  = COMP_SCREEN_DAMAGE_ALL_MASK;
     s->next	   = 0;
