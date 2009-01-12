@@ -1080,6 +1080,11 @@ fxMagicLampModelStep (CompScreen * s,
 		      CompWindow * w,
 		      float time);
 
+void
+fxMagicLampUpdateWindowAttrib (AnimScreen *as,
+			       CompWindow * w,
+			       WindowPaintAttrib *wAttrib);
+
 /* options.c */
 
 void

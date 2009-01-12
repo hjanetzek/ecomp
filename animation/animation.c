@@ -888,7 +888,7 @@ AnimEffectProperties animEffectProperties[AnimEffectNum] = {
      fxLeafSpread3DInit, 0, polygonsStoreClips, polygonsDrawCustomGeometry, 0,
      polygonsLinearAnimStepPolygon, 0, 0, 0, polygonsUpdateBB},
     // AnimEffectMagicLamp
-    {0, 0, 0, fxMagicLampModelStep, fxMagicLampInit, fxMagicLampInitGrid,
+    {fxMagicLampUpdateWindowAttrib, 0, 0, fxMagicLampModelStep, fxMagicLampInit, fxMagicLampInitGrid,
      0, 0, 0, 0, 0, 0, 0, modelUpdateBB},
     // AnimEffectRazr3D
     {0, polygonsPrePaintWindow, polygonsPostPaintWindow, polygonsAnimStep,

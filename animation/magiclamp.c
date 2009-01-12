@@ -132,7 +132,22 @@ void fxMagicLampInit(CompScreen * s, CompWindow * w)
     }
     else
 	model->magicLampWaveCount = 0;
+
+    aw->storedOpacity = w->paint.opacity;
 }
+
+void
+fxMagicLampUpdateWindowAttrib(AnimScreen * as,
+			 CompWindow * w,
+			 WindowPaintAttrib * wAttrib)
+{
+  ANIM_WINDOW(w);
+
+  float forwardProgress = defaultAnimProgress(aw);
+
+  wAttrib->opacity = (GLushort) (aw->storedOpacity * (1 - forwardProgress));
+}
+
 
 static void
 fxMagicLampModelStepObject(CompWindow * w,
