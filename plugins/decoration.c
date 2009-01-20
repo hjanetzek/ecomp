@@ -175,9 +175,9 @@ decorDrawWindow (CompWindow	      *w,
     status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
     WRAP (ds, w->screen, drawWindow, decorDrawWindow);
 
-    if ((mask & PAINT_WINDOW_TRANSFORMED_MASK) ||
+    if (w->mapNum && ((mask & PAINT_WINDOW_TRANSFORMED_MASK) ||
 	!((w->state & (MAXIMIZE_STATE | CompWindowStateFullscreenMask)) ||
-	  (w->type & CompWindowTypeDesktopMask)))
+	  (w->type & CompWindowTypeDesktopMask))))
       {
 	
 	if (mask & PAINT_WINDOW_TRANSFORMED_MASK)
@@ -663,13 +663,13 @@ updateWindowDecorationScale (CompWindow *w)
     setDecorationMatrices (w);
 }
 
-static Bool
+/*static Bool
 decorCheckSize (CompWindow *w,
 		Decoration *decor)
 {
     return (decor->minWidth <= w->width && decor->minHeight <= w->height);
 }
-
+*/
 static int
 decorWindowShiftX (CompWindow *w)
 {
@@ -711,12 +711,12 @@ decorWindowUpdate (CompWindow *w,
     WindowDecoration *wd;
     Decoration	     *old, *decor = NULL;
     Bool	     decorate = FALSE;
-    CompMatch	     *match;
+    //CompMatch	     *match;
     int		     moveDx, moveDy;
     int		     oldShiftX = 0;
     int		     oldShiftY  = 0;
 
-    DECOR_DISPLAY (w->screen->display);
+    //DECOR_DISPLAY (w->screen->display);
     DECOR_SCREEN (w->screen);
     DECOR_WINDOW (w);
 
@@ -728,8 +728,8 @@ decorWindowUpdate (CompWindow *w,
     case CompWindowTypeModalDialogMask:
     case CompWindowTypeUtilMask:
     case CompWindowTypeNormalMask:
-	if (w->mwmDecor & (MwmDecorAll | MwmDecorTitle))
-	    decorate = TRUE;
+      if (w->mwmDecor & (MwmDecorAll | MwmDecorTitle))
+	decorate = TRUE;
     default:
 	break;
     }
@@ -985,7 +985,7 @@ decorHandleEvent (CompDisplay *d,
 
 			for (w = s->windows; w; w = w->next)
 			{
-			    if (w->shaded || w->mapNum)
+			  if (/*w->shaded ||*/ w->mapNum)
 			    {
 				dw = GET_DECOR_WINDOW (w, ds);
 
@@ -1020,6 +1020,8 @@ decorHandleEvent (CompDisplay *d,
     case PropertyNotify:
 	if (event->xproperty.atom == dd->winDecorAtom)
 	{
+	  printf ("winDecorAtom 0x%x\n", (unsigned int) event->xproperty.window);
+	  
 	    w = findWindowAtDisplay (d, event->xproperty.window);
 	    if (w)
 	    {
@@ -1299,7 +1301,7 @@ decorWindowAddNotify (CompWindow *w)
 {
     DECOR_SCREEN (w->screen);
 
-    if (w->shaded || w->attrib.map_state == IsViewable)
+    if (/*w->shaded ||*/ w->attrib.map_state == IsViewable)
 	decorWindowUpdate (w, TRUE);
 
     UNWRAP (ds, w->screen, windowAddNotify);
@@ -1467,7 +1469,7 @@ decorInitWindow (CompPlugin *p,
     if (!w->attrib.override_redirect)
 	decorWindowUpdateDecoration (w);
 
-    if (w->added && (w->shaded || w->attrib.map_state == IsViewable))
+    if (w->added && (/*w->shaded ||*/ w->attrib.map_state == IsViewable))
 	decorWindowUpdate (w, TRUE);
 
     return TRUE;

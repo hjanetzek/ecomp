@@ -193,7 +193,7 @@ paintOutputRegion (CompScreen	       *screen,
 	if (w->destroyed)
 	    continue;
 
-	if (!w->shaded)
+	//if (!w->shaded)
 	{
 	    if (w->attrib.map_state != IsViewable || !w->damaged)
 		continue;
@@ -233,7 +233,7 @@ paintOutputRegion (CompScreen	       *screen,
 	if (w == fullscreenWindow)
 	    continue;
 
-	if (!w->shaded)
+	//if (!w->shaded)
 	{
 	    if (w->attrib.map_state != IsViewable || !w->damaged)
 		continue;
@@ -1045,9 +1045,9 @@ paintWindow (CompWindow		     *w,
 	if (mask & PAINT_WINDOW_TRANSLUCENT_MASK)
 	    return FALSE;
 
-	if (w->shaded)
+	/*if (w->shaded)
 	    return FALSE;
-
+	*/
 	return TRUE;
     }
 
