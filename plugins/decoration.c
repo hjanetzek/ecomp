@@ -175,9 +175,9 @@ decorDrawWindow (CompWindow	      *w,
     status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
     WRAP (ds, w->screen, drawWindow, decorDrawWindow);
 
-    if (w->mapNum && ((mask & PAINT_WINDOW_TRANSFORMED_MASK) ||
+    if ((mask & PAINT_WINDOW_TRANSFORMED_MASK) ||
 	!((w->state & (MAXIMIZE_STATE | CompWindowStateFullscreenMask)) ||
-	  (w->type & CompWindowTypeDesktopMask))))
+	  (w->type & CompWindowTypeDesktopMask)))
       {
 	
 	if (mask & PAINT_WINDOW_TRANSFORMED_MASK)
