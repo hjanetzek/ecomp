@@ -210,23 +210,25 @@ static Bool
 isShiftWin (CompWindow *w)
 {
     SHIFT_SCREEN (w->screen);
+    
+    if (!w->clientId) return FALSE;
+    
+    if (w->state & CompWindowStateSkipTaskbarMask)
+      return FALSE;
 
-    if (w->attrib.override_redirect)
-	return FALSE;
-
-    if (w->wmType & (CompWindowTypeDockMask | CompWindowTypeDesktopMask))
-	return FALSE;
-
-    if (!w->mapNum || w->attrib.map_state != IsViewable)
-    {
+    if (!w->mapNum ||
+	w->state & CompWindowStateHiddenMask ||
+	w->state & CompWindowStateShadedMask)
+      {
 	if (shiftGetMinimized (w->screen))
-	{
-	    if (!w->minimized && !w->inShowDesktopMode && !w->shaded)
-		return FALSE;
-	}
+	  {
+	    return TRUE;
+	  }
 	else
-    	    return FALSE;
-    }
+	  {
+	    return FALSE;
+	  }
+      }
 
     if (ss->type == ShiftTypeNormal)
     {
@@ -244,12 +246,6 @@ isShiftWin (CompWindow *w)
 		return FALSE;
 	}
     }
-
-    if (w->state & CompWindowStateSkipTaskbarMask)
-	return FALSE;
-
-    if (w->state & CompWindowStateShadedMask)
-	return FALSE;
 
     if (!matchEval (ss->currentMatch, w))
 	return FALSE;

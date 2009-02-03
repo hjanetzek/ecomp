@@ -160,28 +160,24 @@ isRingWin (CompWindow *w)
     RING_SCREEN (w->screen);
     
     if (!w->clientId) return FALSE;
-    
-    /*
-    if (w->attrib.override_redirect)
-	return FALSE;
-    */
-    /*
-    if (w->wmType & (CompWindowTypeDockMask | CompWindowTypeDesktopMask))
-	return FALSE;
-    */
-    if (!w->mapNum) //  || w->attrib.map_state != IsViewable)
-    {
-	if (ringGetMinimized (w->screen))
-	{
-	  //if (!w->minimized && !w->inShowDesktopMode && !w->shaded)
-	  //	return FALSE;
-	  ;
-	  
-	}
-	else
-    	    return FALSE;
-    }
 
+    if (w->state & CompWindowStateSkipTaskbarMask)
+      return FALSE;
+    
+    if (!w->mapNum ||
+	w->state & CompWindowStateHiddenMask ||
+	w->state & CompWindowStateShadedMask)
+      {
+	if (ringGetMinimized (w->screen))
+	  {
+	    return TRUE;
+	  }
+	else
+	  {
+	    return FALSE;
+	  }
+      }
+    
     if (rs->type == RingTypeNormal)
     {
 	if (!w->mapNum || w->attrib.map_state != IsViewable)
@@ -198,12 +194,6 @@ isRingWin (CompWindow *w)
 		return FALSE;
 	}
     }
-
-    if (w->state & CompWindowStateSkipTaskbarMask)
-	return FALSE;
-    
-    if (w->state & CompWindowStateShadedMask)
-	return FALSE;
     
     if (!matchEval (rs->currentMatch, w))
 	return FALSE;
