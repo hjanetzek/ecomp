@@ -25,9 +25,6 @@ libminimize_la_SOURCES = minimize.c
 libmove_la_LDFLAGS = -module -avoid-version -no-undefined
 libmove_la_SOURCES = move.c
 
-# libresize_la_LDFLAGS = -module -avoid-version -no-undefined
-# libresize_la_SOURCES = resize.c
-
 libdecoration_la_DEPENDENCIES = $(top_builddir)/libdecoration/libdecoration.la
 libdecoration_la_LDFLAGS = -module -avoid-version -no-undefined
 libdecoration_la_LIBADD = $(top_builddir)/libdecoration/libdecoration.la
@@ -38,9 +35,6 @@ libswitcher_la_SOURCES = switcher.c
 
 libwater_la_LDFLAGS = -module -avoid-version -no-undefined
 libwater_la_SOURCES = water.c
-
-# libscreenshot_la_LDFLAGS = -module -avoid-version -no-undefined
-# libscreenshot_la_SOURCES = screenshot.c
 
 libplane_la_LDFLAGS = -module -avoid-version -no-undefined
 libplane_la_SOURCES = plane.c
@@ -65,8 +59,8 @@ libvideo_la_LDFLAGS = -module -avoid-version -no-undefined
 libvideo_la_LIBADD = $(top_builddir)/libdecoration/libdecoration.la
 libvideo_la_SOURCES = video.c
 
-# libini_la_LDFLAGS = -module -avoid-version -no-undefined
-# libini_la_SOURCES = ini.c
+libini_la_LDFLAGS = -module -avoid-version -no-undefined
+libini_la_SOURCES = ini.c
 
 if USE_LIBRSVG
 libsvg_la_DEPENDENCIES = $(top_builddir)/libdecoration/libdecoration.la
@@ -140,5 +134,6 @@ module_LTLIBRARIES =		\
 	libpng.la		\
 	libmove.la		\
 	libwobbly.la		\
+	libini.la		\
 	libzoom.la
 
