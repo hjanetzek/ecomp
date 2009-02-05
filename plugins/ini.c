@@ -377,17 +377,17 @@ iniParseLine (char *line, char **optionName, char **optionValue)
     if (*optionName)
     {
        strncpy (*optionName, line, length);
-       *optionName[length] = 0;
+       (*optionName)[length] = 0;
     }
     splitPos++;
     optionLength = strlen (splitPos);
     if (splitPos[optionLength-1] == '\n')
 	optionLength--;
-    *optionValue = malloc (sizeof (char) * (optionLength +1));
+    *optionValue = malloc (sizeof (char) * (optionLength + 1));
     if (*optionValue)
     {
       strncpy (*optionValue, splitPos, optionLength);
-      *optionValue[optionLength] = 0;
+      (*optionValue)[optionLength] = 0;
     }
     return TRUE;
 }
@@ -414,8 +414,6 @@ csvToList (char *csv, CompListValue *list, CompOptionType type)
 
     splitStart = csv;
     list->value = malloc (sizeof (CompOptionValue) * count);
-    list->nValue = count;
-
     if (list->value)
     {
 	for (i = 0; i < count; i++)
@@ -437,26 +435,23 @@ csvToList (char *csv, CompListValue *list, CompOptionType type)
 		item = strdup (splitStart);
 	    }
 
-	    if (!item) {
-	        compLogMessage (NULL, "ini", CompLogLevelError,
-			      "Not enough memory");
-	        list->nValue = 0;
-	        return FALSE;
-	    }
-
 	    switch (type)
 	    {
 		case CompOptionTypeString:
-		    list->value[i].s = strdup (item);
+		    if (item[0] != '\0')
+			list->value[i].s = strdup (item);
 		    break;
 		case CompOptionTypeBool:
-		    list->value[i].b = item[0] ? (Bool) atoi (item) : FALSE;
+		    if (item[0] != '\0')
+			list->value[i].b = (Bool) atoi (item);
 		    break;
 		case CompOptionTypeInt:
-		    list->value[i].i = item[0] ? atoi (item) : 0;
+		    if (item[0] != '\0')
+			list->value[i].i = atoi (item);
 		    break;
 		case CompOptionTypeFloat:
-		    list->value[i].f = item[0] ? atof (item) : 0.0f;
+		    if (item[0] != '\0')
+			list->value[i].f = atof (item);
 		    break;
 		case CompOptionTypeMatch:
 		    matchInit (&list->value[i].match);
@@ -473,6 +468,7 @@ csvToList (char *csv, CompListValue *list, CompOptionType type)
 		item = NULL;
 	    }
 	}
+	list->nValue = count;
     }
 
     return TRUE;
