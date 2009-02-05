@@ -1468,7 +1468,7 @@ switchPaintThumb (CompWindow		  *w,
     }
 
   if (w->texture->pixmap &&
-      !(w->state & CompWindowStateHiddenMask)
+      !(w->state & CompWindowStateHiddenMask) &&
       !(w->state & CompWindowStateShadedMask))
     {
       AddWindowGeometryProc oldAddWindowGeometry;
