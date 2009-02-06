@@ -23,8 +23,8 @@
  * Author: David Reveman <davidr@novell.com>
  * hacks by: Hannes Janetzek <hannes.janetzek@gmail.com>
  */
-
-#define A(x) do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)   
+//do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)   
+#define A(x) 
 #define D(x)
 #define C(x)
 #define E(x)
@@ -1356,9 +1356,9 @@ handleEvent (CompDisplay *d,
 	Window win = event->xclient.data.l[0];
 	unsigned int type = event->xclient.data.l[1];
 
-	printf("got eManaged client massage, 0x%x 0x%x, 0x%x\n", 
-	       (unsigned int) win, type, 
-	       (unsigned int) event->xclient.data.l[2]);
+	//printf("got eManaged client massage, 0x%x 0x%x, 0x%x\n", 
+	//     (unsigned int) win, type, 
+	//     (unsigned int) event->xclient.data.l[2]);
 	
 	/* mapped:  0 */
 	/* state:   1 */
@@ -1390,14 +1390,14 @@ handleEvent (CompDisplay *d,
 	      }
 	    else if(type == 1) /* STATE*/
 	      {
-		printf("set state\n");
+		//printf("set state\n");
 		unsigned int state = event->xclient.data.l[2];
 		if (w->state != state)
 		  {
 		    w->state = state;
 		    if(state & CompWindowStateHiddenMask)
 		      {
-			printf("set state - hidden\n");
+			//printf("set state - hidden\n");
 			w->clientMapped = 0;
 		      }
 		    (*d->matchPropertyChanged) (d, w); 
@@ -1406,7 +1406,7 @@ handleEvent (CompDisplay *d,
 	      }
 	    else if(type == 2) /* DESK*/
 	      {
-		printf("set desk\n");
+		//printf("set desk\n");
 		s = w->screen;
 		
 		int dx = event->xclient.data.l[2];
@@ -1420,8 +1420,8 @@ handleEvent (CompDisplay *d,
 		int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
 		int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
 
-		printf("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n", 
-		   x,y,dx,dy, w->syncX, w->serverX, w->attrib.x);
+		//printf("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n", 
+		//   x,y,dx,dy, w->syncX, w->serverX, w->attrib.x);
 
 		if (x == w->attrib.x && y == w->attrib.y) break;
 	
@@ -1457,7 +1457,7 @@ handleEvent (CompDisplay *d,
     
     else if (event->xclient.message_type == d->winActiveAtom)
       {
-	printf("got winActive client massage\n");
+	//printf("got winActive client massage\n");
 
 	w = findWindowAtDisplay (d, event->xclient.window);
 	if (w)
@@ -1529,27 +1529,28 @@ handleEvent (CompDisplay *d,
     break;
 
   case FocusIn:
-    C(("focus in event \n"));
+    //printf("focus in event \n");
 	
     if (event->xfocus.mode != NotifyGrab)
       {
 	w = findTopLevelWindowAtDisplay (d, event->xfocus.window);
 	if (w && w->clientId)
 	  {
+	    //printf("focus in event 2 - 0x%x\n", w->clientId);
 	    unsigned int state = w->state;
 	
 	    if (w->id != d->activeWindow)
 	      {
+		//printf("focus in event - %s\n", w->resName);
 		d->activeWindow = w->id;
 		w->activeNum = w->screen->activeNum++;
 	
 		addToCurrentActiveWindowHistory (w->screen, w->id);
 	      }
 	
-	    state &= ~CompWindowStateDemandsAttentionMask;
-	
-	    if (w->state != state)
-	      changeWindowState (w, state);
+	    /* state &= ~CompWindowStateDemandsAttentionMask; 
+	       if (w->state != state) 
+	       changeWindowState (w, state); */
 	  }
       }
     break;

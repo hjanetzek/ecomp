@@ -809,7 +809,7 @@ detectRefreshRateOfScreen (CompScreen *s)
 static void
 setSupportingWmCheck (CompScreen *s)
 {
-    CompDisplay *d = s->display;
+  //CompDisplay *d = s->display;
 
     /*XChangeProperty (d->display, s->grabWindow, d->supportingWmCheckAtom,
 		     XA_WINDOW, 32, PropModeReplace,
@@ -2523,7 +2523,7 @@ void
 sendScreenViewportMessage(CompScreen *s)
 { 
 
-  printf ("sendMoveScreenViewportMessage %d:%d\n", s->x, s->y);
+  //printf ("sendMoveScreenViewportMessage %d:%d\n", s->x, s->y);
   
   CompDisplay *d = s->display;
   XEvent ev;
@@ -2561,7 +2561,7 @@ moveScreenViewport (CompScreen *s,
     ty = MOD (ty, s->vsize);
     ty -= s->y;
 
-    if(sync) printf ("moveScreenViewport - current %d:%d, move %d:%d\n", s->x, s->y, tx, ty);
+    //if(sync) printf ("moveScreenViewport - current %d:%d, move %d:%d\n", s->x, s->y, tx, ty);
     if (!tx && !ty) /*XXX remove sync when not needed*/
       { 
 	if (sync)

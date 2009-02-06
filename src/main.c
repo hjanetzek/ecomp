@@ -132,7 +132,7 @@ logMessage (CompDisplay	 *d,
 	      programName, componentName,
 	      logLevelToString (level), message);
 
-    fprintf (stderr, defaultMessage);
+    fprintf (stderr, "%s", defaultMessage);
     fprintf (stderr, "\n");
 }
 
