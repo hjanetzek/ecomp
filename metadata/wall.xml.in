@@ -161,11 +161,6 @@
 			</group>
 			<group>
 				<_short>Viewport Switching</_short>
-				<option name="allow_wraparound" type="bool">
-					<_short>Allow Wrap-Around</_short>
-					<_long>Allow wrap-around when moving the wall up/down/left/right</_long>
-					<default>false</default>
-				</option>
 				<option name="move_background" type="bool">
 					<_short>Move Background and Popup Windows</_short>
 					<_long>Move Desktop Background and not Managed ('Override Redirect') Windows </_long>
