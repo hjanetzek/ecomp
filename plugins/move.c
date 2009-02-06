@@ -279,14 +279,10 @@ moveHandleEvent (CompDisplay *d,
 	    unsigned int type = event->xclient.data.l[1];
 	    if (type != 4) break;
 	    
-	    printf("got eManaged client massage, 0x%x 0x%x, 0x%x\n", 
-		   (unsigned int) win, type, 
-		   (unsigned int) event->xclient.data.l[2]);
 	    w = findWindowAtDisplay (d, win);
 	    if (w)
 	      {
 		unsigned int state = event->xclient.data.l[2];
-		printf(" window grab 0x%x\n", state);
 		s = w->screen;
 	
 		if(state)
@@ -294,8 +290,6 @@ moveHandleEvent (CompDisplay *d,
 		    CompOption o[4];
 		    int	       xRoot, yRoot;
 		    CompAction *action = NULL;
-		    
-		    //  &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action;
 
 		    o[0].type    = CompOptionTypeInt;
 		    o[0].name    = "window";
@@ -310,21 +304,10 @@ moveHandleEvent (CompDisplay *d,
 				   &root, &child, &xRoot, &yRoot,
 				   &i, &i, &mods);
 
-		    /* TODO: not only button 1 */
-		    //if (mods & Button1Mask)
-		    // {
 		    o[1].type	 = CompOptionTypeInt;
 		    o[1].name	 = "modifiers";
 		    o[1].value.i = mods;
 
-		    /* o[2].type	 = CompOptionTypeInt;
-		       o[2].name	 = "x";
-		       o[2].value.i = event->xclient.data.l[0];
-
-		       o[3].type	 = CompOptionTypeInt;
-		       o[3].name	 = "y";
-		       o[3].value.i = event->xclient.data.l[1];
-		    */
 		    moveInitiate (d,
 				  action,
 				  CompActionStateInitButton,
