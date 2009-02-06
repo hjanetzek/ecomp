@@ -148,9 +148,6 @@
 	    <_long>Comma separated list of option value assignments to override effect settings, e.g.: fire_color=#0080ffff, fire_particles=700, fire_smoke=1</_long>
 	    <type>string</type>
 	    <default>
-	      <value></value>
-	      <value></value>
-	      <value></value>
 	    </default>
 	  </option>
 	</subgroup>
@@ -402,9 +399,6 @@
 	    <_long>Comma separated list of option value assignments to override effect settings, e.g.: fire_color=#0080ffff, fire_particles=700, fire_smoke=1</_long>
 	    <type>string</type>
 	    <default>
-	      <value></value>
-	      <value></value>
-	      <value></value>
 	    </default>
 	  </option>
 	</subgroup>
