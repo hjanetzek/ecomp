@@ -34,6 +34,7 @@ xml_in_files =		  \
 	cubereflex.xml.in \
 	staticswitcher.xml.in \
 	ini.xml.in \
+	inotify.xml.in \
 	scaleaddon.xml.in 
 
 xml_files    = $(xml_in_files:.xml.in=.xml)
