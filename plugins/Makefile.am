@@ -86,11 +86,11 @@ libdbus_la_SOURCES = dbus.c
 libdbus_module = libdbus.la
 endif
 
-# if INOTIFY_PLUGIN
-# libinotify_la_LDFLAGS = -module -avoid-version -no-undefined
-# libinotify_la_SOURCES = inotify.c
-# libinotify_module = libinotify.la
-# endif
+if INOTIFY_PLUGIN
+libinotify_la_LDFLAGS = -module -avoid-version -no-undefined
+libinotify_la_SOURCES = inotify.c
+libinotify_module = libinotify.la
+endif
 
 # if FUSE_PLUGIN
 # libfs_la_LDFLAGS = -module -avoid-version -no-undefined
@@ -135,5 +135,6 @@ module_LTLIBRARIES =		\
 	libmove.la		\
 	libwobbly.la		\
 	libini.la		\
+	$(libinotify_module)	\
 	libzoom.la
 
