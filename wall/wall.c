@@ -98,7 +98,7 @@ typedef struct _WallScreen
     int   gotoX;
     int   gotoY;
     int   fromX;
-    int fromY;
+    int   fromY;
   
     int boxTimeout;
     int boxOutputDevice;
@@ -536,6 +536,10 @@ wallMoveViewport (CompScreen *s,
 	    }
 	}
 
+	ws->fromX = s->x;
+	ws->fromY = s->y;
+	
+	
 	if (!ws->moving)
 	{
 	    ws->curPosX = s->x;
@@ -644,10 +648,10 @@ wallHandleEvent (CompDisplay *d,
 
 	  if (otherScreenGrabExist (s, "switcher", "scale", 0))
 	    break;
-	  printf ("wall: desktopViewportAtom %d:%d\n", 
+	  /*printf ("wall: desktopViewportAtom %d:%d\n", 
 		  (event->xclient.data.l[1] / s->width),
 		  (event->xclient.data.l[2] / s->height));
-
+	  */
 	  toX = event->xclient.data.l[1] / s->width;
 	  dx = toX - s->x;
 
@@ -674,7 +678,7 @@ wallHandleEvent (CompDisplay *d,
 	    }
 	  else if(moveType == 1)
 	    { 
-	      printf ("move with window\n");
+	      //printf ("move with window\n");
 	      w = findWindowAtScreen(s, win);
 	      if(w)
 		{ 
@@ -684,7 +688,7 @@ wallHandleEvent (CompDisplay *d,
 	    }
 	  else if(moveType == 2)
 	    { 
-	      printf ("move window by\n");
+	      //printf ("move window by\n");
 	      wallMoveViewport (s, amountX, amountY, win);		
 	    }
 	}
@@ -1122,8 +1126,8 @@ wallPreparePaintScreen (CompScreen *s,
 	ws->moving = FALSE;
 	ws->timer  = 0;
 
-	int x = - (s->x - ws->gotoX);
-	int y = - (s->y - ws->gotoY);
+	//int x = - (s->x - ws->gotoX);
+	//int y = - (s->y - ws->gotoY);
 	
 	if (ws->moveWindow)
 	  {
@@ -1216,11 +1220,15 @@ wallPaintTransformedOutput (CompScreen              *s,
 
 	  for (w = s->windows; w; w = w->next)
 	    { 
-	    if (w->clientId &&
-		(!(w->state & CompWindowStateStickyMask)) &&
+	      if (w->clientId &&
+		  ((w->initialViewportX == ws->fromX &&
+		    w->initialViewportY == ws->fromY) ||
+		   (w->initialViewportX == ws->gotoX &&
+		    w->initialViewportY == ws->gotoY)) &&
+		  (!(w->state & CompWindowStateStickyMask)) &&
 		/* dont move windows that are grabbed, i.e. while it is
 		 dragged to another desk */
-		(w->id != ws->moveWindow || !w->grabbed))
+		  (w->id != ws->moveWindow || !w->grabbed))
 	      { 
 		moveWindow(w, 
 			   - (px * (float)s->width), 
@@ -1233,9 +1241,15 @@ wallPaintTransformedOutput (CompScreen              *s,
 					region, output, mask);
 
 	  for (w = s->windows; w; w = w->next)
-	    { 
+	    {
 	      if (w->clientId &&
+		  ((w->initialViewportX == ws->fromX &&
+		    w->initialViewportY == ws->fromY) ||
+		   (w->initialViewportX == ws->gotoX &&
+		    w->initialViewportY == ws->gotoY)) &&
 		  (!(w->state & CompWindowStateStickyMask)) &&
+		  /* dont move windows that are grabbed, i.e. while it is
+		     dragged to another desk */
 		  (w->id != ws->moveWindow || !w->grabbed))
 		{ 
 		  moveWindow(w, 
