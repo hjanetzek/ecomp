@@ -373,45 +373,6 @@ scaleaddonCheckForWindowAt (CompScreen * s, int x, int y)
     return NULL;
 }
 
-static Bool
-scaleaddonCloseWindow (CompDisplay     *d,
-	               CompAction      *action,
-		       CompActionState state,
-		       CompOption      *option,
-		       int             nOption)
-{
-    CompScreen *s;
-    Window     xid;
-
-    xid = getIntOptionNamed (option, nOption, "root", 0);
-
-    s = findScreenAtDisplay (d, xid);
-    if (s)
-    {
-	CompWindow *w;
-
-	SCALE_SCREEN (s);
-
-	if (!ss->grabIndex)
-	    return FALSE;
-
-	if (state & CompActionStateInitKey)
-	{
-	    SCALE_DISPLAY (d);
-	    w = findWindowAtDisplay (d, sd->hoveredWindow);
-	}
-	else
-	    w = scaleaddonCheckForWindowAt (s, pointerX, pointerY);
-
-        if (w)
-	{
-	    closeWindow (w, getCurrentTimeFromDisplay (d));
-	    return TRUE;
-	}
-    }
-
-    return FALSE;
-}
 
 static Bool
 scaleaddonZoomWindow (CompDisplay     *d,
@@ -608,7 +569,6 @@ scaleaddonHandleEcompEvent (CompDisplay *d,
 	{
 	    if (activated)
 	    {
-		addScreenAction (s, scaleaddonGetClose (s->display));
 		addScreenAction (s, scaleaddonGetZoom (s->display));
 	    }
 	    else
@@ -621,7 +581,6 @@ scaleaddonHandleEcompEvent (CompDisplay *d,
 		    aw->rescaled = FALSE;
 		}
 
-		removeScreenAction (s, scaleaddonGetClose (s->display));
 		removeScreenAction (s, scaleaddonGetZoom (s->display));
 	    }
 	}
@@ -1092,7 +1051,6 @@ scaleaddonInitDisplay (CompPlugin  *p,
 
     ad->lastHoveredWindow = None;
 
-    scaleaddonSetCloseInitiate (d, scaleaddonCloseWindow);
     scaleaddonSetZoomInitiate (d, scaleaddonZoomWindow);
 
     return TRUE;
