@@ -33,7 +33,7 @@
 #include <sys/stat.h>
 #include <ecomp.h>
 
-#define DEFAULT_PLUGINS     "ini,inotify,png,decoration,move,resize,switcher"
+#define DEFAULT_PLUGINS     "ini,inotify,dbus,regex,text,png,decoration,move,wall,scale,scaleaddon,expo,ring"
 #define NUM_DEFAULT_PLUGINS 7
 #define MAX_OPTION_LENGTH   1024
 #define HOME_OPTIONDIR     ".ecomp/options"
