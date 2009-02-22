@@ -160,16 +160,16 @@ expoTermExpo (CompDisplay     *d,
 	      int             nOption)
 {
   CompScreen *s;
-
+  
   for (s = d->screens; s; s = s->next)
     {
       EXPO_SCREEN (s);
-
+      
       if (!es->expoMode)
 	continue;
-
+      
       es->expoMode = FALSE;
-
+       
       if (es->dndWindow)
 	syncWindowPosition (es->dndWindow);
 
@@ -236,7 +236,7 @@ expoExpo (CompDisplay     *d,
 
 	  es->selectedVX = es->origVX = s->x;
 	  es->selectedVY = es->origVY = s->y;
-
+	  
 	  damageScreen (s);
 	}
       else
@@ -1106,7 +1106,8 @@ expoDrawWindow (CompWindow           *w,
 	  if (expoAnimation != ExpoAnimationZoom)
 	    fA.opacity = fragment->opacity * es->expoCam;
 
-	  if (w->wmType & CompWindowTypeDockMask &&
+	  if (((w->wmType & CompWindowTypeDockMask) ||
+	       (w->wmType & CompWindowTypeUtilMask)) &&
 	      expoGetHideDocks (s->display))
 	    {
 	      if (expoAnimation == ExpoAnimationZoom &&
@@ -1175,23 +1176,25 @@ expoPaintWindow (CompWindow              *w,
 	mask |= PAINT_WINDOW_TRANSLUCENT_MASK;
 
       if (es->expoCam > 0.0 && hideDocks &&
-	  w->wmType & CompWindowTypeDockMask)
+	  ((w->wmType & CompWindowTypeUtilMask) ||
+	   (w->wmType & CompWindowTypeDockMask)))
 	mask |= PAINT_WINDOW_TRANSLUCENT_MASK;
 	
       if (expoAnimation != ExpoAnimationZoom)
 	opacity = attrib->opacity * es->expoCam;
 
-      if (w->wmType & CompWindowTypeDockMask &&
+      if (((w->wmType & CompWindowTypeUtilMask) ||
+	   (w->wmType & CompWindowTypeDockMask)) &&
 	  expoGetHideDocks (s->display))
 	{
-	  //* if (expoAnimation == ExpoAnimationZoom && */
-	  /* 	(s->x == es->selectedVX && s->y == es->selectedVY)) */
-	  /* { */
-	  /*   //opacity = attrib->opacity * */
-	  /*   //		  (1 - sigmoidProgress (es->expoCam)); */
-	  /* } */
-	  /* else */
-	  opacity = 0;
+	  if (expoAnimation == ExpoAnimationZoom &&
+	      (s->x == es->selectedVX && s->y == es->selectedVY))
+	  {
+	    opacity = attrib->opacity *
+	      (1 - sigmoidProgress (es->expoCam));
+	  }
+	  else
+	    opacity = 0;
 
 	  if (opacity <= 0)
 	    mask |= PAINT_WINDOW_NO_CORE_INSTANCE_MASK;
