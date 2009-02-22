@@ -28,7 +28,7 @@
 
 #define ABIVERSION 20070915
 
-#define KEYBINDING 1
+//#define KEYBINDING 1
 
 #include <stdio.h>
 #include <sys/time.h>
