@@ -116,9 +116,9 @@ moveInitiate (CompDisplay     *d,
     Window     xid;
      
     MOVE_DISPLAY (d);
-#ifdef KEYBINDING
+    //#ifdef KEYBINDING
     xid = getIntOptionNamed (option, nOption, "window", 0);
-#endif
+    //#endif
     w = findWindowAtDisplay (d, xid);
     if (w)// && (w->actions & CompWindowActionMoveMask))
     {
