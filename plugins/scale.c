@@ -1279,8 +1279,8 @@ scaleInitiateCommon (CompScreen      *s,
 	if (!sd->lastActiveNum)
 	    sd->lastActiveNum = s->activeNum - 1;
 
-	sd->lastActiveWindow = s->display->activeWindow;
-	sd->selectedWindow   = s->display->activeWindow;
+	sd->lastActiveWindow = None; //s->display->activeWindow;
+	sd->selectedWindow   = None; //s->display->activeWindow;
 
 	ss->state = SCALE_STATE_OUT;
 	
