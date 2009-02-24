@@ -1284,7 +1284,7 @@ scaleInitiateCommon (CompScreen      *s,
 	    sd->lastActiveNum = s->activeNum - 1;
 
 	sd->lastActiveWindow = None; //hs->display->activeWindow;
-	sd->selectedWindow   = None; //s->display->activeWindow;
+	sd->selectedWindow   = s->display->activeWindow;
 
 	ss->state = SCALE_STATE_OUT;
 	
@@ -1622,7 +1622,7 @@ scalePrev (CompDisplay     *d,
 
 	if (ss->state != SCALE_STATE_WAIT && ss->state != SCALE_STATE_OUT)
 	{
-	    ss->type = ScaleTypeAll;
+	  ss->type = ScaleTypeOutput;
 	    return scaleInitiateCommon (s, action, state, option, nOption);
 	}
 	else if (ss->state == SCALE_STATE_WAIT)
@@ -1654,7 +1654,7 @@ scaleNext (CompDisplay     *d,
 
 	if (ss->state != SCALE_STATE_WAIT && ss->state != SCALE_STATE_OUT)
 	{
-	    ss->type = ScaleTypeAll;
+	  ss->type = ScaleTypeOutput;
 	    return scaleInitiateCommon (s, action, state, option, nOption);
 	}
 	else if (ss->state == SCALE_STATE_WAIT)
