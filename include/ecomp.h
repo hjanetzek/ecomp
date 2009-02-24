@@ -90,7 +90,12 @@ typedef struct _CompMetadata      CompMetadata;
 typedef struct _CompOutput        CompOutput;
 typedef struct _CompWalker        CompWalker;
 
-/* virtual modifiers */
+
+
+void ecompActionTerminateNotify (CompScreen *s, int plugin);
+
+
+  /* virtual modifiers */
 
 #define CompModAlt        0
 #define CompModMeta       1
@@ -3309,6 +3314,7 @@ compReadXmlChunkFromMetadataOptionInfo (const CompMetadataOptionInfo *info,
 					char			     *buffer,
 					int			     length);
 
+  
 
 #ifdef  __cplusplus
 }

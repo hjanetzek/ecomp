@@ -586,14 +586,14 @@ switchInitiate (CompScreen *s,
   SWITCH_SCREEN (s);
 
   if (otherScreenGrabExist (s, "switcher", "scale", "cube", 0))
-    return;
+    goto end;
 
   ss->allWindows = allWindows;
 
   count = switchCountWindows (s);
   if (count < 1)
-    return;
-
+    goto end;
+  
   if (!ss->popupWindow && showPopup)
     {
       Display		     *dpy = s->display->display;
@@ -606,8 +606,8 @@ switchInitiate (CompScreen *s,
 
       visual = findArgbVisual (dpy, s->screenNum);
       if (!visual)
-	return;
-
+	goto end;
+      
       if (count > 1)
 	{
 	  count -= (count + 1) & 1;
@@ -705,6 +705,10 @@ switchInitiate (CompScreen *s,
       ss->switching  = TRUE;
       ss->moreAdjust = 1;
     }
+  return;
+    
+  end:
+     ecompActionTerminateNotify (s, 1);     
 }
 
 static Bool
@@ -776,6 +780,7 @@ switchTerminate (CompDisplay     *d,
 
 	  damageScreen (s);
 	}
+      ecompActionTerminateNotify (s, 1);
     }
 
   if (action)

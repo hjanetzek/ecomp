@@ -53,6 +53,33 @@
 
 #define NUM_OPTIONS(s) (sizeof ((s)->opt) / sizeof (CompOption))
 
+void
+ecompActionTerminateNotify (CompScreen *s, int plugin)
+{
+  XEvent ev;
+  printf("ecompActionTerminateNotify 1\n");
+  
+  ev.type		    = ClientMessage;
+  ev.xclient.window	    = s->root;
+  ev.xclient.display = s->display->display;
+  ev.xclient.message_type = s->display->eManagedAtom;
+  ev.xclient.format	    = 32;
+  ev.xclient.data.l[0]    = 2;
+  ev.xclient.data.l[1]    = plugin;
+  ev.xclient.data.l[2]    = 0;
+  ev.xclient.data.l[3]    = 0;
+  ev.xclient.data.l[4]    = 0;
+    
+  XSendEvent (s->display->display,
+	      s->root,
+	      FALSE,
+	      SubstructureRedirectMask | SubstructureNotifyMask,
+	      &ev);
+  
+  printf("ecompActionTerminateNotify 2\n");
+}
+
+
 static int
 reallocScreenPrivate (int  size,
 		      void *closure)

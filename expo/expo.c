@@ -190,6 +190,7 @@ expoTermExpo (CompDisplay     *d,
 
       damageScreen (s);
       // focusDefaultWindow (s->display);
+      ecompActionTerminateNotify (s, 1);
     }
 
   if (state & CompActionStateTermButton)
@@ -222,8 +223,11 @@ expoExpo (CompDisplay     *d,
       EXPO_SCREEN (s);
 
       if (otherScreenGrabExist (s, "expo", 0))
-	return FALSE;
-
+	{
+	  ecompActionTerminateNotify (s, 1);	  
+	  return FALSE;
+	}
+      
       if (!es->expoMode)
 	{
 	  if (!es->grabIndex)

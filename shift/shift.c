@@ -1803,6 +1803,8 @@ shiftTerminate (CompDisplay     *d,
 
 	if (state & CompActionStateTermKey)
 	    action->state &= ~CompActionStateTermKey;
+
+	ecompActionTerminateNotify (s, 1);
     }
 
     return FALSE;

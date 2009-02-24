@@ -48,6 +48,7 @@ static int scaleDisplayPrivateIndex;
 
 #define NUM_OPTIONS(s) (sizeof ((s)->opt) / sizeof (CompOption))
 
+
 static CompOption *
 scaleGetScreenOptions (CompPlugin  *plugin,
 		       CompScreen *screen,
@@ -1179,6 +1180,8 @@ scaleTerminate (CompDisplay     *d,
 
 	  sd->lastActiveNum = 0;
 	}
+      
+      ecompActionTerminateNotify (s, 1);
     }
 
   if (state & CompActionStateTermButton)
@@ -1189,7 +1192,8 @@ scaleTerminate (CompDisplay     *d,
 
   if (state & CompActionStateTermEdge)
     action->state &= ~CompActionStateTermEdge;
-  
+
+
   return FALSE;
 }
 
@@ -1279,7 +1283,7 @@ scaleInitiateCommon (CompScreen      *s,
 	if (!sd->lastActiveNum)
 	    sd->lastActiveNum = s->activeNum - 1;
 
-	sd->lastActiveWindow = None; //s->display->activeWindow;
+	sd->lastActiveWindow = None; //hs->display->activeWindow;
 	sd->selectedWindow   = None; //s->display->activeWindow;
 
 	ss->state = SCALE_STATE_OUT;
@@ -1307,7 +1311,8 @@ scaleInitiate (CompDisplay     *d,
 {
     CompScreen *s;
     Window     xid;
-
+    printf("scaleInitiate\n");
+    
     xid = getIntOptionNamed (option, nOption, "root", 0);
 
     s = findScreenAtDisplay (d, xid);
