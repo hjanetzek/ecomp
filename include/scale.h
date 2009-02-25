@@ -72,7 +72,6 @@ typedef struct _ScaleDisplay {
     Window       lastActiveWindow;
     Window       selectedWindow;
     Window       hoveredWindow;
-    KeyCode	 leftKeyCode, rightKeyCode, upKeyCode, downKeyCode;
 } ScaleDisplay;
 
 #define SCALE_SCREEN_OPTION_SPACING          0

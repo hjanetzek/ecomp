@@ -1067,6 +1067,14 @@ scaleTerminateTimeout(void *closure)
   CompScreen *s = closure;
   
   SCALE_SCREEN (s);
+
+  if (ss->grabIndex)
+    {
+      removeScreenGrab (s, ss->grabIndex, 0);
+      ss->grabIndex = 0;
+      ss->grab = FALSE;
+    }
+  
   ss->state = SCALE_STATE_IN;
   damageScreen (s);
   return FALSE;
@@ -1096,16 +1104,16 @@ scaleTerminate (CompDisplay     *d,
 
       if (ss->grab)
 	{
-	  if (ss->grabIndex)
-	    {
-	      removeScreenGrab (s, ss->grabIndex, 0);
-	      ss->grabIndex = 0;
-	    }
+	  /* if (ss->grabIndex)
+	   *   {
+	   *     removeScreenGrab (s, ss->grabIndex, 0);
+	   *     ss->grabIndex = 0;
+	   *   } */
 
 	  if (ss->dndTarget)
 	    XUnmapWindow (d->display, ss->dndTarget);
 
-	  ss->grab = FALSE;
+	  /* ss->grab = FALSE; */
 
 	  if (ss->state != SCALE_STATE_NONE)
 	    {
@@ -1173,7 +1181,10 @@ scaleTerminate (CompDisplay     *d,
 		    }
 		}
 	      /* hack: wait for e to restack the window */
-	      compAddTimeout(50, scaleTerminateTimeout, s);
+	      if(s->display->activeWindow != sd->selectedWindow)
+		compAddTimeout(50, scaleTerminateTimeout, s);
+	      else
+		compAddTimeout(0, scaleTerminateTimeout, s);
 	      /* ss->state = SCALE_STATE_IN;
 		 damageScreen (s);*/
 	    }
@@ -1186,9 +1197,6 @@ scaleTerminate (CompDisplay     *d,
 
   if (state & CompActionStateTermButton)
     action->state &= ~CompActionStateTermButton;
-
-  if (state & CompActionStateTermKey)
-    action->state &= ~CompActionStateTermKey;
 
   if (state & CompActionStateTermEdge)
     action->state &= ~CompActionStateTermEdge;
@@ -1296,9 +1304,6 @@ scaleInitiateCommon (CompScreen      *s,
     if (state & CompActionStateInitButton)
 	action->state |= CompActionStateTermButton;
 
-    if (state & CompActionStateInitKey)
-	action->state |= CompActionStateTermKey;
-    
     return FALSE;
 }
 
@@ -1625,7 +1630,7 @@ scalePrev (CompDisplay     *d,
 	  ss->type = ScaleTypeOutput;
 	    return scaleInitiateCommon (s, action, state, option, nOption);
 	}
-	else if (ss->state == SCALE_STATE_WAIT)
+	else if (ss->state == SCALE_STATE_WAIT || ss->state == SCALE_STATE_OUT)
 	{
 	  scaleMoveFocusWindow (s, -1, 0);
 
@@ -1657,7 +1662,7 @@ scaleNext (CompDisplay     *d,
 	  ss->type = ScaleTypeOutput;
 	    return scaleInitiateCommon (s, action, state, option, nOption);
 	}
-	else if (ss->state == SCALE_STATE_WAIT)
+	else if (ss->state == SCALE_STATE_WAIT || ss->state == SCALE_STATE_OUT)
 	{
 	  scaleMoveFocusWindow (s, 1, 0);
 
@@ -1867,66 +1872,32 @@ scaleHandleEvent (CompDisplay *d,
 		  XEvent      *event)
 {
     CompScreen *s;
-
+    CompWindow *w;
+    
     SCALE_DISPLAY (d);
 
     switch (event->type) {
-    case KeyPress:
-
-      
-	s = findScreenAtDisplay (d, event->xkey.root);
-	if (s)
+    case ConfigureNotify:
+      /* hack: wait for restack notify before doing scale end
+	 animation, so that the window will not be restacked
+	 while the animation is going */
+      if ((sd->selectedWindow == event->xconfigure.window) &&
+	  (event->xconfigure.above))
 	{
-	    SCALE_SCREEN (s);
-
-	    if (ss->grabIndex)
+	  w = findWindowAtDisplay (d, event->xconfigure.window);
+	  if (w)
 	    {
-		if (event->xkey.keycode == sd->leftKeyCode)
-		    scaleMoveFocusWindow (s, -1, 0);
-		else if (event->xkey.keycode == sd->rightKeyCode)
-		    scaleMoveFocusWindow (s, 1, 0);
-		else if (event->xkey.keycode == sd->upKeyCode)
-		    scaleMoveFocusWindow (s, 0, -1);
-		else if (event->xkey.keycode == sd->downKeyCode)
-		    scaleMoveFocusWindow (s, 0, 1);
+	      SCALE_SCREEN (w->screen);
 
-		// a,s
-		else if (event->xkey.keycode == 38)
-		  scaleMoveFocusWindow (s, -1, 0);
-		else if (event->xkey.keycode == 39)
-		  scaleMoveFocusWindow (s, 1, 0);
-
-		// k,ö,o,l		 
-		else if (event->xkey.keycode == 45)
-		  scaleMoveFocusWindow (s, -1, 0);
-		else if (event->xkey.keycode == 47)
-		  scaleMoveFocusWindow (s, 1, 0);
-		else if (event->xkey.keycode == 32)
-		  scaleMoveFocusWindow (s, 0, -1);
-		else if (event->xkey.keycode == 46)
-		  scaleMoveFocusWindow (s, 0, 1);
-		
-		// m
-		else if (event->xkey.keycode == 58)
-		  { 
-
-		    CompAction *action =
-		      &sd->opt[SCALE_DISPLAY_OPTION_INITIATE].value.action;
-		    CompOption o[2];
-
-		    o[0].type    = CompOptionTypeInt;
-		    o[0].name    = "root";
-		    o[0].value.i = s->root;
-		    o[1].type    = CompOptionTypeInt;
-		    o[1].name    = "todesk";
-		    o[1].value.i = 1;
-
-		    scaleTerminate (d, action, 0, o, 2);
-
-		  }
+	      if (ss->grab && ss->grabIndex &&
+		  ss->state == SCALE_STATE_WAIT)
+		{
+		  scaleTerminateTimeout(w->screen);
+		}
 	    }
 	}
-	break;
+      break;
+
     case ButtonRelease:
 	if (event->xbutton.button == Button1)
 	{
@@ -2241,11 +2212,6 @@ scaleInitDisplay (CompPlugin  *p,
     sd->lastActiveNum = None;
     sd->selectedWindow = None;
     sd->hoveredWindow = None;
-
-    sd->leftKeyCode  = XKeysymToKeycode (d->display, XStringToKeysym ("Left"));
-    sd->rightKeyCode = XKeysymToKeycode (d->display, XStringToKeysym ("Right"));
-    sd->upKeyCode    = XKeysymToKeycode (d->display, XStringToKeysym ("Up"));
-    sd->downKeyCode  = XKeysymToKeycode (d->display, XStringToKeysym ("Down"));
 
     WRAP (sd, d, handleEvent, scaleHandleEvent);
 
