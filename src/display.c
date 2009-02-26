@@ -1556,6 +1556,7 @@ addDisplay (char *name)
     d->atomPairAtom  = XInternAtom (dpy, "ATOM_PAIR", 0);
 
     d->eManagedAtom = XInternAtom (dpy, "__ECOMORPH_WINDOW_MANAGED", 0);
+    d->ecoPluginAtom = XInternAtom (dpy, "__ECOMORPH_PLUGIN", 0);
     
     if (!XQueryExtension (dpy,
 			  COMPOSITE_NAME,

@@ -247,6 +247,8 @@ isShiftWin (CompWindow *w)
 	}
     }
 
+    /*TODO ShiftTypeGroup: make it use same window class */
+
     if (!matchEval (ss->currentMatch, w))
 	return FALSE;
 
@@ -1898,11 +1900,11 @@ shiftDoSwitch (CompDisplay     *d,
 	  ret = shiftInitiateScreen (s, action, state, option, nOption);
 
 
-	    if (state & CompActionStateInitKey)
-		action->state |= CompActionStateTermKey;
-
-	    if (state & CompActionStateInitButton)
-		action->state |= CompActionStateTermButton;
+	    /* if (state & CompActionStateInitKey)
+	     * 	action->state |= CompActionStateTermKey;
+	     * 
+	     * if (state & CompActionStateInitButton)
+	     * 	action->state |= CompActionStateTermButton; */
 
 	    if (state & CompActionStateInitEdge)
 		action->state |= CompActionStateTermEdge;
@@ -1913,7 +1915,7 @@ shiftDoSwitch (CompDisplay     *d,
 	if (ret)
 	{
     	    switchToWindow (s, nextWindow);
-	    if (initial && FALSE)
+	    if (initial && FALSE) //Huh?!
 	    {
 		ss->mvTarget += ss->mvAdjust;
 		ss->mvAdjust  = 0.0;
@@ -1948,12 +1950,6 @@ shiftInitiate (CompDisplay     *d,
 	    ret = shiftInitiateScreen (s, action, state, option, nOption);
 	else
 	    ret = shiftTerminate (d, action, state, option, nOption);
-
-	if (state & CompActionStateTermButton)
-	    action->state &= ~CompActionStateTermButton;
-
-	if (state & CompActionStateTermKey)
-	    action->state &= ~CompActionStateTermKey;
     }
 
     return ret;
@@ -1983,12 +1979,6 @@ shiftInitiateAll (CompDisplay     *d,
 	    ret = shiftInitiateScreen (s, action, state, option, nOption);
 	else
 	    ret = shiftTerminate (d, action, state, option, nOption);
-
-	if (state & CompActionStateTermButton)
-	    action->state &= ~CompActionStateTermButton;
-
-	if (state & CompActionStateTermKey)
-	    action->state &= ~CompActionStateTermKey;
     }
 
     return ret;
@@ -2137,209 +2127,272 @@ shiftWindowRemove (CompDisplay * d,
     }
 }
 
+
 static void
 shiftHandleEvent (CompDisplay *d,
 		 XEvent      *event)
 {
-    SHIFT_DISPLAY (d);
-    CompScreen *s;
+  SHIFT_DISPLAY (d);
+  CompScreen *s;
 
-    UNWRAP (sd, d, handleEvent);
-    (*d->handleEvent) (d, event);
-    WRAP (sd, d, handleEvent, shiftHandleEvent);
+  switch (event->type)
+    {
+    case ClientMessage:
+      if (event->xclient.message_type == d->ecoPluginAtom)
+	{
+	  if(event->xclient.data.l[1] != ECO_PLUGIN_SHIFT) break;
 
-    switch (event->type) {
+	  Window win = event->xclient.data.l[0];
+
+	  if (!(s = findScreenAtDisplay (d, win)))
+	    {
+	      // XXX ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  unsigned int action = event->xclient.data.l[2];
+	  unsigned int option = event->xclient.data.l[3];
+	  unsigned int option2 = event->xclient.data.l[4];
+
+	  if (action == ECO_ACT_TERMINATE)
+	    {
+	      shiftTerm (s, (option == ECO_ACT_OPT_TERMINATE_CANCEL));
+	      ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  else
+	    {
+	      int count;
+		  
+	      SHIFT_SCREEN (s);
+
+	      if ((ss->state == ShiftStateNone) || (ss->state == ShiftStateIn))
+		{
+		  if (option == ECO_ACT_OPT_INITIATE)
+		    ss->type = ShiftTypeNormal;
+		  else if (option == ECO_ACT_OPT_INITIATE_ALL)
+		    ss->type = ShiftTypeAll;
+		  else if (option == ECO_ACT_OPT_INITIATE_GROUP)
+		    ss->type = ShiftTypeGroup;
+		  
+		  count = shiftCountWindows (s);
+
+		  if (count < 1)
+		    {
+		      ecompActionTerminateNotify (s, 1);
+		      break;
+		    }
+		      
+		  if (!ss->grabIndex)
+		    ss->grabIndex = pushScreenGrab (s, s->invisibleCursor, "shift");
+		      
+		  if (ss->grabIndex)
+		    {
+		      ss->state = ShiftStateOut;
+		      shiftActivateEvent(s, TRUE);
+
+		      if (!shiftCreateWindowList (s))
+			{
+			  ecompActionTerminateNotify (s, 1);
+			  break;
+			}
+
+		      ss->selectedWindow = ss->windows[0]->id;
+		      shiftRenderWindowTitle (s);
+		      ss->mvTarget = 0;
+		      ss->mvAdjust = 0;
+		      ss->mvVelocity = 0;
+
+		      ss->moreAdjust = TRUE;
+		      damageScreen (s);
+		    }
+
+		  ss->usedOutput = s->currentOutputDev;
+		}
+	      
+	      if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+		switchToWindow (s, TRUE);
+	      else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+		switchToWindow (s, FALSE);
+	    }
+	}
+    }
+    
+  UNWRAP (sd, d, handleEvent);
+  (*d->handleEvent) (d, event);
+  WRAP (sd, d, handleEvent, shiftHandleEvent);
+
+  switch (event->type)
+    {
     case PropertyNotify:
-	if (event->xproperty.atom == XA_WM_NAME)
+      if (event->xproperty.atom == XA_WM_NAME)
 	{
-	    CompWindow *w;
-	    w = findWindowAtDisplay (d, event->xproperty.window);
-	    if (w)
+	  CompWindow *w;
+	  w = findWindowAtDisplay (d, event->xproperty.window);
+	  if (w)
 	    {
-    		SHIFT_SCREEN (w->screen);
-    		if (ss->grabIndex && (w->id == ss->selectedWindow))
-    		{
-    		    shiftRenderWindowTitle (w->screen);
-    		    damageScreen (w->screen);
+	      SHIFT_SCREEN (w->screen);
+	      if (ss->grabIndex && (w->id == ss->selectedWindow))
+		{
+		  shiftRenderWindowTitle (w->screen);
+		  damageScreen (w->screen);
 		}
 	    }
 	}
-	break;
+      break;
     case UnmapNotify:
-	shiftWindowRemove (d, event->xunmap.window);
-	break;
+      shiftWindowRemove (d, event->xunmap.window);
+      break;
     case DestroyNotify:
-	shiftWindowRemove (d, event->xdestroywindow.window);
-	break;
-    case KeyPress:
-	s = findScreenAtDisplay (d, event->xkey.root);
-
-	if (s)
-	{
-	    SHIFT_SCREEN (s);
-
-	    if (ss->state == ShiftStateSwitching)
-	    {
-		if (event->xkey.keycode == sd->leftKey)
-		    switchToWindow (s, FALSE);
-		else if (event->xkey.keycode == sd->rightKey)
-		    switchToWindow (s, TRUE);
-		else if (event->xkey.keycode == sd->upKey)
-		    switchToWindow (s, FALSE);
-		else if (event->xkey.keycode == sd->downKey)
-		    switchToWindow (s, TRUE);
-	    }
-	}
-
-	break;
+      shiftWindowRemove (d, event->xdestroywindow.window);
+      break;
     case ButtonPress:
-	s = findScreenAtDisplay (d, event->xbutton.root);
+      s = findScreenAtDisplay (d, event->xbutton.root);
 
-	if (s)
+      if (s)
 	{
-	    SHIFT_SCREEN (s);
+	  SHIFT_SCREEN (s);
 
-	    if (ss->state == ShiftStateSwitching || ss->state == ShiftStateOut)
+	  if (ss->state == ShiftStateSwitching || ss->state == ShiftStateOut)
 	    {
-		if (event->xbutton.button == Button5)
-		    switchToWindow (s, FALSE);
-		else if (event->xbutton.button == Button4)
-		    switchToWindow (s, TRUE);
-		if (event->xbutton.button == Button1)
+	      if (event->xbutton.button == Button5)
+		switchToWindow (s, FALSE);
+	      else if (event->xbutton.button == Button4)
+		switchToWindow (s, TRUE);
+	      if (event->xbutton.button == Button1)
 		{
-		    ss->buttonPressTime = event->xbutton.time;
-		    ss->buttonPressed   = TRUE;
-		    ss->startX          = event->xbutton.x_root;
-		    ss->startY          = event->xbutton.y_root;
-		    ss->startTarget     = ss->mvTarget + ss->mvAdjust;
+		  ss->buttonPressTime = event->xbutton.time;
+		  ss->buttonPressed   = TRUE;
+		  ss->startX          = event->xbutton.x_root;
+		  ss->startY          = event->xbutton.y_root;
+		  ss->startTarget     = ss->mvTarget + ss->mvAdjust;
 		}
-		else if (event->xbutton.button == Button3)
-		    shiftTerm (s, TRUE);
+	      else if (event->xbutton.button == Button3)
+		shiftTerm (s, TRUE);
 	    }
 	}
-	break;
+      break;
     case ButtonRelease:
-	s = findScreenAtDisplay (d, event->xbutton.root);
+      s = findScreenAtDisplay (d, event->xbutton.root);
 
-	if (s)
+      if (s)
 	{
-	    SHIFT_SCREEN (s);
+	  SHIFT_SCREEN (s);
 
-	    if (ss->state == ShiftStateSwitching || ss->state == ShiftStateOut)
+	  if (ss->state == ShiftStateSwitching || ss->state == ShiftStateOut)
 	    {
-		if (event->xbutton.button == Button1 && ss->buttonPressed)
+	      if (event->xbutton.button == Button1 && ss->buttonPressed)
 		{
-		    int new;
-		    if (event->xbutton.time - ss->buttonPressTime <
-		        shiftGetClickDuration (s))
-		    	shiftTerm (s, FALSE);
+		  int new;
+		  if (event->xbutton.time - ss->buttonPressTime <
+		      shiftGetClickDuration (s))
+		    shiftTerm (s, FALSE);
 
-		    ss->buttonPressTime = 0;
-		    ss->buttonPressed   = FALSE;
+		  ss->buttonPressTime = 0;
+		  ss->buttonPressed   = FALSE;
 
-		    if (ss->mvTarget - floor (ss->mvTarget) >= 0.5)
+		  if (ss->mvTarget - floor (ss->mvTarget) >= 0.5)
 		    {
-			ss->mvAdjust = ceil(ss->mvTarget) - ss->mvTarget;
-			new = ceil(ss->mvTarget);
+		      ss->mvAdjust = ceil(ss->mvTarget) - ss->mvTarget;
+		      new = ceil(ss->mvTarget);
 		    }
-		    else
+		  else
 		    {
-			ss->mvAdjust = floor(ss->mvTarget) - ss->mvTarget;
-			new = floor(ss->mvTarget);
+		      ss->mvAdjust = floor(ss->mvTarget) - ss->mvTarget;
+		      new = floor(ss->mvTarget);
 		    }
 
-		    while (new < 0)
-			new += ss->nWindows;
-		    new = new % ss->nWindows;
+		  while (new < 0)
+		    new += ss->nWindows;
+		  new = new % ss->nWindows;
 		    
-		    ss->selectedWindow = ss->windows[new]->id;
+		  ss->selectedWindow = ss->windows[new]->id;
 
-		    shiftRenderWindowTitle (s);
-		    ss->moveAdjust = TRUE;
-		    damageScreen(s);
+		  shiftRenderWindowTitle (s);
+		  ss->moveAdjust = TRUE;
+		  damageScreen(s);
 		}
 
 	    }
 	}
-	break;
+      break;
     case MotionNotify:
-	s = findScreenAtDisplay (d, event->xbutton.root);
+      s = findScreenAtDisplay (d, event->xbutton.root);
 
-	if (s)
+      if (s)
 	{
-	    SHIFT_SCREEN (s);
+	  SHIFT_SCREEN (s);
 
-	    if (ss->state == ShiftStateSwitching || ss->state == ShiftStateOut)
+	  if (ss->state == ShiftStateSwitching || ss->state == ShiftStateOut)
 	    {
-		if (ss->buttonPressed)
+	      if (ss->buttonPressed)
 		{
-		    int ox1 = s->outputDev[ss->usedOutput].region.extents.x1;
-		    int ox2 = s->outputDev[ss->usedOutput].region.extents.x2;
-		    int oy1 = s->outputDev[ss->usedOutput].region.extents.y1;
-		    int oy2 = s->outputDev[ss->usedOutput].region.extents.y2;
+		  int ox1 = s->outputDev[ss->usedOutput].region.extents.x1;
+		  int ox2 = s->outputDev[ss->usedOutput].region.extents.x2;
+		  int oy1 = s->outputDev[ss->usedOutput].region.extents.y1;
+		  int oy2 = s->outputDev[ss->usedOutput].region.extents.y2;
 
-		    float div = 0;
-		    int   wx  = 0;
-		    int   wy  = 0;
-		    int   new;
+		  float div = 0;
+		  int   wx  = 0;
+		  int   wy  = 0;
+		  int   new;
 		    
-		    switch (shiftGetMode (s))
+		  switch (shiftGetMode (s))
 		    {
 		    case ModeCover:
-			div = event->xmotion.x_root - ss->startX;
-			div /= (ox2 - ox1) / shiftGetMouseSpeed (s);
-			break;
+		      div = event->xmotion.x_root - ss->startX;
+		      div /= (ox2 - ox1) / shiftGetMouseSpeed (s);
+		      break;
 		    case ModeFlip:
-			div = event->xmotion.y_root - ss->startY;
-			div /= (oy2 - oy1) / shiftGetMouseSpeed (s);
-			break;
+		      div = event->xmotion.y_root - ss->startY;
+		      div /= (oy2 - oy1) / shiftGetMouseSpeed (s);
+		      break;
 		    }
 
-		    ss->mvTarget = ss->startTarget + div - ss->mvAdjust;
-		    ss->moveAdjust = TRUE;
-		    while (ss->mvTarget >= ss->nWindows)
+		  ss->mvTarget = ss->startTarget + div - ss->mvAdjust;
+		  ss->moveAdjust = TRUE;
+		  while (ss->mvTarget >= ss->nWindows)
 		    {
-			ss->mvTarget -= ss->nWindows;
-			ss->invert = !ss->invert;
+		      ss->mvTarget -= ss->nWindows;
+		      ss->invert = !ss->invert;
 		    }
 
-		    while (ss->mvTarget < 0)
+		  while (ss->mvTarget < 0)
 		    {
-			ss->mvTarget += ss->nWindows;
-			ss->invert = !ss->invert;
+		      ss->mvTarget += ss->nWindows;
+		      ss->invert = !ss->invert;
 		    }
 
-		    if (ss->mvTarget - floor (ss->mvTarget) >= 0.5)
-			new = ceil(ss->mvTarget);
-		    else
-			new = floor(ss->mvTarget);
+		  if (ss->mvTarget - floor (ss->mvTarget) >= 0.5)
+		    new = ceil(ss->mvTarget);
+		  else
+		    new = floor(ss->mvTarget);
 
-		    while (new < 0)
-			new += ss->nWindows;
-		    new = new % ss->nWindows;
+		  while (new < 0)
+		    new += ss->nWindows;
+		  new = new % ss->nWindows;
 
-		    if (ss->selectedWindow != ss->windows[new]->id)
+		  if (ss->selectedWindow != ss->windows[new]->id)
 		    {
-		    	ss->selectedWindow = ss->windows[new]->id;
-			shiftRenderWindowTitle (s);
+		      ss->selectedWindow = ss->windows[new]->id;
+		      shiftRenderWindowTitle (s);
 		    }
 
-		    if (event->xmotion.x_root < 50)
-			wx = 50;
-		    if (s->width - event->xmotion.x_root < 50)
-			wx = -50;
-		    if (event->xmotion.y_root < 50)
-			wy = 50;
-		    if (s->height - event->xmotion.y_root < 50)
-			wy = -50;
-		    if (wx != 0 || wy != 0)
+		  if (event->xmotion.x_root < 50)
+		    wx = 50;
+		  if (s->width - event->xmotion.x_root < 50)
+		    wx = -50;
+		  if (event->xmotion.y_root < 50)
+		    wy = 50;
+		  if (s->height - event->xmotion.y_root < 50)
+		    wy = -50;
+		  if (wx != 0 || wy != 0)
 		    {
-		    	warpPointer (s, wx, wy);
-			ss->startX += wx;
-			ss->startY += wy;
+		      warpPointer (s, wx, wy);
+		      ss->startX += wx;
+		      ss->startY += wy;
 		    }
 		    
-		    damageScreen(s);
+		  damageScreen(s);
 		}
 
 	    }

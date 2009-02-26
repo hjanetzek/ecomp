@@ -542,6 +542,61 @@ rotatePaintOutput (CompScreen		   *s,
 }
 
 static Bool
+rotateInitiate2(CompScreen *s, int x, int y, int manual)
+{
+
+  ROTATE_SCREEN (s);
+  CUBE_SCREEN (s);
+
+  if (s->hsize < 2)
+    return FALSE;
+
+  if (rs->rotateHandle && rs->grabWindow)
+    {
+      if (otherScreenGrabExist (s, "rotate", "move", 0))
+	return FALSE;
+    }
+  else
+    {
+      if (otherScreenGrabExist (s, "rotate", "switcher", "cube", 0))
+	return FALSE;
+    }
+
+  rs->moving = FALSE;
+  rs->slow   = FALSE;
+
+  /* Set the rotation state for cube - if action is non-NULL,
+     we set it to manual (as we were called from the 'Initiate
+     Rotation' binding. Otherwise, we set it to Change. */
+  if (manual)
+    cs->rotationState = RotationManual;
+  else
+    cs->rotationState = RotationChange;
+
+  if (!rs->grabIndex)
+    {
+      rs->grabIndex = pushScreenGrab (s, s->invisibleCursor, "rotate");
+	  
+      if (rs->grabIndex)
+	{
+	  rs->savedPointer.x = x;
+	  rs->savedPointer.y = y;
+	}
+    }
+
+  if (rs->grabIndex)
+    {
+      rs->moveTo = 0.0f;
+
+      rs->grabbed = TRUE;
+      rs->snapTop = rs->opt[ROTATE_SCREEN_OPTION_SNAP_TOP].value.b;
+    }
+
+  return TRUE;
+}
+
+
+static Bool
 rotateInitiate (CompDisplay     *d,
 		CompAction      *action,
 		CompActionState state,
@@ -550,79 +605,39 @@ rotateInitiate (CompDisplay     *d,
 {
     CompScreen *s;
     Window     xid;
-    printf ("rotateInitiate 1\n");
 
     xid = getIntOptionNamed (option, nOption, "root", 0);
 
     s = findScreenAtDisplay (d, xid);
     if (s)
     {
-      printf ("rotateInitiate 2\n");
-	ROTATE_SCREEN (s);
-	CUBE_SCREEN (s);
+      int x, y;
 
-	if (s->hsize < 2)
-	    return FALSE;
-
-	if (rs->rotateHandle && rs->grabWindow)
-	{
-	    if (otherScreenGrabExist (s, "rotate", "move", 0))
-		return FALSE;
-	}
-	else
-	{
-	    if (otherScreenGrabExist (s, "rotate", "switcher", "cube", 0))
-		return FALSE;
-	}
-	printf ("rotateInitiate 3\n");
-	rs->moving = FALSE;
-	rs->slow   = FALSE;
-
-	/* Set the rotation state for cube - if action is non-NULL,
-	   we set it to manual (as we were called from the 'Initiate
-	   Rotation' binding. Otherwise, we set it to Change. */
-	if (action)
-	    cs->rotationState = RotationManual;
-	else
-	    cs->rotationState = RotationChange;
-
-	if (!rs->grabIndex)
-	{
-	  rs->grabIndex = pushScreenGrab (s, s->invisibleCursor,
-	  "rotate");
-	  //rs->grabIndex = 1;
-	  
-	    if (rs->grabIndex)
-	    {
-		int x, y;
-
-		x = getIntOptionNamed (option, nOption, "x", 0);
-		y = getIntOptionNamed (option, nOption, "y", 0);
-
-		rs->savedPointer.x = x;
-		rs->savedPointer.y = y;
-	    }
-	}
-
-	if (rs->grabIndex)
-	{
-	    rs->moveTo = 0.0f;
-
-	    rs->grabbed = TRUE;
-	    rs->snapTop = rs->opt[ROTATE_SCREEN_OPTION_SNAP_TOP].value.b;
-
-	    if (action)
-	      { 
-		if(state & CompActionStateInitKey)
-		  action->state |= CompActionStateTermKey;
-		else 
-		  action->state |= CompActionStateTermButton;
-	      }
-	}
+      x = getIntOptionNamed (option, nOption, "x", 0);
+      y = getIntOptionNamed (option, nOption, "y", 0);
+      rotateInitiate2(s, x, y, 0);
     }
 
     return TRUE;
 }
+
+static Bool
+rotateTerminate2(CompScreen *s)
+{
+  ROTATE_SCREEN (s);
+
+  if (rs->grabIndex)
+    {
+      //if (!xid)
+      rs->snapTop = FALSE;
+
+      rs->grabbed = FALSE;
+      damageScreen (s);
+	    
+    }
+  return TRUE;
+}
+
 
 static Bool
 rotateTerminate (CompDisplay     *d,
@@ -652,9 +667,9 @@ rotateTerminate (CompDisplay     *d,
 	    damageScreen (s);
 	    
 	}
+	
+	//ecompActionTerminateNotify (s, 1);
     }
-
-    if (action) action->state &= ~(CompActionStateTermButton | CompActionStateTermKey);
 
     return FALSE;
 }
@@ -806,24 +821,6 @@ rotateWithWindow (CompDisplay     *d,
   return FALSE;
 }
 
-/*
-static int
-rotateRotationTo (CompScreen *s,
-		  int	     face)
-{
-    int delta;
-
-    ROTATE_SCREEN (s);
-
-    delta = face - s->x - (rs->moveTo / (360.0f / s->hsize));
-    if (delta > s->hsize / 2)
-	delta -= s->hsize;
-    else if (delta < -(s->hsize / 2))
-	delta += s->hsize;
-
-    return delta;
-}
-*/
 
 static void
 rotateHandleEvent (CompDisplay *d,
@@ -877,64 +874,47 @@ rotateHandleEvent (CompDisplay *d,
 	    }
 	}
 	break;
-    case ClientMessage:
-      /*if (event->xclient.message_type == d->winActiveAtom)
+    case ButtonPress:
+      if (event->xbutton.button == Button1)
 	{
-	    CompWindow *w;
-
-	    w = findWindowAtDisplay (d, event->xclient.window);
-	    if (w)
+	  CompScreen *s;
+	  for (s = d->screens; s; s = s->next)
 	    {
-		int dx;
-
-		ROTATE_SCREEN (w->screen);
-
-		s = w->screen;
-
-
-		if (otherScreenGrabExist (s, "rotate", "switcher", "cube", 0))
-		    break;
-
-		rs->moveTo = 0.0f;
-
-		defaultViewportForWindow (w, &dx, NULL);
-		dx -= s->x;
-		if (dx)
-		{
-		    Window	 win;
-		    int		 i, x, y;
-		    unsigned int ui;
-		    CompOption   o[4];
-
-		    XQueryPointer (d->display, s->root,
-				   &win, &win, &x, &y, &i, &i, &ui);
-
-		    if (dx > (s->hsize + 1) / 2)
-			dx -= s->hsize;
-		    else if (dx < -(s->hsize + 1) / 2)
-			dx += s->hsize;
-
-		    o[0].type    = CompOptionTypeInt;
-		    o[0].name    = "x";
-		    o[0].value.i = x;
-
-		    o[1].type    = CompOptionTypeInt;
-		    o[1].name    = "y";
-		    o[1].value.i = y;
-
-		    o[2].type	 = CompOptionTypeInt;
-		    o[2].name	 = "root";
-		    o[2].value.i = s->root;
-
-		    o[3].type	 = CompOptionTypeInt;
-		    o[3].name	 = "direction";
-		    o[3].value.i = dx;
-
-		    rotate (d, NULL, 0, o, 4);
-		}
+	      rotateTerminate2(s);
+	      ecompActionTerminateNotify (s, 1);
 	    }
 	}
-	else*/
+      break;
+      
+    case ClientMessage:
+      if (event->xclient.message_type == d->ecoPluginAtom)
+	{
+	  if(event->xclient.data.l[1] != ECO_PLUGIN_ROTATE) break;
+
+	  CompScreen *s;
+	  
+	  Window win = event->xclient.data.l[0];
+
+	  if (!(s = findScreenAtDisplay (d, win)))
+	    {
+	      // XXX ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  unsigned int action = event->xclient.data.l[2];
+
+	  if (action == ECO_ACT_TERMINATE)
+	    {
+	      rotateTerminate2(s);
+	      ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  else
+	    {
+	      rotateInitiate2(s, pointerX, pointerY, 1);
+	    }
+	}
+      
+
       if (event->xclient.message_type == d->desktopViewportAtom)
 	{
 	  /* ingnore messages sent to e */
@@ -1002,8 +982,6 @@ rotateHandleEvent (CompDisplay *d,
 			dx -= s->hsize;
 		    else if (dx < -(s->hsize + 1) / 2)
 			dx += s->hsize;
-
-		    
 
 		    o[0].type    = CompOptionTypeInt;
 		    o[0].name    = "x";

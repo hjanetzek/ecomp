@@ -43,19 +43,10 @@ static CompMetadata switchMetadata;
 
 static int displayPrivateIndex;
 
-#define SWITCH_DISPLAY_OPTION_NEXT	     0
-#define SWITCH_DISPLAY_OPTION_PREV	     1
-#define SWITCH_DISPLAY_OPTION_NEXT_ALL	     2
-#define SWITCH_DISPLAY_OPTION_PREV_ALL	     3
-#define SWITCH_DISPLAY_OPTION_NEXT_NO_POPUP  4
-#define SWITCH_DISPLAY_OPTION_PREV_NO_POPUP  5
-#define SWITCH_DISPLAY_OPTION_NUM	     6
 
 typedef struct _SwitchDisplay {
   int		    screenPrivateIndex;
   HandleEventProc handleEvent;
-
-  CompOption opt[SWITCH_DISPLAY_OPTION_NUM];
 
   Atom selectWinAtom;
 } SwitchDisplay;
@@ -663,11 +654,7 @@ switchInitiate (CompScreen *s,
     }
 
   if (!ss->grabIndex)
-#ifdef KEYBINDING
     ss->grabIndex = pushScreenGrab (s, s->invisibleCursor, "switcher");
-#else
-  ss->grabIndex = 1;
-#endif
 
   if (ss->grabIndex)
     {
@@ -712,306 +699,60 @@ switchInitiate (CompScreen *s,
 }
 
 static Bool
-switchTerminate (CompDisplay     *d,
-		 CompAction      *action,
-		 CompActionState state,
-		 CompOption      *option,
-		 int	         nOption)
+switchTerminate(CompScreen *s, int cancel)
 {
-  CompScreen *s;
-  Window     xid;
-    
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
-  for (s = d->screens; s; s = s->next)
+  SWITCH_SCREEN (s);
+  
+  if (ss->grabIndex)
     {
-      SWITCH_SCREEN (s);
+      CompWindow *w;
 
-      if (xid && s->root != xid)
-	continue;
-
-      if (ss->grabIndex)
+      if (ss->popupWindow)
 	{
-	  CompWindow *w;
+	  XUnmapWindow (s->display->display, ss->popupWindow);
+	}
 
-	  if (ss->popupWindow)
+      ss->switching = FALSE;
+
+      if (cancel)
+	{
+	  ss->selectedWindow = None;
+	  ss->zoomedWindow   = None;
+	}
+
+      if(ss->selectedWindow)
+	{
+	  w = findWindowAtScreen (s, ss->selectedWindow);
+	  if (w)
 	    {
-	      XUnmapWindow (s->display->display, ss->popupWindow);
+	      activateWindow (w);
 	    }
-
-	  ss->switching = FALSE;
-
-	  if (state & CompActionStateCancel)
-	    {
-	      
-	      ss->selectedWindow = None;
-	      ss->zoomedWindow   = None;
-	    }
-
-	  //if (state && /* FIXME figure this out, i.e. needed for
-	  //cancel the action */ 
-	  if(ss->selectedWindow)
-	    {
-	      w = findWindowAtScreen (s, ss->selectedWindow);
-	      if (w)
-		{
-		  activateWindow (w);
-		  //sendWindowActivationRequest (w->screen, w->id);
-		}
-	    }
-#ifdef KEYBINDING
-	  removeScreenGrab (s, ss->grabIndex, 0);
-#endif
-	  ss->grabIndex = 0;
-
-	  if (!ss->zooming)
-	    {
-	      ss->selectedWindow = None;
-	      ss->zoomedWindow   = None;
-
-	      switchActivateEvent (s, FALSE);
-	    }
-	  else
-	    {
-	      ss->moreAdjust = 1;
-	    }
-
-	  ss->lastActiveNum = 0;
-
-	  damageScreen (s);
 	}
-      ecompActionTerminateNotify (s, 1);
-    }
+      
+      removeScreenGrab (s, ss->grabIndex, 0);
 
-  if (action)
-    action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
-
-  return FALSE;
-}
-
-static Bool
-switchNext (CompDisplay     *d,
-	    CompAction      *action,
-	    CompActionState state,
-	    CompOption      *option,
-	    int	            nOption)
-{
-  CompScreen *s;
-  Window     xid;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
-  s = findScreenAtDisplay (d, xid);
-  if (s)
-    {
-      SWITCH_SCREEN (s);
-
-      if (!ss->switching)
+      if (!ss->zooming)
 	{
-	  switchInitiate (s, FALSE, TRUE);
+	  ss->selectedWindow = None;
+	  ss->zoomedWindow   = None;
 
-	  if (state & CompActionStateInitKey)
-	    action->state |= CompActionStateTermKey;
-
-	  if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
-
-	  if (state & CompActionStateInitEdge)
-	    action->state |= CompActionStateTermEdge;
-
+	  switchActivateEvent (s, FALSE);
 	}
-
-      switchToWindow (s, TRUE);
-    }
-
-  return FALSE;
-}
-
-static Bool
-switchPrev (CompDisplay     *d,
-	    CompAction      *action,
-	    CompActionState state,
-	    CompOption      *option,
-	    int	            nOption)
-{
-  CompScreen *s;
-  Window     xid;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
-  s = findScreenAtDisplay (d, xid);
-  if (s)
-    {
-      SWITCH_SCREEN (s);
-
-      if (!ss->switching)
+      else
 	{
-	  switchInitiate (s, FALSE, TRUE);
-
-	  if (state & CompActionStateInitKey)
-	    action->state |= CompActionStateTermKey;
-
-	  if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
-
-	  if (state & CompActionStateInitEdge)
-	    action->state |= CompActionStateTermEdge;
+	  ss->moreAdjust = 1;
 	}
 
-      switchToWindow (s, FALSE);
-    }
+      ss->lastActiveNum = 0;
 
-  return FALSE;
+      damageScreen (s);
+    }
+  
+  ecompActionTerminateNotify (s, 1);
+
+  return TRUE;
 }
 
-static Bool
-switchNextAll (CompDisplay     *d,
-	       CompAction      *action,
-	       CompActionState state,
-	       CompOption      *option,
-	       int	       nOption)
-{
-  CompScreen *s;
-  Window     xid;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
-  s = findScreenAtDisplay (d, xid);
-  if (s)
-    {
-      SWITCH_SCREEN (s);
-
-      if (!ss->switching)
-	{
-	  switchInitiate (s, TRUE, TRUE);
-
-	  if (state & CompActionStateInitKey)
-	    action->state |= CompActionStateTermKey;
-
-	  if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
-
-	  if (state & CompActionStateInitEdge)
-	    action->state |= CompActionStateTermEdge;
-	}
-
-      switchToWindow (s, TRUE);
-    }
-
-  return FALSE;
-}
-
-static Bool
-switchPrevAll (CompDisplay     *d,
-	       CompAction      *action,
-	       CompActionState state,
-	       CompOption      *option,
-	       int	       nOption)
-{
-  CompScreen *s;
-  Window     xid;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
-  s = findScreenAtDisplay (d, xid);
-  if (s)
-    {
-      SWITCH_SCREEN (s);
-
-      if (!ss->switching)
-	{
-	  switchInitiate (s, TRUE, TRUE);
-
-	  if (state & CompActionStateInitKey)
-	    action->state |= CompActionStateTermKey;
-
-	  if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
-
-	  if (state & CompActionStateInitEdge)
-	    action->state |= CompActionStateTermEdge;
-	}
-
-      switchToWindow (s, FALSE);
-    }
-
-  return FALSE;
-}
-
-static Bool
-switchNextNoPopup (CompDisplay     *d,
-		   CompAction      *action,
-		   CompActionState state,
-		   CompOption      *option,
-		   int	           nOption)
-{
-  CompScreen *s;
-  Window     xid;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
-  s = findScreenAtDisplay (d, xid);
-  if (s)
-    {
-      SWITCH_SCREEN (s);
-
-      if (!ss->switching)
-	{
-	  switchInitiate (s, FALSE, FALSE);
-
-	  if (state & CompActionStateInitKey)
-	    action->state |= CompActionStateTermKey;
-
-	  if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
-
-	  if (state & CompActionStateInitEdge)
-	    action->state |= CompActionStateTermEdge;
-
-	}
-
-      switchToWindow (s, TRUE);
-    }
-
-  return FALSE;
-}
-
-static Bool
-switchPrevNoPopup (CompDisplay     *d,
-		   CompAction      *action,
-		   CompActionState state,
-		   CompOption      *option,
-		   int	           nOption)
-{
-  CompScreen *s;
-  Window     xid;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
-  s = findScreenAtDisplay (d, xid);
-  if (s)
-    {
-      SWITCH_SCREEN (s);
-
-      if (!ss->switching)
-	{
-	  switchInitiate (s, FALSE, FALSE);
-
-	  if (state & CompActionStateInitKey)
-	    action->state |= CompActionStateTermKey;
-
-	  if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
-
-	  if (state & CompActionStateInitEdge)
-	    action->state |= CompActionStateTermEdge;
-	}
-
-      switchToWindow (s, FALSE);
-    }
-
-  return FALSE;
-}
 
 static void
 switchWindowRemove (CompDisplay *d,
@@ -1084,7 +825,7 @@ switchWindowRemove (CompDisplay *d,
 	  o.name    = "root";
 	  o.value.i = w->screen->root;
 
-	  switchTerminate (d, NULL, 0, &o, 1);
+	  switchTerminate (w->screen, 1);
 	  return;
 	}
 
@@ -1129,12 +870,59 @@ switchWindowRemove (CompDisplay *d,
     }
 }
 
+
 static void
 switchHandleEvent (CompDisplay *d,
 		   XEvent      *event)
 {
   SWITCH_DISPLAY (d);
+  switch (event->type)
+    {
+    case ClientMessage:
+      if (event->xclient.message_type == d->ecoPluginAtom)
+	{
+	  CompScreen *s;
+	  
+	  if(event->xclient.data.l[1] != ECO_PLUGIN_SWITCH) break;
 
+	  Window win = event->xclient.data.l[0];
+	  
+	  if (!(s = findScreenAtDisplay (d, win)))
+	    {
+	      // XXX ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  unsigned int action = event->xclient.data.l[2];
+	  unsigned int option = event->xclient.data.l[3];
+	  unsigned int option2 = event->xclient.data.l[4];
+
+	  if (action == ECO_ACT_TERMINATE)
+	    {
+	      switchTerminate(s, option);  
+	    }
+	  else  // action == INITIATE/CYCLE
+	    {
+	      SWITCH_SCREEN(s);
+	      if (!ss->switching)
+		{
+		  if(option == ECO_ACT_OPT_INITIATE)
+		    switchInitiate(s, FALSE, TRUE);
+		  else if(option ==  ECO_ACT_OPT_INITIATE_ALL)
+		    switchInitiate(s, TRUE, TRUE);
+		}
+	      
+	      if (ss->switching)
+		{
+		  if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+		    switchToWindow (s, TRUE);
+		  else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+		    switchToWindow (s, FALSE);
+		}
+	    }
+	}
+    }
+  
+  
   UNWRAP (sd, d, handleEvent);
   (*d->handleEvent) (d, event);
   WRAP (sd, d, handleEvent, switchHandleEvent);
@@ -1832,43 +1620,6 @@ switchDamageWindowRect (CompWindow *w,
   return status;
 }
 
-static CompOption *
-switchGetDisplayOptions (CompPlugin  *plugin,
-			 CompDisplay *display,
-			 int	     *count)
-{
-  SWITCH_DISPLAY (display);
-
-  *count = NUM_OPTIONS (sd);
-  return sd->opt;
-}
-
-static Bool
-switchSetDisplayOption (CompPlugin  *plugin,
-			CompDisplay     *display,
-			char	        *name,
-			CompOptionValue *value)
-{
-  CompOption *o;
-
-  SWITCH_DISPLAY (display);
-
-  o = compFindOption (sd->opt, NUM_OPTIONS (sd), name, NULL);
-  if (!o)
-    return FALSE;
-
-  return compSetDisplayOption (display, o, value);
-}
-
-static const CompMetadataOptionInfo switchDisplayOptionInfo[] = {
-  { "next", "action", 0, switchNext, switchTerminate },
-  { "prev", "action", 0, switchPrev, switchTerminate },
-  { "next_all", "action", 0, switchNextAll, switchTerminate },
-  { "prev_all", "action", 0, switchPrevAll, switchTerminate },
-  { "next_no_popup", "action", 0, switchNextNoPopup, switchTerminate },
-  { "prev_no_popup", "action", 0, switchPrevNoPopup, switchTerminate }
-};
-
 static Bool
 switchInitDisplay (CompPlugin  *p,
 		   CompDisplay *d)
@@ -1879,20 +1630,9 @@ switchInitDisplay (CompPlugin  *p,
   if (!sd)
     return FALSE;
 
-  if (!compInitDisplayOptionsFromMetadata (d,
-					   &switchMetadata,
-					   switchDisplayOptionInfo,
-					   sd->opt,
-					   SWITCH_DISPLAY_OPTION_NUM))
-    {
-      free (sd);
-      return FALSE;
-    }
-
   sd->screenPrivateIndex = allocateScreenPrivateIndex (d);
   if (sd->screenPrivateIndex < 0)
     {
-      compFiniDisplayOptions (d, sd->opt, SWITCH_DISPLAY_OPTION_NUM);
       free (sd);
       return FALSE;
     }
@@ -1917,7 +1657,7 @@ switchFiniDisplay (CompPlugin  *p,
 
   UNWRAP (sd, d, handleEvent);
 
-  compFiniDisplayOptions (d, sd->opt, SWITCH_DISPLAY_OPTION_NUM);
+  //compFiniDisplayOptions (d, sd->opt, SWITCH_DISPLAY_OPTION_NUM);
 
   free (sd);
 }
@@ -2037,11 +1777,11 @@ static Bool
 switchInit (CompPlugin *p)
 {
   if (!compInitPluginMetadataFromInfo (&switchMetadata,
-				       p->vTable->name,
-				       switchDisplayOptionInfo,
-				       SWITCH_DISPLAY_OPTION_NUM,
-				       switchScreenOptionInfo,
-				       SWITCH_SCREEN_OPTION_NUM))
+  				       p->vTable->name,
+  				       NULL,
+  				       0,
+  				       switchScreenOptionInfo,
+  				       SWITCH_SCREEN_OPTION_NUM))
     return FALSE;
 
   displayPrivateIndex = allocateDisplayPrivateIndex ();
@@ -2088,8 +1828,8 @@ CompPluginVTable switchVTable = {
   switchFiniScreen,
   0, /* InitWindow */
   0, /* FiniWindow */
-  switchGetDisplayOptions,
-  switchSetDisplayOption,
+  0, //switchGetDisplayOptions,
+  0, //switchSetDisplayOption,
   switchGetScreenOptions,
   switchSetScreenOption
 };

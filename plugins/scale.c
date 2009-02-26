@@ -1080,26 +1080,18 @@ scaleTerminateTimeout(void *closure)
   return FALSE;
 }
 
-
 static Bool
-scaleTerminate (CompDisplay     *d,
-		CompAction      *action,
-		CompActionState state,
-		CompOption      *option,
-		int	        nOption)
+scaleTerminate2(CompDisplay *d, Window root, Bool sendToDesk, Bool Cancel)
 {
   CompScreen *s;
-  Window     xid;
 
-  SCALE_DISPLAY (d);
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-
+  SCALE_DISPLAY(d);
+  
   for (s = d->screens; s; s = s->next)
     {
       SCALE_SCREEN (s);
 
-      if (xid && s->root != xid)
+      if (root && s->root != root)
 	continue;
 
       if (ss->grab)
@@ -1135,7 +1127,7 @@ scaleTerminate (CompDisplay     *d,
 		  w = findWindowAtScreen (s, sd->lastActiveWindow);
 		  if (w)
 		    {
-		      int x, y, toDesk = 0;
+		      int x, y;
 
 		      //defaultViewportForWindow (w, &x, &y);
 		      x = w->initialViewportX;
@@ -1143,12 +1135,12 @@ scaleTerminate (CompDisplay     *d,
 
 		      if (x != s->x || y != s->y)
 			{	
-			  if (nOption == 2)
-			    toDesk = getIntOptionNamed (option, nOption, "todesk", 1);
+			  //if (nOption == 2)
+			  //  toDesk = getIntOptionNamed (option, nOption, "todesk", 1);
 			  /* XXX this disabled the animation after
 			     scale... some people might like
 			     it. better add an option for this */
-			  if (toDesk)
+			  if (sendToDesk)
 			    {
 			      SCALE_WINDOW (w);
 			      sw->tx += (x - s->x) * s->width;
@@ -1175,9 +1167,6 @@ scaleTerminate (CompDisplay     *d,
 			
 		      raiseWindow(w);
 		      activateWindow(w);
-		      
-		      //sendWindowActivationRequest(s, w->id);
-		      
 		    }
 		}
 	      /* hack: wait for e to restack the window */
@@ -1185,8 +1174,6 @@ scaleTerminate (CompDisplay     *d,
 		compAddTimeout(50, scaleTerminateTimeout, s);
 	      else
 		compAddTimeout(0, scaleTerminateTimeout, s);
-	      /* ss->state = SCALE_STATE_IN;
-		 damageScreen (s);*/
 	    }
 
 	  sd->lastActiveNum = 0;
@@ -1194,9 +1181,29 @@ scaleTerminate (CompDisplay     *d,
       
       ecompActionTerminateNotify (s, 1);
     }
+  return TRUE;
+}
 
-  if (state & CompActionStateTermButton)
-    action->state &= ~CompActionStateTermButton;
+
+static Bool
+scaleTerminate (CompDisplay     *d,
+		CompAction      *action,
+		CompActionState state,
+		CompOption      *option,
+		int	        nOption)
+{
+  Window     xid;
+  Bool sendToDesk = 0;
+  
+  xid = getIntOptionNamed (option, nOption, "root", 0);
+
+  if (nOption == 2)
+    sendToDesk = getIntOptionNamed (option, nOption, "todesk", 1);
+
+  scaleTerminate2(d, xid, FALSE, sendToDesk);
+  
+  /* if (state & CompActionStateTermButton)
+   *   action->state &= ~CompActionStateTermButton; */
 
   if (state & CompActionStateTermEdge)
     action->state &= ~CompActionStateTermEdge;
@@ -1238,6 +1245,52 @@ scaleEnsureDndRedirectWindow (CompScreen *s)
     return TRUE;
 }
 
+
+static Bool
+scaleInitiateCommon2(CompScreen *s, int state)
+{
+  SCALE_SCREEN(s);
+  SCALE_DISPLAY(s->display);
+
+  /*XXX this overwrites current matc from scaleInitiateCommon */
+  ss->currentMatch = &ss->opt[SCALE_SCREEN_OPTION_WINDOW_MATCH].value.match;
+  
+  if (!layoutThumbs (s))
+    {
+      return FALSE;
+    }
+
+  if (state & CompActionStateInitEdgeDnd)
+    {
+      if (scaleEnsureDndRedirectWindow (s))
+	ss->grab = TRUE;
+    }
+  else if (!ss->grabIndex)
+    {
+      ss->grabIndex = pushScreenGrab (s, ss->cursor, "scale");
+      if (ss->grabIndex)
+	ss->grab = TRUE;
+    }
+
+  if (ss->grab)
+    {
+      if (!sd->lastActiveNum)
+	sd->lastActiveNum = s->activeNum - 1;
+
+      sd->lastActiveWindow = None;
+      sd->selectedWindow   = s->display->activeWindow;
+
+      ss->state = SCALE_STATE_OUT;
+	
+      scaleActivateEvent (s, TRUE);
+
+      damageScreen (s);
+    }
+  
+  return TRUE;
+}
+
+
 static Bool
 scaleInitiateCommon (CompScreen      *s,
 		     CompAction      *action,
@@ -1246,8 +1299,9 @@ scaleInitiateCommon (CompScreen      *s,
 		     int	     nOption)
 {
     CompMatch *match;
-
-    SCALE_DISPLAY (s->display);
+    //    int ret = TRUE;
+    
+    //    SCALE_DISPLAY (s->display);
     SCALE_SCREEN (s);
 
     if (otherScreenGrabExist (s, "scale", 0))
@@ -1269,42 +1323,7 @@ scaleInitiateCommon (CompScreen      *s,
 	}
     }
 
-    if (!layoutThumbs (s))
-      {
-	return FALSE;
-      }
-    
-    if (state & CompActionStateInitEdgeDnd)
-    {
-	if (scaleEnsureDndRedirectWindow (s))
-	    ss->grab = TRUE;
-    }
-    else if (!ss->grabIndex)
-    {
-	ss->grabIndex = pushScreenGrab (s, ss->cursor, "scale");
-	if (ss->grabIndex)
-	    ss->grab = TRUE;
-    }
-    
-    if (ss->grab)
-    {
-	if (!sd->lastActiveNum)
-	    sd->lastActiveNum = s->activeNum - 1;
-
-	sd->lastActiveWindow = None; //hs->display->activeWindow;
-	sd->selectedWindow   = s->display->activeWindow;
-
-	ss->state = SCALE_STATE_OUT;
-	
-	scaleActivateEvent (s, TRUE);
-
-	damageScreen (s);
-    }
-    
-    if (state & CompActionStateInitButton)
-	action->state |= CompActionStateTermButton;
-
-    return FALSE;
+    return scaleInitiateCommon2(s, state);
 }
 
 static Bool
@@ -1867,6 +1886,7 @@ scaleHoverTimeout (void *closure)
     return FALSE;
 }
 
+
 static void
 scaleHandleEvent (CompDisplay *d,
 		  XEvent      *event)
@@ -1969,8 +1989,6 @@ scaleHandleEvent (CompDisplay *d,
 	    {
 		Bool focus = 0;
 
-		//focus = !d->opt[COMP_DISPLAY_OPTION_CLICK_TO_FOCUS].value.b;
-
 		scaleSelectWindowAt (s,
 				     event->xmotion.x_root,
 				     event->xmotion.y_root,
@@ -1979,7 +1997,57 @@ scaleHandleEvent (CompDisplay *d,
 	}
 	break;
     case ClientMessage:
-	if (event->xclient.message_type == d->xdndPositionAtom)
+      if (event->xclient.message_type == d->ecoPluginAtom)
+	{
+	  Window win = event->xclient.data.l[0];
+	  if(event->xclient.data.l[1] != ECO_PLUGIN_SCALE) break;
+	  
+	  if (!(s = findScreenAtDisplay (d, win)))
+	    {
+	      // XXX ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  unsigned int action = event->xclient.data.l[2];
+	  unsigned int option = event->xclient.data.l[3];
+	  unsigned int option2 = event->xclient.data.l[4];
+
+	  if ((action == ECO_ACT_TERMINATE) ||
+	      (action == ECO_ACT_SEND_TO_CURRENT_DESK))
+	    {
+	      scaleTerminate2(d, win,
+			      (action == ECO_ACT_SEND_TO_CURRENT_DESK),
+			      (option == ECO_ACT_OPT_TERMINATE_CANCEL)); 
+	    }
+	  else
+	    {
+	      SCALE_SCREEN(s);
+	      if (ss->state != SCALE_STATE_WAIT &&
+		  ss->state != SCALE_STATE_OUT)
+		{
+		  switch(option)
+		    {
+		    case ECO_ACT_OPT_INITIATE:
+		      ss->type = ScaleTypeNormal;
+		      break;
+		    case ECO_ACT_OPT_INITIATE_ALL:
+		      ss->type = ScaleTypeAll;
+		      break;
+		    }
+		      
+		  if (!scaleInitiateCommon2 (s, 0)) // dnd-start
+		    ecompActionTerminateNotify (s, 1);
+		}
+	      else if (ss->state == SCALE_STATE_WAIT ||
+			ss->state == SCALE_STATE_OUT)
+		{
+		  if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+		    scaleMoveFocusWindow (s, 1, 0);
+		  else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+		    scaleMoveFocusWindow (s, -1, 0);			
+		}
+	    }
+	}
+	else if (event->xclient.message_type == d->xdndPositionAtom)
 	{
 	    CompWindow *w;
 

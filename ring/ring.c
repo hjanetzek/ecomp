@@ -1121,6 +1121,49 @@ ringDonePaintScreen (CompScreen *s)
     WRAP (rs, s, donePaintScreen, ringDonePaintScreen);
 }
 
+
+static Bool
+ringTerm(CompScreen *s, int cancel)
+{
+  RING_SCREEN (s);
+
+  if (rs->grabIndex)
+    {
+      removeScreenGrab (s, rs->grabIndex, 0);
+      rs->grabIndex = 0;
+    }
+
+  if (rs->state != RingStateNone)
+    {
+      CompWindow *w;
+
+      for (w = s->windows; w; w = w->next)
+	{
+	  RING_WINDOW (w);
+    
+	  if (rw->slot)
+	    {
+	      free (rw->slot);
+	      rw->slot = NULL;
+
+	      rw->adjust = TRUE;
+	    }
+	}
+      rs->moreAdjust = TRUE;
+      rs->state = RingStateIn;
+      damageScreen (s);
+
+      if (!cancel && rs->selectedWindow)
+	{
+	  w = findWindowAtScreen (s, rs->selectedWindow);
+	  if (w)
+	    activateWindow (w);
+	}
+    }
+
+  return TRUE;
+}
+
 static Bool
 ringTerminate (CompDisplay     *d,
 	       CompAction      *action,
@@ -1135,48 +1178,59 @@ ringTerminate (CompDisplay     *d,
 
     for (s = d->screens; s; s = s->next)
     {
-	RING_SCREEN (s);
+      if (xid && s->root != xid)
+	continue;
 
-	if (xid && s->root != xid)
-	    continue;
-
-	if (rs->grabIndex)
-    	{
-	  removeScreenGrab (s, rs->grabIndex, 0);
-    	    rs->grabIndex = 0;
-	}
-
-	if (rs->state != RingStateNone)
-    	{
-    	    CompWindow *w;
-
-    	    for (w = s->windows; w; w = w->next)
-    	    {
-    		RING_WINDOW (w);
-    
-		if (rw->slot)
-		{
-		    free (rw->slot);
-		    rw->slot = NULL;
-
-    		    rw->adjust = TRUE;
-		}
-	    }
-	    rs->moreAdjust = TRUE;
-    	    rs->state = RingStateIn;
-    	    damageScreen (s);
-
-	    if (!(state & CompActionStateCancel) && rs->selectedWindow)
-	    {
-		w = findWindowAtScreen (s, rs->selectedWindow);
-		if (w)
-		  activateWindow (w);
-		  //sendWindowActivationRequest (s, w->id);
-	    }
-	}
+      ringTerm(s, (state & CompActionStateCancel));
     }
 
     return FALSE;
+}
+
+static Bool
+ringInitiate2(CompScreen *s, int type)
+{
+  //  CompMatch *match;
+  int       count; 
+
+  RING_SCREEN (s);
+  
+  if ((rs->state == RingStateNone) || (rs->state == RingStateIn))
+    {
+      rs->type = type;
+  
+      rs->currentMatch = ringGetWindowMatch (s);
+
+      count = ringCountWindows (s);
+
+      if (count < 1)
+	return FALSE;
+
+      if (!rs->grabIndex)
+	{
+	  if (ringGetSelectWithMouse (s))
+	    rs->grabIndex = pushScreenGrab (s, rs->cursor, "ring");
+	  else
+	    rs->grabIndex = pushScreenGrab (s, s->invisibleCursor, "ring");
+	}
+
+      if (rs->grabIndex)
+	{
+	  rs->state = RingStateOut;
+
+	  if (!ringCreateWindowList (s))
+	    return FALSE;
+
+	  rs->selectedWindow = rs->windows[0]->id;
+	  ringRenderWindowTitle (s);
+	  rs->rotTarget = 0;
+
+	  rs->moreAdjust = TRUE;
+	  damageScreen (s);
+	}
+    }
+  
+  return TRUE;
 }
 
 static Bool
@@ -1236,12 +1290,6 @@ ringInitiate (CompScreen      *s,
 	damageScreen (s);
     }
 
-    if (state & CompActionStateInitButton)
-	action->state |= CompActionStateTermButton;
-
-    if (state & CompActionStateInitKey)
-	action->state |= CompActionStateTermKey;
-
     return TRUE;
 }
 
@@ -1269,12 +1317,6 @@ ringDoSwitch (CompDisplay     *d,
 	{
 	  rs->type = type;
 	  ret = ringInitiate (s, action, state, option, nOption);
-
-	    if (state & CompActionStateInitKey)
-		action->state |= CompActionStateTermKey;
-
-	    if (state & CompActionStateInitButton)
-		action->state |= CompActionStateTermButton;
 
 	    if (state & CompActionStateInitEdge)
 		action->state |= CompActionStateTermEdge;
@@ -1473,56 +1515,105 @@ ringWindowRemove (CompDisplay * d,
     }
 }
 
+
 static void
 ringHandleEvent (CompDisplay *d,
 		 XEvent      *event)
 {
-    RING_DISPLAY (d);
+  RING_DISPLAY (d);
 
-    UNWRAP (rd, d, handleEvent);
-    (*d->handleEvent) (d, event);
-    WRAP (rd, d, handleEvent, ringHandleEvent);
-
-    switch (event->type) {
-    case PropertyNotify:
-	if (event->xproperty.atom == XA_WM_NAME)
+  switch (event->type)
+    {
+    case ClientMessage:
+      if (event->xclient.message_type == d->ecoPluginAtom)
 	{
-	    CompWindow *w;
-	    w = findWindowAtDisplay (d, event->xproperty.window);
-	    if (w)
+	  if(event->xclient.data.l[1] != ECO_PLUGIN_RING) break;
+
+	  CompScreen *s;
+	  
+	  Window win = event->xclient.data.l[0];
+
+	  if (!(s = findScreenAtDisplay (d, win)))
 	    {
-    		RING_SCREEN (w->screen);
-    		if (rs->grabIndex && (w->id == rs->selectedWindow))
-    		{
-    		    ringRenderWindowTitle (w->screen);
-    		    damageScreen (w->screen);
+	      // XXX ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  unsigned int action = event->xclient.data.l[2];
+	  unsigned int option = event->xclient.data.l[3];
+	  unsigned int option2 = event->xclient.data.l[4];
+
+	  if (action == ECO_ACT_TERMINATE)
+	    {
+	      ringTerm (s, (option == ECO_ACT_OPT_TERMINATE_CANCEL));
+	      ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  else
+	    {
+	      int type = RingTypeNormal;
+	      if (option == ECO_ACT_OPT_INITIATE_ALL)
+		type = RingTypeAll;
+	      else if (option == ECO_ACT_OPT_INITIATE_GROUP)
+		type = RingTypeGroup;
+	      
+	      if (!ringInitiate2(s, type))
+		{
+		  ecompActionTerminateNotify (s, 1);
+		  break;
 		}
-	    }
-	}
-	break;
-    case ButtonPress:
-	if (event->xbutton.button == Button1)
-	{
-	    CompScreen *s;
-	    s = findScreenAtDisplay (d, event->xbutton.root);
-	    if (s)
-	    {
-    		RING_SCREEN (s);
 
-    		if (rs->grabIndex)
-    		    ringWindowSelectAt (s, 
-					event->xbutton.x_root, 
-					event->xbutton.y_root);
+	      if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+		switchToWindow(s, TRUE);
+	      else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+		switchToWindow(s, FALSE);
 	    }
 	}
-	break;
-    case UnmapNotify:
-	ringWindowRemove (d, event->xunmap.window);
-	break;
-    case DestroyNotify:
-	ringWindowRemove (d, event->xdestroywindow.window);
-	break;
     }
+    
+  UNWRAP (rd, d, handleEvent);
+  (*d->handleEvent) (d, event);
+  WRAP (rd, d, handleEvent, ringHandleEvent);
+
+  switch (event->type) {
+  case PropertyNotify:
+    if (event->xproperty.atom == XA_WM_NAME)
+      {
+	CompWindow *w;
+	w = findWindowAtDisplay (d, event->xproperty.window);
+	if (w)
+	  {
+	    RING_SCREEN (w->screen);
+	    if (rs->grabIndex && (w->id == rs->selectedWindow))
+	      {
+		ringRenderWindowTitle (w->screen);
+		damageScreen (w->screen);
+	      }
+	  }
+      }
+    break;
+  case ButtonPress:
+    if (event->xbutton.button == Button1)
+      {
+	CompScreen *s;
+	s = findScreenAtDisplay (d, event->xbutton.root);
+	if (s)
+	  {
+	    RING_SCREEN (s);
+
+	    if (rs->grabIndex)
+	      ringWindowSelectAt (s, 
+				  event->xbutton.x_root, 
+				  event->xbutton.y_root);
+	  }
+      }
+    break;
+  case UnmapNotify:
+    ringWindowRemove (d, event->xunmap.window);
+    break;
+  case DestroyNotify:
+    ringWindowRemove (d, event->xdestroywindow.window);
+    break;
+  }
 }
 
 static Bool

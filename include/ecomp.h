@@ -28,6 +28,34 @@
 
 #define ABIVERSION 20070915
 
+#define ECO_PLUGIN_SCALE  0
+#define ECO_PLUGIN_SWITCH 1
+#define ECO_PLUGIN_EXPO   2
+#define ECO_PLUGIN_SHIFT  3
+#define ECO_PLUGIN_RING   4
+#define ECO_PLUGIN_ROTATE 5
+#define ECO_PLUGIN_WATER  6
+
+#define ECO_ACT_INITIATE 0
+#define ECO_ACT_TERMINATE 1
+#define ECO_ACT_CYCLE 2
+#define ECO_ACT_SEND_TO_CURRENT_DESK 3 
+
+#define ECO_ACT_OPT_INITIATE 0
+#define ECO_ACT_OPT_INITIATE_ALL 1
+#define ECO_ACT_OPT_INITIATE_GROUP 2
+
+#define ECO_ACT_OPT_TERMINATE 0
+#define ECO_ACT_OPT_TERMINATE_CANCEL 1
+
+#define ECO_ACT_OPT_CYCLE_NEXT 1
+#define ECO_ACT_OPT_CYCLE_PREV 2
+#define ECO_ACT_OPT_CYCLE_LEFT 3
+#define ECO_ACT_OPT_CYCLE_RIGHT 4
+#define ECO_ACT_OPT_CYCLE_UP 5
+#define ECO_ACT_OPT_CYCLE_DOWN 6
+
+
 //#define KEYBINDING 1
 
 #include <stdio.h>
@@ -895,6 +923,7 @@ struct _CompDisplay {
     Atom atomPairAtom;
 
     Atom eManagedAtom;
+    Atom ecoPluginAtom;
   
     unsigned int      lastPing;
     CompTimeoutHandle pingHandle;

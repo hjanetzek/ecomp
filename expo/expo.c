@@ -193,11 +193,11 @@ expoTermExpo (CompDisplay     *d,
       ecompActionTerminateNotify (s, 1);
     }
 
-  if (state & CompActionStateTermButton)
-    action->state &= ~CompActionStateTermButton;
-
-  if (state & CompActionStateTermKey)
-    action->state &= ~CompActionStateTermKey;
+  /* if (state & CompActionStateTermButton)
+   *   action->state &= ~CompActionStateTermButton;
+   * 
+   * if (state & CompActionStateTermKey)
+   *   action->state &= ~CompActionStateTermKey; */
 
   if (state & CompActionStateTermEdge)
     action->state &= ~CompActionStateTermEdge;
@@ -255,113 +255,6 @@ expoExpo (CompDisplay     *d,
 }
 
 
-static Bool
-expoNext (CompDisplay     *d,
-  	  CompAction      *action,
-	  CompActionState state,
-	  CompOption      *option,
-	  int	           nOption)
-{  
-  CompScreen *s;
-  Window xid;
-  Bool ret = FALSE;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-  s   = findScreenAtDisplay (d, xid);
-  
-  if (s)
-    {
-      EXPO_SCREEN (s);
-
-      if (!es->expoMode)
-	{
-	  ret = expoExpo (d, action, state, option, nOption);
-	}
-
-      if (es->expoMode)
-	{
-	  if (es->selectedVX == s->hsize - 1)
-	    {
-	      if (es->selectedVY == s->vsize - 1)
-		{
-		  expoMoveFocusViewport (s, - (s->hsize - 1),  - (s->vsize - 1));
-		}
-	      else
-		{
-		  expoMoveFocusViewport (s, - (s->hsize - 1),  1);
-		}
-	    }
-	  else
-	    {
-	      expoMoveFocusViewport (s, 1,  0);
-	    }
-	  ret = TRUE;
-	}
-
-      if (state & CompActionStateInitKey)
-	action->state |= CompActionStateTermKey;
-
-      if (state & CompActionStateInitButton)
-	action->state |= CompActionStateTermButton;
-
-    }
-  
-  return ret;
-}
-
-static Bool
-expoPrev (CompDisplay     *d,
-  	  CompAction      *action,
-	  CompActionState state,
-	  CompOption      *option,
-	  int	           nOption)
-{
-  CompScreen *s;
-  Window xid;
-  Bool ret = FALSE;
-
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-  s   = findScreenAtDisplay (d, xid);
-  
-  if (s)
-    {
-      EXPO_SCREEN (s);
-
-      if (!es->expoMode)
-	{
-	  ret = expoExpo (d, action, state, option, nOption);
-	}
-
-      if (es->expoMode)
-	{
-	  if (es->selectedVX == 0)
-	    {
-	      if (es->selectedVY == 0)
-		{
-		  expoMoveFocusViewport (s, (s->hsize - 1),  (s->vsize - 1));
-		}
-	      else
-		{
-		  expoMoveFocusViewport (s, (s->hsize - 1),  -1);
-		}
-	    }
-	  else
-	    {
-	      expoMoveFocusViewport (s, -1,  0);
-	    }
-	  ret = TRUE;
-	}
-
-      if (state & CompActionStateInitKey)
-	action->state |= CompActionStateTermKey;
-
-      if (state & CompActionStateInitButton)
-	action->state |= CompActionStateTermButton;
-
-    }
-  
-  return ret;
-}
 
 /* XXX move this to window - duplicates scale */
 static void
@@ -458,6 +351,7 @@ expoFinishWindowMovement (CompWindow *w)
   sendMoveResizeWindowMessage(es->dndWindow, 0, 0, 0, 0);
 }
 
+
 static void
 expoHandleEvent (CompDisplay *d,
 		 XEvent      *event)
@@ -467,88 +361,116 @@ expoHandleEvent (CompDisplay *d,
 
   switch (event->type)
     {
-    case KeyPress:
-      s = findScreenAtDisplay (d, event->xkey.root);
-
-      if (s)
+    case ClientMessage:
+      if (event->xclient.message_type == d->ecoPluginAtom)
 	{
-	  EXPO_SCREEN (s);
+	  if(event->xclient.data.l[1] != ECO_PLUGIN_EXPO) break;
 
-	  if (es->expoMode)
+	  Window win = event->xclient.data.l[0];
+
+	  if (!(s = findScreenAtDisplay (d, win)))
 	    {
-	      if (event->xkey.keycode == ed->leftKey)
-		expoMoveFocusViewport (s, -1, 0);
-	      else if (event->xkey.keycode == ed->rightKey)
-		expoMoveFocusViewport (s, 1, 0);
-	      else if (event->xkey.keycode == ed->upKey)
-		expoMoveFocusViewport (s, 0, -1);
-	      else if (event->xkey.keycode == ed->downKey)
-		expoMoveFocusViewport (s, 0, 1);
-		
-	      // a, s
-	      else if (event->xkey.keycode == 38)
-		{
-		  if (es->selectedVX == 0)
-		    {
-		      if (es->selectedVY > 0)
-			expoMoveFocusViewport (s, s->hsize - 1, -1);
-		      else 
-			expoMoveFocusViewport (s, s->hsize - 1, s->vsize - 1);			  
-		    }
-		  else expoMoveFocusViewport (s, -1, 0);
-		}
-	      else if (event->xkey.keycode == 39)
-		{
-		  if (es->selectedVX == s->hsize - 1)
-		    {
-		      if (es->selectedVY == s->vsize - 1)
-			expoMoveFocusViewport (s, - (s->hsize - 1), - (s->vsize - 1));
-		      else 
-			expoMoveFocusViewport (s, - (s->hsize - 1), 1);			  
-		    }
-		  else expoMoveFocusViewport (s, 1, 0);
-		}
-		
-	      // j,l,i,k
-	      else if (event->xkey.keycode == 44)
-		{
-		  if(es->selectedVX == 0)
-		    expoMoveFocusViewport (s, s->hsize - 1, 0);
-		  else
-		    expoMoveFocusViewport (s, -1, 0);
-		}
-	      else if (event->xkey.keycode == 46)
-		{
-		  if(es->selectedVX == s->hsize - 1)
-		    expoMoveFocusViewport (s, - (s->hsize - 1), 0);
-		  else
-		    expoMoveFocusViewport (s, 1, 0);
-		}
-	      else if (event->xkey.keycode == 31)
-		{
-		  if(es->selectedVY == 0)
-		    expoMoveFocusViewport (s, 0, s->vsize - 1);
-		  else
-		    expoMoveFocusViewport (s, 0, -1);
-		}
-	      else if (event->xkey.keycode == 45)
-		{
-		  if(es->selectedVY == s->vsize -1)
-		    expoMoveFocusViewport (s, 0, - (s->vsize - 1));
-		  else
-		    expoMoveFocusViewport (s, 0, 1);
-		}
-	      // d
-	      else if (event->xkey.keycode == 40)
-		{
-		  expoTermExpo(d, NULL, 0, NULL, 0);
-		}
+	      // XXX ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  unsigned int action = event->xclient.data.l[2];
+	  unsigned int option = event->xclient.data.l[3];
+	  unsigned int option2 = event->xclient.data.l[4];
 
+	  if (action == ECO_ACT_TERMINATE)
+	    {
+	      for (s = d->screens; s; s = s->next)
+		{
+		  EXPO_SCREEN (s);
+      
+		  if (!es->expoMode)
+		    continue;
+      
+		  es->expoMode = FALSE;
+       
+		  if (es->dndWindow)
+		    syncWindowPosition (es->dndWindow);
+
+		  if (option == ECO_ACT_OPT_TERMINATE_CANCEL)
+		    es->vpUpdateMode = VPUpdatePrevious;
+		  else
+		    {
+		      moveScreenViewport (s, s->x - es->selectedVX, 
+					  s->y - es->selectedVY, TRUE);
+		      /*XXX temporary? */
+		      sendScreenViewportMessage(s);
+		      // focusDefaultWindow (s->display);
+		      es->vpUpdateMode = VPUpdateNone;
+		    }
+	
+		  es->dndState  = DnDNone;
+		  es->dndWindow = 0;
+
+		  damageScreen (s);
+		  // focusDefaultWindow (s->display);
+		  ecompActionTerminateNotify (s, 1);
+		}
+	      break;
+	    }
+	  else 
+	    {
+	      EXPO_SCREEN (s);
+	      if (!es->expoMode)
+		{
+		  if (otherScreenGrabExist (s, "expo", 0))
+		    {
+		      ecompActionTerminateNotify (s, 1);
+		      break;
+		    }
+      
+		  if (!es->grabIndex)
+		    es->grabIndex = pushScreenGrab (s, None, "expo");
+
+		  es->expoMode = TRUE;
+		  es->anyClick = FALSE;
+		  es->dndState  = DnDNone;
+		  es->dndWindow = None;
+
+		  es->selectedVX = es->origVX = s->x;
+		  es->selectedVY = es->origVY = s->y;
+	  
+		  damageScreen (s);
+		}
+	      else if (action == ECO_ACT_CYCLE)
+		{
+		  if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+		    {
+		      if (es->selectedVX == s->hsize - 1)
+			{
+			  if (es->selectedVY == s->vsize - 1)
+			    expoMoveFocusViewport (s, - (s->hsize - 1),  - (s->vsize - 1));
+			  else
+			    expoMoveFocusViewport (s, - (s->hsize - 1),  1);
+			}
+		      else
+			{
+			  expoMoveFocusViewport (s, 1,  0);
+			}
+		    }
+		  else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+		    {
+		      if (es->selectedVX == 0)
+			{
+			  if (es->selectedVY == 0)
+			    expoMoveFocusViewport (s, (s->hsize - 1),  (s->vsize - 1));
+			  else
+			    expoMoveFocusViewport (s, (s->hsize - 1),  -1);
+			}
+		      else
+			{
+			  expoMoveFocusViewport (s, -1,  0);
+			}
+		    }
+		}
 	    }
 	}
-
       break;
-	
+      
     case ButtonPress:
       s = findScreenAtDisplay (d, event->xbutton.root);
 
@@ -675,19 +597,6 @@ expoHandleEvent (CompDisplay *d,
 		}
 	    }
 	}
-      break;
-
-      /*  case MotionNotify:
-	  s = findScreenAtDisplay (d, event->xmotion.root);
-	  if (s)
-	  {
-	  EXPO_SCREEN (s);
-	  //printf("motion notify %d, %d\n", pointerX, pointerY);
-      
-	  if(es->dndState == DnDDuring)
-	  damageScreen(s);
-	  }
-      */
       break;
     }
 
@@ -1428,15 +1337,6 @@ expoInitDisplay (CompPlugin  *p,
 
   expoSetExpoInitiate (d, expoExpo);
   expoSetExpoTerminate (d, expoTermExpo);
-  expoSetNextInitiate (d, expoNext);
-  expoSetNextTerminate (d, expoTermExpo);
-  expoSetPrevInitiate (d, expoPrev);
-  expoSetPrevTerminate (d, expoTermExpo);
-
-  ed->leftKey  = XKeysymToKeycode (d->display, XStringToKeysym ("Left"));
-  ed->rightKey = XKeysymToKeycode (d->display, XStringToKeysym ("Right"));
-  ed->upKey    = XKeysymToKeycode (d->display, XStringToKeysym ("Up"));
-  ed->downKey  = XKeysymToKeycode (d->display, XStringToKeysym ("Down"));
 
   WRAP (ed, d, handleEvent, expoHandleEvent);
   d->privates[displayPrivateIndex].ptr = ed;
