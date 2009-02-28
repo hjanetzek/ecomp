@@ -62,10 +62,6 @@ typedef struct _ExpoDisplay
 
   HandleEventProc handleEvent;
 
-  KeyCode leftKey;
-  KeyCode rightKey;
-  KeyCode upKey;
-  KeyCode downKey;
 } ExpoDisplay;
 
 typedef struct _ExpoScreen
@@ -150,108 +146,6 @@ expoMoveFocusViewport (CompScreen *s,
   es->selectedVY = MAX (0, es->selectedVY);
 
   damageScreen (s);
-}
-
-static Bool
-expoTermExpo (CompDisplay     *d,
-	      CompAction      *action,
-	      CompActionState state,
-	      CompOption      *option,
-	      int             nOption)
-{
-  CompScreen *s;
-  
-  for (s = d->screens; s; s = s->next)
-    {
-      EXPO_SCREEN (s);
-      
-      if (!es->expoMode)
-	continue;
-      
-      es->expoMode = FALSE;
-       
-      if (es->dndWindow)
-	syncWindowPosition (es->dndWindow);
-
-      if (state & CompActionStateCancel)
-	es->vpUpdateMode = VPUpdatePrevious;
-      else
-	{
-	  moveScreenViewport (s, s->x - es->selectedVX, 
-			      s->y - es->selectedVY, TRUE);
-	  /*XXX temporary? */
-	  sendScreenViewportMessage(s);
-	  // focusDefaultWindow (s->display);
-	  es->vpUpdateMode = VPUpdateNone;
-	}
-	
-      es->dndState  = DnDNone;
-      es->dndWindow = 0;
-
-      damageScreen (s);
-      // focusDefaultWindow (s->display);
-      ecompActionTerminateNotify (s, 1);
-    }
-
-  /* if (state & CompActionStateTermButton)
-   *   action->state &= ~CompActionStateTermButton;
-   * 
-   * if (state & CompActionStateTermKey)
-   *   action->state &= ~CompActionStateTermKey; */
-
-  if (state & CompActionStateTermEdge)
-    action->state &= ~CompActionStateTermEdge;
-
-  return TRUE;
-}
-
-static Bool
-expoExpo (CompDisplay     *d,
-	  CompAction      *action,
-	  CompActionState state,
-	  CompOption      *option,
-	  int             nOption)
-{
-  CompScreen *s;
-  Window     xid;
-    
-  xid = getIntOptionNamed (option, nOption, "root", 0);
-  s   = findScreenAtDisplay (d, xid);
-
-  if (s)
-    {
-      EXPO_SCREEN (s);
-
-      if (otherScreenGrabExist (s, "expo", 0))
-	{
-	  ecompActionTerminateNotify (s, 1);	  
-	  return FALSE;
-	}
-      
-      if (!es->expoMode)
-	{
-	  if (!es->grabIndex)
-	    es->grabIndex = pushScreenGrab (s, None, "expo");
-
-	  es->expoMode = TRUE;
-	  es->anyClick = FALSE;
-	  es->dndState  = DnDNone;
-	  es->dndWindow = None;
-
-	  es->selectedVX = es->origVX = s->x;
-	  es->selectedVY = es->origVY = s->y;
-	  
-	  damageScreen (s);
-	}
-      else
-	{
-	  expoTermExpo (d, action, state, option, nOption);
-	}
-
-      return TRUE;
-    }
-
-  return FALSE;
 }
 
 
@@ -351,6 +245,50 @@ expoFinishWindowMovement (CompWindow *w)
   sendMoveResizeWindowMessage(es->dndWindow, 0, 0, 0, 0);
 }
 
+static Bool
+termExpo(CompDisplay *d, int cancel)
+{
+  CompScreen *s;
+  
+  for (s = d->screens; s; s = s->next)
+    {
+      EXPO_SCREEN (s);
+      
+      if (!es->expoMode)
+	continue;
+      
+      es->expoMode = FALSE;
+       
+      if (es->dndWindow)
+	syncWindowPosition (es->dndWindow);
+
+      if (cancel)
+	es->vpUpdateMode = VPUpdatePrevious;
+      else
+	{
+	  moveScreenViewport (s, s->x - es->selectedVX, 
+			      s->y - es->selectedVY, TRUE);
+
+	  sendScreenViewportMessage(s);
+	  es->vpUpdateMode = VPUpdateNone;
+	}
+	
+      es->dndState  = DnDNone;
+      es->dndWindow = 0;
+
+      damageScreen (s);
+      ecompActionTerminateNotify (s, 1);
+    }
+
+  return TRUE;
+}
+
+
+#define ECO_ACT_MOUSE_MOVE 3
+#define ECO_ACT_MOUSE_DOWN 4
+#define ECO_ACT_MOUSE_UP   5
+#define GET_BUTTON(val) val & 0x00000f
+#define GET_DBLCLICK(val) (val & 0x0000f0) >> 4
 
 static void
 expoHandleEvent (CompDisplay *d,
@@ -379,40 +317,11 @@ expoHandleEvent (CompDisplay *d,
 
 	  if (action == ECO_ACT_TERMINATE)
 	    {
-	      for (s = d->screens; s; s = s->next)
-		{
-		  EXPO_SCREEN (s);
-      
-		  if (!es->expoMode)
-		    continue;
-      
-		  es->expoMode = FALSE;
-       
-		  if (es->dndWindow)
-		    syncWindowPosition (es->dndWindow);
-
-		  if (option == ECO_ACT_OPT_TERMINATE_CANCEL)
-		    es->vpUpdateMode = VPUpdatePrevious;
-		  else
-		    {
-		      moveScreenViewport (s, s->x - es->selectedVX, 
-					  s->y - es->selectedVY, TRUE);
-		      /*XXX temporary? */
-		      sendScreenViewportMessage(s);
-		      // focusDefaultWindow (s->display);
-		      es->vpUpdateMode = VPUpdateNone;
-		    }
-	
-		  es->dndState  = DnDNone;
-		  es->dndWindow = 0;
-
-		  damageScreen (s);
-		  // focusDefaultWindow (s->display);
-		  ecompActionTerminateNotify (s, 1);
-		}
+	      termExpo(d, (option == ECO_ACT_OPT_TERMINATE_CANCEL));
 	      break;
 	    }
-	  else 
+	  else if ((action == ECO_ACT_INITIATE) ||
+		   (action == ECO_ACT_CYCLE))
 	    {
 	      EXPO_SCREEN (s);
 	      if (!es->expoMode)
@@ -468,136 +377,61 @@ expoHandleEvent (CompDisplay *d,
 		    }
 		}
 	    }
-	}
-      break;
-      
-    case ButtonPress:
-      s = findScreenAtDisplay (d, event->xbutton.root);
-
-      if (s)
-	{
-	  EXPO_SCREEN (s);
-
-	  if (es->expoMode)
+	  else if (action == ECO_ACT_MOUSE_DOWN)
 	    {
-	      switch (event->xbutton.button) {
-	      case Button1:
-		es->dndState = DnDStart;
-		if (es->clickTime == 0)
-		  {
-		    es->clickTime = event->xbutton.time;
-		  }
-		else if (event->xbutton.time - es->clickTime <=
-			 expoGetDoubleClickTime (d))
-		  {
-		    es->doubleClick = TRUE;
-		  }
-		else
-		  {
-		    es->clickTime   = event->xbutton.time;
-		    es->doubleClick = FALSE;
-		  }
-		break;
-	      case Button3:
-		{
-		  es->dndState = DnDStart;
-		  es->moveToDesk = TRUE;
-		}
-		break;
-	      case Button4:
-		{
-		  int newX = es->selectedVX - 1;
-		  int newY = es->selectedVY;
+	      EXPO_SCREEN (s);
 
-		  if (newX < 0)
+	      if (es->expoMode)
+		{
+		  switch (GET_BUTTON(option))
 		    {
-		      newX = s->hsize - 1;
-		      newY = newY - 1;
-		      if (newY < 0)
-			newY = s->vsize - 1;
-		    }
+		    case Button1:
+		      es->dndState = DnDStart;
 
-		  expoMoveFocusViewport (s, newX - es->selectedVX,
-					 newY - es->selectedVY);
-		}
-		break;
-	      case Button5:
-		{
-		  int newX = es->selectedVX + 1;
-		  int newY = es->selectedVY;
+		      es->doubleClick = GET_DBLCLICK(option);
 
-		  if (newX >= s->hsize)
-		    {
-		      newX = 0;
-		      newY = newY + 1;
-		      if (newY >= s->vsize)
-			newY = 0;
-		    }
-
-		  expoMoveFocusViewport (s, newX - es->selectedVX,
-					 newY - es->selectedVY);
-		}
-		break;
-	      case Button2:
-		es->doubleClick = TRUE;
-		break;
-		  
-	      default:
-		es->anyClick = TRUE;
-		break;
-	      }
-	      damageScreen (s);
-	    }
-	}
-      break;
-
-    case ButtonRelease:
-      s = findScreenAtDisplay (d, event->xbutton.root);
-
-      if (s)
-	{
-	  EXPO_SCREEN (s);
-
-	  es->moveToDesk = FALSE;
-
-	  if (es->dndState == DnDDuring || es->dndState == DnDStart)
-	    {
-	      if (es->dndWindow)
-		expoFinishWindowMovement (es->dndWindow);
-
-	      es->dndState = DnDNone;
-	      es->dndWindow = NULL;
-	    }
+		      break;
+		    case Button3:
+		      {
+			es->dndState = DnDStart;
+			es->moveToDesk = TRUE;
+		      }
+		      break;
 	    
-	  if (es->expoMode)
-	    {
-	      if (event->xbutton.button == Button1)
-		{
-		  if (event->xbutton.time - es->clickTime >
-		      expoGetDoubleClickTime (d))
-		    {
-		      //es->clickTime   = 0;
-		      es->doubleClick = FALSE;
+		    case Button2:
+		      es->doubleClick = TRUE;
+		      break;
+		  
+		    default:
+		      es->anyClick = TRUE;
+		      break;
 		    }
-		  else if (es->doubleClick)
-		    {
-		      damageScreen(s);
-		      
-		      /*	CompAction *action;
-			
-				es->clickTime   = 0;
-				es->doubleClick = FALSE;
-			
-				action = expoGetExpo (d);
-			
-				expoTermExpo (d, action, 0, NULL, 0);
-				es->anyClick = TRUE;*/
-		    }
-		  break;
+		  damageScreen (s);
 		}
 	    }
+	  else if (action == ECO_ACT_MOUSE_UP)
+	    {
+
+	      EXPO_SCREEN (s);
+
+	      es->moveToDesk = FALSE;
+
+	      if (es->dndState == DnDDuring || es->dndState == DnDStart)
+		{
+		  if (es->dndWindow)
+		    expoFinishWindowMovement (es->dndWindow);
+
+		  es->dndState = DnDNone;
+		  es->dndWindow = NULL;
+		}
+	    }
+	  else if (action == ECO_ACT_MOUSE_MOVE)
+	    {
+	      pointerX = option;
+	      pointerY = option2;
+	    }
 	}
-      break;
+      break;     
     }
 
   UNWRAP (ed, d, handleEvent);
@@ -1161,15 +995,11 @@ expoDonePaintScreen (CompScreen * s)
 
   if (es->doubleClick)
     {			
-      CompAction *action;
-			
       es->clickTime   = 0;
       es->doubleClick = FALSE;
-			
-      action = expoGetExpo (s->display);
-			
-      expoTermExpo (s->display, action, 0, NULL, 0);
-
+  			
+      termExpo (s->display, 0);
+  
       es->anyClick = FALSE;
       return;
     }
@@ -1335,8 +1165,8 @@ expoInitDisplay (CompPlugin  *p,
       return FALSE;
     }
 
-  expoSetExpoInitiate (d, expoExpo);
-  expoSetExpoTerminate (d, expoTermExpo);
+  /* expoSetExpoInitiate (d, expoExpo);
+   * expoSetExpoTerminate (d, expoTermExpo); */
 
   WRAP (ed, d, handleEvent, expoHandleEvent);
   d->privates[displayPrivateIndex].ptr = ed;

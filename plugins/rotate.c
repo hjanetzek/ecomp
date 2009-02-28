@@ -316,7 +316,6 @@ rotatePreparePaintScreen (CompScreen *s,
 
 		    /* flag end of rotation */
 		    cs->rotationState = RotationNone;
-		    printf ("rotate moveScreenViewport\n");
 		    
 		    moveScreenViewport (s, tx, 0, TRUE);
 
@@ -327,7 +326,7 @@ rotatePreparePaintScreen (CompScreen *s,
 
 		    if (rs->grabIndex)
 		    {
-		      removeScreenGrab (s, rs->grabIndex, &rs->savedPointer);
+		      removeScreenGrab (s, rs->grabIndex, 0); //&rs->savedPointer);
 		      rs->grabIndex = 0;
 		      sendScreenViewportMessage(s);
 		    }

@@ -57,7 +57,6 @@ void
 ecompActionTerminateNotify (CompScreen *s, int plugin)
 {
   XEvent ev;
-  printf("ecompActionTerminateNotify 1\n");
   
   ev.type		    = ClientMessage;
   ev.xclient.window	    = s->root;
@@ -75,8 +74,6 @@ ecompActionTerminateNotify (CompScreen *s, int plugin)
 	      FALSE,
 	      SubstructureRedirectMask | SubstructureNotifyMask,
 	      &ev);
-  
-  printf("ecompActionTerminateNotify 2\n");
 }
 
 
@@ -517,36 +514,36 @@ const CompMetadataOptionInfo coreScreenOptionInfo[COMP_SCREEN_OPTION_NUM] = {
     { "opacity_values", "list", "<type>int</type>", 0, 0 }
 };
 
-static void
-updateScreenEdges (CompScreen *s)
-{
-   struct screenEdgeGeometry {
-   	int xw, x0;
-   	int yh, y0;
-   	int ww, w0;
-   	int hh, h0;
-    } geometry[SCREEN_EDGE_NUM] = {
-   	{ 0,  0,   0,  2,   0,  2,   1, -4 }, /* left */
-   	{ 1, -2,   0,  2,   0,  2,   1, -4 }, /* right */
-   	{ 0,  2,   0,  0,   1, -4,   0,  2 }, /* top */
-   	{ 0,  2,   1, -2,   1, -4,   0,  2 }, /* bottom */
-   	{ 0,  0,   0,  0,   0,  2,   0,  2 }, /* top-left */
-   	{ 1, -2,   0,  0,   0,  2,   0,  2 }, /* top-right */
-   	{ 0,  0,   1, -2,   0,  2,   0,  2 }, /* bottom-left */
-   	{ 1, -2,   1, -2,   0,  2,   0,  2 }  /* bottom-right */
-    };
-   int i;
-  
-    for (i = 0; i < SCREEN_EDGE_NUM; i++)
-    {
-	if (s->screenEdge[i].id)
-	    XMoveResizeWindow (s->display->display, s->screenEdge[i].id,
-			       geometry[i].xw * s->width  + geometry[i].x0,
-			       geometry[i].yh * s->height + geometry[i].y0,
-			       geometry[i].ww * s->width  + geometry[i].w0,
-			       geometry[i].hh * s->height + geometry[i].h0);
-    }
-}
+/* static void
+ * updateScreenEdges (CompScreen *s)
+ * {
+ *    struct screenEdgeGeometry {
+ *    	int xw, x0;
+ *    	int yh, y0;
+ *    	int ww, w0;
+ *    	int hh, h0;
+ *     } geometry[SCREEN_EDGE_NUM] = {
+ *    	{ 0,  0,   0,  2,   0,  2,   1, -4 }, /\* left *\/
+ *    	{ 1, -2,   0,  2,   0,  2,   1, -4 }, /\* right *\/
+ *    	{ 0,  2,   0,  0,   1, -4,   0,  2 }, /\* top *\/
+ *    	{ 0,  2,   1, -2,   1, -4,   0,  2 }, /\* bottom *\/
+ *    	{ 0,  0,   0,  0,   0,  2,   0,  2 }, /\* top-left *\/
+ *    	{ 1, -2,   0,  0,   0,  2,   0,  2 }, /\* top-right *\/
+ *    	{ 0,  0,   1, -2,   0,  2,   0,  2 }, /\* bottom-left *\/
+ *    	{ 1, -2,   1, -2,   0,  2,   0,  2 }  /\* bottom-right *\/
+ *     };
+ *    int i;
+ *   
+ *     for (i = 0; i < SCREEN_EDGE_NUM; i++)
+ *     {
+ * 	if (s->screenEdge[i].id)
+ * 	    XMoveResizeWindow (s->display->display, s->screenEdge[i].id,
+ * 			       geometry[i].xw * s->width  + geometry[i].x0,
+ * 			       geometry[i].yh * s->height + geometry[i].y0,
+ * 			       geometry[i].ww * s->width  + geometry[i].w0,
+ * 			       geometry[i].hh * s->height + geometry[i].h0);
+ *     }
+ * } */
 
 static void
 frustum (GLfloat *m,
@@ -662,7 +659,7 @@ reshape (CompScreen *s,
     s->fullscreenOutput.workArea.width   = w;
     s->fullscreenOutput.workArea.height  = h;
  
-    updateScreenEdges (s);
+    /* updateScreenEdges (s); */
 }
 
 void
@@ -1222,11 +1219,11 @@ addScreen (CompDisplay *display,
     s->nDesktop	      = 1;
     s->currentDesktop = 0;
 
-    for (i = 0; i < SCREEN_EDGE_NUM; i++)
-    {
-	s->screenEdge[i].id    = None;
-	s->screenEdge[i].count = 0;
-    }
+    /* for (i = 0; i < SCREEN_EDGE_NUM; i++)
+     * {
+     * 	s->screenEdge[i].id    = None;
+     * 	s->screenEdge[i].count = 0;
+     * } */
 
     s->buttonGrab  = 0;
     s->nButtonGrab = 0;
@@ -1849,28 +1846,28 @@ addScreen (CompDisplay *display,
 				   &attrib);
     XMapWindow (dpy, s->grabWindow);
     
-    for (i = 0; i < SCREEN_EDGE_NUM; i++)
-    {
-	long xdndVersion = 3;
-
-	s->screenEdge[i].id = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
-					     CopyFromParent, InputOnly,
-					     CopyFromParent, CWOverrideRedirect,
-					     &attrib);
-
-	XChangeProperty (dpy, s->screenEdge[i].id, display->xdndAwareAtom,
-			 XA_ATOM, 32, PropModeReplace,
-			 (unsigned char *) &xdndVersion, 1);
-
-	XSelectInput (dpy, s->screenEdge[i].id,
-		      EnterWindowMask   |
-		      LeaveWindowMask   |
-		      ButtonPressMask   |
-		      ButtonReleaseMask |
-		      PointerMotionMask);
-    }
-    
-    updateScreenEdges (s);
+    /* for (i = 0; i < SCREEN_EDGE_NUM; i++)
+     * {
+     * 	long xdndVersion = 3;
+     * 
+     * 	s->screenEdge[i].id = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
+     * 					     CopyFromParent, InputOnly,
+     * 					     CopyFromParent, CWOverrideRedirect,
+     * 					     &attrib);
+     * 
+     * 	XChangeProperty (dpy, s->screenEdge[i].id, display->xdndAwareAtom,
+     * 			 XA_ATOM, 32, PropModeReplace,
+     * 			 (unsigned char *) &xdndVersion, 1);
+     * 
+     * 	XSelectInput (dpy, s->screenEdge[i].id,
+     * 		      EnterWindowMask   |
+     * 		      LeaveWindowMask   |
+     * 		      ButtonPressMask   |
+     * 		      ButtonReleaseMask |
+     * 		      PointerMotionMask);
+     * }
+     * 
+     * updateScreenEdges (s); */
 
     //    setDesktopHints (s);
     setSupportingWmCheck (s);
@@ -2070,18 +2067,18 @@ pushScreenGrab (CompScreen *s,
 		const char *name)
 {
   C(("pushScreenGrab\n"));
-
+#ifdef KEYBINDING    
   if (s->maxGrab == 0)
     {
       int status;
-    
+
       status = XGrabPointer (s->display->display, s->grabWindow, TRUE,
 			     POINTER_GRAB_MASK,
 			     GrabModeAsync, GrabModeAsync,
 			     s->root, cursor,
 			     CurrentTime);
 
-#ifdef KEYBINDING
+
         if (status == GrabSuccess)
 	  {
 	  
@@ -2099,7 +2096,7 @@ pushScreenGrab (CompScreen *s,
 	{	   
 	  return 0;	    
 	}
-#endif
+
     }
     else
     {
@@ -2107,7 +2104,7 @@ pushScreenGrab (CompScreen *s,
 				cursor, CurrentTime);
 	
     }
-
+#endif    
   if (s->grabSize <= s->maxGrab)
     {
       s->grabs = realloc (s->grabs, sizeof (CompGrab) * (s->maxGrab + 1));
@@ -2122,7 +2119,7 @@ pushScreenGrab (CompScreen *s,
   s->grabs[s->maxGrab].name   = name;
 
   s->maxGrab++;
-    
+
   return s->maxGrab;
 }
 
@@ -2132,18 +2129,19 @@ updateScreenGrab (CompScreen *s,
 		  Cursor     cursor)
 {
   D(("updateScreenGrab\n"));
-  
+#ifdef KEYBINDING    
   index--;
 
-#ifdef DEBUG
-    if (index < 0 || index >= s->maxGrab)
-	abort ();
-#endif
+/* #ifdef DEBUG
+ *     if (index < 0 || index >= s->maxGrab)
+ * 	abort ();
+ * #endif */
 
   XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
 			    cursor, CurrentTime);
 
   s->grabs[index].cursor = cursor;
+#endif
 }
 
 void
@@ -2157,10 +2155,10 @@ removeScreenGrab (CompScreen *s,
 
     index--;
 
-#ifdef DEBUG
-    if (index < 0 || index >= s->maxGrab)
-	abort ();
-#endif
+/* #ifdef DEBUG
+ *     if (index < 0 || index >= s->maxGrab)
+ * 	abort ();
+ * #endif */
 
     s->grabs[index].cursor = None;
     s->grabs[index].active = FALSE;
@@ -2171,7 +2169,9 @@ removeScreenGrab (CompScreen *s,
 
     if (maxGrab != s->maxGrab)
     {
-	if (maxGrab)
+#ifdef KEYBINDING	   
+
+      if (maxGrab)
 	{
 	    XChangeActivePointerGrab (s->display->display,
 				      POINTER_GRAB_MASK,
@@ -2186,11 +2186,11 @@ removeScreenGrab (CompScreen *s,
 			     restorePointer->y - pointerY);
 
 	    XUngrabPointer (s->display->display, CurrentTime);
-#ifdef KEYBINDING	   
-	     XUngrabKeyboard (s->display->display, CurrentTime);
-#endif
-	}
 
+	     XUngrabKeyboard (s->display->display, CurrentTime);
+
+	}
+#endif
 	s->maxGrab = maxGrab;
     }
 }
@@ -2463,34 +2463,34 @@ Bool
 addScreenAction (CompScreen *s,
 		 CompAction *action)
 {
-  if (action->type & CompBindingTypeKey)
-    {
-	  if (!addPassiveKeyGrab (s, &action->key))
-		{
-		  return FALSE;
-		}
-    }
-    
-
-  if (action->type & CompBindingTypeButton)
-    {
-      if (!addPassiveButtonGrab (s, &action->button))
-		{
-		  if (action->type & CompBindingTypeKey)
-			removePassiveKeyGrab (s, &action->key);
-	    
-		  return FALSE;
-		}
-    }
-
-  if (action->edgeMask)
-    {
-	  int i;
-
-	  for (i = 0; i < SCREEN_EDGE_NUM; i++)
-	    if (action->edgeMask & (1 << i))
-		  enableScreenEdge (s, i);
-    }
+  /* if (action->type & CompBindingTypeKey)
+   *   {
+   * 	  if (!addPassiveKeyGrab (s, &action->key))
+   * 		{
+   * 		  return FALSE;
+   * 		}
+   *   }
+   *   
+   * 
+   * if (action->type & CompBindingTypeButton)
+   *   {
+   *     if (!addPassiveButtonGrab (s, &action->button))
+   * 		{
+   * 		  if (action->type & CompBindingTypeKey)
+   * 			removePassiveKeyGrab (s, &action->key);
+   * 	    
+   * 		  return FALSE;
+   * 		}
+   *   }
+   * 
+   * if (action->edgeMask)
+   *   {
+   * 	  int i;
+   * 
+   * 	  for (i = 0; i < SCREEN_EDGE_NUM; i++)
+   * 	    if (action->edgeMask & (1 << i))
+   * 		  enableScreenEdge (s, i);
+   *   } */
   return TRUE;
 }
 
@@ -2498,20 +2498,20 @@ void
 removeScreenAction (CompScreen *s,
 		    CompAction *action)
 {
-    if (action->type & CompBindingTypeKey)
-	removePassiveKeyGrab (s, &action->key);
-
-    if (action->type & CompBindingTypeButton)
-	removePassiveButtonGrab (s, &action->button);
-
-    if (action->edgeMask)
-    {
-	int i;
-
-	for (i = 0; i < SCREEN_EDGE_NUM; i++)
-	    if (action->edgeMask & (1 << i))
-		disableScreenEdge (s, i);
-    }
+    /* if (action->type & CompBindingTypeKey)
+     * 	removePassiveKeyGrab (s, &action->key);
+     * 
+     * if (action->type & CompBindingTypeButton)
+     * 	removePassiveButtonGrab (s, &action->button);
+     * 
+     * if (action->edgeMask)
+     * {
+     * 	int i;
+     * 
+     * 	for (i = 0; i < SCREEN_EDGE_NUM; i++)
+     * 	    if (action->edgeMask & (1 << i))
+     * 		disableScreenEdge (s, i);
+     * } */
 }
 
 void
@@ -2875,23 +2875,24 @@ screenLighting (CompScreen *s,
     }
 }
 
-void
-enableScreenEdge (CompScreen *s,
-		  int	     edge)
-{
-    s->screenEdge[edge].count++;
-    if (s->screenEdge[edge].count == 1)
-    XMapRaised (s->display->display, s->screenEdge[edge].id);
-}
+/* void
+ * enableScreenEdge (CompScreen *s,
+ * 		  int	     edge)
+ * {
+ *     s->screenEdge[edge].count++;
+ *     if (s->screenEdge[edge].count == 1)
+ *     XMapRaised (s->display->display, s->screenEdge[edge].id);
+ * }
+ * 
+ * void
+ * disableScreenEdge (CompScreen *s,
+ * 		   int	      edge)
+ * {
+ *     s->screenEdge[edge].count--;
+ *     if (s->screenEdge[edge].count == 0)
+ *     XUnmapWindow (s->display->display, s->screenEdge[edge].id);
+ * } */
 
-void
-disableScreenEdge (CompScreen *s,
-		   int	      edge)
-{
-    s->screenEdge[edge].count--;
-    if (s->screenEdge[edge].count == 0)
-    XUnmapWindow (s->display->display, s->screenEdge[edge].id);
-}
 
 Window
 getTopWindow (CompScreen *s)
