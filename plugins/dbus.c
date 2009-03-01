@@ -1011,7 +1011,7 @@ dbusHandleSetOptionMessage (DBusConnection *connection,
 	    Bool	    status = FALSE;
 
 	    memset (&value, 0, sizeof (value));
-
+	    
 	    if (option->type == CompOptionTypeList)
 	    {
 		if (dbus_message_iter_init (message, &iter) &&
@@ -1021,7 +1021,9 @@ dbusHandleSetOptionMessage (DBusConnection *connection,
 
 		    do
 		    {
-			if (dbusGetOptionValue (&aiter,
+		      memset (&tmpValue, 0, sizeof (tmpValue));
+		      
+		      if (dbusGetOptionValue (&aiter,
 						option->value.list.type,
 						&tmpValue))
 			{
@@ -1135,7 +1137,7 @@ dbusHandleSetOptionMessage (DBusConnection *connection,
 
 	    if (status)
 	    {
-		if (s)
+	      if (s)
 		{
 		    if (strcmp (path[0], "core"))
 			(*s->setScreenOptionForPlugin) (s,
