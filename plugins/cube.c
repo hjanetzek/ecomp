@@ -1618,116 +1618,116 @@ cubeUnSetBackgroundOpacity (CompScreen* s)
     }
 }
 
-static void
-cubePaintBackground (CompScreen   *s,
-		     Region	  region,
-		     unsigned int mask)
-{
-    int n;
-
-    CUBE_SCREEN (s);
-
-    cubeSetBackgroundOpacity(s);
-
-    n = cs->opt[CUBE_SCREEN_OPTION_BACKGROUNDS].value.list.nValue;
-    if (n)
-    {
-	CompTexture *bg;
-	CompMatrix  matrix;
-	BoxPtr      pBox = region->rects;
-	int	    nBox = region->numRects;
-	GLfloat     *d, *data;
-
-	if (!nBox)
-	{
-	    cubeUnSetBackgroundOpacity(s);
-	    return;
-	}
-
-	n = (s->x * cs->nOutput + cs->srcOutput) % n;
-
-	if (s->desktopWindowCount)
-	{
-	    cubeUnloadBackgrounds (s);
-	    cubeUnSetBackgroundOpacity(s);
-	    return;
-	}
-	else
-	{
-	    if (!cs->nBg || !cs->bg[n].name)
-		cubeLoadBackground (s, n);
-	}
-
-	bg = &cs->bg[n];
-
-	matrix = bg->matrix;
-	matrix.x0 -= (cs->srcOutput * s->outputDev[0].width) * matrix.xx;
-
-	data = malloc (sizeof (GLfloat) * nBox * 16);
-	if (!data)
-	{
-	    cubeUnSetBackgroundOpacity(s);
-	    return;
-	}
-
-	d = data;
-	n = nBox;
-	while (n--)
-	{
-	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x1);
-	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y2);
-
-	    *d++ = pBox->x1;
-	    *d++ = pBox->y2;
-
-	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x2);
-	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y2);
-
-	    *d++ = pBox->x2;
-	    *d++ = pBox->y2;
-
-	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x2);
-	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y1);
-
-	    *d++ = pBox->x2;
-	    *d++ = pBox->y1;
-
-	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x1);
-	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y1);
-
-	    *d++ = pBox->x1;
-	    *d++ = pBox->y1;
-
-	    pBox++;
-	}
-
-	glTexCoordPointer (2, GL_FLOAT, sizeof (GLfloat) * 4, data);
-	glVertexPointer (2, GL_FLOAT, sizeof (GLfloat) * 4, data + 2);
-
-	if (bg->name)
-	{
-	    enableTexture (s, bg, COMP_TEXTURE_FILTER_GOOD);
-	    glDrawArrays (GL_QUADS, 0, nBox * 4);
-	    disableTexture (s, bg);
-	}
-	else
-	{
-	    glColor4us (0, 0, 0, 0);
-	    glDrawArrays (GL_QUADS, 0, nBox * 4);
-	    glColor4usv (defaultColor);
-	}
-
-	free (data);
-    }
-    else
-    {
-	UNWRAP (cs, s, paintBackground);
-	(*s->paintBackground) (s, region, mask);
-	WRAP (cs, s, paintBackground, cubePaintBackground);
-    }
-
-    cubeUnSetBackgroundOpacity(s);
-}
+/* static void
+ * cubePaintBackground (CompScreen   *s,
+ * 		     Region	  region,
+ * 		     unsigned int mask)
+ * {
+ *     int n;
+ * 
+ *     CUBE_SCREEN (s);
+ * 
+ *     cubeSetBackgroundOpacity(s);
+ * 
+ *     n = cs->opt[CUBE_SCREEN_OPTION_BACKGROUNDS].value.list.nValue;
+ *     if (n)
+ *     {
+ * 	CompTexture *bg;
+ * 	CompMatrix  matrix;
+ * 	BoxPtr      pBox = region->rects;
+ * 	int	    nBox = region->numRects;
+ * 	GLfloat     *d, *data;
+ * 
+ * 	if (!nBox)
+ * 	{
+ * 	    cubeUnSetBackgroundOpacity(s);
+ * 	    return;
+ * 	}
+ * 
+ * 	n = (s->x * cs->nOutput + cs->srcOutput) % n;
+ * 
+ * 	if (s->desktopWindowCount)
+ * 	{
+ * 	    cubeUnloadBackgrounds (s);
+ * 	    cubeUnSetBackgroundOpacity(s);
+ * 	    return;
+ * 	}
+ * 	else
+ * 	{
+ * 	    if (!cs->nBg || !cs->bg[n].name)
+ * 		cubeLoadBackground (s, n);
+ * 	}
+ * 
+ * 	bg = &cs->bg[n];
+ * 
+ * 	matrix = bg->matrix;
+ * 	matrix.x0 -= (cs->srcOutput * s->outputDev[0].width) * matrix.xx;
+ * 
+ * 	data = malloc (sizeof (GLfloat) * nBox * 16);
+ * 	if (!data)
+ * 	{
+ * 	    cubeUnSetBackgroundOpacity(s);
+ * 	    return;
+ * 	}
+ * 
+ * 	d = data;
+ * 	n = nBox;
+ * 	while (n--)
+ * 	{
+ * 	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x1);
+ * 	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y2);
+ * 
+ * 	    *d++ = pBox->x1;
+ * 	    *d++ = pBox->y2;
+ * 
+ * 	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x2);
+ * 	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y2);
+ * 
+ * 	    *d++ = pBox->x2;
+ * 	    *d++ = pBox->y2;
+ * 
+ * 	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x2);
+ * 	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y1);
+ * 
+ * 	    *d++ = pBox->x2;
+ * 	    *d++ = pBox->y1;
+ * 
+ * 	    *d++ = COMP_TEX_COORD_X (&matrix, pBox->x1);
+ * 	    *d++ = COMP_TEX_COORD_Y (&matrix, pBox->y1);
+ * 
+ * 	    *d++ = pBox->x1;
+ * 	    *d++ = pBox->y1;
+ * 
+ * 	    pBox++;
+ * 	}
+ * 
+ * 	glTexCoordPointer (2, GL_FLOAT, sizeof (GLfloat) * 4, data);
+ * 	glVertexPointer (2, GL_FLOAT, sizeof (GLfloat) * 4, data + 2);
+ * 
+ * 	if (bg->name)
+ * 	{
+ * 	    enableTexture (s, bg, COMP_TEXTURE_FILTER_GOOD);
+ * 	    glDrawArrays (GL_QUADS, 0, nBox * 4);
+ * 	    disableTexture (s, bg);
+ * 	}
+ * 	else
+ * 	{
+ * 	    glColor4us (0, 0, 0, 0);
+ * 	    glDrawArrays (GL_QUADS, 0, nBox * 4);
+ * 	    glColor4usv (defaultColor);
+ * 	}
+ * 
+ * 	free (data);
+ *     }
+ *     /\* else
+ *      * {
+ *      * 	UNWRAP (cs, s, paintBackground);
+ *      * 	(*s->paintBackground) (s, region, mask);
+ *      * 	WRAP (cs, s, paintBackground, cubePaintBackground);
+ *      * } *\/
+ * 
+ *     cubeUnSetBackgroundOpacity(s);
+ * } */
 
 static Bool
 cubePaintWindow (CompWindow		  *w,
@@ -2185,7 +2185,7 @@ cubeInitScreen (CompPlugin *p,
     WRAP (cs, s, donePaintScreen, cubeDonePaintScreen);
     WRAP (cs, s, paintOutput, cubePaintOutput);
     WRAP (cs, s, paintTransformedOutput, cubePaintTransformedOutput);
-    WRAP (cs, s, paintBackground, cubePaintBackground);
+    /* WRAP (cs, s, paintBackground, cubePaintBackground); */
     WRAP (cs, s, paintWindow, cubePaintWindow);
     WRAP (cs, s, applyScreenTransform, cubeApplyScreenTransform);
     WRAP (cs, s, setScreenOption, cubeSetGlobalScreenOption);
@@ -2211,7 +2211,7 @@ cubeFiniScreen (CompPlugin *p,
     UNWRAP (cs, s, donePaintScreen);
     UNWRAP (cs, s, paintOutput);
     UNWRAP (cs, s, paintTransformedOutput);
-    UNWRAP (cs, s, paintBackground);
+    /* UNWRAP (cs, s, paintBackground); */
     UNWRAP (cs, s, paintWindow);
     UNWRAP (cs, s, applyScreenTransform);
     UNWRAP (cs, s, setScreenOption);

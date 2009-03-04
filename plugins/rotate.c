@@ -900,6 +900,8 @@ rotateHandleEvent (CompDisplay *d,
 	      break;
 	    }
 	  unsigned int action = event->xclient.data.l[2];
+	  unsigned int option = event->xclient.data.l[3];
+	  unsigned int option2 = event->xclient.data.l[4];
 
 	  if (action == ECO_ACT_TERMINATE)
 	    {
@@ -907,9 +909,52 @@ rotateHandleEvent (CompDisplay *d,
 	      ecompActionTerminateNotify (s, 1);
 	      break;
 	    }
-	  else
+	  else if (action == ECO_ACT_INITIATE)
 	    {
 	      rotateInitiate2(s, pointerX, pointerY, 1);
+	    }
+	  else if (action == ECO_ACT_MOUSE_MOVE)
+	    {
+	      pointerX = option;
+	      pointerY = option2;
+	      
+	      ROTATE_SCREEN (s);
+	      CUBE_SCREEN (s);
+
+	      if (rs->grabIndex)
+		{
+		  if (rs->grabbed)
+		    {
+		      GLfloat pointerDx, pointerDy;
+
+		      pointerDx = pointerX - lastPointerX;
+		      pointerDy = pointerY - lastPointerY;
+
+		      if (pointerX < 50	       ||
+			  pointerY < 50	       ||
+			  pointerX > s->width  - 50 ||
+			  pointerY > s->height - 50)
+			{
+			  warpPointer (s,
+				       (s->width  / 2) - pointerX,
+				       (s->height / 2) - pointerY);
+			}
+
+		      if (rs->opt[ROTATE_SCREEN_OPTION_POINTER_INVERT_Y].value.b)
+			pointerDy = -pointerDy;
+
+		      rs->xVelocity += pointerDx * rs->pointerSensitivity *
+			cs->invert;
+		      rs->yVelocity += pointerDy * rs->pointerSensitivity;
+
+		      damageScreen (s);
+		    }
+		  else
+		    {
+		      rs->savedPointer.x += pointerX - lastPointerX;
+		      rs->savedPointer.y += pointerY - lastPointerY;
+		    }
+		}
 	    }
 	}
       

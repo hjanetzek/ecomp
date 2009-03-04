@@ -424,13 +424,6 @@ setScreenOption (CompScreen      *screen,
 	    return TRUE;
 	}
 	break;*/
-    case COMP_SCREEN_OPTION_NUMBER_OF_DESKTOPS:
-      //if (compSetIntOption (o, value))
-      //	{
-      //    setNumberOfDesktops (screen, o->value.i);
-	    return TRUE;
-      //}
-	break;
     case COMP_SCREEN_OPTION_DEFAULT_ICON:
 	if (compSetStringOption (o, value))
 	    return updateDefaultIcon (screen);
@@ -500,8 +493,8 @@ const CompMetadataOptionInfo coreScreenOptionInfo[COMP_SCREEN_OPTION_NUM] = {
     { "detect_refresh_rate", "bool", 0, 0, 0 },
     { "lighting", "bool", 0, 0, 0 },
     { "refresh_rate", "int", "<min>1</min>", 0, 0 },
-    { "hsize", "int", "<min>1</min><max>32</max>", 0, 0 },
-    { "vsize", "int", "<min>1</min><max>32</max>", 0, 0 },
+    /* { "hsize", "int", "<min>1</min><max>32</max>", 0, 0 },
+     * { "vsize", "int", "<min>1</min><max>32</max>", 0, 0 }, */
     { "opacity_step", "int", "<min>1</min>", 0, 0 },
     { "unredirect_fullscreen_windows", "bool", 0, 0, 0 },
     { "default_icon", "string", 0, 0, 0 },
@@ -514,36 +507,6 @@ const CompMetadataOptionInfo coreScreenOptionInfo[COMP_SCREEN_OPTION_NUM] = {
     { "opacity_values", "list", "<type>int</type>", 0, 0 }
 };
 
-/* static void
- * updateScreenEdges (CompScreen *s)
- * {
- *    struct screenEdgeGeometry {
- *    	int xw, x0;
- *    	int yh, y0;
- *    	int ww, w0;
- *    	int hh, h0;
- *     } geometry[SCREEN_EDGE_NUM] = {
- *    	{ 0,  0,   0,  2,   0,  2,   1, -4 }, /\* left *\/
- *    	{ 1, -2,   0,  2,   0,  2,   1, -4 }, /\* right *\/
- *    	{ 0,  2,   0,  0,   1, -4,   0,  2 }, /\* top *\/
- *    	{ 0,  2,   1, -2,   1, -4,   0,  2 }, /\* bottom *\/
- *    	{ 0,  0,   0,  0,   0,  2,   0,  2 }, /\* top-left *\/
- *    	{ 1, -2,   0,  0,   0,  2,   0,  2 }, /\* top-right *\/
- *    	{ 0,  0,   1, -2,   0,  2,   0,  2 }, /\* bottom-left *\/
- *    	{ 1, -2,   1, -2,   0,  2,   0,  2 }  /\* bottom-right *\/
- *     };
- *    int i;
- *   
- *     for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *     {
- * 	if (s->screenEdge[i].id)
- * 	    XMoveResizeWindow (s->display->display, s->screenEdge[i].id,
- * 			       geometry[i].xw * s->width  + geometry[i].x0,
- * 			       geometry[i].yh * s->height + geometry[i].y0,
- * 			       geometry[i].ww * s->width  + geometry[i].w0,
- * 			       geometry[i].hh * s->height + geometry[i].h0);
- *     }
- * } */
 
 static void
 frustum (GLfloat *m,
@@ -707,91 +670,91 @@ getProcAddress (CompScreen *s,
     return funcPtr;
 }
 
-void
-updateScreenBackground (CompScreen  *screen,
-			CompTexture *texture)
-{
-    Display	  *dpy = screen->display->display;
-    Atom	  pixmapAtom, actualType;
-    int		  actualFormat, i, status;
-    unsigned int  width = 1, height = 1, depth = 0;
-    unsigned long nItems;
-    unsigned long bytesAfter;
-    unsigned char *prop;
-    Pixmap	  pixmap = 0;
-
-    pixmapAtom = XInternAtom (dpy, "PIXMAP", FALSE);
-
-    for (i = 0; pixmap == 0 && i < 2; i++)
-    {
-	status = XGetWindowProperty (dpy, screen->root,
-				     screen->display->xBackgroundAtom[i],
-				     0, 4, FALSE, AnyPropertyType,
-				     &actualType, &actualFormat, &nItems,
-				     &bytesAfter, &prop);
-
-	if (status == Success && nItems && prop)
-	{
-	    if (actualType   == pixmapAtom &&
-		actualFormat == 32         &&
-		nItems	     == 1)
-	    {
-		Pixmap p;
-
-		memcpy (&p, prop, 4);
-
-		if (p)
-		{
-		    unsigned int ui;
-		    int		 i;
-		    Window	 w;
-
-		    if (XGetGeometry (dpy, p, &w, &i, &i,
-				      &width, &height, &ui, &depth))
-		    {
-			if (depth == screen->attrib.depth)
-			    pixmap = p;
-		    }
-		}
-	    }
-
-	    XFree (prop);
-	}
-    }
-
-    if (pixmap)
-    {
-	if (pixmap == texture->pixmap)
-	    return;
-
-	finiTexture (screen, texture);
-	initTexture (screen, texture);
-
-	if (!bindPixmapToTexture (screen, texture, pixmap,
-				  width, height, depth))
-	{
-	    compLogMessage (NULL, "core", CompLogLevelWarn,
-			    "Couldn't bind background pixmap 0x%x to "
-			    "texture", (int) pixmap);
-	}
-    }
-    else
-    {
-	finiTexture (screen, texture);
-	initTexture (screen, texture);
-    }
-
-    if (!texture->name && backgroundImage)
-	readImageToTexture (screen, texture, backgroundImage, &width, &height);
-
-    if (texture->target == GL_TEXTURE_2D)
-    {
-	glBindTexture (texture->target, texture->name);
-	glTexParameteri (texture->target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri (texture->target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glBindTexture (texture->target, 0);
-    }
-}
+/* void
+ * updateScreenBackground (CompScreen  *screen,
+ * 			CompTexture *texture)
+ * {
+ *     Display	  *dpy = screen->display->display;
+ *     Atom	  pixmapAtom, actualType;
+ *     int		  actualFormat, i, status;
+ *     unsigned int  width = 1, height = 1, depth = 0;
+ *     unsigned long nItems;
+ *     unsigned long bytesAfter;
+ *     unsigned char *prop;
+ *     Pixmap	  pixmap = 0;
+ * 
+ *     pixmapAtom = XInternAtom (dpy, "PIXMAP", FALSE);
+ * 
+ *     for (i = 0; pixmap == 0 && i < 2; i++)
+ *     {
+ * 	status = XGetWindowProperty (dpy, screen->root,
+ * 				     screen->display->xBackgroundAtom[i],
+ * 				     0, 4, FALSE, AnyPropertyType,
+ * 				     &actualType, &actualFormat, &nItems,
+ * 				     &bytesAfter, &prop);
+ * 
+ * 	if (status == Success && nItems && prop)
+ * 	{
+ * 	    if (actualType   == pixmapAtom &&
+ * 		actualFormat == 32         &&
+ * 		nItems	     == 1)
+ * 	    {
+ * 		Pixmap p;
+ * 
+ * 		memcpy (&p, prop, 4);
+ * 
+ * 		if (p)
+ * 		{
+ * 		    unsigned int ui;
+ * 		    int		 i;
+ * 		    Window	 w;
+ * 
+ * 		    if (XGetGeometry (dpy, p, &w, &i, &i,
+ * 				      &width, &height, &ui, &depth))
+ * 		    {
+ * 			if (depth == screen->attrib.depth)
+ * 			    pixmap = p;
+ * 		    }
+ * 		}
+ * 	    }
+ * 
+ * 	    XFree (prop);
+ * 	}
+ *     }
+ * 
+ *     if (pixmap)
+ *     {
+ * 	if (pixmap == texture->pixmap)
+ * 	    return;
+ * 
+ * 	finiTexture (screen, texture);
+ * 	initTexture (screen, texture);
+ * 
+ * 	if (!bindPixmapToTexture (screen, texture, pixmap,
+ * 				  width, height, depth))
+ * 	{
+ * 	    compLogMessage (NULL, "core", CompLogLevelWarn,
+ * 			    "Couldn't bind background pixmap 0x%x to "
+ * 			    "texture", (int) pixmap);
+ * 	}
+ *     }
+ *     else
+ *     {
+ * 	finiTexture (screen, texture);
+ * 	initTexture (screen, texture);
+ *     }
+ * 
+ *     if (!texture->name && backgroundImage)
+ * 	readImageToTexture (screen, texture, backgroundImage, &width, &height);
+ * 
+ *     if (texture->target == GL_TEXTURE_2D)
+ *     {
+ * 	glBindTexture (texture->target, texture->name);
+ * 	glTexParameteri (texture->target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+ * 	glTexParameteri (texture->target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+ * 	glBindTexture (texture->target, 0);
+ *     }
+ * } */
 
 void
 detectRefreshRateOfScreen (CompScreen *s)
@@ -830,36 +793,36 @@ detectRefreshRateOfScreen (CompScreen *s)
 }
 
 /* TODO, remove this when the grabWindow is not needed anymore */
-static void
-setSupportingWmCheck (CompScreen *s)
-{
-  //CompDisplay *d = s->display;
-
-    /*XChangeProperty (d->display, s->grabWindow, d->supportingWmCheckAtom,
-		     XA_WINDOW, 32, PropModeReplace,
-		     (unsigned char *) &s->grabWindow, 1);
-    */
-    /*XChangeProperty (d->display, s->grabWindow, d->wmNameAtom,
-		     d->utf8StringAtom, 8, PropModeReplace,
-		     (unsigned char *) PACKAGE, strlen (PACKAGE));*/
- 
-    /*
-   XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
-		     XA_ATOM, 32, PropModeReplace,
-		     (unsigned char *) &d->winStateSkipTaskbarAtom, 1);
-    XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
-		     XA_ATOM, 32, PropModeAppend,
-		     (unsigned char *) &d->winStateSkipPagerAtom, 1);
-    XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
-		     XA_ATOM, 32, PropModeAppend,
-		     (unsigned char *) &d->winStateHiddenAtom, 1);
-    */
-    /*
-    XChangeProperty (d->display, s->root, d->supportingWmCheckAtom,
-		     XA_WINDOW, 32, PropModeReplace,
-		     (unsigned char *) &s->grabWindow, 1);
-    */
-}
+/* static voida
+ * setSupportingWmCheck (CompScreen *s)
+ * {
+ *   //CompDisplay *d = s->display;
+ * 
+ *     /\*XChangeProperty (d->display, s->grabWindow, d->supportingWmCheckAtom,
+ * 		     XA_WINDOW, 32, PropModeReplace,
+ * 		     (unsigned char *) &s->grabWindow, 1);
+ *     *\/
+ *     /\*XChangeProperty (d->display, s->grabWindow, d->wmNameAtom,
+ * 		     d->utf8StringAtom, 8, PropModeReplace,
+ * 		     (unsigned char *) PACKAGE, strlen (PACKAGE));*\/
+ *  
+ *     /\*
+ *    XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
+ * 		     XA_ATOM, 32, PropModeReplace,
+ * 		     (unsigned char *) &d->winStateSkipTaskbarAtom, 1);
+ *     XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
+ * 		     XA_ATOM, 32, PropModeAppend,
+ * 		     (unsigned char *) &d->winStateSkipPagerAtom, 1);
+ *     XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
+ * 		     XA_ATOM, 32, PropModeAppend,
+ * 		     (unsigned char *) &d->winStateHiddenAtom, 1);
+ *     *\/
+ *     /\*
+ *     XChangeProperty (d->display, s->root, d->supportingWmCheckAtom,
+ * 		     XA_WINDOW, 32, PropModeReplace,
+ * 		     (unsigned char *) &s->grabWindow, 1);
+ *     *\/
+ * } */
 
 
 static void
@@ -885,6 +848,8 @@ getDesktopHints (CompScreen *s)
 
 	    s->hsize = data[0] / s->width;
 	    s->vsize = data[1] / s->height;
+	    printf("Got Desktop Geometry %dx%d\n", s->hsize, s->vsize);
+	    
 	}
 
 	XFree (propData);
@@ -1169,7 +1134,7 @@ addScreen (CompDisplay *display,
     unsigned int	 nchildren;
     int			 defaultDepth, nvisinfo, nElements, value, i;
     const char		 *glxExtensions, *glExtensions;
-    XSetWindowAttributes attrib;
+    /* XSetWindowAttributes attrib; */
     GLfloat		 globalAmbient[]  = { 0.1f, 0.1f,  0.1f, 0.1f };
     GLfloat		 ambientLight[]   = { 0.0f, 0.0f,  0.0f, 0.0f };
     GLfloat		 diffuseLight[]   = { 0.9f, 0.9f,  0.9f, 0.9f };
@@ -1307,7 +1272,7 @@ addScreen (CompDisplay *display,
     s->paintOutput		  = paintOutput;
     s->paintTransformedOutput	  = paintTransformedOutput;
     s->applyScreenTransform	  = applyScreenTransform;
-    s->paintBackground		  = paintBackground;
+    /* s->paintBackground		  = paintBackground; */
     s->paintWindow		  = paintWindow;
     s->drawWindow		  = drawWindow;
     s->addWindowGeometry	  = addWindowGeometry;
@@ -1346,7 +1311,7 @@ addScreen (CompDisplay *display,
     s->workArea.width  = s->attrib.width;
     s->workArea.height = s->attrib.height;
 
-    s->grabWindow = None;
+    //    s->grabWindow = None;
 
     makeOutputWindow (s);
 
@@ -1837,14 +1802,14 @@ addScreen (CompDisplay *display,
 
     XFree (children);
 
-    attrib.override_redirect = 1;
-    attrib.event_mask	     = PropertyChangeMask;
+    /* attrib.override_redirect = 1;
+     * attrib.event_mask	     = PropertyChangeMask; */
 
-    s->grabWindow = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
-				   CopyFromParent, InputOnly, CopyFromParent,
-				   CWOverrideRedirect | CWEventMask,
-				   &attrib);
-    XMapWindow (dpy, s->grabWindow);
+    /* s->grabWindow = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
+     * 				   CopyFromParent, InputOnly, CopyFromParent,
+     * 				   CWOverrideRedirect | CWEventMask,
+     * 				   &attrib);
+     * XMapWindow (dpy, s->grabWindow); */
     
     /* for (i = 0; i < SCREEN_EDGE_NUM; i++)
      * {
@@ -1870,7 +1835,7 @@ addScreen (CompDisplay *display,
      * updateScreenEdges (s); */
 
     //    setDesktopHints (s);
-    setSupportingWmCheck (s);
+    //setSupportingWmCheck (s);
     //setSupported (s);
 
     s->normalCursor = XCreateFontCursor (dpy, XC_left_ptr);
@@ -2067,44 +2032,44 @@ pushScreenGrab (CompScreen *s,
 		const char *name)
 {
   C(("pushScreenGrab\n"));
-#ifdef KEYBINDING    
-  if (s->maxGrab == 0)
-    {
-      int status;
-
-      status = XGrabPointer (s->display->display, s->grabWindow, TRUE,
-			     POINTER_GRAB_MASK,
-			     GrabModeAsync, GrabModeAsync,
-			     s->root, cursor,
-			     CurrentTime);
-
-
-        if (status == GrabSuccess)
-	  {
-	  
-	  status = XGrabKeyboard (s->display->display,
-				  s->grabWindow, TRUE,
-				  GrabModeAsync, GrabModeAsync,
-				  CurrentTime);
-	  if (status != GrabSuccess)
-	    {
-	      XUngrabPointer (s->display->display, CurrentTime);
-	      return 0;
-	      }
-	  }
-	else
-	{	   
-	  return 0;	    
-	}
-
-    }
-    else
-    {
-      XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
-				cursor, CurrentTime);
-	
-    }
-#endif    
+/* #ifdef KEYBINDING    
+ *   if (s->maxGrab == 0)
+ *     {
+ *       int status;
+ * 
+ *       status = XGrabPointer (s->display->display, s->grabWindow, TRUE,
+ * 			     POINTER_GRAB_MASK,
+ * 			     GrabModeAsync, GrabModeAsync,
+ * 			     s->root, cursor,
+ * 			     CurrentTime);
+ * 
+ * 
+ *         if (status == GrabSuccess)
+ * 	  {
+ * 	  
+ * 	  status = XGrabKeyboard (s->display->display,
+ * 				  s->grabWindow, TRUE,
+ * 				  GrabModeAsync, GrabModeAsync,
+ * 				  CurrentTime);
+ * 	  if (status != GrabSuccess)
+ * 	    {
+ * 	      XUngrabPointer (s->display->display, CurrentTime);
+ * 	      return 0;
+ * 	      }
+ * 	  }
+ * 	else
+ * 	{	   
+ * 	  return 0;	    
+ * 	}
+ * 
+ *     }
+ *     else
+ *     {
+ *       XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
+ * 				cursor, CurrentTime);
+ * 	
+ *     }
+ * #endif     */
   if (s->grabSize <= s->maxGrab)
     {
       s->grabs = realloc (s->grabs, sizeof (CompGrab) * (s->maxGrab + 1));
@@ -2129,19 +2094,19 @@ updateScreenGrab (CompScreen *s,
 		  Cursor     cursor)
 {
   D(("updateScreenGrab\n"));
-#ifdef KEYBINDING    
-  index--;
-
-/* #ifdef DEBUG
- *     if (index < 0 || index >= s->maxGrab)
- * 	abort ();
+/* #ifdef KEYBINDING    
+ *   index--;
+ * 
+ * /\* #ifdef DEBUG
+ *  *     if (index < 0 || index >= s->maxGrab)
+ *  * 	abort ();
+ *  * #endif *\/
+ * 
+ *   XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
+ * 			    cursor, CurrentTime);
+ * 
+ *   s->grabs[index].cursor = cursor;
  * #endif */
-
-  XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
-			    cursor, CurrentTime);
-
-  s->grabs[index].cursor = cursor;
-#endif
 }
 
 void
@@ -2169,28 +2134,28 @@ removeScreenGrab (CompScreen *s,
 
     if (maxGrab != s->maxGrab)
     {
-#ifdef KEYBINDING	   
-
-      if (maxGrab)
-	{
-	    XChangeActivePointerGrab (s->display->display,
-				      POINTER_GRAB_MASK,
-				      s->grabs[maxGrab - 1].cursor,
-				      CurrentTime);
-	}
-	else
-	{
-	    if (restorePointer)
-		warpPointer (s,
-			     restorePointer->x - pointerX,
-			     restorePointer->y - pointerY);
-
-	    XUngrabPointer (s->display->display, CurrentTime);
-
-	     XUngrabKeyboard (s->display->display, CurrentTime);
-
-	}
-#endif
+/* #ifdef KEYBINDING	   
+ * 
+ *       if (maxGrab)
+ * 	{
+ * 	    XChangeActivePointerGrab (s->display->display,
+ * 				      POINTER_GRAB_MASK,
+ * 				      s->grabs[maxGrab - 1].cursor,
+ * 				      CurrentTime);
+ * 	}
+ * 	else
+ * 	{
+ * 	    if (restorePointer)
+ * 		warpPointer (s,
+ * 			     restorePointer->x - pointerX,
+ * 			     restorePointer->y - pointerY);
+ * 
+ * 	    XUngrabPointer (s->display->display, CurrentTime);
+ * 
+ * 	     XUngrabKeyboard (s->display->display, CurrentTime);
+ * 
+ * 	}
+ * #endif */
 	s->maxGrab = maxGrab;
     }
 }
@@ -2305,79 +2270,79 @@ grabUngrabKeys (CompScreen   *s,
 }
 #endif
 
-static Bool
-addPassiveKeyGrab (CompScreen	  *s,
-		   CompKeyBinding *key)
-{
-#ifdef KEYBINDING  
-    CompKeyGrab  *keyGrab;
-    unsigned int mask;
-    int          i;
-
-    mask = virtualToRealModMask (s->display, key->modifiers);
-
-    for (i = 0; i < s->nKeyGrab; i++)
-    {
-	if (key->keycode == s->keyGrab[i].keycode &&
-	    mask         == s->keyGrab[i].modifiers)
-	{
-	    s->keyGrab[i].count++;
-	    return TRUE;
-	}
-    }
-
-    keyGrab = realloc (s->keyGrab, sizeof (CompKeyGrab) * (s->nKeyGrab + 1));
-    if (!keyGrab)
-	return FALSE;
-
-    s->keyGrab = keyGrab;
-
-    if (!(mask & CompNoMask))
-    {
-	if (!grabUngrabKeys (s, mask, key->keycode, TRUE))
-	    return FALSE;
-    }
-
-    s->keyGrab[s->nKeyGrab].keycode   = key->keycode;
-    s->keyGrab[s->nKeyGrab].modifiers = mask;
-    s->keyGrab[s->nKeyGrab].count     = 1;
-
-    s->nKeyGrab++;
-#endif
-    return TRUE;
-}
-
-static void
-removePassiveKeyGrab (CompScreen     *s,
-		      CompKeyBinding *key)
-{
-#ifdef KEYBINDING  
-    unsigned int mask;
-    int          i;
-
-    for (i = 0; i < s->nKeyGrab; i++)
-    {
-	mask = virtualToRealModMask (s->display, key->modifiers);
-	if (key->keycode == s->keyGrab[i].keycode &&
-	    mask         == s->keyGrab[i].modifiers)
-	{
-	    s->keyGrab[i].count--;
-	    if (s->keyGrab[i].count)
-		return;
-
-	    memmove (s->keyGrab + i, s->keyGrab + i + 1, 
-		     (s->nKeyGrab - (i + 1)) * sizeof (CompKeyGrab));
-
-	    s->nKeyGrab--;
-	    s->keyGrab = realloc (s->keyGrab,
-				  sizeof (CompKeyGrab) * s->nKeyGrab);
-
-	    if (!(mask & CompNoMask))
-		grabUngrabKeys (s, mask, key->keycode, FALSE);
-	}
-    }
-#endif
-}
+/* static Bool
+ * addPassiveKeyGrab (CompScreen	  *s,
+ * 		   CompKeyBinding *key)
+ * {
+ * #ifdef KEYBINDING  
+ *     CompKeyGrab  *keyGrab;
+ *     unsigned int mask;
+ *     int          i;
+ * 
+ *     mask = virtualToRealModMask (s->display, key->modifiers);
+ * 
+ *     for (i = 0; i < s->nKeyGrab; i++)
+ *     {
+ * 	if (key->keycode == s->keyGrab[i].keycode &&
+ * 	    mask         == s->keyGrab[i].modifiers)
+ * 	{
+ * 	    s->keyGrab[i].count++;
+ * 	    return TRUE;
+ * 	}
+ *     }
+ * 
+ *     keyGrab = realloc (s->keyGrab, sizeof (CompKeyGrab) * (s->nKeyGrab + 1));
+ *     if (!keyGrab)
+ * 	return FALSE;
+ * 
+ *     s->keyGrab = keyGrab;
+ * 
+ *     if (!(mask & CompNoMask))
+ *     {
+ * 	if (!grabUngrabKeys (s, mask, key->keycode, TRUE))
+ * 	    return FALSE;
+ *     }
+ * 
+ *     s->keyGrab[s->nKeyGrab].keycode   = key->keycode;
+ *     s->keyGrab[s->nKeyGrab].modifiers = mask;
+ *     s->keyGrab[s->nKeyGrab].count     = 1;
+ * 
+ *     s->nKeyGrab++;
+ * #endif
+ *     return TRUE;
+ * }
+ * 
+ * static void
+ * removePassiveKeyGrab (CompScreen     *s,
+ * 		      CompKeyBinding *key)
+ * {
+ * #ifdef KEYBINDING  
+ *     unsigned int mask;
+ *     int          i;
+ * 
+ *     for (i = 0; i < s->nKeyGrab; i++)
+ *     {
+ * 	mask = virtualToRealModMask (s->display, key->modifiers);
+ * 	if (key->keycode == s->keyGrab[i].keycode &&
+ * 	    mask         == s->keyGrab[i].modifiers)
+ * 	{
+ * 	    s->keyGrab[i].count--;
+ * 	    if (s->keyGrab[i].count)
+ * 		return;
+ * 
+ * 	    memmove (s->keyGrab + i, s->keyGrab + i + 1, 
+ * 		     (s->nKeyGrab - (i + 1)) * sizeof (CompKeyGrab));
+ * 
+ * 	    s->nKeyGrab--;
+ * 	    s->keyGrab = realloc (s->keyGrab,
+ * 				  sizeof (CompKeyGrab) * s->nKeyGrab);
+ * 
+ * 	    if (!(mask & CompNoMask))
+ * 		grabUngrabKeys (s, mask, key->keycode, FALSE);
+ * 	}
+ *     }
+ * #endif
+ * } */
 
 static void
 updatePassiveKeyGrabs (CompScreen *s)
@@ -2398,66 +2363,66 @@ updatePassiveKeyGrabs (CompScreen *s)
 #endif
 }
 
-static Bool
-addPassiveButtonGrab (CompScreen        *s,
-		      CompButtonBinding *button)
-{
-#ifdef KEYBINDING  
-    CompButtonGrab *buttonGrab;
-    int            i;
-
-    for (i = 0; i < s->nButtonGrab; i++)
-    {
-	if (button->button    == s->buttonGrab[i].button &&
-	    button->modifiers == s->buttonGrab[i].modifiers)
-	{
-	    s->buttonGrab[i].count++;
-	    return TRUE;
-	}
-    }
-
-    buttonGrab = realloc (s->buttonGrab,
-			  sizeof (CompButtonGrab) * (s->nButtonGrab + 1));
-    if (!buttonGrab)
-	return FALSE;
-
-    s->buttonGrab = buttonGrab;
-
-    s->buttonGrab[s->nButtonGrab].button    = button->button;
-    s->buttonGrab[s->nButtonGrab].modifiers = button->modifiers;
-    s->buttonGrab[s->nButtonGrab].count     = 1;
-
-    s->nButtonGrab++;
-#endif
-    return TRUE;
-}
-
-static void
-removePassiveButtonGrab (CompScreen        *s,
-			 CompButtonBinding *button)
-{
-#ifdef KEYBINDING  
-    int          i;
-
-    for (i = 0; i < s->nButtonGrab; i++)
-    {
-	if (button->button    == s->buttonGrab[i].button &&
-	    button->modifiers == s->buttonGrab[i].modifiers)
-	{
-	    s->buttonGrab[i].count--;
-	    if (s->buttonGrab[i].count)
-		return;
-
-	    memmove (s->buttonGrab + i, s->buttonGrab + i + 1,
-		     (s->nButtonGrab - (i + 1)) * sizeof (CompButtonGrab));
-
-	    s->nButtonGrab--;
-	    s->buttonGrab = realloc (s->buttonGrab,
-				     sizeof (CompButtonGrab) * s->nButtonGrab);
-	}
-    }
-#endif
-}
+/* static Bool
+ * addPassiveButtonGrab (CompScreen        *s,
+ * 		      CompButtonBinding *button)
+ * {
+ * #ifdef KEYBINDING  
+ *     CompButtonGrab *buttonGrab;
+ *     int            i;
+ * 
+ *     for (i = 0; i < s->nButtonGrab; i++)
+ *     {
+ * 	if (button->button    == s->buttonGrab[i].button &&
+ * 	    button->modifiers == s->buttonGrab[i].modifiers)
+ * 	{
+ * 	    s->buttonGrab[i].count++;
+ * 	    return TRUE;
+ * 	}
+ *     }
+ * 
+ *     buttonGrab = realloc (s->buttonGrab,
+ * 			  sizeof (CompButtonGrab) * (s->nButtonGrab + 1));
+ *     if (!buttonGrab)
+ * 	return FALSE;
+ * 
+ *     s->buttonGrab = buttonGrab;
+ * 
+ *     s->buttonGrab[s->nButtonGrab].button    = button->button;
+ *     s->buttonGrab[s->nButtonGrab].modifiers = button->modifiers;
+ *     s->buttonGrab[s->nButtonGrab].count     = 1;
+ * 
+ *     s->nButtonGrab++;
+ * #endif
+ *     return TRUE;
+ * }
+ * 
+ * static void
+ * removePassiveButtonGrab (CompScreen        *s,
+ * 			 CompButtonBinding *button)
+ * {
+ * #ifdef KEYBINDING  
+ *     int          i;
+ * 
+ *     for (i = 0; i < s->nButtonGrab; i++)
+ *     {
+ * 	if (button->button    == s->buttonGrab[i].button &&
+ * 	    button->modifiers == s->buttonGrab[i].modifiers)
+ * 	{
+ * 	    s->buttonGrab[i].count--;
+ * 	    if (s->buttonGrab[i].count)
+ * 		return;
+ * 
+ * 	    memmove (s->buttonGrab + i, s->buttonGrab + i + 1,
+ * 		     (s->nButtonGrab - (i + 1)) * sizeof (CompButtonGrab));
+ * 
+ * 	    s->nButtonGrab--;
+ * 	    s->buttonGrab = realloc (s->buttonGrab,
+ * 				     sizeof (CompButtonGrab) * s->nButtonGrab);
+ * 	}
+ *     }
+ * #endif
+ * } */
 
 Bool
 addScreenAction (CompScreen *s,

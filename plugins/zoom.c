@@ -268,18 +268,18 @@ zoomGetCurrentZoom (CompScreen *s,
 
     if (output == zs->zoomOutput)
     {
-	float inverse;
-
-	inverse = 1.0f - zs->scale;
-
-	pBox->x1 = zs->scale * zs->current[output].x1 +
-	    inverse * zs->last[output].x1;
-	pBox->y1 = zs->scale * zs->current[output].y1 +
-	    inverse * zs->last[output].y1;
-	pBox->x2 = zs->scale * zs->current[output].x2 +
-	    inverse * zs->last[output].x2;
-	pBox->y2 = zs->scale * zs->current[output].y2 +
-	    inverse * zs->last[output].y2;
+    	float inverse;
+    
+    	inverse = 1.0f - zs->scale;
+    
+    	pBox->x1 = zs->scale * zs->current[output].x1 +
+    	    inverse * zs->last[output].x1;
+    	pBox->y1 = zs->scale * zs->current[output].y1 +
+    	    inverse * zs->last[output].y1;
+    	pBox->x2 = zs->scale * zs->current[output].x2 +
+    	    inverse * zs->last[output].x2;
+    	pBox->y2 = zs->scale * zs->current[output].y2 +
+    	    inverse * zs->last[output].y2;
     }
     else
     {
@@ -586,7 +586,7 @@ zoomInitiate (CompDisplay     *d,
 	    zs->grabIndex = pushScreenGrab (s, None, "zoom");
 
 	//if (state & CompActionStateInitButton) /*XXX*/
-	    action->state |= CompActionStateTermButton;
+	//    action->state |= CompActionStateTermButton;
 	
 
 	/* start selection zoom rectangle */
@@ -726,7 +726,7 @@ zoomTerminate (CompDisplay     *d,
 	}
     }
 
-    action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
+    //action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
 
     return FALSE;
 }
@@ -758,8 +758,8 @@ zoomInitiatePan (CompDisplay     *d,
 	if (otherScreenGrabExist (s, "zoom", 0))
 	    return FALSE;
 
-	if (state & CompActionStateInitButton)
-	    action->state |= CompActionStateTermButton;
+	/* if (state & CompActionStateInitButton)
+	 *     action->state |= CompActionStateTermButton; */
 
 	if (!zs->panGrabIndex)
 	    zs->panGrabIndex = pushScreenGrab (s, zs->panCursor, "zoom-pan");
@@ -802,7 +802,7 @@ zoomTerminatePan (CompDisplay     *d,
 	return TRUE;
     }
 
-    action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
+    /* action->state &= ~(CompActionStateTermKey | CompActionStateTermButton); */
 
     return FALSE;
 }
@@ -823,16 +823,24 @@ zoomHandleMotionEvent (CompScreen *s,
 	zoomGetCurrentZoom (s, output, &box);
 
 	if (zs->zoomed & (1 << output))
-	    scale = oWidth / (box.x2 - box.x1);
+	  scale = oWidth / (double)(zs->x2 - zs->x1); //(box.x2 - box.x1);
 	else
 	    scale = 1.0f;
 
+	printf("%d:%d:%f\n",zs->x1, zs->x2, oWidth);
+	
 	if (zs->panGrabIndex)
 	{
 	    float dx, dy;
 
-	    dx = (xRoot - lastPointerX) / scale;
-	    dy = (yRoot - lastPointerY) / scale;
+	    box.x1 = zs->x1;
+	    box.x2 = zs->x2;
+	    box.y1 = zs->y1;
+	    box.y2 = zs->y2;
+	    
+	    
+	    dx = (xRoot - lastPointerX); // / scale;
+	    dy = (yRoot - lastPointerY);// / scale;
 
 	    box.x1 -= dx;
 	    box.y1 -= dy;
@@ -843,11 +851,14 @@ zoomHandleMotionEvent (CompScreen *s,
 	    {
 		box.x2 += s->outputDev[output].region.extents.x1 - box.x1;
 		box.x1 = s->outputDev[output].region.extents.x1;
+		pointerX = s->outputDev[output].region.extents.x1;
+		
 	    }
 	    else if (box.x2 > s->outputDev[output].region.extents.x2)
 	    {
 		box.x1 -= box.x2 - s->outputDev[output].region.extents.x2;
 		box.x2 = s->outputDev[output].region.extents.x2;
+		pointerX = 0;
 	    }
 
 	    if (box.y1 < s->outputDev[output].region.extents.y1)
@@ -891,6 +902,14 @@ zoomHandleMotionEvent (CompScreen *s,
 	}
     }
 }
+#define ECO_PLUGIN_ZOOM   7
+#define ECO_ACT_MOUSE_MOVE 3
+#define ECO_ACT_MOUSE_DOWN 4
+#define ECO_ACT_MOUSE_UP   5
+#define ECO_GET_BUTTON(val) val & 0x00000f
+#define ECO_GET_DBLCLICK(val) (val & 0x0000f0) >> 4
+#define ECO_GET_X(val) (val >> 16)
+#define ECO_GET_Y(val) (val & 0x000fff)
 
 static void
 zoomHandleEvent (CompDisplay *d,
@@ -901,16 +920,121 @@ zoomHandleEvent (CompDisplay *d,
     ZOOM_DISPLAY (d);
 
     switch (event->type) {
-    case MotionNotify:
-	s = findScreenAtDisplay (d, event->xmotion.root);
-	if (s)
-	    zoomHandleMotionEvent (s, pointerX, pointerY);
-	break;
-    case EnterNotify:
-    case LeaveNotify:
-	s = findScreenAtDisplay (d, event->xcrossing.root);
-	if (s)
-	    zoomHandleMotionEvent (s, pointerX, pointerY);
+    case ClientMessage:
+      if (event->xclient.message_type == d->ecoPluginAtom)
+	{
+	  Window win = event->xclient.data.l[0];
+	  if(event->xclient.data.l[1] != ECO_PLUGIN_ZOOM) break;
+	  
+	  if ((s = findScreenAtDisplay (d, win)) && !s)
+	    {
+	      for (s = d->screens; s; s = s->next)
+		ecompActionTerminateNotify (s, 1);
+	      break;
+	    }
+	  unsigned int action = event->xclient.data.l[2];
+	  unsigned int option = event->xclient.data.l[3];
+	  unsigned int option2 = event->xclient.data.l[4];
+
+	  if (action == ECO_ACT_TERMINATE)
+	    {
+	      printf("zoom terminate\n");
+	      ZOOM_SCREEN(s);
+	      
+	      CompOption o[1];
+
+	      o[0].type    = CompOptionTypeInt;
+	      o[0].name    = "root";
+	      o[0].value.i = s->root;
+	      if(zs->panGrabIndex)
+		zoomTerminatePan(d, NULL, 0, o, 1);
+
+	      zoomTerminate(d, NULL, 0, o, 1);
+	    }
+	  else if ((action == ECO_ACT_INITIATE) ||
+		   (action == ECO_ACT_CYCLE))
+	    {
+	      ZOOM_SCREEN(s);
+	      if (zs->grabIndex)
+		{
+		  printf("zoom initiate\n");
+		  CompOption o[1];
+	      
+		  o[0].type    = CompOptionTypeInt;
+		  o[0].name    = "root";
+		  o[0].value.i = s->root;
+	      
+		  if (!option2)
+		    {
+		      zoomIn(d, NULL, 0, o, 1);
+		    }
+		  else if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+		    {
+		      printf("zoom in\n");
+		      zoomIn(d, NULL, 0, o, 1);
+		    }
+		  else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+		    {
+		      printf("zoom out\n");
+		      zoomOut(d, NULL, 0, o, 1);
+		    }
+		}
+	      
+	    }
+	  else if (action == ECO_ACT_MOUSE_MOVE)
+	    {
+	      ZOOM_SCREEN(s);
+	      if (!zs->grabIndex)
+		{
+		  pointerX = option;
+		  pointerY = option2;
+		  
+		  printf("zoom initiate\n");
+		  CompOption o[1];
+
+		  o[0].type    = CompOptionTypeInt;
+		  o[0].name    = "root";
+		  o[0].value.i = s->root;
+
+		  zoomIn(d, NULL, 0, o, 1);
+	
+		}
+	      else
+		{
+		  
+		  printf("mouse move\n");
+		  CompOption o[1];
+
+		  o[0].type    = CompOptionTypeInt;
+		  o[0].name    = "root";
+		  o[0].value.i = s->root;
+
+		
+		  if (!zs->adjust && !zs->panGrabIndex)
+		    {
+		      pointerX = option;
+		      pointerY = option2;
+		  
+		      zoomInitiatePan(d, NULL, 0, o, 1);
+		    }
+		  if (zs->panGrabIndex)
+		    zoomHandleMotionEvent (s, option, option2);
+		}
+	    }
+	  
+	  
+	}
+      break;
+    /* case MotionNotify:
+     * 	s = findScreenAtDisplay (d, event->xmotion.root);
+     * 	if (s)
+     * 	  zoomHandleMotionEvent (s, pointerX, pointerY);
+     * 	break;
+     * case EnterNotify:
+     * case LeaveNotify:
+     * 	s = findScreenAtDisplay (d, event->xcrossing.root);
+     * 	if (s)
+     * 	    zoomHandleMotionEvent (s, pointerX, pointerY); */
     default:
 	break;
     }

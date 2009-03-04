@@ -284,12 +284,6 @@ termExpo(CompDisplay *d, int cancel)
 }
 
 
-#define ECO_ACT_MOUSE_MOVE 3
-#define ECO_ACT_MOUSE_DOWN 4
-#define ECO_ACT_MOUSE_UP   5
-#define GET_BUTTON(val) val & 0x00000f
-#define GET_DBLCLICK(val) (val & 0x0000f0) >> 4
-
 static void
 expoHandleEvent (CompDisplay *d,
 		 XEvent      *event)
@@ -308,7 +302,8 @@ expoHandleEvent (CompDisplay *d,
 
 	  if (!(s = findScreenAtDisplay (d, win)))
 	    {
-	      // XXX ecompActionTerminateNotify (s, 1);
+	      for (s = d->screens; s; s = s->next)
+		ecompActionTerminateNotify (s, 1);
 	      break;
 	    }
 	  unsigned int action = event->xclient.data.l[2];
@@ -383,12 +378,15 @@ expoHandleEvent (CompDisplay *d,
 
 	      if (es->expoMode)
 		{
-		  switch (GET_BUTTON(option))
+		  pointerX = ECO_GET_X(option2);
+		  pointerY = ECO_GET_Y(option2);
+		  
+		  switch (ECO_GET_BUTTON(option))
 		    {
 		    case Button1:
 		      es->dndState = DnDStart;
 
-		      es->doubleClick = GET_DBLCLICK(option);
+		      es->doubleClick = ECO_GET_DBLCLICK(option);
 
 		      break;
 		    case Button3:
@@ -853,9 +851,8 @@ expoDrawWindow (CompWindow           *w,
 	  if (expoAnimation != ExpoAnimationZoom)
 	    fA.opacity = fragment->opacity * es->expoCam;
 
-	  if (((w->wmType & CompWindowTypeDockMask) ||
-	       (w->wmType & CompWindowTypeUtilMask)) &&
-	      expoGetHideDocks (s->display))
+	  if (!(w->wmType & CompWindowTypeDesktopMask) &&
+	      ((!w->clientId) && expoGetHideDocks (s->display)))
 	    {
 	      if (expoAnimation == ExpoAnimationZoom &&
 		  (s->x == es->selectedVX && s->y == es->selectedVY))
@@ -923,16 +920,15 @@ expoPaintWindow (CompWindow              *w,
 	mask |= PAINT_WINDOW_TRANSLUCENT_MASK;
 
       if (es->expoCam > 0.0 && hideDocks &&
-	  ((w->wmType & CompWindowTypeUtilMask) ||
-	   (w->wmType & CompWindowTypeDockMask)))
+	  (!(w->wmType & CompWindowTypeDesktopMask) &&
+	   ((!w->clientId) && expoGetHideDocks (s->display))))
 	mask |= PAINT_WINDOW_TRANSLUCENT_MASK;
 	
       if (expoAnimation != ExpoAnimationZoom)
 	opacity = attrib->opacity * es->expoCam;
 
-      if (((w->wmType & CompWindowTypeUtilMask) ||
-	   (w->wmType & CompWindowTypeDockMask)) &&
-	  expoGetHideDocks (s->display))
+      if (!(w->wmType & CompWindowTypeDesktopMask) &&
+	  ((!w->clientId) && expoGetHideDocks (s->display)))
 	{
 	  if (expoAnimation == ExpoAnimationZoom &&
 	      (s->x == es->selectedVX && s->y == es->selectedVY))
@@ -1011,7 +1007,7 @@ expoDonePaintScreen (CompScreen * s)
       int dy = es->newCursorY - es->prevCursorY;
       int moved = 1;
       CompWindow *w = es->dndWindow;
-	  
+
       if ((dx || dy) && es->dndWindow)
 	{
 
@@ -1047,9 +1043,6 @@ expoDonePaintScreen (CompScreen * s)
 	      int abs_x = w->attrib.x + (s->x * s->width);
 	      int abs_y = w->attrib.y + (s->y * s->height);
 		    
-	      //printf("expo: %d:%d -- %d:%d  a:%d:%d   d:%d:%d v:%d:%d\n", 
-	      //abs_x, abs_y, dx, dy, w->attrib.x, w->attrib.y, s->x, s->y, vx, vy);  
-		   
 	      if (abs_x + dx <= 0) dx = - abs_x;
 	      if (abs_y + dy <= 0) dy = - abs_y;
 
@@ -1117,7 +1110,8 @@ expoDonePaintScreen (CompScreen * s)
 	  if (!inWindow)
 	    continue;
 
-	  // (*s->windowGrabNotify) (w);
+	  // (*s->windowGrabNotify) (w); /* XXX this disables wobbly i
+	  // guess*/
 	  es->dndState  = DnDDuring;
 	  es->dndWindow = w;
 
@@ -1125,10 +1119,10 @@ expoDonePaintScreen (CompScreen * s)
 	}
 
       if (w)
-	{
-	  raiseWindow (es->dndWindow);
+      	{
+      	  raiseWindow (es->dndWindow);
 	  moveInputFocusToWindow (es->dndWindow);
-	}
+      	}
       else
 	{
 	  /* no window was hovered */

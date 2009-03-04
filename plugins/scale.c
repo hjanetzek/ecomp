@@ -1871,16 +1871,6 @@ scaleHoverTimeout (void *closure)
     return FALSE;
 }
 
-#define ECO_ACT_MOUSE_MOVE 3
-#define ECO_ACT_MOUSE_DOWN 4
-#define ECO_ACT_MOUSE_UP   5
-#define ECO_GET_BUTTON(val) val & 0x00000f
-#define ECO_GET_DBLCLICK(val) (val & 0x0000f0) >> 4
-#define ECO_GET_X(val) (val >> 16)
-#define ECO_GET_Y(val) (val & 0x000fff)
-
-
-#define ECO_ACT_SEND_TO_CURRENT_DESK 6 
 
 static void
 scaleHandleEvent (CompDisplay *d,
@@ -1921,7 +1911,8 @@ scaleHandleEvent (CompDisplay *d,
 	  
 	  if (!(s = findScreenAtDisplay (d, win)))
 	    {
-	      // XXX ecompActionTerminateNotify (s, 1);
+	      for (s = d->screens; s; s = s->next)
+		ecompActionTerminateNotify (s, 1);
 	      break;
 	    }
 	  unsigned int action = event->xclient.data.l[2];

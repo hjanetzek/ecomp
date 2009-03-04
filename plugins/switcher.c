@@ -70,7 +70,7 @@ typedef struct _SwitchScreen {
   DonePaintScreenProc    donePaintScreen;
   PaintOutputProc	   paintOutput;
   PaintWindowProc        paintWindow;
-  PaintBackgroundProc    paintBackground;
+  //PaintBackgroundProc    paintBackground;
   DamageWindowRectProc   damageWindowRect;
 
   CompOption opt[SWITCH_SCREEN_OPTION_NUM];
@@ -889,7 +889,8 @@ switchHandleEvent (CompDisplay *d,
 	  
 	  if (!(s = findScreenAtDisplay (d, win)))
 	    {
-	      // XXX ecompActionTerminateNotify (s, 1);
+	      for (s = d->screens; s; s = s->next)
+		ecompActionTerminateNotify (s, 1);
 	      break;
 	    }
 	  unsigned int action = event->xclient.data.l[2];
@@ -1571,20 +1572,20 @@ switchPaintWindow (CompWindow		   *w,
   return status;
 }
 
-static void
-switchPaintBackground (CompScreen   *s,
-		       Region	    region,
-		       unsigned int mask)
-{
-  SWITCH_SCREEN (s);
-
-  if (!(ss->zoomMask & NORMAL_WINDOW_MASK))
-    return;
-
-  UNWRAP (ss, s, paintBackground);
-  (*s->paintBackground) (s, region, mask);
-  WRAP (ss, s, paintBackground, switchPaintBackground);
-}
+/* static void
+ * switchPaintBackground (CompScreen   *s,
+ * 		       Region	    region,
+ * 		       unsigned int mask)
+ * {
+ *   SWITCH_SCREEN (s);
+ * 
+ *   if (!(ss->zoomMask & NORMAL_WINDOW_MASK))
+ *     return;
+ * 
+ *   UNWRAP (ss, s, paintBackground);
+ *   (*s->paintBackground) (s, region, mask);
+ *   WRAP (ss, s, paintBackground, switchPaintBackground);
+ * } */
 
 static Bool
 switchDamageWindowRect (CompWindow *w,
@@ -1744,7 +1745,7 @@ switchInitScreen (CompPlugin *p,
   WRAP (ss, s, donePaintScreen, switchDonePaintScreen);
   WRAP (ss, s, paintOutput, switchPaintOutput);
   WRAP (ss, s, paintWindow, switchPaintWindow);
-  WRAP (ss, s, paintBackground, switchPaintBackground);
+  /* WRAP (ss, s, paintBackground, switchPaintBackground); */
   WRAP (ss, s, damageWindowRect, switchDamageWindowRect);
 
   s->privates[sd->screenPrivateIndex].ptr = ss;
@@ -1762,7 +1763,7 @@ switchFiniScreen (CompPlugin *p,
   UNWRAP (ss, s, donePaintScreen);
   UNWRAP (ss, s, paintOutput);
   UNWRAP (ss, s, paintWindow);
-  UNWRAP (ss, s, paintBackground);
+  /* UNWRAP (ss, s, paintBackground); */
   UNWRAP (ss, s, damageWindowRect);
 
   if (ss->windowsSize)

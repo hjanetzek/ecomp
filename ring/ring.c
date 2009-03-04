@@ -1535,7 +1535,8 @@ ringHandleEvent (CompDisplay *d,
 
 	  if (!(s = findScreenAtDisplay (d, win)))
 	    {
-	      // XXX ecompActionTerminateNotify (s, 1);
+	      for (s = d->screens; s; s = s->next)
+		ecompActionTerminateNotify (s, 1);
 	      break;
 	    }
 	  unsigned int action = event->xclient.data.l[2];

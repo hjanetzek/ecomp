@@ -627,7 +627,7 @@ updateWindowOutputExtents (CompWindow *w)
 	output.bottom != w->output.bottom)
     {
 	w->output = output;
-
+	
 	(*w->screen->windowResizeNotify) (w, 0, 0, 0, 0);
     }
 }
@@ -1844,7 +1844,7 @@ moveInputFocusToWindow (CompWindow *w)
     ev.xclient.message_type = d->winActiveAtom;
     ev.xclient.format	    = 32;
     ev.xclient.data.l[0]    = 2;
-    ev.xclient.data.l[1]    = getCurrentTimeFromDisplay (d);
+    ev.xclient.data.l[1]    = 0; //getCurrentTimeFromDisplay (d);
     ev.xclient.data.l[2]    = 0;
     ev.xclient.data.l[3]    = 0;
     ev.xclient.data.l[4]    = 0;
