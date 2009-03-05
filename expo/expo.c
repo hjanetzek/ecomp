@@ -290,7 +290,8 @@ expoHandleEvent (CompDisplay *d,
 {
   EXPO_DISPLAY (d);
   CompScreen *s;
-
+  Window win = None;
+  
   switch (event->type)
     {
     case ClientMessage:
@@ -429,12 +430,34 @@ expoHandleEvent (CompDisplay *d,
 	      pointerY = option2;
 	    }
 	}
-      break;     
+      break;
+      
+    case UnmapNotify:
+      win = event->xunmap.window;
+    case DestroyNotify:
+      win = event->xdestroywindow.window;
     }
 
+  if (win)
+    {
+      CompWindow *w;
+      w = findWindowAtDisplay(d, win); 
+
+      if (w)
+	{
+	  EXPO_SCREEN(w->screen);
+	  if ((es->dndState != DnDNone) &&
+	      (es->dndWindow == w))
+	    {
+	      es->dndWindow = None;
+	      es->dndState = DnDNone;
+	    }
+	}
+    }
+  
   UNWRAP (ed, d, handleEvent);
   (*d->handleEvent) (d, event);
-  WRAP (ed, d, handleEvent, expoHandleEvent);
+  WRAP (ed, d, handleEvent, expoHandleEvent);    
 }
 
 static void
