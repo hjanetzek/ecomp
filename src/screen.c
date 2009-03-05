@@ -27,8 +27,8 @@
 #  include "../config.h"
 #endif
 
-//#define D(x) do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)   
-//#define C(x) do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)   
+//#define D(x) do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)
+//#define C(x) do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)
 #define D(x)
 #define C(x)
 
@@ -56,866 +56,866 @@
 void
 ecompActionTerminateNotify (CompScreen *s, int plugin)
 {
-    XEvent ev;
-  
-    ev.type		    = ClientMessage;
-    ev.xclient.window	    = s->root;
-    ev.xclient.display = s->display->display;
-    ev.xclient.message_type = s->display->eManagedAtom;
-    ev.xclient.format	    = 32;
-    ev.xclient.data.l[0]    = 2;
-    ev.xclient.data.l[1]    = plugin;
-    ev.xclient.data.l[2]    = 0;
-    ev.xclient.data.l[3]    = 0;
-    ev.xclient.data.l[4]    = 0;
-    
-    XSendEvent (s->display->display,
-		s->root,
-		FALSE,
-		SubstructureRedirectMask | SubstructureNotifyMask,
-		&ev);
+	XEvent ev;
+
+	ev.type			= ClientMessage;
+	ev.xclient.window		= s->root;
+	ev.xclient.display = s->display->display;
+	ev.xclient.message_type = s->display->eManagedAtom;
+	ev.xclient.format		= 32;
+	ev.xclient.data.l[0]	= 2;
+	ev.xclient.data.l[1]	= plugin;
+	ev.xclient.data.l[2]	= 0;
+	ev.xclient.data.l[3]	= 0;
+	ev.xclient.data.l[4]	= 0;
+
+	XSendEvent (s->display->display,
+				s->root,
+				FALSE,
+				SubstructureRedirectMask | SubstructureNotifyMask,
+				&ev);
 }
 
 
 static int
 reallocScreenPrivate (int  size,
-		      void *closure)
+					  void *closure)
 {
-    CompDisplay *d = (CompDisplay *) closure;
-    CompScreen  *s;
-    void        *privates;
+	CompDisplay *d = (CompDisplay *) closure;
+	CompScreen	*s;
+	void		*privates;
 
-    for (s = d->screens; s; s = s->next)
-    {
-	privates = realloc (s->privates, size * sizeof (CompPrivate));
-	if (!privates)
-	    return FALSE;
+	for (s = d->screens; s; s = s->next)
+	{
+		privates = realloc (s->privates, size * sizeof (CompPrivate));
+		if (!privates)
+			return FALSE;
 
-	s->privates = (CompPrivate *) privates;
-    }
+		s->privates = (CompPrivate *) privates;
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 
 int
 allocateScreenPrivateIndex (CompDisplay *display)
 {
-    return allocatePrivateIndex (&display->screenPrivateLen,
-				 &display->screenPrivateIndices,
-				 reallocScreenPrivate,
-				 (void *) display);
+	return allocatePrivateIndex (&display->screenPrivateLen,
+								 &display->screenPrivateIndices,
+								 reallocScreenPrivate,
+								 (void *) display);
 }
 
 
 void
 freeScreenPrivateIndex (CompDisplay *display,
-			int	    index)
+						int		index)
 {
-    freePrivateIndex (display->screenPrivateLen,
-		      display->screenPrivateIndices,
-		      index);
+	freePrivateIndex (display->screenPrivateLen,
+					  display->screenPrivateIndices,
+					  index);
 }
 
 
 static void
 updateOutputDevices (CompScreen	*s)
 {
-    CompOutput	  *o, *output = NULL;
-    CompListValue *list = &s->opt[COMP_SCREEN_OPTION_OUTPUTS].value.list;
-    int		  nOutput = 0;
-    int		  x, y, i, bits;
-    unsigned int  width, height;
-    int		  x1, y1, x2, y2;
-    Region	  region;
+	CompOutput	  *o, *output = NULL;
+	CompListValue *list = &s->opt[COMP_SCREEN_OPTION_OUTPUTS].value.list;
+	int		  nOutput = 0;
+	int		  x, y, i, bits;
+	unsigned int  width, height;
+	int		  x1, y1, x2, y2;
+	Region	  region;
 
-    for (i = 0; i < list->nValue; i++)
-    {
-	if (!list->value[i].s)
-	    continue;
-
-	x      = 0;
-	y      = 0;
-	width  = s->width;
-	height = s->height;
-
-	bits = XParseGeometry (list->value[i].s, &x, &y, &width, &height);
-
-	if (bits & XNegative)
-	    x = s->width + x - width;
-
-	if (bits & YNegative)
-	    y = s->height + y - height;
-
-	x1 = x;
-	y1 = y;
-	x2 = x + width;
-	y2 = y + height;
-
-	if (x1 < 0)
-	    x1 = 0;
-	if (y1 < 0)
-	    y1 = 0;
-	if (x2 > s->width)
-	    x2 = s->width;
-	if (y2 > s->height)
-	    y2 = s->height;
-
-	if (x1 < x2 && y1 < y2)
+	for (i = 0; i < list->nValue; i++)
 	{
-	    o = realloc (output, sizeof (CompOutput) * (nOutput + 1));
-	    if (o)
-	    {
-		o[nOutput].region.extents.x1 = x1;
-		o[nOutput].region.extents.y1 = y1;
-		o[nOutput].region.extents.x2 = x2;
-		o[nOutput].region.extents.y2 = y2;
+		if (!list->value[i].s)
+			continue;
 
-		output = o;
-		nOutput++;
-	    }
-	}
-    }
+		x	   = 0;
+		y	   = 0;
+		width  = s->width;
+		height = s->height;
 
-    /* make sure we have at least one output */
-    if (!nOutput)
-    {
-	output = malloc (sizeof (CompOutput));
-	if (!output)
-	    return;
+		bits = XParseGeometry (list->value[i].s, &x, &y, &width, &height);
 
-	output->region.extents.x1 = 0;
-	output->region.extents.y1 = 0;
-	output->region.extents.x2 = s->width;
-	output->region.extents.y2 = s->height;
+		if (bits & XNegative)
+			x = s->width + x - width;
 
-	nOutput = 1;
-    }
+		if (bits & YNegative)
+			y = s->height + y - height;
 
-    /* set name, width, height and update rect pointers in all regions */
-    for (i = 0; i < nOutput; i++)
-    {
-	output[i].name = malloc (sizeof (char) * 10);
-	if (output[i].name)
-	    snprintf (output[i].name, 10, "Output %d", nOutput);
+		x1 = x;
+		y1 = y;
+		x2 = x + width;
+		y2 = y + height;
 
-	output[i].region.rects = &output[i].region.extents;
-	output[i].region.numRects = 1;
+		if (x1 < 0)
+			x1 = 0;
+		if (y1 < 0)
+			y1 = 0;
+		if (x2 > s->width)
+			x2 = s->width;
+		if (y2 > s->height)
+			y2 = s->height;
 
-	output[i].width  = output[i].region.extents.x2 -
-	    output[i].region.extents.x1;
-	output[i].height = output[i].region.extents.y2 -
-	    output[i].region.extents.y1;
+		if (x1 < x2 && y1 < y2)
+		{
+			o = realloc (output, sizeof (CompOutput) * (nOutput + 1));
+			if (o)
+			{
+				o[nOutput].region.extents.x1 = x1;
+				o[nOutput].region.extents.y1 = y1;
+				o[nOutput].region.extents.x2 = x2;
+				o[nOutput].region.extents.y2 = y2;
 
-	output[i].workArea.x      = output[i].region.extents.x1;
-	output[i].workArea.y      = output[i].region.extents.x1;
-	output[i].workArea.width  = output[i].width;
-	output[i].workArea.height = output[i].height;
-
-	output[i].id = i;
-    }
-
-    if (s->outputDev)
-    {
-	for (i = 0; i < s->nOutputDev; i++)
-	    if (s->outputDev[i].name)
-		free (s->outputDev[i].name);
-
-	free (s->outputDev);
-    }
-
-    s->outputDev  = output;
-    s->nOutputDev = nOutput;
-
-    setCurrentOutput (s, s->currentOutputDev);
-
-    //updateWorkareaForScreen (s);
-
-    setDefaultViewport (s);
-    damageScreen (s);
-
-    region = XCreateRegion ();
-    if (region)
-    {
-	REGION r;
-
-	r.rects = &r.extents;
-	r.numRects = 1;
-
-	if (s->display->nScreenInfo)
-	{
-	    for (i = 0; i < s->display->nScreenInfo; i++)
-	    {
-		r.extents.x1 = s->display->screenInfo[i].x_org;
-		r.extents.y1 = s->display->screenInfo[i].y_org;
-		r.extents.x2 = r.extents.x1 + s->display->screenInfo[i].width;
-		r.extents.y2 = r.extents.y1 + s->display->screenInfo[i].height;
-
-		XUnionRegion (region, &r, region);
-	    }
-	}
-	else
-	{
-	    r.extents.x1 = 0;
-	    r.extents.y1 = 0;
-	    r.extents.x2 = s->width;
-	    r.extents.y2 = s->height;
-
-	    XUnionRegion (region, &r, region);
+				output = o;
+				nOutput++;
+			}
+		}
 	}
 
-	/* remove all output regions from visible screen region */
-	for (i = 0; i < s->nOutputDev; i++)
-	    XSubtractRegion (region, &s->outputDev[i].region, region);
+	/* make sure we have at least one output */
+	if (!nOutput)
+	{
+		output = malloc (sizeof (CompOutput));
+		if (!output)
+			return;
 
-	/* we should clear color buffers before swapping if we have visible
-	   regions without output */
-	s->clearBuffers = REGION_NOT_EMPTY (region);
+		output->region.extents.x1 = 0;
+		output->region.extents.y1 = 0;
+		output->region.extents.x2 = s->width;
+		output->region.extents.y2 = s->height;
 
-	XDestroyRegion (region);
-    }
+		nOutput = 1;
+	}
 
-    (*s->outputChangeNotify) (s);
+	/* set name, width, height and update rect pointers in all regions */
+	for (i = 0; i < nOutput; i++)
+	{
+		output[i].name = malloc (sizeof (char) * 10);
+		if (output[i].name)
+			snprintf (output[i].name, 10, "Output %d", nOutput);
+
+		output[i].region.rects = &output[i].region.extents;
+		output[i].region.numRects = 1;
+
+		output[i].width	 = output[i].region.extents.x2 -
+			output[i].region.extents.x1;
+		output[i].height = output[i].region.extents.y2 -
+			output[i].region.extents.y1;
+
+		output[i].workArea.x	  = output[i].region.extents.x1;
+		output[i].workArea.y	  = output[i].region.extents.x1;
+		output[i].workArea.width  = output[i].width;
+		output[i].workArea.height = output[i].height;
+
+		output[i].id = i;
+	}
+
+	if (s->outputDev)
+	{
+		for (i = 0; i < s->nOutputDev; i++)
+			if (s->outputDev[i].name)
+				free (s->outputDev[i].name);
+
+		free (s->outputDev);
+	}
+
+	s->outputDev  = output;
+	s->nOutputDev = nOutput;
+
+	setCurrentOutput (s, s->currentOutputDev);
+
+	//updateWorkareaForScreen (s);
+
+	setDefaultViewport (s);
+	damageScreen (s);
+
+	region = XCreateRegion ();
+	if (region)
+	{
+		REGION r;
+
+		r.rects = &r.extents;
+		r.numRects = 1;
+
+		if (s->display->nScreenInfo)
+		{
+			for (i = 0; i < s->display->nScreenInfo; i++)
+			{
+				r.extents.x1 = s->display->screenInfo[i].x_org;
+				r.extents.y1 = s->display->screenInfo[i].y_org;
+				r.extents.x2 = r.extents.x1 + s->display->screenInfo[i].width;
+				r.extents.y2 = r.extents.y1 + s->display->screenInfo[i].height;
+
+				XUnionRegion (region, &r, region);
+			}
+		}
+		else
+		{
+			r.extents.x1 = 0;
+			r.extents.y1 = 0;
+			r.extents.x2 = s->width;
+			r.extents.y2 = s->height;
+
+			XUnionRegion (region, &r, region);
+		}
+
+		/* remove all output regions from visible screen region */
+		for (i = 0; i < s->nOutputDev; i++)
+			XSubtractRegion (region, &s->outputDev[i].region, region);
+
+		/* we should clear color buffers before swapping if we have visible
+		   regions without output */
+		s->clearBuffers = REGION_NOT_EMPTY (region);
+
+		XDestroyRegion (region);
+	}
+
+	(*s->outputChangeNotify) (s);
 }
 
 static void
 detectOutputDevices (CompScreen *s)
 {
-    if (!noDetection && s->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b)
-    {
-	char		*name;
-	CompOptionValue	value;
-	char		output[1024];
-	int		i, size = sizeof (output);
-
-	if (s->display->nScreenInfo)
+	if (!noDetection && s->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b)
 	{
-	    int n = s->display->nScreenInfo;
+		char		*name;
+		CompOptionValue	value;
+		char		output[1024];
+		int		i, size = sizeof (output);
 
-	    value.list.nValue = n;
-	    value.list.value  = malloc (sizeof (CompOptionValue) * n);
-	    if (!value.list.value)
-		return;
+		if (s->display->nScreenInfo)
+		{
+			int n = s->display->nScreenInfo;
 
-	    for (i = 0; i < n; i++)
-	    {
-		snprintf (output, size, "%dx%d+%d+%d",
-			  s->display->screenInfo[i].width,
-			  s->display->screenInfo[i].height,
-			  s->display->screenInfo[i].x_org,
-			  s->display->screenInfo[i].y_org);
+			value.list.nValue = n;
+			value.list.value  = malloc (sizeof (CompOptionValue) * n);
+			if (!value.list.value)
+				return;
 
-		value.list.value[i].s = strdup (output);
-	    }
+			for (i = 0; i < n; i++)
+			{
+				snprintf (output, size, "%dx%d+%d+%d",
+						  s->display->screenInfo[i].width,
+						  s->display->screenInfo[i].height,
+						  s->display->screenInfo[i].x_org,
+						  s->display->screenInfo[i].y_org);
+
+				value.list.value[i].s = strdup (output);
+			}
+		}
+		else
+		{
+			value.list.nValue = 1;
+			value.list.value  = malloc (sizeof (CompOptionValue));
+			if (!value.list.value)
+				return;
+
+			snprintf (output, size, "%dx%d+%d+%d", s->width, s->height, 0, 0);
+
+			value.list.value->s = strdup (output);
+		}
+
+		name = s->opt[COMP_SCREEN_OPTION_OUTPUTS].name;
+
+		s->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b = FALSE;
+		(*s->setScreenOption) (s, name, &value);
+		s->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b = TRUE;
+
+		for (i = 0; i < value.list.nValue; i++)
+			if (value.list.value[i].s)
+				free (value.list.value[i].s);
+
+		free (value.list.value);
 	}
 	else
 	{
-	    value.list.nValue = 1;
-	    value.list.value  = malloc (sizeof (CompOptionValue));
-	    if (!value.list.value)
-		return;
-
-	    snprintf (output, size, "%dx%d+%d+%d", s->width, s->height, 0, 0);
-
-	    value.list.value->s = strdup (output);
+		updateOutputDevices (s);
 	}
-
-	name = s->opt[COMP_SCREEN_OPTION_OUTPUTS].name;
-
-	s->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b = FALSE;
-	(*s->setScreenOption) (s, name, &value);
-	s->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b = TRUE;
-
-	for (i = 0; i < value.list.nValue; i++)
-	    if (value.list.value[i].s)
-		free (value.list.value[i].s);
-
-	free (value.list.value);
-    }
-    else
-    {
-	updateOutputDevices (s);
-    }
 }
 
 CompOption *
 compGetScreenOptions (CompScreen *screen,
-		      int	 *count)
+					  int	 *count)
 {
-    *count = NUM_OPTIONS (screen);
-    return screen->opt;
+	*count = NUM_OPTIONS (screen);
+	return screen->opt;
 }
 
 static Bool
-setScreenOption (CompScreen      *screen,
-		 char	         *name,
-		 CompOptionValue *value)
+setScreenOption (CompScreen		 *screen,
+				 char			 *name,
+				 CompOptionValue *value)
 {
-    CompOption *o;
-    int	       index;
+	CompOption *o;
+	int		   index;
 
-    o = compFindOption (screen->opt, NUM_OPTIONS (screen), name, &index);
-    if (!o)
+	o = compFindOption (screen->opt, NUM_OPTIONS (screen), name, &index);
+	if (!o)
+		return FALSE;
+
+	switch (index) {
+	case COMP_SCREEN_OPTION_DETECT_REFRESH_RATE:
+		if (compSetBoolOption (o, value))
+		{
+			if (value->b)
+				detectRefreshRateOfScreen (screen);
+
+			return TRUE;
+		}
+		break;
+	case COMP_SCREEN_OPTION_DETECT_OUTPUTS:
+		if (compSetBoolOption (o, value))
+		{
+			if (value->b)
+				detectOutputDevices (screen);
+
+			return TRUE;
+		}
+		break;
+	case COMP_SCREEN_OPTION_REFRESH_RATE:
+		if (screen->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b)
+			return FALSE;
+
+		if (compSetIntOption (o, value))
+		{
+			screen->redrawTime = 1000 / o->value.i;
+			screen->optimalRedrawTime = screen->redrawTime;
+			return TRUE;
+		}
+		break;
+		/* case COMP_SCREEN_OPTION_HSIZE:
+		 *	 if (compSetIntOption (o, value))
+		 *	 {
+		 *	 CompOption *vsize;
+		 *
+		 *	 vsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
+		 *	 "vsize", NULL);
+		 *
+		 *	 if (!vsize)
+		 *	 return FALSE;
+		 *
+		 *	 if (o->value.i * screen->width > MAXSHORT)
+		 *	 return FALSE;
+		 *
+		 *	 setVirtualScreenSize (screen, o->value.i, vsize->value.i);
+		 *	 return TRUE;
+		 *	 }
+		 *	 break;
+		 *	 case COMP_SCREEN_OPTION_VSIZE:
+		 *	 if (compSetIntOption (o, value))
+		 *	 {
+		 *	 CompOption *hsize;
+		 *
+		 *	 hsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
+		 *	 "hsize", NULL);
+		 *
+		 *	 if (!hsize)
+		 *	 return FALSE;
+		 *
+		 *	 if (o->value.i * screen->height > MAXSHORT)
+		 *	 return FALSE;
+		 *
+		 *	 setVirtualScreenSize (screen, hsize->value.i, o->value.i);
+		 *	 return TRUE;
+		 *	 }
+		 *	 break; */
+	case COMP_SCREEN_OPTION_DEFAULT_ICON:
+		if (compSetStringOption (o, value))
+			return updateDefaultIcon (screen);
+		break;
+	case COMP_SCREEN_OPTION_OUTPUTS:
+		if (!noDetection &&
+			screen->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b)
+			return FALSE;
+
+		if (compSetOptionList (o, value))
+		{
+			updateOutputDevices (screen);
+			return TRUE;
+		}
+		break;
+	case COMP_SCREEN_OPTION_OPACITY_MATCHES:
+		if (compSetOptionList (o, value))
+		{
+			CompWindow *w;
+			int		   i;
+
+			for (i = 0; i < o->value.list.nValue; i++)
+				matchUpdate (screen->display, &o->value.list.value[i].match);
+
+			for (w = screen->windows; w; w = w->next)
+				updateWindowOpacity (w);
+
+			return TRUE;
+		}
+		break;
+	case COMP_SCREEN_OPTION_OPACITY_VALUES:
+		if (compSetOptionList (o, value))
+		{
+			CompWindow *w;
+
+			for (w = screen->windows; w; w = w->next)
+				updateWindowOpacity (w);
+
+			return TRUE;
+		}
+		break;
+	default:
+		if (compSetScreenOption (screen, o, value))
+			return TRUE;
+		break;
+	}
+
 	return FALSE;
-
-    switch (index) {
-    case COMP_SCREEN_OPTION_DETECT_REFRESH_RATE:
-	if (compSetBoolOption (o, value))
-	{
-	    if (value->b)
-		detectRefreshRateOfScreen (screen);
-
-	    return TRUE;
-	}
-	break;
-    case COMP_SCREEN_OPTION_DETECT_OUTPUTS:
-	if (compSetBoolOption (o, value))
-	{
-	    if (value->b)
-		detectOutputDevices (screen);
-
-	    return TRUE;
-	}
-	break;
-    case COMP_SCREEN_OPTION_REFRESH_RATE:
-	if (screen->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b)
-	    return FALSE;
-
-	if (compSetIntOption (o, value))
-	{
-	    screen->redrawTime = 1000 / o->value.i;
-	    screen->optimalRedrawTime = screen->redrawTime;
-	    return TRUE;
-	}
-	break;
-	/* case COMP_SCREEN_OPTION_HSIZE:
-	 *   if (compSetIntOption (o, value))
-	 *   {
-	 *   CompOption *vsize;
-	 * 
-	 *   vsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
-	 *   "vsize", NULL);
-	 * 
-	 *   if (!vsize)
-	 *   return FALSE;
-	 * 
-	 *   if (o->value.i * screen->width > MAXSHORT)
-	 *   return FALSE;
-	 * 
-	 *   setVirtualScreenSize (screen, o->value.i, vsize->value.i);
-	 *   return TRUE;
-	 *   }
-	 *   break;
-	 *   case COMP_SCREEN_OPTION_VSIZE:
-	 *   if (compSetIntOption (o, value))
-	 *   {
-	 *   CompOption *hsize;
-	 * 
-	 *   hsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
-	 *   "hsize", NULL);
-	 * 
-	 *   if (!hsize)
-	 *   return FALSE;
-	 * 
-	 *   if (o->value.i * screen->height > MAXSHORT)
-	 *   return FALSE;
-	 * 
-	 *   setVirtualScreenSize (screen, hsize->value.i, o->value.i);
-	 *   return TRUE;
-	 *   }
-	 *   break; */
-    case COMP_SCREEN_OPTION_DEFAULT_ICON:
-	if (compSetStringOption (o, value))
-	    return updateDefaultIcon (screen);
-	break;
-    case COMP_SCREEN_OPTION_OUTPUTS:
-	if (!noDetection &&
-	    screen->opt[COMP_SCREEN_OPTION_DETECT_OUTPUTS].value.b)
-	    return FALSE;
-
-	if (compSetOptionList (o, value))
-	{
-	    updateOutputDevices (screen);
-	    return TRUE;
-	}
-	break;
-    case COMP_SCREEN_OPTION_OPACITY_MATCHES:
-	if (compSetOptionList (o, value))
-	{
-	    CompWindow *w;
-	    int	       i;
-
-	    for (i = 0; i < o->value.list.nValue; i++)
-		matchUpdate (screen->display, &o->value.list.value[i].match);
-
-	    for (w = screen->windows; w; w = w->next)
-		updateWindowOpacity (w);
-
-	    return TRUE;
-	}
-	break;
-    case COMP_SCREEN_OPTION_OPACITY_VALUES:
-	if (compSetOptionList (o, value))
-	{
-	    CompWindow *w;
-
-	    for (w = screen->windows; w; w = w->next)
-		updateWindowOpacity (w);
-
-	    return TRUE;
-	}
-	break;
-    default:
-	if (compSetScreenOption (screen, o, value))
-	    return TRUE;
-	break;
-    }
-
-    return FALSE;
 }
 
 static Bool
-setScreenOptionForPlugin (CompScreen      *screen,
-			  char	          *plugin,
-			  char	          *name,
-			  CompOptionValue *value)
+setScreenOptionForPlugin (CompScreen	  *screen,
+						  char			  *plugin,
+						  char			  *name,
+						  CompOptionValue *value)
 {
-    CompPlugin *p;
+	CompPlugin *p;
 
-    p = findActivePlugin (plugin);
-    if (p && p->vTable->setScreenOption)
-	return (*p->vTable->setScreenOption) (p, screen, name, value);
+	p = findActivePlugin (plugin);
+	if (p && p->vTable->setScreenOption)
+		return (*p->vTable->setScreenOption) (p, screen, name, value);
 
-    return FALSE;
+	return FALSE;
 }
 
 const CompMetadataOptionInfo coreScreenOptionInfo[COMP_SCREEN_OPTION_NUM] = {
-    { "detect_refresh_rate", "bool", 0, 0, 0 },
-    { "lighting", "bool", 0, 0, 0 },
-    { "refresh_rate", "int", "<min>1</min>", 0, 0 },
-    /* { "hsize", "int", "<min>1</min><max>32</max>", 0, 0 },
-     * { "vsize", "int", "<min>1</min><max>32</max>", 0, 0 }, */
-    { "opacity_step", "int", "<min>1</min>", 0, 0 },
-    { "unredirect_fullscreen_windows", "bool", 0, 0, 0 },
-    { "default_icon", "string", 0, 0, 0 },
-    { "sync_to_vblank", "bool", 0, 0, 0 },
-    { "number_of_desktops", "int", "<min>1</min>", 0, 0 },
-    { "detect_outputs", "bool", 0, 0, 0 },
-    { "outputs", "list", "<type>string</type>", 0, 0 },
-    { "focus_prevention_match", "match", 0, 0, 0 },
-    { "opacity_matches", "list", "<type>match</type>", 0, 0 },
-    { "opacity_values", "list", "<type>int</type>", 0, 0 }
+	{ "detect_refresh_rate", "bool", 0, 0, 0 },
+	{ "lighting", "bool", 0, 0, 0 },
+	{ "refresh_rate", "int", "<min>1</min>", 0, 0 },
+	/* { "hsize", "int", "<min>1</min><max>32</max>", 0, 0 },
+	 * { "vsize", "int", "<min>1</min><max>32</max>", 0, 0 }, */
+	{ "opacity_step", "int", "<min>1</min>", 0, 0 },
+	{ "unredirect_fullscreen_windows", "bool", 0, 0, 0 },
+	{ "default_icon", "string", 0, 0, 0 },
+	{ "sync_to_vblank", "bool", 0, 0, 0 },
+	{ "number_of_desktops", "int", "<min>1</min>", 0, 0 },
+	{ "detect_outputs", "bool", 0, 0, 0 },
+	{ "outputs", "list", "<type>string</type>", 0, 0 },
+	{ "focus_prevention_match", "match", 0, 0, 0 },
+	{ "opacity_matches", "list", "<type>match</type>", 0, 0 },
+	{ "opacity_values", "list", "<type>int</type>", 0, 0 }
 };
 
 
 static void
 frustum (GLfloat *m,
-	 GLfloat left,
-	 GLfloat right,
-	 GLfloat bottom,
-	 GLfloat top,
-	 GLfloat nearval,
-	 GLfloat farval)
+		 GLfloat left,
+		 GLfloat right,
+		 GLfloat bottom,
+		 GLfloat top,
+		 GLfloat nearval,
+		 GLfloat farval)
 {
-    GLfloat x, y, a, b, c, d;
+	GLfloat x, y, a, b, c, d;
 
-    x = (2.0 * nearval) / (right - left);
-    y = (2.0 * nearval) / (top - bottom);
-    a = (right + left) / (right - left);
-    b = (top + bottom) / (top - bottom);
-    c = -(farval + nearval) / ( farval - nearval);
-    d = -(2.0 * farval * nearval) / (farval - nearval);
+	x = (2.0 * nearval) / (right - left);
+	y = (2.0 * nearval) / (top - bottom);
+	a = (right + left) / (right - left);
+	b = (top + bottom) / (top - bottom);
+	c = -(farval + nearval) / ( farval - nearval);
+	d = -(2.0 * farval * nearval) / (farval - nearval);
 
-#define M(row,col)  m[col*4+row]
-    M(0,0) = x;     M(0,1) = 0.0f;  M(0,2) = a;      M(0,3) = 0.0f;
-    M(1,0) = 0.0f;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0f;
-    M(2,0) = 0.0f;  M(2,1) = 0.0f;  M(2,2) = c;      M(2,3) = d;
-    M(3,0) = 0.0f;  M(3,1) = 0.0f;  M(3,2) = -1.0f;  M(3,3) = 0.0f;
+#define M(row,col)	m[col*4+row]
+	M(0,0) = x;		M(0,1) = 0.0f;	M(0,2) = a;		 M(0,3) = 0.0f;
+	M(1,0) = 0.0f;	M(1,1) = y;		M(1,2) = b;		 M(1,3) = 0.0f;
+	M(2,0) = 0.0f;	M(2,1) = 0.0f;	M(2,2) = c;		 M(2,3) = d;
+	M(3,0) = 0.0f;	M(3,1) = 0.0f;	M(3,2) = -1.0f;	 M(3,3) = 0.0f;
 #undef M
 
 }
 
 static void
 perspective (GLfloat *m,
-	     GLfloat fovy,
-	     GLfloat aspect,
-	     GLfloat zNear,
-	     GLfloat zFar)
+			 GLfloat fovy,
+			 GLfloat aspect,
+			 GLfloat zNear,
+			 GLfloat zFar)
 {
-    GLfloat xmin, xmax, ymin, ymax;
+	GLfloat xmin, xmax, ymin, ymax;
 
-    ymax = zNear * tan (fovy * M_PI / 360.0);
-    ymin = -ymax;
-    xmin = ymin * aspect;
-    xmax = ymax * aspect;
+	ymax = zNear * tan (fovy * M_PI / 360.0);
+	ymin = -ymax;
+	xmin = ymin * aspect;
+	xmax = ymax * aspect;
 
-    frustum (m, xmin, xmax, ymin, ymax, zNear, zFar);
+	frustum (m, xmin, xmax, ymin, ymax, zNear, zFar);
 }
 
 void
 setCurrentOutput (CompScreen *s,
-		  int	     outputNum)
+				  int		 outputNum)
 {
-    if (outputNum >= s->nOutputDev)
-	outputNum = 0;
+	if (outputNum >= s->nOutputDev)
+		outputNum = 0;
 
-    s->currentOutputDev = outputNum;
+	s->currentOutputDev = outputNum;
 }
 
 static void
 reshape (CompScreen *s,
-	 int	    w,
-	 int	    h)
+		 int		w,
+		 int		h)
 {
 
 #ifdef USE_COW
-    if (useCow)
-	XMoveResizeWindow (s->display->display, s->overlay, 0, 0, w, h);
+	if (useCow)
+		XMoveResizeWindow (s->display->display, s->overlay, 0, 0, w, h);
 #endif
 
-    if (s->display->xineramaExtension)
-    {
-	CompDisplay *d = s->display;
+	if (s->display->xineramaExtension)
+	{
+		CompDisplay *d = s->display;
 
-	if (d->screenInfo)
-	    XFree (d->screenInfo);
+		if (d->screenInfo)
+			XFree (d->screenInfo);
 
-	d->nScreenInfo = 0;
-	d->screenInfo = XineramaQueryScreens (d->display, &d->nScreenInfo);
-    }
+		d->nScreenInfo = 0;
+		d->screenInfo = XineramaQueryScreens (d->display, &d->nScreenInfo);
+	}
 
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ();
-    glDepthRange (0, 1);
-    glViewport (-1, -1, 2, 2);
-    glRasterPos2f (0, 0);
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glMatrixMode (GL_MODELVIEW);
+	glLoadIdentity ();
+	glDepthRange (0, 1);
+	glViewport (-1, -1, 2, 2);
+	glRasterPos2f (0, 0);
 
-    s->rasterX = s->rasterY = 0;
+	s->rasterX = s->rasterY = 0;
 
-    perspective (s->projection, 60.0f, 1.0f, 0.1f, 100.0f);
+	perspective (s->projection, 60.0f, 1.0f, 0.1f, 100.0f);
 
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    glMultMatrixf (s->projection);
-    glMatrixMode (GL_MODELVIEW);
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glMultMatrixf (s->projection);
+	glMatrixMode (GL_MODELVIEW);
 
-    s->region.rects = &s->region.extents;
-    s->region.numRects = 1;
-    s->region.extents.x1 = 0;
-    s->region.extents.y1 = 0;
-    s->region.extents.x2 = w;
-    s->region.extents.y2 = h;
-    s->region.size = 1;
+	s->region.rects = &s->region.extents;
+	s->region.numRects = 1;
+	s->region.extents.x1 = 0;
+	s->region.extents.y1 = 0;
+	s->region.extents.x2 = w;
+	s->region.extents.y2 = h;
+	s->region.size = 1;
 
-    s->width  = w;
-    s->height = h;
+	s->width  = w;
+	s->height = h;
 
-    s->fullscreenOutput.name             = "fullscreen";
-    s->fullscreenOutput.id               = ~0;
-    s->fullscreenOutput.width            = w;
-    s->fullscreenOutput.height           = h;
-    s->fullscreenOutput.region           = s->region;
-    s->fullscreenOutput.workArea.x       = 0;
-    s->fullscreenOutput.workArea.y       = 0;
-    s->fullscreenOutput.workArea.width   = w;
-    s->fullscreenOutput.workArea.height  = h;
- 
-    /* updateScreenEdges (s); */
+	s->fullscreenOutput.name			 = "fullscreen";
+	s->fullscreenOutput.id				 = ~0;
+	s->fullscreenOutput.width			 = w;
+	s->fullscreenOutput.height			 = h;
+	s->fullscreenOutput.region			 = s->region;
+	s->fullscreenOutput.workArea.x		 = 0;
+	s->fullscreenOutput.workArea.y		 = 0;
+	s->fullscreenOutput.workArea.width	 = w;
+	s->fullscreenOutput.workArea.height	 = h;
+
+	/* updateScreenEdges (s); */
 }
 
 void
 configureScreen (CompScreen	 *s,
-		 XConfigureEvent *ce)
+				 XConfigureEvent *ce)
 {
-    if (s->attrib.width  != ce->width ||
-	s->attrib.height != ce->height)
-    {
-	s->attrib.width  = ce->width;
-	s->attrib.height = ce->height;
+	if (s->attrib.width	 != ce->width ||
+		s->attrib.height != ce->height)
+	{
+		s->attrib.width	 = ce->width;
+		s->attrib.height = ce->height;
 
-	reshape (s, ce->width, ce->height);
+		reshape (s, ce->width, ce->height);
 
-	detectOutputDevices (s);
+		detectOutputDevices (s);
 
-	damageScreen (s);
-    }
+		damageScreen (s);
+	}
 }
 
 static FuncPtr
 getProcAddress (CompScreen *s,
-		const char *name)
+				const char *name)
 {
-    static void *dlhand = NULL;
-    FuncPtr     funcPtr = NULL;
+	static void *dlhand = NULL;
+	FuncPtr		funcPtr = NULL;
 
-    if (s->getProcAddress)
-	funcPtr = s->getProcAddress ((GLubyte *) name);
+	if (s->getProcAddress)
+		funcPtr = s->getProcAddress ((GLubyte *) name);
 
-    if (!funcPtr)
-    {
-	if (!dlhand)
-	    dlhand = dlopen (NULL, RTLD_LAZY);
-
-	if (dlhand)
+	if (!funcPtr)
 	{
-	    dlerror ();
-	    funcPtr = (FuncPtr) dlsym (dlhand, name);
-	    if (dlerror () != NULL)
-		funcPtr = NULL;
-	}
-    }
+		if (!dlhand)
+			dlhand = dlopen (NULL, RTLD_LAZY);
 
-    return funcPtr;
+		if (dlhand)
+		{
+			dlerror ();
+			funcPtr = (FuncPtr) dlsym (dlhand, name);
+			if (dlerror () != NULL)
+				funcPtr = NULL;
+		}
+	}
+
+	return funcPtr;
 }
 
 /* void
  * updateScreenBackground (CompScreen  *screen,
- * 			CompTexture *texture)
+ *			CompTexture *texture)
  * {
- *     Display	  *dpy = screen->display->display;
- *     Atom	  pixmapAtom, actualType;
- *     int		  actualFormat, i, status;
- *     unsigned int  width = 1, height = 1, depth = 0;
- *     unsigned long nItems;
- *     unsigned long bytesAfter;
- *     unsigned char *prop;
- *     Pixmap	  pixmap = 0;
- * 
- *     pixmapAtom = XInternAtom (dpy, "PIXMAP", FALSE);
- * 
- *     for (i = 0; pixmap == 0 && i < 2; i++)
- *     {
- * 	status = XGetWindowProperty (dpy, screen->root,
- * 				     screen->display->xBackgroundAtom[i],
- * 				     0, 4, FALSE, AnyPropertyType,
- * 				     &actualType, &actualFormat, &nItems,
- * 				     &bytesAfter, &prop);
- * 
- * 	if (status == Success && nItems && prop)
- * 	{
- * 	    if (actualType   == pixmapAtom &&
- * 		actualFormat == 32         &&
- * 		nItems	     == 1)
- * 	    {
- * 		Pixmap p;
- * 
- * 		memcpy (&p, prop, 4);
- * 
- * 		if (p)
- * 		{
- * 		    unsigned int ui;
- * 		    int		 i;
- * 		    Window	 w;
- * 
- * 		    if (XGetGeometry (dpy, p, &w, &i, &i,
- * 				      &width, &height, &ui, &depth))
- * 		    {
- * 			if (depth == screen->attrib.depth)
- * 			    pixmap = p;
- * 		    }
- * 		}
- * 	    }
- * 
- * 	    XFree (prop);
- * 	}
- *     }
- * 
- *     if (pixmap)
- *     {
- * 	if (pixmap == texture->pixmap)
- * 	    return;
- * 
- * 	finiTexture (screen, texture);
- * 	initTexture (screen, texture);
- * 
- * 	if (!bindPixmapToTexture (screen, texture, pixmap,
- * 				  width, height, depth))
- * 	{
- * 	    compLogMessage (NULL, "core", CompLogLevelWarn,
- * 			    "Couldn't bind background pixmap 0x%x to "
- * 			    "texture", (int) pixmap);
- * 	}
- *     }
- *     else
- *     {
- * 	finiTexture (screen, texture);
- * 	initTexture (screen, texture);
- *     }
- * 
- *     if (!texture->name && backgroundImage)
- * 	readImageToTexture (screen, texture, backgroundImage, &width, &height);
- * 
- *     if (texture->target == GL_TEXTURE_2D)
- *     {
- * 	glBindTexture (texture->target, texture->name);
- * 	glTexParameteri (texture->target, GL_TEXTURE_WRAP_S, GL_REPEAT);
- * 	glTexParameteri (texture->target, GL_TEXTURE_WRAP_T, GL_REPEAT);
- * 	glBindTexture (texture->target, 0);
- *     }
+ *	   Display	  *dpy = screen->display->display;
+ *	   Atom	  pixmapAtom, actualType;
+ *	   int		  actualFormat, i, status;
+ *	   unsigned int	 width = 1, height = 1, depth = 0;
+ *	   unsigned long nItems;
+ *	   unsigned long bytesAfter;
+ *	   unsigned char *prop;
+ *	   Pixmap	  pixmap = 0;
+ *
+ *	   pixmapAtom = XInternAtom (dpy, "PIXMAP", FALSE);
+ *
+ *	   for (i = 0; pixmap == 0 && i < 2; i++)
+ *	   {
+ *	status = XGetWindowProperty (dpy, screen->root,
+ *					 screen->display->xBackgroundAtom[i],
+ *					 0, 4, FALSE, AnyPropertyType,
+ *					 &actualType, &actualFormat, &nItems,
+ *					 &bytesAfter, &prop);
+ *
+ *	if (status == Success && nItems && prop)
+ *	{
+ *		if (actualType	 == pixmapAtom &&
+ *		actualFormat == 32		   &&
+ *		nItems		 == 1)
+ *		{
+ *		Pixmap p;
+ *
+ *		memcpy (&p, prop, 4);
+ *
+ *		if (p)
+ *		{
+ *			unsigned int ui;
+ *			int		 i;
+ *			Window	 w;
+ *
+ *			if (XGetGeometry (dpy, p, &w, &i, &i,
+ *					  &width, &height, &ui, &depth))
+ *			{
+ *			if (depth == screen->attrib.depth)
+ *				pixmap = p;
+ *			}
+ *		}
+ *		}
+ *
+ *		XFree (prop);
+ *	}
+ *	   }
+ *
+ *	   if (pixmap)
+ *	   {
+ *	if (pixmap == texture->pixmap)
+ *		return;
+ *
+ *	finiTexture (screen, texture);
+ *	initTexture (screen, texture);
+ *
+ *	if (!bindPixmapToTexture (screen, texture, pixmap,
+ *				  width, height, depth))
+ *	{
+ *		compLogMessage (NULL, "core", CompLogLevelWarn,
+ *				"Couldn't bind background pixmap 0x%x to "
+ *				"texture", (int) pixmap);
+ *	}
+ *	   }
+ *	   else
+ *	   {
+ *	finiTexture (screen, texture);
+ *	initTexture (screen, texture);
+ *	   }
+ *
+ *	   if (!texture->name && backgroundImage)
+ *	readImageToTexture (screen, texture, backgroundImage, &width, &height);
+ *
+ *	   if (texture->target == GL_TEXTURE_2D)
+ *	   {
+ *	glBindTexture (texture->target, texture->name);
+ *	glTexParameteri (texture->target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+ *	glTexParameteri (texture->target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+ *	glBindTexture (texture->target, 0);
+ *	   }
  * } */
 
 void
 detectRefreshRateOfScreen (CompScreen *s)
 {
-    if (!noDetection && s->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b)
-    {
-	char		*name;
-	CompOptionValue	value;
-
-	value.i = 0;
-
-	if (s->display->randrExtension)
+	if (!noDetection && s->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b)
 	{
-	    XRRScreenConfiguration *config;
+		char		*name;
+		CompOptionValue	value;
 
-	    config  = XRRGetScreenInfo (s->display->display, s->root);
-	    value.i = (int) XRRConfigCurrentRate (config);
+		value.i = 0;
 
-	    XRRFreeScreenConfigInfo (config);
+		if (s->display->randrExtension)
+		{
+			XRRScreenConfiguration *config;
+
+			config	= XRRGetScreenInfo (s->display->display, s->root);
+			value.i = (int) XRRConfigCurrentRate (config);
+
+			XRRFreeScreenConfigInfo (config);
+		}
+
+		if (value.i == 0)
+			value.i = defaultRefreshRate;
+
+		name = s->opt[COMP_SCREEN_OPTION_REFRESH_RATE].name;
+
+		s->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b = FALSE;
+		(*s->setScreenOption) (s, name, &value);
+		s->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b = TRUE;
 	}
-
-	if (value.i == 0)
-	    value.i = defaultRefreshRate;
-
-	name = s->opt[COMP_SCREEN_OPTION_REFRESH_RATE].name;
-
-	s->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b = FALSE;
-	(*s->setScreenOption) (s, name, &value);
-	s->opt[COMP_SCREEN_OPTION_DETECT_REFRESH_RATE].value.b = TRUE;
-    }
-    else
-    {
-	s->redrawTime = 1000 / s->opt[COMP_SCREEN_OPTION_REFRESH_RATE].value.i;
-	s->optimalRedrawTime = s->redrawTime;
-    }
+	else
+	{
+		s->redrawTime = 1000 / s->opt[COMP_SCREEN_OPTION_REFRESH_RATE].value.i;
+		s->optimalRedrawTime = s->redrawTime;
+	}
 }
 
 
 /* static voida
  * setSupportingWmCheck (CompScreen *s)
  * {
- *   //CompDisplay *d = s->display;
- * 
- *     /\*XChangeProperty (d->display, s->grabWindow, d->supportingWmCheckAtom,
- * 		     XA_WINDOW, 32, PropModeReplace,
- * 		     (unsigned char *) &s->grabWindow, 1);
- *     *\/
- *     /\*XChangeProperty (d->display, s->grabWindow, d->wmNameAtom,
- * 		     d->utf8StringAtom, 8, PropModeReplace,
- * 		     (unsigned char *) PACKAGE, strlen (PACKAGE));*\/
- *  
- *     /\*
- *    XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
- * 		     XA_ATOM, 32, PropModeReplace,
- * 		     (unsigned char *) &d->winStateSkipTaskbarAtom, 1);
- *     XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
- * 		     XA_ATOM, 32, PropModeAppend,
- * 		     (unsigned char *) &d->winStateSkipPagerAtom, 1);
- *     XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
- * 		     XA_ATOM, 32, PropModeAppend,
- * 		     (unsigned char *) &d->winStateHiddenAtom, 1);
- *     *\/
- *     /\*
- *     XChangeProperty (d->display, s->root, d->supportingWmCheckAtom,
- * 		     XA_WINDOW, 32, PropModeReplace,
- * 		     (unsigned char *) &s->grabWindow, 1);
- *     *\/
+ *	 //CompDisplay *d = s->display;
+ *
+ *	   /\*XChangeProperty (d->display, s->grabWindow, d->supportingWmCheckAtom,
+ *			 XA_WINDOW, 32, PropModeReplace,
+ *			 (unsigned char *) &s->grabWindow, 1);
+ *	   *\/
+ *	   /\*XChangeProperty (d->display, s->grabWindow, d->wmNameAtom,
+ *			 d->utf8StringAtom, 8, PropModeReplace,
+ *			 (unsigned char *) PACKAGE, strlen (PACKAGE));*\/
+ *
+ *	   /\*
+ *	  XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
+ *			 XA_ATOM, 32, PropModeReplace,
+ *			 (unsigned char *) &d->winStateSkipTaskbarAtom, 1);
+ *	   XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
+ *			 XA_ATOM, 32, PropModeAppend,
+ *			 (unsigned char *) &d->winStateSkipPagerAtom, 1);
+ *	   XChangeProperty (d->display, s->grabWindow, d->winStateAtom,
+ *			 XA_ATOM, 32, PropModeAppend,
+ *			 (unsigned char *) &d->winStateHiddenAtom, 1);
+ *	   *\/
+ *	   /\*
+ *	   XChangeProperty (d->display, s->root, d->supportingWmCheckAtom,
+ *			 XA_WINDOW, 32, PropModeReplace,
+ *			 (unsigned char *) &s->grabWindow, 1);
+ *	   *\/
  * } */
 
 
 static void
 getDesktopHints (CompScreen *s)
 {
-    CompDisplay   *d = s->display;
-    unsigned long data[2];
-    Atom	  actual;
-    int		  result, format;
-    unsigned long n, left;
-    unsigned char *propData;
+	CompDisplay	  *d = s->display;
+	unsigned long data[2];
+	Atom	  actual;
+	int		  result, format;
+	unsigned long n, left;
+	unsigned char *propData;
 
-    result = XGetWindowProperty (s->display->display, s->root,
-				 d->desktopGeometryAtom, 0L, 2L,
-				 FALSE, XA_CARDINAL, &actual, &format,
-				 &n, &left, &propData);
+	result = XGetWindowProperty (s->display->display, s->root,
+								 d->desktopGeometryAtom, 0L, 2L,
+								 FALSE, XA_CARDINAL, &actual, &format,
+								 &n, &left, &propData);
 
-    if (result == Success && n && propData)
-    {
-	if (n == 2)
+	if (result == Success && n && propData)
 	{
-	    memcpy (data, propData, sizeof (unsigned long) * 2);
+		if (n == 2)
+		{
+			memcpy (data, propData, sizeof (unsigned long) * 2);
 
-	    s->hsize = data[0] / s->width;
-	    s->vsize = data[1] / s->height;
-	    printf("Got Desktop Geometry %dx%d\n", s->hsize, s->vsize);
-	    
+			s->hsize = data[0] / s->width;
+			s->vsize = data[1] / s->height;
+			printf("Got Desktop Geometry %dx%d\n", s->hsize, s->vsize);
+
+		}
+
+		XFree (propData);
 	}
 
-	XFree (propData);
-    }
+	result = XGetWindowProperty (s->display->display, s->root,
+								 d->desktopViewportAtom, 0L, 2L,
+								 FALSE, XA_CARDINAL, &actual, &format,
+								 &n, &left, &propData);
 
-    result = XGetWindowProperty (s->display->display, s->root,
-				 d->desktopViewportAtom, 0L, 2L,
-				 FALSE, XA_CARDINAL, &actual, &format,
-				 &n, &left, &propData);
-
-    if (result == Success && n && propData)
-    {
-	if (n == 2)
+	if (result == Success && n && propData)
 	{
-	    memcpy (data, propData, sizeof (unsigned long) * 2);
+		if (n == 2)
+		{
+			memcpy (data, propData, sizeof (unsigned long) * 2);
 
-	    if (data[0] / s->width < s->hsize - 1)
-		s->x = data[0] / s->width;
+			if (data[0] / s->width < s->hsize - 1)
+				s->x = data[0] / s->width;
 
-	    if (data[1] / s->height < s->vsize - 1)
-		s->y = data[1] / s->height;
+			if (data[1] / s->height < s->vsize - 1)
+				s->y = data[1] / s->height;
+		}
+
+		XFree (propData);
 	}
 
-	XFree (propData);
-    }
 
-    
-    /*   result = XGetWindowProperty (s->display->display, s->root,
-     *   d->currentDesktopAtom, 0L, 1L, FALSE,
-     *   XA_CARDINAL, &actual, &format,
-     *   &n, &left, &propData);
-     * 
-     *   if (result == Success && n && propData && useDesktopHints)
-     *   {
-     *   memcpy (data, propData, sizeof (unsigned long));
-     *   XFree (propData);
-     * 
-     *   if (data[0] < s->nDesktop)
-     *   s->currentDesktop = data[0];
-     *   }
-     * 
-     * result = XGetWindowProperty (s->display->display, s->root,
-     *    d->showingDesktopAtom, 0L, 1L, FALSE,
-     *    XA_CARDINAL, &actual, &format,
-     *    &n, &left, &propData);
-     * 
-     *    if (result == Success && n && propData)
-     *    {
-     *    memcpy (data, propData, sizeof (unsigned long));
-     *    XFree (propData);
-     * 
-     *    if (data[0])
-     *    (*s->enterShowDesktopMode) (s);
-     *    }
-     * 
-     * data[0] = s->currentDesktop;
-     * 
-     *   XChangeProperty (d->display, s->root, d->currentDesktopAtom,
-     *   XA_CARDINAL, 32, PropModeReplace,
-     *   (unsigned char *) data, 1);
-     * 
-     *   data[0] = s->showingDesktopMask ? TRUE : FALSE;
-     * 
-     *   XChangeProperty (d->display, s->root, d->showingDesktopAtom,
-     *   XA_CARDINAL, 32, PropModeReplace,
-     *   (unsigned char *) data, 1); */
+	/*	 result = XGetWindowProperty (s->display->display, s->root,
+	 *	 d->currentDesktopAtom, 0L, 1L, FALSE,
+	 *	 XA_CARDINAL, &actual, &format,
+	 *	 &n, &left, &propData);
+	 *
+	 *	 if (result == Success && n && propData && useDesktopHints)
+	 *	 {
+	 *	 memcpy (data, propData, sizeof (unsigned long));
+	 *	 XFree (propData);
+	 *
+	 *	 if (data[0] < s->nDesktop)
+	 *	 s->currentDesktop = data[0];
+	 *	 }
+	 *
+	 * result = XGetWindowProperty (s->display->display, s->root,
+	 *	  d->showingDesktopAtom, 0L, 1L, FALSE,
+	 *	  XA_CARDINAL, &actual, &format,
+	 *	  &n, &left, &propData);
+	 *
+	 *	  if (result == Success && n && propData)
+	 *	  {
+	 *	  memcpy (data, propData, sizeof (unsigned long));
+	 *	  XFree (propData);
+	 *
+	 *	  if (data[0])
+	 *	  (*s->enterShowDesktopMode) (s);
+	 *	  }
+	 *
+	 * data[0] = s->currentDesktop;
+	 *
+	 *	 XChangeProperty (d->display, s->root, d->currentDesktopAtom,
+	 *	 XA_CARDINAL, 32, PropModeReplace,
+	 *	 (unsigned char *) data, 1);
+	 *
+	 *	 data[0] = s->showingDesktopMask ? TRUE : FALSE;
+	 *
+	 *	 XChangeProperty (d->display, s->root, d->showingDesktopAtom,
+	 *	 XA_CARDINAL, 32, PropModeReplace,
+	 *	 (unsigned char *) data, 1); */
 }
 
 void
@@ -923,26 +923,26 @@ showOutputWindow (CompScreen *s)
 {
 
 #ifdef USE_COW
-    if (useCow)
-    {
-	Display       *dpy = s->display->display;
-	XserverRegion region;
+	if (useCow)
+	{
+		Display		  *dpy = s->display->display;
+		XserverRegion region;
 
-	region = XFixesCreateRegion (dpy, NULL, 0);
+		region = XFixesCreateRegion (dpy, NULL, 0);
 
-	XFixesSetWindowShapeRegion (dpy,
-				    s->output,
-				    ShapeBounding,
-				    0, 0, 0);
-	XFixesSetWindowShapeRegion (dpy,
-				    s->output,
-				    ShapeInput,
-				    0, 0, region);
+		XFixesSetWindowShapeRegion (dpy,
+									s->output,
+									ShapeBounding,
+									0, 0, 0);
+		XFixesSetWindowShapeRegion (dpy,
+									s->output,
+									ShapeInput,
+									0, 0, region);
 
-	XFixesDestroyRegion (dpy, region);
+		XFixesDestroyRegion (dpy, region);
 
-	damageScreen (s);
-    }
+		damageScreen (s);
+	}
 #endif
 
 }
@@ -952,20 +952,20 @@ hideOutputWindow (CompScreen *s)
 {
 
 #ifdef USE_COW
-    if (useCow)
-    {
-	Display       *dpy = s->display->display;
-	XserverRegion region;
+	if (useCow)
+	{
+		Display		  *dpy = s->display->display;
+		XserverRegion region;
 
-	region = XFixesCreateRegion (dpy, NULL, 0);
+		region = XFixesCreateRegion (dpy, NULL, 0);
 
-	XFixesSetWindowShapeRegion (dpy,
-				    s->output,
-				    ShapeBounding,
-				    0, 0, region);
+		XFixesSetWindowShapeRegion (dpy,
+									s->output,
+									ShapeBounding,
+									0, 0, region);
 
-	XFixesDestroyRegion (dpy, region);
-    }
+		XFixesDestroyRegion (dpy, region);
+	}
 #endif
 
 }
@@ -975,1188 +975,1188 @@ makeOutputWindow (CompScreen *s)
 {
 
 #ifdef USE_COW
-    if (useCow)
-    {
-	s->overlay = XCompositeGetOverlayWindow (s->display->display, s->root);
-	s->output  = s->overlay;
+	if (useCow)
+	{
+		s->overlay = XCompositeGetOverlayWindow (s->display->display, s->root);
+		s->output  = s->overlay;
 
-	XSelectInput (s->display->display, s->output, ExposureMask);
-    }
-    else
+		XSelectInput (s->display->display, s->output, ExposureMask);
+	}
+	else
 #endif
 
-	s->output = s->overlay = s->root;
+		s->output = s->overlay = s->root;
 
-    showOutputWindow (s);
+	showOutputWindow (s);
 }
 
 static void
 enterShowDesktopMode (CompScreen *s)
 {
-    /* CompDisplay   *d = s->display;
-     *    CompWindow    *w;
-     *    unsigned long data = 1;
-     *    int		  count = 0;
-     *    CompOption    *st = &d->opt[COMP_DISPLAY_OPTION_HIDE_SKIP_TASKBAR_WINDOWS];
-     * 
-     *    s->showingDesktopMask = ~(CompWindowTypeDesktopMask |
-     *    CompWindowTypeDockMask);
-     * 
-     *    for (w = s->windows; w; w = w->next)
-     *    {
-     *    if ((s->showingDesktopMask & w->type) &&
-     *    (!(w->state & CompWindowStateSkipTaskbarMask) || st->value.b))
-     *    {
-     *    if (!w->inShowDesktopMode && (*s->focusWindow) (w))
-     *    {
-     *    w->inShowDesktopMode = TRUE;
-     *    hideWindow (w);
-     *    }
-     *    }
-     * 
-     *    if (w->inShowDesktopMode)
-     *    count++;
-     *    }
-     * 
-     *    if (!count)
-     *    {
-     *    s->showingDesktopMask = 0;
-     *    data = 0;
-     *    }
-     * 
-     *    XChangeProperty (s->display->display, s->root,
-     *    s->display->showingDesktopAtom,
-     *    XA_CARDINAL, 32, PropModeReplace,
-     *    (unsigned char *) &data, 1); */
+	/* CompDisplay	 *d = s->display;
+	 *	  CompWindow	*w;
+	 *	  unsigned long data = 1;
+	 *	  int		  count = 0;
+	 *	  CompOption	*st = &d->opt[COMP_DISPLAY_OPTION_HIDE_SKIP_TASKBAR_WINDOWS];
+	 *
+	 *	  s->showingDesktopMask = ~(CompWindowTypeDesktopMask |
+	 *	  CompWindowTypeDockMask);
+	 *
+	 *	  for (w = s->windows; w; w = w->next)
+	 *	  {
+	 *	  if ((s->showingDesktopMask & w->type) &&
+	 *	  (!(w->state & CompWindowStateSkipTaskbarMask) || st->value.b))
+	 *	  {
+	 *	  if (!w->inShowDesktopMode && (*s->focusWindow) (w))
+	 *	  {
+	 *	  w->inShowDesktopMode = TRUE;
+	 *	  hideWindow (w);
+	 *	  }
+	 *	  }
+	 *
+	 *	  if (w->inShowDesktopMode)
+	 *	  count++;
+	 *	  }
+	 *
+	 *	  if (!count)
+	 *	  {
+	 *	  s->showingDesktopMask = 0;
+	 *	  data = 0;
+	 *	  }
+	 *
+	 *	  XChangeProperty (s->display->display, s->root,
+	 *	  s->display->showingDesktopAtom,
+	 *	  XA_CARDINAL, 32, PropModeReplace,
+	 *	  (unsigned char *) &data, 1); */
 }
 
 static void
 leaveShowDesktopMode (CompScreen *s,
-		      CompWindow *window)
+					  CompWindow *window)
 {
-    /* CompWindow    *w;
-     * unsigned long data = 0;
-     * 
-     * if (window)
-     * {
-     * 	if (!window->inShowDesktopMode)
-     * 	    return;
-     * 
-     * 	window->inShowDesktopMode = FALSE;
-     * 	showWindow (window);
-     * 
-     * 	\* return if some other window is still in show desktop mode *\/
-     * 	for (w = s->windows; w; w = w->next)
-     * 	    if (w->inShowDesktopMode)
-     * 		return;
-     * 
-     * 	s->showingDesktopMask = 0;
-     * }
-     * else
-     * {
-     * 	s->showingDesktopMask = 0;
-     * 
-     * 	for (w = s->windows; w; w = w->next)
-     * 	{
-     * 	    if (!w->inShowDesktopMode)
-     * 		continue;
-     * 
-     * 	    w->inShowDesktopMode = FALSE;
-     * 	    showWindow (w);
-     * 	}
-     * 
-     * 	/\* focus default window - most likely this will be the window
-     * 	   which had focus before entering showdesktop mode *\/
-     * 	//focusDefaultWindow (s->display);
-     * }
-     * 
-     * XChangeProperty (s->display->display, s->root,
-     * 		     s->display->showingDesktopAtom,
-     * 		     XA_CARDINAL, 32, PropModeReplace,
-     * 		     (unsigned char *) &data, 1); */
+	/* CompWindow	 *w;
+	 * unsigned long data = 0;
+	 *
+	 * if (window)
+	 * {
+	 *	if (!window->inShowDesktopMode)
+	 *		return;
+	 *
+	 *	window->inShowDesktopMode = FALSE;
+	 *	showWindow (window);
+	 *
+	 *	\* return if some other window is still in show desktop mode *\/
+	 *	for (w = s->windows; w; w = w->next)
+	 *		if (w->inShowDesktopMode)
+	 *		return;
+	 *
+	 *	s->showingDesktopMask = 0;
+	 * }
+	 * else
+	 * {
+	 *	s->showingDesktopMask = 0;
+	 *
+	 *	for (w = s->windows; w; w = w->next)
+	 *	{
+	 *		if (!w->inShowDesktopMode)
+	 *		continue;
+	 *
+	 *		w->inShowDesktopMode = FALSE;
+	 *		showWindow (w);
+	 *	}
+	 *
+	 *	/\* focus default window - most likely this will be the window
+	 *	   which had focus before entering showdesktop mode *\/
+	 *	//focusDefaultWindow (s->display);
+	 * }
+	 *
+	 * XChangeProperty (s->display->display, s->root,
+	 *			 s->display->showingDesktopAtom,
+	 *			 XA_CARDINAL, 32, PropModeReplace,
+	 *			 (unsigned char *) &data, 1); */
 }
 
 static CompWindow *
 walkFirst (CompScreen *s)
 {
-    return s->windows;
+	return s->windows;
 }
 
 static CompWindow *
 walkLast (CompScreen *s)
 {
-    return s->reverseWindows;
+	return s->reverseWindows;
 }
 
 static CompWindow *
 walkNext (CompWindow *w)
 {
-    return w->next;
+	return w->next;
 }
 
 static CompWindow *
 walkPrev (CompWindow *w)
 {
-    return w->prev;
+	return w->prev;
 }
 
 static void
 initWindowWalker (CompScreen *screen,
-		  CompWalker *walker)
+				  CompWalker *walker)
 {
-    walker->fini  = NULL;
-    walker->first = walkFirst;
-    walker->last  = walkLast;
-    walker->next  = walkNext;
-    walker->prev  = walkPrev;
+	walker->fini  = NULL;
+	walker->first = walkFirst;
+	walker->last  = walkLast;
+	walker->next  = walkNext;
+	walker->prev  = walkPrev;
 }
 
 Bool
 addScreen (CompDisplay *display,
-	   int	       screenNum,
-	   Window      wmSnSelectionWindow,
-	   Atom	       wmSnAtom,
-	   Time	       wmSnTimestamp)
+		   int		   screenNum,
+		   Window	   wmSnSelectionWindow,
+		   Atom		   wmSnAtom,
+		   Time		   wmSnTimestamp)
 {
-    D(("addScreen - begin %d\n", screenNum));
-  
-    CompScreen		 *s;
-    Display		 *dpy = display->display;
-    static char		 data = 0;
-    XColor		 black;
-    Pixmap		 bitmap;
-    XVisualInfo		 templ;
-    XVisualInfo		 *visinfo;
-    GLXFBConfig		 *fbConfigs;
-    Window		 rootReturn, parentReturn;
-    Window		 *children;
-    unsigned int	 nchildren;
-    int			 defaultDepth, nvisinfo, nElements, value, i;
-    const char		 *glxExtensions, *glExtensions;
-    /* XSetWindowAttributes attrib; */
-    GLfloat		 globalAmbient[]  = { 0.1f, 0.1f,  0.1f, 0.1f };
-    GLfloat		 ambientLight[]   = { 0.0f, 0.0f,  0.0f, 0.0f };
-    GLfloat		 diffuseLight[]   = { 0.9f, 0.9f,  0.9f, 0.9f };
-    GLfloat		 light0Position[] = { -0.5f, 0.5f, -9.0f, 1.0f };
-    CompWindow		 *w;
+	D(("addScreen - begin %d\n", screenNum));
 
-    s = malloc (sizeof (CompScreen));
-    if (!s)
-	return FALSE;
+	CompScreen		 *s;
+	Display		 *dpy = display->display;
+	static char		 data = 0;
+	XColor		 black;
+	Pixmap		 bitmap;
+	XVisualInfo		 templ;
+	XVisualInfo		 *visinfo;
+	GLXFBConfig		 *fbConfigs;
+	Window		 rootReturn, parentReturn;
+	Window		 *children;
+	unsigned int	 nchildren;
+	int			 defaultDepth, nvisinfo, nElements, value, i;
+	const char		 *glxExtensions, *glExtensions;
+	/* XSetWindowAttributes attrib; */
+	GLfloat		 globalAmbient[]  = { 0.1f, 0.1f,  0.1f, 0.1f };
+	GLfloat		 ambientLight[]	  = { 0.0f, 0.0f,  0.0f, 0.0f };
+	GLfloat		 diffuseLight[]	  = { 0.9f, 0.9f,  0.9f, 0.9f };
+	GLfloat		 light0Position[] = { -0.5f, 0.5f, -9.0f, 1.0f };
+	CompWindow		 *w;
 
-    s->windowPrivateIndices = 0;
-    s->windowPrivateLen     = 0;
+	s = malloc (sizeof (CompScreen));
+	if (!s)
+		return FALSE;
 
-    if (display->screenPrivateLen)
-    {
-	s->privates = malloc (display->screenPrivateLen *
-			      sizeof (CompPrivate));
-	if (!s->privates)
+	s->windowPrivateIndices = 0;
+	s->windowPrivateLen		= 0;
+
+	if (display->screenPrivateLen)
 	{
-	    free (s);
-	    return FALSE;
-	}
-    }
-    else
-	s->privates = 0;
-
-    s->display = display;
-
-    if (!compInitScreenOptionsFromMetadata (s,
-					    &coreMetadata,
-					    coreScreenOptionInfo,
-					    s->opt,
-					    COMP_SCREEN_OPTION_NUM))
-	return FALSE;
-
-    s->damage = XCreateRegion ();
-    if (!s->damage)
-	return FALSE;
-
-    s->x     = 0;
-    s->y     = 0;
-    
-    /* get this info from e */
-    s->hsize = 1; 
-    s->vsize = 1; 
-
-    s->nDesktop	      = 1;
-    s->currentDesktop = 0;
-
-    /* for (i = 0; i < SCREEN_EDGE_NUM; i++)
-     * {
-     * 	s->screenEdge[i].id    = None;
-     * 	s->screenEdge[i].count = 0;
-     * } */
-
-    /* s->buttonGrab  = 0;
-     * s->nButtonGrab = 0;
-     * s->keyGrab     = 0;
-     * s->nKeyGrab    = 0; */
-
-    s->grabs    = 0;
-    s->grabSize = 0;
-    s->maxGrab  = 0;
-
-    s->pendingDestroys = 0;
-
-    s->clientList  = 0;
-    s->nClientList = 0;
-
-    s->screenNum = screenNum;
-    s->colormap  = DefaultColormap (dpy, screenNum);
-    s->root	 = XRootWindow (dpy, screenNum);
-
-    s->mapNum    = 1;
-    s->activeNum = 1;
-
-    /* s->groups = NULL; */
-
-    s->damageMask  = COMP_SCREEN_DAMAGE_ALL_MASK;
-    s->next	   = 0;
-    s->exposeRects = 0;
-    s->sizeExpose  = 0;
-    s->nExpose     = 0;
-
-    s->rasterX = 0;
-    s->rasterY = 0;
-
-    s->outputDev	= NULL;
-    s->nOutputDev	= 0;
-    s->currentOutputDev = 0;
-
-    s->windows = 0;
-    s->reverseWindows = 0;
-
-    s->nextRedraw  = 0;
-    s->frameStatus = 0;
-    s->timeMult    = 1;
-    s->idle	   = TRUE;
-    s->timeLeft    = 0;
-
-    s->pendingCommands = TRUE;
-
-    s->lastFunctionId = 0;
-
-    s->fragmentFunctions = NULL;
-    s->fragmentPrograms = NULL;
-
-    memset (s->saturateFunction, 0, sizeof (s->saturateFunction));
-
-    s->showingDesktopMask = 0;
-
-    memset (s->history, 0, sizeof (s->history));
-    s->currentHistory = 0;
-
-    s->overlayWindowCount = 0;
-
-    s->desktopHintData = NULL;
-    s->desktopHintSize = 0;
-
-    s->cursors = NULL;
-
-    s->clearBuffers = TRUE;
-
-    gettimeofday (&s->lastRedraw, 0);
-
-    s->setScreenOption	        = setScreenOption;
-    s->setScreenOptionForPlugin = setScreenOptionForPlugin;
-
-    s->initPluginForScreen = initPluginForScreen;
-    s->finiPluginForScreen = finiPluginForScreen;
-
-    s->preparePaintScreen	  = preparePaintScreen;
-    s->donePaintScreen		  = donePaintScreen;
-    s->paintScreen		  = paintScreen;
-    s->paintOutput		  = paintOutput;
-    s->paintTransformedOutput	  = paintTransformedOutput;
-    s->applyScreenTransform	  = applyScreenTransform;
-    /* s->paintBackground		  = paintBackground; */
-    s->paintWindow		  = paintWindow;
-    s->drawWindow		  = drawWindow;
-    s->addWindowGeometry	  = addWindowGeometry;
-    s->drawWindowTexture	  = drawWindowTexture;
-    s->damageWindowRect		  = damageWindowRect;
-    s->getOutputExtentsForWindow  = getOutputExtentsForWindow;
-    s->getAllowedActionsForWindow = getAllowedActionsForWindow;
-    s->focusWindow		  = focusWindow;
-    s->placeWindow                = placeWindow;
-
-    /* s->paintCursor      = paintCursor;
-     * s->damageCursorRect	= damageCursorRect; */
-
-    s->windowAddNotify    = windowAddNotify;
-    s->windowResizeNotify = windowResizeNotify;
-    s->windowMoveNotify	  = windowMoveNotify;
-    s->windowGrabNotify   = windowGrabNotify;
-    s->windowUngrabNotify = windowUngrabNotify;
-
-    s->enterShowDesktopMode = enterShowDesktopMode;
-    s->leaveShowDesktopMode = leaveShowDesktopMode;
-
-    s->windowStateChangeNotify = windowStateChangeNotify;
-
-    s->outputChangeNotify = outputChangeNotify;
-
-    s->initWindowWalker = initWindowWalker;
-
-    s->getProcAddress = 0;
-
-    if (!XGetWindowAttributes (dpy, s->root, &s->attrib))
-	return FALSE;
-
-    s->workArea.x      = 0;
-    s->workArea.y      = 0;
-    s->workArea.width  = s->attrib.width;
-    s->workArea.height = s->attrib.height;
-
-    //    s->grabWindow = None;
-
-    makeOutputWindow (s);
-
-    templ.visualid = XVisualIDFromVisual (s->attrib.visual);
-
-    visinfo = XGetVisualInfo (dpy, VisualIDMask, &templ, &nvisinfo);
-    if (!nvisinfo)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"Couldn't get visual info for default visual");
-	return FALSE;
-    }
-
-    defaultDepth = visinfo->depth;
-
-    black.red = black.green = black.blue = 0;
-
-    if (!XAllocColor (dpy, s->colormap, &black))
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"Couldn't allocate color");
-	XFree (visinfo);
-	return FALSE;
-    }
-
-    bitmap = XCreateBitmapFromData (dpy, s->root, &data, 1, 1);
-    if (!bitmap)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"Couldn't create bitmap");
-	XFree (visinfo);
-	return FALSE;
-    }
-
-    s->invisibleCursor = XCreatePixmapCursor (dpy, bitmap, bitmap,
-					      &black, &black, 0, 0);
-    if (!s->invisibleCursor)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"Couldn't create invisible cursor");
-	XFree (visinfo);
-	return FALSE;
-    }
-
-    XFreePixmap (dpy, bitmap);
-    XFreeColors (dpy, s->colormap, &black.pixel, 1, 0);
-
-    glXGetConfig (dpy, visinfo, GLX_USE_GL, &value);
-    if (!value)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"Root visual is not a GL visual");
-	XFree (visinfo);
-	return FALSE;
-    }
-
-    glXGetConfig (dpy, visinfo, GLX_DOUBLEBUFFER, &value);
-    if (!value)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"Root visual is not a double buffered GL visual");
-	XFree (visinfo);
-	return FALSE;
-    }
-
-    s->ctx = glXCreateContext (dpy, visinfo, NULL, !indirectRendering);
-    if (!s->ctx)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"glXCreateContext failed");
-	XFree (visinfo);
-
-	return FALSE;
-    }
-
-    glxExtensions = glXQueryExtensionsString (dpy, screenNum);
-    if (!strstr (glxExtensions, "GLX_EXT_texture_from_pixmap"))
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"GLX_EXT_texture_from_pixmap is missing");
-	XFree (visinfo);
-
-	return FALSE;
-    }
-
-    XFree (visinfo);
-
-    if (!strstr (glxExtensions, "GLX_SGIX_fbconfig"))
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"GLX_SGIX_fbconfig is missing");
-	return FALSE;
-    }
-
-    s->getProcAddress = (GLXGetProcAddressProc)
-	getProcAddress (s, "glXGetProcAddressARB");
-    s->bindTexImage = (GLXBindTexImageProc)
-	getProcAddress (s, "glXBindTexImageEXT");
-    s->releaseTexImage = (GLXReleaseTexImageProc)
-	getProcAddress (s, "glXReleaseTexImageEXT");
-    s->queryDrawable = (GLXQueryDrawableProc)
-	getProcAddress (s, "glXQueryDrawable");
-    s->getFBConfigs = (GLXGetFBConfigsProc)
-	getProcAddress (s, "glXGetFBConfigs");
-    s->getFBConfigAttrib = (GLXGetFBConfigAttribProc)
-	getProcAddress (s, "glXGetFBConfigAttrib");
-    s->createPixmap = (GLXCreatePixmapProc)
-	getProcAddress (s, "glXCreatePixmap");
-
-    if (!s->bindTexImage)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"glXBindTexImageEXT is missing");
-	return FALSE;
-    }
-
-    if (!s->releaseTexImage)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"glXReleaseTexImageEXT is missing");
-	return FALSE;
-    }
-
-    if (!s->queryDrawable     ||
-	!s->getFBConfigs      ||
-	!s->getFBConfigAttrib ||
-	!s->createPixmap)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"fbconfig functions missing");
-	return FALSE;
-    }
-
-    s->copySubBuffer = NULL;
-    if (strstr (glxExtensions, "GLX_MESA_copy_sub_buffer"))
-	s->copySubBuffer = (GLXCopySubBufferProc)
-	    getProcAddress (s, "glXCopySubBufferMESA");
-
-    s->getVideoSync = NULL;
-    s->waitVideoSync = NULL;
-    if (strstr (glxExtensions, "GLX_SGI_video_sync"))
-    {
-	s->getVideoSync = (GLXGetVideoSyncProc)
-	    getProcAddress (s, "glXGetVideoSyncSGI");
-
-	s->waitVideoSync = (GLXWaitVideoSyncProc)
-	    getProcAddress (s, "glXWaitVideoSyncSGI");
-    }
-
-    glXMakeCurrent (dpy, s->output, s->ctx);
-    currentRoot = s->root;
-
-    glExtensions = (const char *) glGetString (GL_EXTENSIONS);
-    if (!glExtensions)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"No valid GL extensions string found.");
-	return FALSE;
-    }
-
-    s->textureNonPowerOfTwo = 0;
-    if (strstr (glExtensions, "GL_ARB_texture_non_power_of_two"))
-	s->textureNonPowerOfTwo = 1;
-
-    glGetIntegerv (GL_MAX_TEXTURE_SIZE, &s->maxTextureSize);
-
-    s->textureRectangle = 0;
-    if (strstr (glExtensions, "GL_NV_texture_rectangle")  ||
-	strstr (glExtensions, "GL_EXT_texture_rectangle") ||
-	strstr (glExtensions, "GL_ARB_texture_rectangle"))
-    {
-	s->textureRectangle = 1;
-
-	if (!s->textureNonPowerOfTwo)
-	{
-	    GLint maxTextureSize;
-
-	    glGetIntegerv (GL_MAX_RECTANGLE_TEXTURE_SIZE_NV, &maxTextureSize);
-	    if (maxTextureSize > s->maxTextureSize)
-		s->maxTextureSize = maxTextureSize;
-	}
-    }
-
-    if (!(s->textureRectangle || s->textureNonPowerOfTwo))
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"Support for non power of two textures missing");
-	return FALSE;
-    }
-
-    s->textureEnvCombine = s->textureEnvCrossbar = 0;
-    if (strstr (glExtensions, "GL_ARB_texture_env_combine"))
-    {
-	s->textureEnvCombine = 1;
-
-	/* XXX: GL_NV_texture_env_combine4 need special code but it seams to
-	   be working anyway for now... */
-	if (strstr (glExtensions, "GL_ARB_texture_env_crossbar") ||
-	    strstr (glExtensions, "GL_NV_texture_env_combine4"))
-	    s->textureEnvCrossbar = 1;
-    }
-
-    s->textureBorderClamp = 0;
-    if (strstr (glExtensions, "GL_ARB_texture_border_clamp") ||
-	strstr (glExtensions, "GL_SGIS_texture_border_clamp"))
-	s->textureBorderClamp = 1;
-
-    s->maxTextureUnits = 1;
-    if (strstr (glExtensions, "GL_ARB_multitexture"))
-    {
-	s->activeTexture = (GLActiveTextureProc)
-	    getProcAddress (s, "glActiveTexture");
-	s->clientActiveTexture = (GLClientActiveTextureProc)
-	    getProcAddress (s, "glClientActiveTexture");
-
-	if (s->activeTexture && s->clientActiveTexture)
-	    glGetIntegerv (GL_MAX_TEXTURE_UNITS_ARB, &s->maxTextureUnits);
-    }
-
-    s->fragmentProgram = 0;
-    if (strstr (glExtensions, "GL_ARB_fragment_program"))
-    {
-	s->genPrograms = (GLGenProgramsProc)
-	    getProcAddress (s, "glGenProgramsARB");
-	s->deletePrograms = (GLDeleteProgramsProc)
-	    getProcAddress (s, "glDeleteProgramsARB");
-	s->bindProgram = (GLBindProgramProc)
-	    getProcAddress (s, "glBindProgramARB");
-	s->programString = (GLProgramStringProc)
-	    getProcAddress (s, "glProgramStringARB");
-	s->programEnvParameter4f = (GLProgramParameter4fProc)
-	    getProcAddress (s, "glProgramEnvParameter4fARB");
-	s->programLocalParameter4f = (GLProgramParameter4fProc)
-	    getProcAddress (s, "glProgramLocalParameter4fARB");
-
-	if (s->genPrograms	     &&
-	    s->deletePrograms	     &&
-	    s->bindProgram	     &&
-	    s->programString	     &&
-	    s->programEnvParameter4f &&
-	    s->programLocalParameter4f)
-	    s->fragmentProgram = 1;
-    }
-
-    s->fbo = 0;
-    if (strstr (glExtensions, "GL_EXT_framebuffer_object"))
-    {
-	s->genFramebuffers = (GLGenFramebuffersProc)
-	    getProcAddress (s, "glGenFramebuffersEXT");
-	s->deleteFramebuffers = (GLDeleteFramebuffersProc)
-	    getProcAddress (s, "glDeleteFramebuffersEXT");
-	s->bindFramebuffer = (GLBindFramebufferProc)
-	    getProcAddress (s, "glBindFramebufferEXT");
-	s->checkFramebufferStatus = (GLCheckFramebufferStatusProc)
-	    getProcAddress (s, "glCheckFramebufferStatusEXT");
-	s->framebufferTexture2D = (GLFramebufferTexture2DProc)
-	    getProcAddress (s, "glFramebufferTexture2DEXT");
-	s->generateMipmap = (GLGenerateMipmapProc)
-	    getProcAddress (s, "glGenerateMipmapEXT");
-
-	if (s->genFramebuffers	      &&
-	    s->deleteFramebuffers     &&
-	    s->bindFramebuffer	      &&
-	    s->checkFramebufferStatus &&
-	    s->framebufferTexture2D   &&
-	    s->generateMipmap)
-	    s->fbo = 1;
-    }
-
-    fbConfigs = (*s->getFBConfigs) (dpy,
-				    screenNum,
-				    &nElements);
-
-    for (i = 0; i <= MAX_DEPTH; i++)
-    {
-	int j, db, stencil, depth, alpha, mipmap, rgba;
-
-	s->glxPixmapFBConfigs[i].fbConfig       = NULL;
-	s->glxPixmapFBConfigs[i].mipmap         = 0;
-	s->glxPixmapFBConfigs[i].yInverted      = 0;
-	s->glxPixmapFBConfigs[i].textureFormat  = 0;
-	s->glxPixmapFBConfigs[i].textureTargets = 0;
-
-	db      = MAXSHORT;
-	stencil = MAXSHORT;
-	depth   = MAXSHORT;
-	mipmap  = 0;
-	rgba    = 0;
-
-	for (j = 0; j < nElements; j++)
-	{
-	    XVisualInfo *vi;
-	    int		visualDepth;
-
-	    vi = glXGetVisualFromFBConfig (dpy, fbConfigs[j]);
-	    if (vi == NULL)
-		continue;
-
-	    visualDepth = vi->depth;
-
-	    XFree (vi);
-
-	    if (visualDepth != i)
-		continue;
-
-	    (*s->getFBConfigAttrib) (dpy,
-				     fbConfigs[j],
-				     GLX_ALPHA_SIZE,
-				     &alpha);
-	    (*s->getFBConfigAttrib) (dpy,
-				     fbConfigs[j],
-				     GLX_BUFFER_SIZE,
-				     &value);
-	    if (value != i && (value - alpha) != i)
-		continue;
-
-	    value = 0;
-	    if (i == 32)
-	    {
-		(*s->getFBConfigAttrib) (dpy,
-					 fbConfigs[j],
-					 GLX_BIND_TO_TEXTURE_RGBA_EXT,
-					 &value);
-
-		if (value)
+		s->privates = malloc (display->screenPrivateLen *
+							  sizeof (CompPrivate));
+		if (!s->privates)
 		{
-		    rgba = 1;
-
-		    s->glxPixmapFBConfigs[i].textureFormat =
-			GLX_TEXTURE_FORMAT_RGBA_EXT;
+			free (s);
+			return FALSE;
 		}
-	    }
-
-	    if (!value)
-	    {
-		if (rgba)
-		    continue;
-
-		(*s->getFBConfigAttrib) (dpy,
-					 fbConfigs[j],
-					 GLX_BIND_TO_TEXTURE_RGB_EXT,
-					 &value);
-		if (!value)
-		    continue;
-
-		s->glxPixmapFBConfigs[i].textureFormat =
-		    GLX_TEXTURE_FORMAT_RGB_EXT;
-	    }
-
-	    (*s->getFBConfigAttrib) (dpy,
-				     fbConfigs[j],
-				     GLX_DOUBLEBUFFER,
-				     &value);
-	    if (value > db)
-		continue;
-
-	    db = value;
-
-	    (*s->getFBConfigAttrib) (dpy,
-				     fbConfigs[j],
-				     GLX_STENCIL_SIZE,
-				     &value);
-	    if (value > stencil)
-		continue;
-
-	    stencil = value;
-
-	    (*s->getFBConfigAttrib) (dpy,
-				     fbConfigs[j],
-				     GLX_DEPTH_SIZE,
-				     &value);
-	    if (value > depth)
-		continue;
-
-	    depth = value;
-
-	    if (s->fbo)
-	    {
-		(*s->getFBConfigAttrib) (dpy,
-					 fbConfigs[j],
-					 GLX_BIND_TO_MIPMAP_TEXTURE_EXT,
-					 &value);
-		if (value < mipmap)
-		    continue;
-
-		mipmap = value;
-	    }
-
-	    (*s->getFBConfigAttrib) (dpy,
-				     fbConfigs[j],
-				     GLX_Y_INVERTED_EXT,
-				     &value);
-
-	    s->glxPixmapFBConfigs[i].yInverted = value;
-
-	    (*s->getFBConfigAttrib) (dpy,
-				     fbConfigs[j],
-				     GLX_BIND_TO_TEXTURE_TARGETS_EXT,
-				     &value);
-
-	    s->glxPixmapFBConfigs[i].textureTargets = value;
-
-	    s->glxPixmapFBConfigs[i].fbConfig = fbConfigs[j];
-	    s->glxPixmapFBConfigs[i].mipmap   = mipmap;
 	}
-    }
+	else
+		s->privates = 0;
 
-    if (nElements)
-	XFree (fbConfigs);
+	s->display = display;
 
-    if (!s->glxPixmapFBConfigs[defaultDepth].fbConfig)
-    {
-	compLogMessage (display, "core", CompLogLevelFatal,
-			"No GLXFBConfig for default depth, "
-			"this isn't going to work.");
-	return FALSE;
-    }
+	if (!compInitScreenOptionsFromMetadata (s,
+											&coreMetadata,
+											coreScreenOptionInfo,
+											s->opt,
+											COMP_SCREEN_OPTION_NUM))
+		return FALSE;
 
-    /* initTexture (s, &s->backgroundTexture);
-     * s->backgroundLoaded = FALSE; */
+	s->damage = XCreateRegion ();
+	if (!s->damage)
+		return FALSE;
 
-    s->defaultIcon = NULL;
+	s->x	 = 0;
+	s->y	 = 0;
 
-    s->desktopWindowCount = 0;
+	/* get this info from e */
+	s->hsize = 1;
+	s->vsize = 1;
 
-    glClearColor (0.0, 0.0, 0.0, 1.0);
-    glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable (GL_CULL_FACE);
-    glDisable (GL_BLEND);
-    glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    glColor4usv (defaultColor);
-    glEnableClientState (GL_VERTEX_ARRAY);
-    glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	s->nDesktop		  = 1;
+	s->currentDesktop = 0;
 
-    s->canDoSaturated = s->canDoSlightlySaturated = FALSE;
-    if (s->textureEnvCombine && s->maxTextureUnits >= 2)
-    {
-	s->canDoSaturated = TRUE;
-	if (s->textureEnvCrossbar && s->maxTextureUnits >= 4)
-	    s->canDoSlightlySaturated = TRUE;
-    }
+	/* for (i = 0; i < SCREEN_EDGE_NUM; i++)
+	 * {
+	 *	s->screenEdge[i].id	   = None;
+	 *	s->screenEdge[i].count = 0;
+	 * } */
 
-    s->redrawTime = 1000 / defaultRefreshRate;
-    s->optimalRedrawTime = s->redrawTime;
+	/* s->buttonGrab  = 0;
+	 * s->nButtonGrab = 0;
+	 * s->keyGrab	  = 0;
+	 * s->nKeyGrab	  = 0; */
 
-    reshape (s, s->attrib.width, s->attrib.height);
+	s->grabs	= 0;
+	s->grabSize = 0;
+	s->maxGrab	= 0;
 
-    detectRefreshRateOfScreen (s);
-    detectOutputDevices (s);
-    updateOutputDevices (s);
+	s->pendingDestroys = 0;
 
-    glLightModelfv (GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+	s->clientList  = 0;
+	s->nClientList = 0;
 
-    glEnable (GL_LIGHT0);
-    glLightfv (GL_LIGHT0, GL_AMBIENT, ambientLight);
-    glLightfv (GL_LIGHT0, GL_DIFFUSE, diffuseLight);
-    glLightfv (GL_LIGHT0, GL_POSITION, light0Position);
+	s->screenNum = screenNum;
+	s->colormap	 = DefaultColormap (dpy, screenNum);
+	s->root	 = XRootWindow (dpy, screenNum);
 
-    glColorMaterial (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	s->mapNum	 = 1;
+	s->activeNum = 1;
 
-    glNormal3f (0.0f, 0.0f, -1.0f);
+	/* s->groups = NULL; */
 
-    s->lighting	      = FALSE;
-    s->slowAnimations = FALSE;
+	s->damageMask  = COMP_SCREEN_DAMAGE_ALL_MASK;
+	s->next	   = 0;
+	s->exposeRects = 0;
+	s->sizeExpose  = 0;
+	s->nExpose	   = 0;
 
-    addScreenToDisplay (display, s);
+	s->rasterX = 0;
+	s->rasterY = 0;
 
-    getDesktopHints (s);
+	s->outputDev	= NULL;
+	s->nOutputDev	= 0;
+	s->currentOutputDev = 0;
 
-    screenInitPlugins (s);
+	s->windows = 0;
+	s->reverseWindows = 0;
 
-    XQueryTree (dpy, s->root,
-		&rootReturn, &parentReturn,
-		&children, &nchildren);
+	s->nextRedraw  = 0;
+	s->frameStatus = 0;
+	s->timeMult	   = 1;
+	s->idle	   = TRUE;
+	s->timeLeft	   = 0;
 
-    for (i = 0; i < nchildren; i++)
-	addWindow (s, children[i], i ? children[i - 1] : 0);
+	s->pendingCommands = TRUE;
 
-    for (w = s->windows; w; w = w->next)
-    {
-	if (w->attrib.map_state == IsViewable)
+	s->lastFunctionId = 0;
+
+	s->fragmentFunctions = NULL;
+	s->fragmentPrograms = NULL;
+
+	memset (s->saturateFunction, 0, sizeof (s->saturateFunction));
+
+	s->showingDesktopMask = 0;
+
+	memset (s->history, 0, sizeof (s->history));
+	s->currentHistory = 0;
+
+	s->overlayWindowCount = 0;
+
+	s->desktopHintData = NULL;
+	s->desktopHintSize = 0;
+
+	s->cursors = NULL;
+
+	s->clearBuffers = TRUE;
+
+	gettimeofday (&s->lastRedraw, 0);
+
+	s->setScreenOption			= setScreenOption;
+	s->setScreenOptionForPlugin = setScreenOptionForPlugin;
+
+	s->initPluginForScreen = initPluginForScreen;
+	s->finiPluginForScreen = finiPluginForScreen;
+
+	s->preparePaintScreen	  = preparePaintScreen;
+	s->donePaintScreen		  = donePaintScreen;
+	s->paintScreen		  = paintScreen;
+	s->paintOutput		  = paintOutput;
+	s->paintTransformedOutput	  = paintTransformedOutput;
+	s->applyScreenTransform	  = applyScreenTransform;
+	/* s->paintBackground		  = paintBackground; */
+	s->paintWindow		  = paintWindow;
+	s->drawWindow		  = drawWindow;
+	s->addWindowGeometry	  = addWindowGeometry;
+	s->drawWindowTexture	  = drawWindowTexture;
+	s->damageWindowRect		  = damageWindowRect;
+	s->getOutputExtentsForWindow  = getOutputExtentsForWindow;
+	s->getAllowedActionsForWindow = getAllowedActionsForWindow;
+	s->focusWindow		  = focusWindow;
+	s->placeWindow				  = placeWindow;
+
+	/* s->paintCursor	   = paintCursor;
+	 * s->damageCursorRect	= damageCursorRect; */
+
+	s->windowAddNotify	  = windowAddNotify;
+	s->windowResizeNotify = windowResizeNotify;
+	s->windowMoveNotify	  = windowMoveNotify;
+	s->windowGrabNotify	  = windowGrabNotify;
+	s->windowUngrabNotify = windowUngrabNotify;
+
+	s->enterShowDesktopMode = enterShowDesktopMode;
+	s->leaveShowDesktopMode = leaveShowDesktopMode;
+
+	s->windowStateChangeNotify = windowStateChangeNotify;
+
+	s->outputChangeNotify = outputChangeNotify;
+
+	s->initWindowWalker = initWindowWalker;
+
+	s->getProcAddress = 0;
+
+	if (!XGetWindowAttributes (dpy, s->root, &s->attrib))
+		return FALSE;
+
+	s->workArea.x	   = 0;
+	s->workArea.y	   = 0;
+	s->workArea.width  = s->attrib.width;
+	s->workArea.height = s->attrib.height;
+
+	//	  s->grabWindow = None;
+
+	makeOutputWindow (s);
+
+	templ.visualid = XVisualIDFromVisual (s->attrib.visual);
+
+	visinfo = XGetVisualInfo (dpy, VisualIDMask, &templ, &nvisinfo);
+	if (!nvisinfo)
 	{
-	    w->activeNum = s->activeNum++;
-	    w->damaged   = TRUE;
-	    w->invisible = WINDOW_INVISIBLE (w);
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"Couldn't get visual info for default visual");
+		return FALSE;
 	}
-    }
 
-    XFree (children);
+	defaultDepth = visinfo->depth;
 
-    /* attrib.override_redirect = 1;
-     * attrib.event_mask	     = PropertyChangeMask; */
+	black.red = black.green = black.blue = 0;
 
-    /* s->grabWindow = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
-     * 				   CopyFromParent, InputOnly, CopyFromParent,
-     * 				   CWOverrideRedirect | CWEventMask,
-     * 				   &attrib);
-     * XMapWindow (dpy, s->grabWindow); */
-    
-    /* for (i = 0; i < SCREEN_EDGE_NUM; i++)
-     * {
-     * 	long xdndVersion = 3;
-     * 
-     * 	s->screenEdge[i].id = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
-     * 					     CopyFromParent, InputOnly,
-     * 					     CopyFromParent, CWOverrideRedirect,
-     * 					     &attrib);
-     * 
-     * 	XChangeProperty (dpy, s->screenEdge[i].id, display->xdndAwareAtom,
-     * 			 XA_ATOM, 32, PropModeReplace,
-     * 			 (unsigned char *) &xdndVersion, 1);
-     * 
-     * 	XSelectInput (dpy, s->screenEdge[i].id,
-     * 		      EnterWindowMask   |
-     * 		      LeaveWindowMask   |
-     * 		      ButtonPressMask   |
-     * 		      ButtonReleaseMask |
-     * 		      PointerMotionMask);
-     * }
-     * 
-     * updateScreenEdges (s); */
+	if (!XAllocColor (dpy, s->colormap, &black))
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"Couldn't allocate color");
+		XFree (visinfo);
+		return FALSE;
+	}
 
-    /*    setDesktopHints (s);
-     * setSupportingWmCheck (s);
-     * setSupported (s); */
+	bitmap = XCreateBitmapFromData (dpy, s->root, &data, 1, 1);
+	if (!bitmap)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"Couldn't create bitmap");
+		XFree (visinfo);
+		return FALSE;
+	}
 
-    /* s->normalCursor = XCreateFontCursor (dpy, XC_left_ptr);
-     * s->busyCursor   = XCreateFontCursor (dpy, XC_watch); */
+	s->invisibleCursor = XCreatePixmapCursor (dpy, bitmap, bitmap,
+											  &black, &black, 0, 0);
+	if (!s->invisibleCursor)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"Couldn't create invisible cursor");
+		XFree (visinfo);
+		return FALSE;
+	}
 
-    // XDefineCursor (dpy, s->root, s->normalCursor);
+	XFreePixmap (dpy, bitmap);
+	XFreeColors (dpy, s->colormap, &black.pixel, 1, 0);
 
-    s->filter[NOTHING_TRANS_FILTER] = COMP_TEXTURE_FILTER_FAST;
-    s->filter[SCREEN_TRANS_FILTER]  = COMP_TEXTURE_FILTER_GOOD;
-    s->filter[WINDOW_TRANS_FILTER]  = COMP_TEXTURE_FILTER_GOOD;
+	glXGetConfig (dpy, visinfo, GLX_USE_GL, &value);
+	if (!value)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"Root visual is not a GL visual");
+		XFree (visinfo);
+		return FALSE;
+	}
 
-    D(("addScreen - end\n"));
-    
-    return TRUE;
+	glXGetConfig (dpy, visinfo, GLX_DOUBLEBUFFER, &value);
+	if (!value)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"Root visual is not a double buffered GL visual");
+		XFree (visinfo);
+		return FALSE;
+	}
+
+	s->ctx = glXCreateContext (dpy, visinfo, NULL, !indirectRendering);
+	if (!s->ctx)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"glXCreateContext failed");
+		XFree (visinfo);
+
+		return FALSE;
+	}
+
+	glxExtensions = glXQueryExtensionsString (dpy, screenNum);
+	if (!strstr (glxExtensions, "GLX_EXT_texture_from_pixmap"))
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"GLX_EXT_texture_from_pixmap is missing");
+		XFree (visinfo);
+
+		return FALSE;
+	}
+
+	XFree (visinfo);
+
+	if (!strstr (glxExtensions, "GLX_SGIX_fbconfig"))
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"GLX_SGIX_fbconfig is missing");
+		return FALSE;
+	}
+
+	s->getProcAddress = (GLXGetProcAddressProc)
+		getProcAddress (s, "glXGetProcAddressARB");
+	s->bindTexImage = (GLXBindTexImageProc)
+		getProcAddress (s, "glXBindTexImageEXT");
+	s->releaseTexImage = (GLXReleaseTexImageProc)
+		getProcAddress (s, "glXReleaseTexImageEXT");
+	s->queryDrawable = (GLXQueryDrawableProc)
+		getProcAddress (s, "glXQueryDrawable");
+	s->getFBConfigs = (GLXGetFBConfigsProc)
+		getProcAddress (s, "glXGetFBConfigs");
+	s->getFBConfigAttrib = (GLXGetFBConfigAttribProc)
+		getProcAddress (s, "glXGetFBConfigAttrib");
+	s->createPixmap = (GLXCreatePixmapProc)
+		getProcAddress (s, "glXCreatePixmap");
+
+	if (!s->bindTexImage)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"glXBindTexImageEXT is missing");
+		return FALSE;
+	}
+
+	if (!s->releaseTexImage)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"glXReleaseTexImageEXT is missing");
+		return FALSE;
+	}
+
+	if (!s->queryDrawable	  ||
+		!s->getFBConfigs	  ||
+		!s->getFBConfigAttrib ||
+		!s->createPixmap)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"fbconfig functions missing");
+		return FALSE;
+	}
+
+	s->copySubBuffer = NULL;
+	if (strstr (glxExtensions, "GLX_MESA_copy_sub_buffer"))
+		s->copySubBuffer = (GLXCopySubBufferProc)
+			getProcAddress (s, "glXCopySubBufferMESA");
+
+	s->getVideoSync = NULL;
+	s->waitVideoSync = NULL;
+	if (strstr (glxExtensions, "GLX_SGI_video_sync"))
+	{
+		s->getVideoSync = (GLXGetVideoSyncProc)
+			getProcAddress (s, "glXGetVideoSyncSGI");
+
+		s->waitVideoSync = (GLXWaitVideoSyncProc)
+			getProcAddress (s, "glXWaitVideoSyncSGI");
+	}
+
+	glXMakeCurrent (dpy, s->output, s->ctx);
+	currentRoot = s->root;
+
+	glExtensions = (const char *) glGetString (GL_EXTENSIONS);
+	if (!glExtensions)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"No valid GL extensions string found.");
+		return FALSE;
+	}
+
+	s->textureNonPowerOfTwo = 0;
+	if (strstr (glExtensions, "GL_ARB_texture_non_power_of_two"))
+		s->textureNonPowerOfTwo = 1;
+
+	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &s->maxTextureSize);
+
+	s->textureRectangle = 0;
+	if (strstr (glExtensions, "GL_NV_texture_rectangle")  ||
+		strstr (glExtensions, "GL_EXT_texture_rectangle") ||
+		strstr (glExtensions, "GL_ARB_texture_rectangle"))
+	{
+		s->textureRectangle = 1;
+
+		if (!s->textureNonPowerOfTwo)
+		{
+			GLint maxTextureSize;
+
+			glGetIntegerv (GL_MAX_RECTANGLE_TEXTURE_SIZE_NV, &maxTextureSize);
+			if (maxTextureSize > s->maxTextureSize)
+				s->maxTextureSize = maxTextureSize;
+		}
+	}
+
+	if (!(s->textureRectangle || s->textureNonPowerOfTwo))
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"Support for non power of two textures missing");
+		return FALSE;
+	}
+
+	s->textureEnvCombine = s->textureEnvCrossbar = 0;
+	if (strstr (glExtensions, "GL_ARB_texture_env_combine"))
+	{
+		s->textureEnvCombine = 1;
+
+		/* XXX: GL_NV_texture_env_combine4 need special code but it seams to
+		   be working anyway for now... */
+		if (strstr (glExtensions, "GL_ARB_texture_env_crossbar") ||
+			strstr (glExtensions, "GL_NV_texture_env_combine4"))
+			s->textureEnvCrossbar = 1;
+	}
+
+	s->textureBorderClamp = 0;
+	if (strstr (glExtensions, "GL_ARB_texture_border_clamp") ||
+		strstr (glExtensions, "GL_SGIS_texture_border_clamp"))
+		s->textureBorderClamp = 1;
+
+	s->maxTextureUnits = 1;
+	if (strstr (glExtensions, "GL_ARB_multitexture"))
+	{
+		s->activeTexture = (GLActiveTextureProc)
+			getProcAddress (s, "glActiveTexture");
+		s->clientActiveTexture = (GLClientActiveTextureProc)
+			getProcAddress (s, "glClientActiveTexture");
+
+		if (s->activeTexture && s->clientActiveTexture)
+			glGetIntegerv (GL_MAX_TEXTURE_UNITS_ARB, &s->maxTextureUnits);
+	}
+
+	s->fragmentProgram = 0;
+	if (strstr (glExtensions, "GL_ARB_fragment_program"))
+	{
+		s->genPrograms = (GLGenProgramsProc)
+			getProcAddress (s, "glGenProgramsARB");
+		s->deletePrograms = (GLDeleteProgramsProc)
+			getProcAddress (s, "glDeleteProgramsARB");
+		s->bindProgram = (GLBindProgramProc)
+			getProcAddress (s, "glBindProgramARB");
+		s->programString = (GLProgramStringProc)
+			getProcAddress (s, "glProgramStringARB");
+		s->programEnvParameter4f = (GLProgramParameter4fProc)
+			getProcAddress (s, "glProgramEnvParameter4fARB");
+		s->programLocalParameter4f = (GLProgramParameter4fProc)
+			getProcAddress (s, "glProgramLocalParameter4fARB");
+
+		if (s->genPrograms		 &&
+			s->deletePrograms		 &&
+			s->bindProgram		 &&
+			s->programString		 &&
+			s->programEnvParameter4f &&
+			s->programLocalParameter4f)
+			s->fragmentProgram = 1;
+	}
+
+	s->fbo = 0;
+	if (strstr (glExtensions, "GL_EXT_framebuffer_object"))
+	{
+		s->genFramebuffers = (GLGenFramebuffersProc)
+			getProcAddress (s, "glGenFramebuffersEXT");
+		s->deleteFramebuffers = (GLDeleteFramebuffersProc)
+			getProcAddress (s, "glDeleteFramebuffersEXT");
+		s->bindFramebuffer = (GLBindFramebufferProc)
+			getProcAddress (s, "glBindFramebufferEXT");
+		s->checkFramebufferStatus = (GLCheckFramebufferStatusProc)
+			getProcAddress (s, "glCheckFramebufferStatusEXT");
+		s->framebufferTexture2D = (GLFramebufferTexture2DProc)
+			getProcAddress (s, "glFramebufferTexture2DEXT");
+		s->generateMipmap = (GLGenerateMipmapProc)
+			getProcAddress (s, "glGenerateMipmapEXT");
+
+		if (s->genFramebuffers		  &&
+			s->deleteFramebuffers	  &&
+			s->bindFramebuffer		  &&
+			s->checkFramebufferStatus &&
+			s->framebufferTexture2D	  &&
+			s->generateMipmap)
+			s->fbo = 1;
+	}
+
+	fbConfigs = (*s->getFBConfigs) (dpy,
+									screenNum,
+									&nElements);
+
+	for (i = 0; i <= MAX_DEPTH; i++)
+	{
+		int j, db, stencil, depth, alpha, mipmap, rgba;
+
+		s->glxPixmapFBConfigs[i].fbConfig		= NULL;
+		s->glxPixmapFBConfigs[i].mipmap			= 0;
+		s->glxPixmapFBConfigs[i].yInverted		= 0;
+		s->glxPixmapFBConfigs[i].textureFormat	= 0;
+		s->glxPixmapFBConfigs[i].textureTargets = 0;
+
+		db		= MAXSHORT;
+		stencil = MAXSHORT;
+		depth	= MAXSHORT;
+		mipmap	= 0;
+		rgba	= 0;
+
+		for (j = 0; j < nElements; j++)
+		{
+			XVisualInfo *vi;
+			int		visualDepth;
+
+			vi = glXGetVisualFromFBConfig (dpy, fbConfigs[j]);
+			if (vi == NULL)
+				continue;
+
+			visualDepth = vi->depth;
+
+			XFree (vi);
+
+			if (visualDepth != i)
+				continue;
+
+			(*s->getFBConfigAttrib) (dpy,
+									 fbConfigs[j],
+									 GLX_ALPHA_SIZE,
+									 &alpha);
+			(*s->getFBConfigAttrib) (dpy,
+									 fbConfigs[j],
+									 GLX_BUFFER_SIZE,
+									 &value);
+			if (value != i && (value - alpha) != i)
+				continue;
+
+			value = 0;
+			if (i == 32)
+			{
+				(*s->getFBConfigAttrib) (dpy,
+										 fbConfigs[j],
+										 GLX_BIND_TO_TEXTURE_RGBA_EXT,
+										 &value);
+
+				if (value)
+				{
+					rgba = 1;
+
+					s->glxPixmapFBConfigs[i].textureFormat =
+						GLX_TEXTURE_FORMAT_RGBA_EXT;
+				}
+			}
+
+			if (!value)
+			{
+				if (rgba)
+					continue;
+
+				(*s->getFBConfigAttrib) (dpy,
+										 fbConfigs[j],
+										 GLX_BIND_TO_TEXTURE_RGB_EXT,
+										 &value);
+				if (!value)
+					continue;
+
+				s->glxPixmapFBConfigs[i].textureFormat =
+					GLX_TEXTURE_FORMAT_RGB_EXT;
+			}
+
+			(*s->getFBConfigAttrib) (dpy,
+									 fbConfigs[j],
+									 GLX_DOUBLEBUFFER,
+									 &value);
+			if (value > db)
+				continue;
+
+			db = value;
+
+			(*s->getFBConfigAttrib) (dpy,
+									 fbConfigs[j],
+									 GLX_STENCIL_SIZE,
+									 &value);
+			if (value > stencil)
+				continue;
+
+			stencil = value;
+
+			(*s->getFBConfigAttrib) (dpy,
+									 fbConfigs[j],
+									 GLX_DEPTH_SIZE,
+									 &value);
+			if (value > depth)
+				continue;
+
+			depth = value;
+
+			if (s->fbo)
+			{
+				(*s->getFBConfigAttrib) (dpy,
+										 fbConfigs[j],
+										 GLX_BIND_TO_MIPMAP_TEXTURE_EXT,
+										 &value);
+				if (value < mipmap)
+					continue;
+
+				mipmap = value;
+			}
+
+			(*s->getFBConfigAttrib) (dpy,
+									 fbConfigs[j],
+									 GLX_Y_INVERTED_EXT,
+									 &value);
+
+			s->glxPixmapFBConfigs[i].yInverted = value;
+
+			(*s->getFBConfigAttrib) (dpy,
+									 fbConfigs[j],
+									 GLX_BIND_TO_TEXTURE_TARGETS_EXT,
+									 &value);
+
+			s->glxPixmapFBConfigs[i].textureTargets = value;
+
+			s->glxPixmapFBConfigs[i].fbConfig = fbConfigs[j];
+			s->glxPixmapFBConfigs[i].mipmap	  = mipmap;
+		}
+	}
+
+	if (nElements)
+		XFree (fbConfigs);
+
+	if (!s->glxPixmapFBConfigs[defaultDepth].fbConfig)
+	{
+		compLogMessage (display, "core", CompLogLevelFatal,
+						"No GLXFBConfig for default depth, "
+						"this isn't going to work.");
+		return FALSE;
+	}
+
+	/* initTexture (s, &s->backgroundTexture);
+	 * s->backgroundLoaded = FALSE; */
+
+	s->defaultIcon = NULL;
+
+	s->desktopWindowCount = 0;
+
+	glClearColor (0.0, 0.0, 0.0, 1.0);
+	glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable (GL_CULL_FACE);
+	glDisable (GL_BLEND);
+	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glColor4usv (defaultColor);
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+
+	s->canDoSaturated = s->canDoSlightlySaturated = FALSE;
+	if (s->textureEnvCombine && s->maxTextureUnits >= 2)
+	{
+		s->canDoSaturated = TRUE;
+		if (s->textureEnvCrossbar && s->maxTextureUnits >= 4)
+			s->canDoSlightlySaturated = TRUE;
+	}
+
+	s->redrawTime = 1000 / defaultRefreshRate;
+	s->optimalRedrawTime = s->redrawTime;
+
+	reshape (s, s->attrib.width, s->attrib.height);
+
+	detectRefreshRateOfScreen (s);
+	detectOutputDevices (s);
+	updateOutputDevices (s);
+
+	glLightModelfv (GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+
+	glEnable (GL_LIGHT0);
+	glLightfv (GL_LIGHT0, GL_AMBIENT, ambientLight);
+	glLightfv (GL_LIGHT0, GL_DIFFUSE, diffuseLight);
+	glLightfv (GL_LIGHT0, GL_POSITION, light0Position);
+
+	glColorMaterial (GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	glNormal3f (0.0f, 0.0f, -1.0f);
+
+	s->lighting		  = FALSE;
+	s->slowAnimations = FALSE;
+
+	addScreenToDisplay (display, s);
+
+	getDesktopHints (s);
+
+	screenInitPlugins (s);
+
+	XQueryTree (dpy, s->root,
+				&rootReturn, &parentReturn,
+				&children, &nchildren);
+
+	for (i = 0; i < nchildren; i++)
+		addWindow (s, children[i], i ? children[i - 1] : 0);
+
+	for (w = s->windows; w; w = w->next)
+	{
+		if (w->attrib.map_state == IsViewable)
+		{
+			w->activeNum = s->activeNum++;
+			w->damaged	 = TRUE;
+			w->invisible = WINDOW_INVISIBLE (w);
+		}
+	}
+
+	XFree (children);
+
+	/* attrib.override_redirect = 1;
+	 * attrib.event_mask		 = PropertyChangeMask; */
+
+	/* s->grabWindow = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
+	 *				   CopyFromParent, InputOnly, CopyFromParent,
+	 *				   CWOverrideRedirect | CWEventMask,
+	 *				   &attrib);
+	 * XMapWindow (dpy, s->grabWindow); */
+
+	/* for (i = 0; i < SCREEN_EDGE_NUM; i++)
+	 * {
+	 *	long xdndVersion = 3;
+	 *
+	 *	s->screenEdge[i].id = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
+	 *						 CopyFromParent, InputOnly,
+	 *						 CopyFromParent, CWOverrideRedirect,
+	 *						 &attrib);
+	 *
+	 *	XChangeProperty (dpy, s->screenEdge[i].id, display->xdndAwareAtom,
+	 *			 XA_ATOM, 32, PropModeReplace,
+	 *			 (unsigned char *) &xdndVersion, 1);
+	 *
+	 *	XSelectInput (dpy, s->screenEdge[i].id,
+	 *			  EnterWindowMask	|
+	 *			  LeaveWindowMask	|
+	 *			  ButtonPressMask	|
+	 *			  ButtonReleaseMask |
+	 *			  PointerMotionMask);
+	 * }
+	 *
+	 * updateScreenEdges (s); */
+
+	/*	  setDesktopHints (s);
+	 * setSupportingWmCheck (s);
+	 * setSupported (s); */
+
+	/* s->normalCursor = XCreateFontCursor (dpy, XC_left_ptr);
+	 * s->busyCursor   = XCreateFontCursor (dpy, XC_watch); */
+
+	// XDefineCursor (dpy, s->root, s->normalCursor);
+
+	s->filter[NOTHING_TRANS_FILTER] = COMP_TEXTURE_FILTER_FAST;
+	s->filter[SCREEN_TRANS_FILTER]	= COMP_TEXTURE_FILTER_GOOD;
+	s->filter[WINDOW_TRANS_FILTER]	= COMP_TEXTURE_FILTER_GOOD;
+
+	D(("addScreen - end\n"));
+
+	return TRUE;
 }
 
 void
 damageScreenRegion (CompScreen *screen,
-		    Region     region)
+					Region	   region)
 {
-    if (screen->damageMask & COMP_SCREEN_DAMAGE_ALL_MASK)
-	return;
+	if (screen->damageMask & COMP_SCREEN_DAMAGE_ALL_MASK)
+		return;
 
-    XUnionRegion (screen->damage, region, screen->damage);
+	XUnionRegion (screen->damage, region, screen->damage);
 
-    screen->damageMask |= COMP_SCREEN_DAMAGE_REGION_MASK;
+	screen->damageMask |= COMP_SCREEN_DAMAGE_REGION_MASK;
 }
 
 void
 damageScreen (CompScreen *s)
 {
-    s->damageMask |= COMP_SCREEN_DAMAGE_ALL_MASK;
-    s->damageMask &= ~COMP_SCREEN_DAMAGE_REGION_MASK;
+	s->damageMask |= COMP_SCREEN_DAMAGE_ALL_MASK;
+	s->damageMask &= ~COMP_SCREEN_DAMAGE_REGION_MASK;
 }
 
 void
 damagePendingOnScreen (CompScreen *s)
 {
-    s->damageMask |= COMP_SCREEN_DAMAGE_PENDING_MASK;
+	s->damageMask |= COMP_SCREEN_DAMAGE_PENDING_MASK;
 }
 
 void
 forEachWindowOnScreen (CompScreen	 *screen,
-		       ForEachWindowProc proc,
-		       void		 *closure)
+					   ForEachWindowProc proc,
+					   void		 *closure)
 {
-    CompWindow *w;
+	CompWindow *w;
 
-    for (w = screen->windows; w; w = w->next)
-	(*proc) (w, closure);
+	for (w = screen->windows; w; w = w->next)
+		(*proc) (w, closure);
 }
 
 CompWindow *
 findWindowAtScreen (CompScreen *s,
-		    Window     id)
+					Window	   id)
 {
-    if (lastFoundWindow && lastFoundWindow->id == id)
-    {
-	return lastFoundWindow;
-    }
-    else
-    {
-	CompWindow *w;
+	if (lastFoundWindow && lastFoundWindow->id == id)
+	{
+		return lastFoundWindow;
+	}
+	else
+	{
+		CompWindow *w;
 
-	for (w = s->windows; w; w = w->next)
-	    if (w->id == id)
-		return (lastFoundWindow = w);
-    }
+		for (w = s->windows; w; w = w->next)
+			if (w->id == id)
+				return (lastFoundWindow = w);
+	}
 
-    return 0;
+	return 0;
 }
 
 CompWindow *
 findTopLevelWindowAtScreen (CompScreen *s,
-			    Window     id)
+							Window	   id)
 {
-    CompWindow *w;
+	CompWindow *w;
 
-    w = findWindowAtScreen (s, id);
-    if (!w)
-	return NULL;
+	w = findWindowAtScreen (s, id);
+	if (!w)
+		return NULL;
 
-    return w;
+	return w;
 }
 
 void
 insertWindowIntoScreen (CompScreen *s,
-			CompWindow *w,
-			Window	   aboveId)
+						CompWindow *w,
+						Window	   aboveId)
 {
-    CompWindow *p;
+	CompWindow *p;
 
-    if (s->windows)
-    {
-	if (!aboveId)
+	if (s->windows)
 	{
-	    w->next = s->windows;
-	    w->prev = NULL;
-	    s->windows->prev = w;
-	    s->windows = w;
+		if (!aboveId)
+		{
+			w->next = s->windows;
+			w->prev = NULL;
+			s->windows->prev = w;
+			s->windows = w;
+		}
+		else
+		{
+			for (p = s->windows; p; p = p->next)
+			{
+				if (p->id == aboveId)
+				{
+					if (p->next)
+					{
+						w->next = p->next;
+						w->prev = p;
+						p->next->prev = w;
+						p->next = w;
+					}
+					else
+					{
+						p->next = w;
+						w->next = NULL;
+						w->prev = p;
+						s->reverseWindows = w;
+					}
+					break;
+				}
+			}
+
+#ifdef DEBUG
+			if (!p)
+				abort ();
+#endif
+
+		}
 	}
 	else
 	{
-	    for (p = s->windows; p; p = p->next)
-	    {
-		if (p->id == aboveId)
-		{
-		    if (p->next)
-		    {
-			w->next = p->next;
-			w->prev = p;
-			p->next->prev = w;
-			p->next = w;
-		    }
-		    else
-		    {
-			p->next = w;
-			w->next = NULL;
-			w->prev = p;
-			s->reverseWindows = w;
-		    }
-		    break;
-		}
-	    }
-
-#ifdef DEBUG
-	    if (!p)
-		abort ();
-#endif
-
+		s->reverseWindows = s->windows = w;
+		w->prev = w->next = NULL;
 	}
-    }
-    else
-    {
-	s->reverseWindows = s->windows = w;
-	w->prev = w->next = NULL;
-    }
 }
 
 void
 unhookWindowFromScreen (CompScreen *s,
-			CompWindow *w)
+						CompWindow *w)
 {
-    CompWindow *next, *prev;
+	CompWindow *next, *prev;
 
-    next = w->next;
-    prev = w->prev;
+	next = w->next;
+	prev = w->prev;
 
-    if (next || prev)
-    {
-	if (next)
+	if (next || prev)
 	{
-	    if (prev)
-	    {
-		next->prev = prev;
-	    }
-	    else
-	    {
-		s->windows = next;
-		next->prev = NULL;
-	    }
+		if (next)
+		{
+			if (prev)
+			{
+				next->prev = prev;
+			}
+			else
+			{
+				s->windows = next;
+				next->prev = NULL;
+			}
+		}
+
+		if (prev)
+		{
+			if (next)
+			{
+				prev->next = next;
+			}
+			else
+			{
+				s->reverseWindows = prev;
+				prev->next = NULL;
+			}
+		}
+	}
+	else
+	{
+		s->windows = s->reverseWindows = NULL;
 	}
 
-	if (prev)
-	{
-	    if (next)
-	    {
-		prev->next = next;
-	    }
-	    else
-	    {
-		s->reverseWindows = prev;
-		prev->next = NULL;
-	    }
-	}
-    }
-    else
-    {
-	s->windows = s->reverseWindows = NULL;
-    }
-
-    if (w == lastFoundWindow)
-	lastFoundWindow = NULL;
-    if (w == lastDamagedWindow)
-	lastDamagedWindow = NULL;
+	if (w == lastFoundWindow)
+		lastFoundWindow = NULL;
+	if (w == lastDamagedWindow)
+		lastDamagedWindow = NULL;
 }
 
 /* #define POINTER_GRAB_MASK (ButtonReleaseMask |	\
- * 			   ButtonPressMask   |	\
- * 			   PointerMotionMask) */
+ *			   ButtonPressMask	 |	\
+ *			   PointerMotionMask) */
 int
 pushScreenGrab (CompScreen *s,
-		Cursor     cursor,
-		const char *name)
+				Cursor	   cursor,
+				const char *name)
 {
-    C(("pushScreenGrab\n"));
-/* #ifdef KEYBINDING    
- *   if (s->maxGrab == 0)
- *     {
- *       int status;
- * 
- *       status = XGrabPointer (s->display->display, s->grabWindow, TRUE,
- * 			     POINTER_GRAB_MASK,
- * 			     GrabModeAsync, GrabModeAsync,
- * 			     s->root, cursor,
- * 			     CurrentTime);
- * 
- * 
- *         if (status == GrabSuccess)
- * 	  {
- * 	  
- * 	  status = XGrabKeyboard (s->display->display,
- * 				  s->grabWindow, TRUE,
- * 				  GrabModeAsync, GrabModeAsync,
- * 				  CurrentTime);
- * 	  if (status != GrabSuccess)
- * 	    {
- * 	      XUngrabPointer (s->display->display, CurrentTime);
- * 	      return 0;
- * 	      }
- * 	  }
- * 	else
- * 	{	   
- * 	  return 0;	    
- * 	}
- * 
- *     }
- *     else
- *     {
- *       XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
- * 				cursor, CurrentTime);
- * 	
- *     }
- * #endif     */
-    if (s->grabSize <= s->maxGrab)
-    {
-	s->grabs = realloc (s->grabs, sizeof (CompGrab) * (s->maxGrab + 1));
-	if (!s->grabs)
-	    return 0;
-	
-	s->grabSize = s->maxGrab + 1;
-    }
+	C(("pushScreenGrab\n"));
+/* #ifdef KEYBINDING
+ *	 if (s->maxGrab == 0)
+ *	   {
+ *		 int status;
+ *
+ *		 status = XGrabPointer (s->display->display, s->grabWindow, TRUE,
+ *				 POINTER_GRAB_MASK,
+ *				 GrabModeAsync, GrabModeAsync,
+ *				 s->root, cursor,
+ *				 CurrentTime);
+ *
+ *
+ *		   if (status == GrabSuccess)
+ *	  {
+ *
+ *	  status = XGrabKeyboard (s->display->display,
+ *				  s->grabWindow, TRUE,
+ *				  GrabModeAsync, GrabModeAsync,
+ *				  CurrentTime);
+ *	  if (status != GrabSuccess)
+ *		{
+ *		  XUngrabPointer (s->display->display, CurrentTime);
+ *		  return 0;
+ *		  }
+ *	  }
+ *	else
+ *	{
+ *	  return 0;
+ *	}
+ *
+ *	   }
+ *	   else
+ *	   {
+ *		 XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
+ *				cursor, CurrentTime);
+ *
+ *	   }
+ * #endif	  */
+	if (s->grabSize <= s->maxGrab)
+	{
+		s->grabs = realloc (s->grabs, sizeof (CompGrab) * (s->maxGrab + 1));
+		if (!s->grabs)
+			return 0;
 
-    s->grabs[s->maxGrab].cursor = cursor;
-    s->grabs[s->maxGrab].active = TRUE;
-    s->grabs[s->maxGrab].name   = name;
+		s->grabSize = s->maxGrab + 1;
+	}
 
-    s->maxGrab++;
+	s->grabs[s->maxGrab].cursor = cursor;
+	s->grabs[s->maxGrab].active = TRUE;
+	s->grabs[s->maxGrab].name	= name;
 
-    return s->maxGrab;
+	s->maxGrab++;
+
+	return s->maxGrab;
 }
 
 void
 updateScreenGrab (CompScreen *s,
-		  int        index,
-		  Cursor     cursor)
+				  int		 index,
+				  Cursor	 cursor)
 {
-    D(("updateScreenGrab\n"));
-/* #ifdef KEYBINDING    
- *   index--;
- * 
+	D(("updateScreenGrab\n"));
+/* #ifdef KEYBINDING
+ *	 index--;
+ *
  * /\* #ifdef DEBUG
- *  *     if (index < 0 || index >= s->maxGrab)
- *  * 	abort ();
- *  * #endif *\/
- * 
- *   XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
- * 			    cursor, CurrentTime);
- * 
- *   s->grabs[index].cursor = cursor;
+ *	*	  if (index < 0 || index >= s->maxGrab)
+ *	*	abort ();
+ *	* #endif *\/
+ *
+ *	 XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
+ *				cursor, CurrentTime);
+ *
+ *	 s->grabs[index].cursor = cursor;
  * #endif */
 }
 
 void
 removeScreenGrab (CompScreen *s,
-		  int	     index,
-		  XPoint     *restorePointer)
+				  int		 index,
+				  XPoint	 *restorePointer)
 {
-    D(("removeScreenGrab\n"));
-   
-    int maxGrab;
+	D(("removeScreenGrab\n"));
 
-    index--;
+	int maxGrab;
+
+	index--;
 
 /* #ifdef DEBUG
- *     if (index < 0 || index >= s->maxGrab)
- * 	abort ();
+ *	   if (index < 0 || index >= s->maxGrab)
+ *	abort ();
  * #endif */
 
-    s->grabs[index].cursor = None;
-    s->grabs[index].active = FALSE;
+	s->grabs[index].cursor = None;
+	s->grabs[index].active = FALSE;
 
-    for (maxGrab = s->maxGrab; maxGrab; maxGrab--)
-	if (s->grabs[maxGrab - 1].active)
-	    break;
+	for (maxGrab = s->maxGrab; maxGrab; maxGrab--)
+		if (s->grabs[maxGrab - 1].active)
+			break;
 
-    if (maxGrab != s->maxGrab)
-    {
-/* #ifdef KEYBINDING	   
- * 
- *       if (maxGrab)
- * 	{
- * 	    XChangeActivePointerGrab (s->display->display,
- * 				      POINTER_GRAB_MASK,
- * 				      s->grabs[maxGrab - 1].cursor,
- * 				      CurrentTime);
- * 	}
- * 	else
- * 	{
- * 	    if (restorePointer)
- * 		warpPointer (s,
- * 			     restorePointer->x - pointerX,
- * 			     restorePointer->y - pointerY);
- * 
- * 	    XUngrabPointer (s->display->display, CurrentTime);
- * 
- * 	     XUngrabKeyboard (s->display->display, CurrentTime);
- * 
- * 	}
+	if (maxGrab != s->maxGrab)
+	{
+/* #ifdef KEYBINDING
+ *
+ *		 if (maxGrab)
+ *	{
+ *		XChangeActivePointerGrab (s->display->display,
+ *					  POINTER_GRAB_MASK,
+ *					  s->grabs[maxGrab - 1].cursor,
+ *					  CurrentTime);
+ *	}
+ *	else
+ *	{
+ *		if (restorePointer)
+ *		warpPointer (s,
+ *				 restorePointer->x - pointerX,
+ *				 restorePointer->y - pointerY);
+ *
+ *		XUngrabPointer (s->display->display, CurrentTime);
+ *
+ *		 XUngrabKeyboard (s->display->display, CurrentTime);
+ *
+ *	}
  * #endif */
-	s->maxGrab = maxGrab;
-    }
+		s->maxGrab = maxGrab;
+	}
 }
 
 /* otherScreenGrabExist takes a series of strings terminated by a NULL.
@@ -2166,800 +2166,800 @@ removeScreenGrab (CompScreen *s,
 Bool
 otherScreenGrabExist (CompScreen *s, ...)
 {
-    va_list ap;
-    char    *name;
-    int	    i;
+	va_list ap;
+	char	*name;
+	int		i;
 
-    for (i = 0; i < s->maxGrab; i++)
-    {
-	if (s->grabs[i].active)
+	for (i = 0; i < s->maxGrab; i++)
 	{
-	    va_start (ap, s);
+		if (s->grabs[i].active)
+		{
+			va_start (ap, s);
 
-	    name = va_arg (ap, char *);
-	    while (name)
-	    {
-		if (strcmp (name, s->grabs[i].name) == 0)
-		    break;
+			name = va_arg (ap, char *);
+			while (name)
+			{
+				if (strcmp (name, s->grabs[i].name) == 0)
+					break;
 
-		name = va_arg (ap, char *);
-	    }
+				name = va_arg (ap, char *);
+			}
 
-	    va_end (ap);
+			va_end (ap);
 
-	    if (!name)
-		return TRUE;
+			if (!name)
+				return TRUE;
+		}
 	}
-    }
 
-    return FALSE;
+	return FALSE;
 }
 /* #ifdef KEYBINDING
  * static void
- * grabUngrabOneKey (CompScreen   *s,
- * 		  unsigned int modifiers,
- * 		  int          keycode,
- * 		  Bool         grab)
+ * grabUngrabOneKey (CompScreen	  *s,
+ *		  unsigned int modifiers,
+ *		  int		   keycode,
+ *		  Bool		   grab)
  * {
- *     if (grab)
- *     {
- * 	XGrabKey (s->display->display,
- * 		  keycode,
- * 		  modifiers,
- * 		  s->root,
- * 		  TRUE,
- * 		  GrabModeAsync,
- * 		  GrabModeAsync);
- *     }
- *     else
- *     {
- * 	XUngrabKey (s->display->display,
- * 		    keycode,
- * 		    modifiers,
- * 		    s->root);
- *     }
+ *	   if (grab)
+ *	   {
+ *	XGrabKey (s->display->display,
+ *		  keycode,
+ *		  modifiers,
+ *		  s->root,
+ *		  TRUE,
+ *		  GrabModeAsync,
+ *		  GrabModeAsync);
+ *	   }
+ *	   else
+ *	   {
+ *	XUngrabKey (s->display->display,
+ *			keycode,
+ *			modifiers,
+ *			s->root);
+ *	   }
  * }
- * 
+ *
  * static Bool
- * grabUngrabKeys (CompScreen   *s,
- * 		unsigned int modifiers,
- * 		int          keycode,
- * 		Bool         grab)
+ * grabUngrabKeys (CompScreen	*s,
+ *		unsigned int modifiers,
+ *		int			 keycode,
+ *		Bool		 grab)
  * {
- *     XModifierKeymap *modMap = s->display->modMap;
- *     int ignore, mod, k;
- * 
- *     compCheckForError (s->display->display);
- * 
- *     for (ignore = 0; ignore <= s->display->ignoredModMask; ignore++)
- *     {
- * 	if (ignore & ~s->display->ignoredModMask)
- * 	    continue;
- * 
- * 	if (keycode != 0)
- * 	{
- * 	    grabUngrabOneKey (s, modifiers | ignore, keycode, grab);
- * 	}
- * 	else
- * 	{
- * 	    for (mod = 0; mod < 8; mod++)
- * 	    {
- * 		if (modifiers & (1 << mod))
- * 		{
- * 		    for (k = mod * modMap->max_keypermod;
- * 			 k < (mod + 1) * modMap->max_keypermod;
- * 			 k++)
- * 		    {
- * 			if (modMap->modifiermap[k])
- * 			{
- * 			    grabUngrabOneKey (
- * 				s,
- * 				(modifiers & ~(1 << mod)) | ignore,
- * 				modMap->modifiermap[k],
- * 				grab);
- * 			}
- * 		    }
- * 		}
- * 	    }
- * 	}
- * 	if (compCheckForError (s->display->display))
- * 	    return FALSE;
- *     }
- *     return TRUE;
+ *	   XModifierKeymap *modMap = s->display->modMap;
+ *	   int ignore, mod, k;
+ *
+ *	   compCheckForError (s->display->display);
+ *
+ *	   for (ignore = 0; ignore <= s->display->ignoredModMask; ignore++)
+ *	   {
+ *	if (ignore & ~s->display->ignoredModMask)
+ *		continue;
+ *
+ *	if (keycode != 0)
+ *	{
+ *		grabUngrabOneKey (s, modifiers | ignore, keycode, grab);
+ *	}
+ *	else
+ *	{
+ *		for (mod = 0; mod < 8; mod++)
+ *		{
+ *		if (modifiers & (1 << mod))
+ *		{
+ *			for (k = mod * modMap->max_keypermod;
+ *			 k < (mod + 1) * modMap->max_keypermod;
+ *			 k++)
+ *			{
+ *			if (modMap->modifiermap[k])
+ *			{
+ *				grabUngrabOneKey (
+ *				s,
+ *				(modifiers & ~(1 << mod)) | ignore,
+ *				modMap->modifiermap[k],
+ *				grab);
+ *			}
+ *			}
+ *		}
+ *		}
+ *	}
+ *	if (compCheckForError (s->display->display))
+ *		return FALSE;
+ *	   }
+ *	   return TRUE;
  * }
  * #endif */
 
 /* static Bool
  * addPassiveKeyGrab (CompScreen	  *s,
- * 		   CompKeyBinding *key)
+ *		   CompKeyBinding *key)
  * {
- * #ifdef KEYBINDING  
- *     CompKeyGrab  *keyGrab;
- *     unsigned int mask;
- *     int          i;
- * 
- *     mask = virtualToRealModMask (s->display, key->modifiers);
- * 
- *     for (i = 0; i < s->nKeyGrab; i++)
- *     {
- * 	if (key->keycode == s->keyGrab[i].keycode &&
- * 	    mask         == s->keyGrab[i].modifiers)
- * 	{
- * 	    s->keyGrab[i].count++;
- * 	    return TRUE;
- * 	}
- *     }
- * 
- *     keyGrab = realloc (s->keyGrab, sizeof (CompKeyGrab) * (s->nKeyGrab + 1));
- *     if (!keyGrab)
- * 	return FALSE;
- * 
- *     s->keyGrab = keyGrab;
- * 
- *     if (!(mask & CompNoMask))
- *     {
- * 	if (!grabUngrabKeys (s, mask, key->keycode, TRUE))
- * 	    return FALSE;
- *     }
- * 
- *     s->keyGrab[s->nKeyGrab].keycode   = key->keycode;
- *     s->keyGrab[s->nKeyGrab].modifiers = mask;
- *     s->keyGrab[s->nKeyGrab].count     = 1;
- * 
- *     s->nKeyGrab++;
+ * #ifdef KEYBINDING
+ *	   CompKeyGrab	*keyGrab;
+ *	   unsigned int mask;
+ *	   int			i;
+ *
+ *	   mask = virtualToRealModMask (s->display, key->modifiers);
+ *
+ *	   for (i = 0; i < s->nKeyGrab; i++)
+ *	   {
+ *	if (key->keycode == s->keyGrab[i].keycode &&
+ *		mask		 == s->keyGrab[i].modifiers)
+ *	{
+ *		s->keyGrab[i].count++;
+ *		return TRUE;
+ *	}
+ *	   }
+ *
+ *	   keyGrab = realloc (s->keyGrab, sizeof (CompKeyGrab) * (s->nKeyGrab + 1));
+ *	   if (!keyGrab)
+ *	return FALSE;
+ *
+ *	   s->keyGrab = keyGrab;
+ *
+ *	   if (!(mask & CompNoMask))
+ *	   {
+ *	if (!grabUngrabKeys (s, mask, key->keycode, TRUE))
+ *		return FALSE;
+ *	   }
+ *
+ *	   s->keyGrab[s->nKeyGrab].keycode	 = key->keycode;
+ *	   s->keyGrab[s->nKeyGrab].modifiers = mask;
+ *	   s->keyGrab[s->nKeyGrab].count	 = 1;
+ *
+ *	   s->nKeyGrab++;
  * #endif
- *     return TRUE;
+ *	   return TRUE;
  * }
- * 
+ *
  * static void
- * removePassiveKeyGrab (CompScreen     *s,
- * 		      CompKeyBinding *key)
+ * removePassiveKeyGrab (CompScreen		*s,
+ *			  CompKeyBinding *key)
  * {
- * #ifdef KEYBINDING  
- *     unsigned int mask;
- *     int          i;
- * 
- *     for (i = 0; i < s->nKeyGrab; i++)
- *     {
- * 	mask = virtualToRealModMask (s->display, key->modifiers);
- * 	if (key->keycode == s->keyGrab[i].keycode &&
- * 	    mask         == s->keyGrab[i].modifiers)
- * 	{
- * 	    s->keyGrab[i].count--;
- * 	    if (s->keyGrab[i].count)
- * 		return;
- * 
- * 	    memmove (s->keyGrab + i, s->keyGrab + i + 1, 
- * 		     (s->nKeyGrab - (i + 1)) * sizeof (CompKeyGrab));
- * 
- * 	    s->nKeyGrab--;
- * 	    s->keyGrab = realloc (s->keyGrab,
- * 				  sizeof (CompKeyGrab) * s->nKeyGrab);
- * 
- * 	    if (!(mask & CompNoMask))
- * 		grabUngrabKeys (s, mask, key->keycode, FALSE);
- * 	}
- *     }
+ * #ifdef KEYBINDING
+ *	   unsigned int mask;
+ *	   int			i;
+ *
+ *	   for (i = 0; i < s->nKeyGrab; i++)
+ *	   {
+ *	mask = virtualToRealModMask (s->display, key->modifiers);
+ *	if (key->keycode == s->keyGrab[i].keycode &&
+ *		mask		 == s->keyGrab[i].modifiers)
+ *	{
+ *		s->keyGrab[i].count--;
+ *		if (s->keyGrab[i].count)
+ *		return;
+ *
+ *		memmove (s->keyGrab + i, s->keyGrab + i + 1,
+ *			 (s->nKeyGrab - (i + 1)) * sizeof (CompKeyGrab));
+ *
+ *		s->nKeyGrab--;
+ *		s->keyGrab = realloc (s->keyGrab,
+ *				  sizeof (CompKeyGrab) * s->nKeyGrab);
+ *
+ *		if (!(mask & CompNoMask))
+ *		grabUngrabKeys (s, mask, key->keycode, FALSE);
+ *	}
+ *	   }
  * #endif
  * } */
 
 /* static void
  * updatePassiveKeyGrabs (CompScreen *s)
  * {
- * #ifdef KEYBINDING  
- *     int i;
- * 
- *     XUngrabKey (s->display->display, AnyKey, AnyModifier, s->root);
- * 
- *     for (i = 0; i < s->nKeyGrab; i++)
- *     {
- * 	if (!(s->keyGrab[i].modifiers & CompNoMask))
- * 	{
- * 	    grabUngrabKeys (s, s->keyGrab[i].modifiers,
- * 			    s->keyGrab[i].keycode, TRUE);
- * 	}
- *     }
+ * #ifdef KEYBINDING
+ *	   int i;
+ *
+ *	   XUngrabKey (s->display->display, AnyKey, AnyModifier, s->root);
+ *
+ *	   for (i = 0; i < s->nKeyGrab; i++)
+ *	   {
+ *	if (!(s->keyGrab[i].modifiers & CompNoMask))
+ *	{
+ *		grabUngrabKeys (s, s->keyGrab[i].modifiers,
+ *				s->keyGrab[i].keycode, TRUE);
+ *	}
+ *	   }
  * #endif
  * } */
 
 /* static Bool
- * addPassiveButtonGrab (CompScreen        *s,
- * 		      CompButtonBinding *button)
+ * addPassiveButtonGrab (CompScreen		   *s,
+ *			  CompButtonBinding *button)
  * {
- * #ifdef KEYBINDING  
- *     CompButtonGrab *buttonGrab;
- *     int            i;
- * 
- *     for (i = 0; i < s->nButtonGrab; i++)
- *     {
- * 	if (button->button    == s->buttonGrab[i].button &&
- * 	    button->modifiers == s->buttonGrab[i].modifiers)
- * 	{
- * 	    s->buttonGrab[i].count++;
- * 	    return TRUE;
- * 	}
- *     }
- * 
- *     buttonGrab = realloc (s->buttonGrab,
- * 			  sizeof (CompButtonGrab) * (s->nButtonGrab + 1));
- *     if (!buttonGrab)
- * 	return FALSE;
- * 
- *     s->buttonGrab = buttonGrab;
- * 
- *     s->buttonGrab[s->nButtonGrab].button    = button->button;
- *     s->buttonGrab[s->nButtonGrab].modifiers = button->modifiers;
- *     s->buttonGrab[s->nButtonGrab].count     = 1;
- * 
- *     s->nButtonGrab++;
+ * #ifdef KEYBINDING
+ *	   CompButtonGrab *buttonGrab;
+ *	   int			  i;
+ *
+ *	   for (i = 0; i < s->nButtonGrab; i++)
+ *	   {
+ *	if (button->button	  == s->buttonGrab[i].button &&
+ *		button->modifiers == s->buttonGrab[i].modifiers)
+ *	{
+ *		s->buttonGrab[i].count++;
+ *		return TRUE;
+ *	}
+ *	   }
+ *
+ *	   buttonGrab = realloc (s->buttonGrab,
+ *			  sizeof (CompButtonGrab) * (s->nButtonGrab + 1));
+ *	   if (!buttonGrab)
+ *	return FALSE;
+ *
+ *	   s->buttonGrab = buttonGrab;
+ *
+ *	   s->buttonGrab[s->nButtonGrab].button	   = button->button;
+ *	   s->buttonGrab[s->nButtonGrab].modifiers = button->modifiers;
+ *	   s->buttonGrab[s->nButtonGrab].count	   = 1;
+ *
+ *	   s->nButtonGrab++;
  * #endif
- *     return TRUE;
+ *	   return TRUE;
  * }
- * 
+ *
  * static void
- * removePassiveButtonGrab (CompScreen        *s,
- * 			 CompButtonBinding *button)
+ * removePassiveButtonGrab (CompScreen		  *s,
+ *			 CompButtonBinding *button)
  * {
- * #ifdef KEYBINDING  
- *     int          i;
- * 
- *     for (i = 0; i < s->nButtonGrab; i++)
- *     {
- * 	if (button->button    == s->buttonGrab[i].button &&
- * 	    button->modifiers == s->buttonGrab[i].modifiers)
- * 	{
- * 	    s->buttonGrab[i].count--;
- * 	    if (s->buttonGrab[i].count)
- * 		return;
- * 
- * 	    memmove (s->buttonGrab + i, s->buttonGrab + i + 1,
- * 		     (s->nButtonGrab - (i + 1)) * sizeof (CompButtonGrab));
- * 
- * 	    s->nButtonGrab--;
- * 	    s->buttonGrab = realloc (s->buttonGrab,
- * 				     sizeof (CompButtonGrab) * s->nButtonGrab);
- * 	}
- *     }
+ * #ifdef KEYBINDING
+ *	   int			i;
+ *
+ *	   for (i = 0; i < s->nButtonGrab; i++)
+ *	   {
+ *	if (button->button	  == s->buttonGrab[i].button &&
+ *		button->modifiers == s->buttonGrab[i].modifiers)
+ *	{
+ *		s->buttonGrab[i].count--;
+ *		if (s->buttonGrab[i].count)
+ *		return;
+ *
+ *		memmove (s->buttonGrab + i, s->buttonGrab + i + 1,
+ *			 (s->nButtonGrab - (i + 1)) * sizeof (CompButtonGrab));
+ *
+ *		s->nButtonGrab--;
+ *		s->buttonGrab = realloc (s->buttonGrab,
+ *					 sizeof (CompButtonGrab) * s->nButtonGrab);
+ *	}
+ *	   }
  * #endif
  * } */
 
 /* Bool
  * addScreenAction (CompScreen *s,
- * 		 CompAction *action)
+ *		 CompAction *action)
  * {
- *     if (action->type & CompBindingTypeKey)
- *       {
- *     	  if (!addPassiveKeyGrab (s, &action->key))
- *     		{
- *     		  return FALSE;
- *     		}
- *       }
- *       
- *     
- *     if (action->type & CompBindingTypeButton)
- *       {
- *         if (!addPassiveButtonGrab (s, &action->button))
- *     		{
- *     		  if (action->type & CompBindingTypeKey)
- *     			removePassiveKeyGrab (s, &action->key);
- *     	    
- *     		  return FALSE;
- *     		}
- *       }
- *     
- *     if (action->edgeMask)
- *       {
- *     	  int i;
- *     
- *     	  for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *     	    if (action->edgeMask & (1 << i))
- *     		  enableScreenEdge (s, i);
- *       }
- *     return TRUE;
+ *	   if (action->type & CompBindingTypeKey)
+ *		 {
+ *		  if (!addPassiveKeyGrab (s, &action->key))
+ *			{
+ *			  return FALSE;
+ *			}
+ *		 }
+ *
+ *
+ *	   if (action->type & CompBindingTypeButton)
+ *		 {
+ *		   if (!addPassiveButtonGrab (s, &action->button))
+ *			{
+ *			  if (action->type & CompBindingTypeKey)
+ *				removePassiveKeyGrab (s, &action->key);
+ *
+ *			  return FALSE;
+ *			}
+ *		 }
+ *
+ *	   if (action->edgeMask)
+ *		 {
+ *		  int i;
+ *
+ *		  for (i = 0; i < SCREEN_EDGE_NUM; i++)
+ *			if (action->edgeMask & (1 << i))
+ *			  enableScreenEdge (s, i);
+ *		 }
+ *	   return TRUE;
  * } */
 
 /* void
  * removeScreenAction (CompScreen *s,
- * 		    CompAction *action)
+ *			CompAction *action)
  * {
- *     if (action->type & CompBindingTypeKey)
- *     	removePassiveKeyGrab (s, &action->key);
- *     
- *     if (action->type & CompBindingTypeButton)
- *     	removePassiveButtonGrab (s, &action->button);
- *     
- *     if (action->edgeMask)
- *     {
- *     	int i;
- *     
- *     	for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *     	    if (action->edgeMask & (1 << i))
- *     		disableScreenEdge (s, i);
- *     }
+ *	   if (action->type & CompBindingTypeKey)
+ *		removePassiveKeyGrab (s, &action->key);
+ *
+ *	   if (action->type & CompBindingTypeButton)
+ *		removePassiveButtonGrab (s, &action->button);
+ *
+ *	   if (action->edgeMask)
+ *	   {
+ *		int i;
+ *
+ *		for (i = 0; i < SCREEN_EDGE_NUM; i++)
+ *			if (action->edgeMask & (1 << i))
+ *			disableScreenEdge (s, i);
+ *	   }
  * } */
 
 /* void
  * updatePassiveGrabs (CompScreen *s)
  * {
- *     updatePassiveKeyGrabs (s);
+ *	   updatePassiveKeyGrabs (s);
  * } */
 
 
 /* XXX check if this is set by e17 */
 Window
 getActiveWindow (CompDisplay *display,
-		 Window      root)
+				 Window		 root)
 {
-    Atom	  actual;
-    int		  result, format;
-    unsigned long n, left;
-    unsigned char *data;
-    Window	  w = None;
+	Atom	  actual;
+	int		  result, format;
+	unsigned long n, left;
+	unsigned char *data;
+	Window	  w = None;
 
-    result = XGetWindowProperty (display->display, root,
-				 display->winActiveAtom, 0L, 1L, FALSE,
-				 XA_WINDOW, &actual, &format,
-				 &n, &left, &data);
+	result = XGetWindowProperty (display->display, root,
+								 display->winActiveAtom, 0L, 1L, FALSE,
+								 XA_WINDOW, &actual, &format,
+								 &n, &left, &data);
 
-    if (result == Success && n && data)
-    {
-	memcpy (&w, data, sizeof (Window));
-	XFree (data);
-    }
+	if (result == Success && n && data)
+	{
+		memcpy (&w, data, sizeof (Window));
+		XFree (data);
+	}
 
-    return w;
+	return w;
 }
 
 /* XXX use ECOMORPH_ATOM message  */
 void
 sendScreenViewportMessage(CompScreen *s)
-{ 
+{
 
-    //printf ("sendMoveScreenViewportMessage %d:%d\n", s->x, s->y);
-  
-    CompDisplay *d = s->display;
-    XEvent ev;
-    
-    ev.type		    = ClientMessage;
-    ev.xclient.window	    = s->root;
-    ev.xclient.message_type = d->desktopViewportAtom;
-    ev.xclient.format	    = 32;
-    ev.xclient.data.l[0]    = 2; /* from ecomp to wm */
-    ev.xclient.data.l[1]    = s->x;
-    ev.xclient.data.l[2]    = s->y;
-    ev.xclient.data.l[3]    = 0;
-    ev.xclient.data.l[4]    = 0; 
-    
-    XSendEvent (d->display, s->root, FALSE, 
-		SubstructureRedirectMask | StructureNotifyMask, &ev);
+	//printf ("sendMoveScreenViewportMessage %d:%d\n", s->x, s->y);
+
+	CompDisplay *d = s->display;
+	XEvent ev;
+
+	ev.type			= ClientMessage;
+	ev.xclient.window		= s->root;
+	ev.xclient.message_type = d->desktopViewportAtom;
+	ev.xclient.format		= 32;
+	ev.xclient.data.l[0]	= 2; /* from ecomp to wm */
+	ev.xclient.data.l[1]	= s->x;
+	ev.xclient.data.l[2]	= s->y;
+	ev.xclient.data.l[3]	= 0;
+	ev.xclient.data.l[4]	= 0;
+
+	XSendEvent (d->display, s->root, FALSE,
+				SubstructureRedirectMask | StructureNotifyMask, &ev);
 }
 
 
 void
 moveScreenViewport (CompScreen *s,
-		    int	       tx,
-		    int	       ty,
-		    Bool       sync)
+					int		   tx,
+					int		   ty,
+					Bool	   sync)
 {
-    CompWindow *w;
-    int         m, wx, wy, vWidth, vHeight;
-    
-    tx = s->x - tx;
-    tx = MOD (tx, s->hsize);
-    tx -= s->x;
+	CompWindow *w;
+	int			m, wx, wy, vWidth, vHeight;
 
-    ty = s->y - ty;
-    ty = MOD (ty, s->vsize);
-    ty -= s->y;
+	tx = s->x - tx;
+	tx = MOD (tx, s->hsize);
+	tx -= s->x;
 
-    //if(sync) printf ("moveScreenViewport - current %d:%d, move %d:%d\n", s->x, s->y, tx, ty);
-    if (!tx && !ty) /*XXX remove sync when not needed*/
-    { 
-	if (sync)
-	    for (w = s->windows; w; w = w->next)
-	    {
-		if (w->clientId)
-		    syncWindowPosition (w);
-	    }	
-	return;	
-    }
+	ty = s->y - ty;
+	ty = MOD (ty, s->vsize);
+	ty -= s->y;
 
-    s->x += tx;
-    s->y += ty;
-
-    tx *= -s->width;
-    ty *= -s->height;
-
-    vWidth = s->width * s->hsize;
-    vHeight = s->height * s->vsize;
-
-    for (w = s->windows; w; w = w->next)
-    {
-	if (!w->clientId)
-      	    continue;
-
-	if (w->type & (CompWindowTypeDesktopMask | CompWindowTypeDockMask))
-	    continue;
-
-	if (w->state & CompWindowStateStickyMask)
-	    continue;
-
-	/* x */
-	if (s->hsize == 1)
+	//if(sync) printf ("moveScreenViewport - current %d:%d, move %d:%d\n", s->x, s->y, tx, ty);
+	if (!tx && !ty) /*XXX remove sync when not needed*/
 	{
-	    wx = tx;
-	}
-	else
-	{
-	    m = w->attrib.x + tx;
-	    if (m - w->input.left < s->width - vWidth)
-		wx = tx + vWidth;
-	    else if (m + w->width + w->input.right > vWidth)
-		wx = tx - vWidth;
-	    else
-		wx = tx;
+		if (sync)
+			for (w = s->windows; w; w = w->next)
+			{
+				if (w->clientId)
+					syncWindowPosition (w);
+			}
+		return;
 	}
 
-	if (w->saveMask & CWX)
-	    w->saveWc.x += wx;
+	s->x += tx;
+	s->y += ty;
 
-	/* y */
-	if (s->vsize == 1)
+	tx *= -s->width;
+	ty *= -s->height;
+
+	vWidth = s->width * s->hsize;
+	vHeight = s->height * s->vsize;
+
+	for (w = s->windows; w; w = w->next)
 	{
-	    wy = ty;
+		if (!w->clientId)
+			continue;
+
+		if (w->type & (CompWindowTypeDesktopMask | CompWindowTypeDockMask))
+			continue;
+
+		if (w->state & CompWindowStateStickyMask)
+			continue;
+
+		/* x */
+		if (s->hsize == 1)
+		{
+			wx = tx;
+		}
+		else
+		{
+			m = w->attrib.x + tx;
+			if (m - w->input.left < s->width - vWidth)
+				wx = tx + vWidth;
+			else if (m + w->width + w->input.right > vWidth)
+				wx = tx - vWidth;
+			else
+				wx = tx;
+		}
+
+		if (w->saveMask & CWX)
+			w->saveWc.x += wx;
+
+		/* y */
+		if (s->vsize == 1)
+		{
+			wy = ty;
+		}
+		else
+		{
+			m = w->attrib.y + ty;
+			if (m - w->input.top < s->height - vHeight)
+				wy = ty + vHeight;
+			else if (m + w->height + w->input.bottom > vHeight)
+				wy = ty - vHeight;
+			else
+				wy = ty;
+		}
+
+		if (w->saveMask & CWY)
+			w->saveWc.y += wy;
+
+		/* move */
+		moveWindow (w, wx, wy, sync, TRUE);
+
+		if (sync)
+			syncWindowPosition (w);
 	}
-	else
-	{
-	    m = w->attrib.y + ty;
-	    if (m - w->input.top < s->height - vHeight)
-		wy = ty + vHeight;
-	    else if (m + w->height + w->input.bottom > vHeight)
-		wy = ty - vHeight;
-	    else
-		wy = ty;
-	}
 
-	if (w->saveMask & CWY)
-	    w->saveWc.y += wy;
-
-	/* move */
-	moveWindow (w, wx, wy, sync, TRUE);
-
-	if (sync)
-	    syncWindowPosition (w);
-    }
-
-    /* if (sync)
-     * {
-     *     sendScreenViewportMessage(s);
-     * 
-     * 	setCurrentActiveWindowHistory (s, s->x, s->y);
-     * 
-     * 	w = findWindowAtDisplay (s->display, s->display->activeWindow);
-     * 	  if (w)
-     * 	  {
-     * 	  int x, y;
-     * 
-     * 	  defaultViewportForWindow (w, &x, &y);
-     * 
-     * 	  // add window to current history if it's default viewport is
-     * 	  //   still the current one. 
-     * 	  if (s->x == x && s->y == y)
-     * 	  addToCurrentActiveWindowHistory (s, w->id);
-     * 	  }
-     * } */
+	/* if (sync)
+	 * {
+	 *	   sendScreenViewportMessage(s);
+	 *
+	 *	setCurrentActiveWindowHistory (s, s->x, s->y);
+	 *
+	 *	w = findWindowAtDisplay (s->display, s->display->activeWindow);
+	 *	  if (w)
+	 *	  {
+	 *	  int x, y;
+	 *
+	 *	  defaultViewportForWindow (w, &x, &y);
+	 *
+	 *	  // add window to current history if it's default viewport is
+	 *	  //   still the current one.
+	 *	  if (s->x == x && s->y == y)
+	 *	  addToCurrentActiveWindowHistory (s, w->id);
+	 *	  }
+	 * } */
 }
 
 /* TODO cant this be handled by e? */
 void
 moveWindowToViewportPosition (CompWindow *w,
-			      int	 x,
-			      int        y,
-			      Bool       sync)
+							  int	 x,
+							  int		 y,
+							  Bool		 sync)
 {
-    int	tx, vWidth = w->screen->width * w->screen->hsize;
-    int ty, vHeight = w->screen->height * w->screen->vsize;
-
-    if (w->screen->hsize != 1)
-    {
-	x += w->screen->x * w->screen->width;
-	x = MOD (x, vWidth);
-	x -= w->screen->x * w->screen->width;
-    }
-
-    if (w->screen->vsize != 1)
-    {
-	y += w->screen->y * w->screen->height;
-	y = MOD (y, vHeight);
-	y -= w->screen->y * w->screen->height;
-    }
-
-    tx = x - w->attrib.x;
-    ty = y - w->attrib.y;
-
-    if (tx || ty)
-    {
-	int m, wx, wy;
-
-	wx = tx;
-	wy = ty;
+	int	tx, vWidth = w->screen->width * w->screen->hsize;
+	int ty, vHeight = w->screen->height * w->screen->vsize;
 
 	if (w->screen->hsize != 1)
 	{
-	    m = w->attrib.x + tx;
-
-	    if (m - w->output.left < w->screen->width - vWidth)
-		wx = tx + vWidth;
-	    else if (m + w->width + w->output.right > vWidth)
-		wx = tx - vWidth;
+		x += w->screen->x * w->screen->width;
+		x = MOD (x, vWidth);
+		x -= w->screen->x * w->screen->width;
 	}
 
 	if (w->screen->vsize != 1)
 	{
-	    m = w->attrib.y + ty;
-
-	    if (m - w->output.top < w->screen->height - vHeight)
-		wy = ty + vHeight;
-	    else if (m + w->height + w->output.bottom > vHeight)
-		wy = ty - vHeight;
+		y += w->screen->y * w->screen->height;
+		y = MOD (y, vHeight);
+		y -= w->screen->y * w->screen->height;
 	}
 
-	if (w->saveMask & CWX)
-	    w->saveWc.x += wx;
+	tx = x - w->attrib.x;
+	ty = y - w->attrib.y;
 
-	if (w->saveMask & CWY)
-	    w->saveWc.y += wy;
+	if (tx || ty)
+	{
+		int m, wx, wy;
 
-	moveWindow (w, wx, wy, sync, TRUE);
+		wx = tx;
+		wy = ty;
 
-	if (sync)
-	    syncWindowPosition (w);
-    }
+		if (w->screen->hsize != 1)
+		{
+			m = w->attrib.x + tx;
+
+			if (m - w->output.left < w->screen->width - vWidth)
+				wx = tx + vWidth;
+			else if (m + w->width + w->output.right > vWidth)
+				wx = tx - vWidth;
+		}
+
+		if (w->screen->vsize != 1)
+		{
+			m = w->attrib.y + ty;
+
+			if (m - w->output.top < w->screen->height - vHeight)
+				wy = ty + vHeight;
+			else if (m + w->height + w->output.bottom > vHeight)
+				wy = ty - vHeight;
+		}
+
+		if (w->saveMask & CWX)
+			w->saveWc.x += wx;
+
+		if (w->saveMask & CWY)
+			w->saveWc.y += wy;
+
+		moveWindow (w, wx, wy, sync, TRUE);
+
+		if (sync)
+			syncWindowPosition (w);
+	}
 }
 
 /* CompGroup *
  * addGroupToScreen (CompScreen *s,
- * 		  Window     id)
+ *		  Window	 id)
  * {
- *     CompGroup *group;
- * 
- *     group = malloc (sizeof (CompGroup));
- *     if (!group)
- * 	return NULL;
- * 
- *     group->next   = s->groups;
- *     group->refCnt = 1;
- *     group->id     = id;
- * 
- *     s->groups = group;
- * 
- *     return group;
+ *	   CompGroup *group;
+ *
+ *	   group = malloc (sizeof (CompGroup));
+ *	   if (!group)
+ *	return NULL;
+ *
+ *	   group->next	 = s->groups;
+ *	   group->refCnt = 1;
+ *	   group->id	 = id;
+ *
+ *	   s->groups = group;
+ *
+ *	   return group;
  * }
- * 
+ *
  * void
  * removeGroupFromScreen (CompScreen *s,
- * 		       CompGroup  *group)
+ *			   CompGroup  *group)
  * {
- *     group->refCnt--;
- *     if (group->refCnt)
- * 	return;
- * 
- *     if (group == s->groups)
- *     {
- * 	s->groups = group->next;
- *     }
- *     else
- *     {
- * 	CompGroup *g;
- * 
- * 	for (g = s->groups; g; g = g->next)
- * 	{
- * 	    if (g->next == group)
- * 	    {
- * 		g->next = group->next;
- * 		break;
- * 	    }
- * 	}
- *     }
- * 
- *     free (group);
+ *	   group->refCnt--;
+ *	   if (group->refCnt)
+ *	return;
+ *
+ *	   if (group == s->groups)
+ *	   {
+ *	s->groups = group->next;
+ *	   }
+ *	   else
+ *	   {
+ *	CompGroup *g;
+ *
+ *	for (g = s->groups; g; g = g->next)
+ *	{
+ *		if (g->next == group)
+ *		{
+ *		g->next = group->next;
+ *		break;
+ *		}
+ *	}
+ *	   }
+ *
+ *	   free (group);
  * }
- * 
+ *
  * CompGroup *
  * findGroupAtScreen (CompScreen *s,
- * 		   Window     id)
+ *		   Window	  id)
  * {
- *     CompGroup *g;
- * 
- *     for (g = s->groups; g; g = g->next)
- * 	if (g->id == id)
- * 	    return g;
- * 
- *     return NULL;
+ *	   CompGroup *g;
+ *
+ *	   for (g = s->groups; g; g = g->next)
+ *	if (g->id == id)
+ *		return g;
+ *
+ *	   return NULL;
  * } */
 
 /* XXX use ECOMORPH_ATOM message  */
 void
 sendWindowActivationRequest (CompScreen *s,
-			     Window	id)
+							 Window	id)
 {
-    XEvent xev;
+	XEvent xev;
 
-    xev.xclient.type    = ClientMessage;
-    xev.xclient.display = s->display->display;
-    xev.xclient.format  = 32;
+	xev.xclient.type	= ClientMessage;
+	xev.xclient.display = s->display->display;
+	xev.xclient.format	= 32;
 
-    xev.xclient.message_type = s->display->winActiveAtom;
-    xev.xclient.window	     = id;
+	xev.xclient.message_type = s->display->winActiveAtom;
+	xev.xclient.window		 = id;
 
-    xev.xclient.data.l[0] = 2;
-    xev.xclient.data.l[1] = 0;
-    xev.xclient.data.l[2] = 0;
-    xev.xclient.data.l[3] = 0;
-    xev.xclient.data.l[4] = 0;
+	xev.xclient.data.l[0] = 2;
+	xev.xclient.data.l[1] = 0;
+	xev.xclient.data.l[2] = 0;
+	xev.xclient.data.l[3] = 0;
+	xev.xclient.data.l[4] = 0;
 
-    XSendEvent (s->display->display, s->root, FALSE,
-		SubstructureRedirectMask | SubstructureNotifyMask,
-		&xev);
+	XSendEvent (s->display->display, s->root, FALSE,
+				SubstructureRedirectMask | SubstructureNotifyMask,
+				&xev);
 }
 
 void
 screenTexEnvMode (CompScreen *s,
-		  GLenum     mode)
+				  GLenum	 mode)
 {
-    if (s->lighting)
-	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    else
-	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode);
+	if (s->lighting)
+		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	else
+		glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mode);
 }
 
 void
 screenLighting (CompScreen *s,
-		Bool       lighting)
+				Bool	   lighting)
 {
-    if (s->lighting != lighting)
-    {
-	if (!s->opt[COMP_SCREEN_OPTION_LIGHTING].value.b)
-	    lighting = FALSE;
-
-	if (lighting)
+	if (s->lighting != lighting)
 	{
-	    glEnable (GL_COLOR_MATERIAL);
-	    glEnable (GL_LIGHTING);
-	}
-	else
-	{
-	    glDisable (GL_COLOR_MATERIAL);
-	    glDisable (GL_LIGHTING);
-	}
+		if (!s->opt[COMP_SCREEN_OPTION_LIGHTING].value.b)
+			lighting = FALSE;
 
-	s->lighting = lighting;
+		if (lighting)
+		{
+			glEnable (GL_COLOR_MATERIAL);
+			glEnable (GL_LIGHTING);
+		}
+		else
+		{
+			glDisable (GL_COLOR_MATERIAL);
+			glDisable (GL_LIGHTING);
+		}
 
-	screenTexEnvMode (s, GL_REPLACE);
-    }
+		s->lighting = lighting;
+
+		screenTexEnvMode (s, GL_REPLACE);
+	}
 }
 
 /* void
  * enableScreenEdge (CompScreen *s,
- * 		  int	     edge)
+ *		  int		 edge)
  * {
- *     s->screenEdge[edge].count++;
- *     if (s->screenEdge[edge].count == 1)
- *     XMapRaised (s->display->display, s->screenEdge[edge].id);
+ *	   s->screenEdge[edge].count++;
+ *	   if (s->screenEdge[edge].count == 1)
+ *	   XMapRaised (s->display->display, s->screenEdge[edge].id);
  * }
- * 
+ *
  * void
  * disableScreenEdge (CompScreen *s,
- * 		   int	      edge)
+ *		   int		  edge)
  * {
- *     s->screenEdge[edge].count--;
- *     if (s->screenEdge[edge].count == 0)
- *     XUnmapWindow (s->display->display, s->screenEdge[edge].id);
+ *	   s->screenEdge[edge].count--;
+ *	   if (s->screenEdge[edge].count == 0)
+ *	   XUnmapWindow (s->display->display, s->screenEdge[edge].id);
  * } */
 
 
 Window
 getTopWindow (CompScreen *s)
 {
-    CompWindow *w;
+	CompWindow *w;
 
-    /* return first window that has not been destroyed */
-    for (w = s->reverseWindows; w; w = w->prev)
-    {
-	if (w->id > 1)
-	    return w->id;
-    }
+	/* return first window that has not been destroyed */
+	for (w = s->reverseWindows; w; w = w->prev)
+	{
+		if (w->id > 1)
+			return w->id;
+	}
 
-    return None;
+	return None;
 }
 
 void
 makeScreenCurrent (CompScreen *s)
 {
-    if (currentRoot != s->root)
-    {
-	glXMakeCurrent (s->display->display, s->output, s->ctx);
-	currentRoot = s->root;
-    }
+	if (currentRoot != s->root)
+	{
+		glXMakeCurrent (s->display->display, s->output, s->ctx);
+		currentRoot = s->root;
+	}
 
-    s->pendingCommands = TRUE;
+	s->pendingCommands = TRUE;
 }
 
 void
 finishScreenDrawing (CompScreen *s)
 {
-    if (s->pendingCommands)
-    {
-	makeScreenCurrent (s);
-	glFinish ();
+	if (s->pendingCommands)
+	{
+		makeScreenCurrent (s);
+		glFinish ();
 
-	s->pendingCommands = FALSE;
-    }
+		s->pendingCommands = FALSE;
+	}
 }
 
 int
 outputDeviceForPoint (CompScreen *s,
-		      int	 x,
-		      int	 y)
+					  int	 x,
+					  int	 y)
 {
-    int i, x1, y1, x2, y2;
+	int i, x1, y1, x2, y2;
 
-    i = s->nOutputDev;
-    while (i--)
-    {
-	x1 = s->outputDev[i].region.extents.x1;
-	y1 = s->outputDev[i].region.extents.y1;
-	x2 = s->outputDev[i].region.extents.x2;
-	y2 = s->outputDev[i].region.extents.y2;
+	i = s->nOutputDev;
+	while (i--)
+	{
+		x1 = s->outputDev[i].region.extents.x1;
+		y1 = s->outputDev[i].region.extents.y1;
+		x2 = s->outputDev[i].region.extents.x2;
+		y2 = s->outputDev[i].region.extents.y2;
 
-	if (x1 <= x && x2 > x && y1 <= y && y2 > y)
-	    return i;
-    }
+		if (x1 <= x && x2 > x && y1 <= y && y2 > y)
+			return i;
+	}
 
-    return s->currentOutputDev;
+	return s->currentOutputDev;
 }
 
 void
 getCurrentOutputExtents (CompScreen *s,
-			 int	    *x1,
-			 int	    *y1,
-			 int	    *x2,
-			 int	    *y2)
+						 int		*x1,
+						 int		*y1,
+						 int		*x2,
+						 int		*y2)
 {
-    if (x1)
-	*x1 = s->outputDev[s->currentOutputDev].region.extents.x1;
+	if (x1)
+		*x1 = s->outputDev[s->currentOutputDev].region.extents.x1;
 
-    if (y1)
-	*y1 = s->outputDev[s->currentOutputDev].region.extents.y1;
+	if (y1)
+		*y1 = s->outputDev[s->currentOutputDev].region.extents.y1;
 
-    if (x2)
-	*x2 = s->outputDev[s->currentOutputDev].region.extents.x2;
+	if (x2)
+		*x2 = s->outputDev[s->currentOutputDev].region.extents.x2;
 
-    if (y2)
-	*y2 = s->outputDev[s->currentOutputDev].region.extents.y2;
+	if (y2)
+		*y2 = s->outputDev[s->currentOutputDev].region.extents.y2;
 }
 
 
 void
 getWorkareaForOutput (CompScreen *s,
-		      int	 output,
-		      XRectangle *area)
+					  int	 output,
+					  XRectangle *area)
 {
-    *area = s->outputDev[output].workArea;
+	*area = s->outputDev[output].workArea;
 }
 
 void
 setDefaultViewport (CompScreen *s)
 {
-    s->lastViewport.x	   = s->outputDev->region.extents.x1;
-    s->lastViewport.y	   = s->height - s->outputDev->region.extents.y2;
-    s->lastViewport.width  = s->outputDev->width;
-    s->lastViewport.height = s->outputDev->height;
+	s->lastViewport.x	   = s->outputDev->region.extents.x1;
+	s->lastViewport.y	   = s->height - s->outputDev->region.extents.y2;
+	s->lastViewport.width  = s->outputDev->width;
+	s->lastViewport.height = s->outputDev->height;
 
-    glViewport (s->lastViewport.x,
-		s->lastViewport.y,
-		s->lastViewport.width,
-		s->lastViewport.height);
+	glViewport (s->lastViewport.x,
+				s->lastViewport.y,
+				s->lastViewport.width,
+				s->lastViewport.height);
 }
 
 void
@@ -2969,31 +2969,31 @@ outputChangeNotify (CompScreen *s)
 
 void
 clearScreenOutput (CompScreen	*s,
-		   CompOutput	*output,
-		   unsigned int mask)
+				   CompOutput	*output,
+				   unsigned int mask)
 {
-    BoxPtr pBox = &output->region.extents;
+	BoxPtr pBox = &output->region.extents;
 
-    if (pBox->x1 != 0	     ||
-	pBox->y1 != 0	     ||
-	pBox->x2 != s->width ||
-	pBox->y2 != s->height)
-    {
-	glPushAttrib (GL_SCISSOR_BIT);
+	if (pBox->x1 != 0		 ||
+		pBox->y1 != 0		 ||
+		pBox->x2 != s->width ||
+		pBox->y2 != s->height)
+	{
+		glPushAttrib (GL_SCISSOR_BIT);
 
-	glEnable (GL_SCISSOR_TEST);
-	glScissor (pBox->x1,
-		   s->height - pBox->y2,
-		   pBox->x2 - pBox->x1,
-		   pBox->y2 - pBox->y1);
-	glClear (mask);
+		glEnable (GL_SCISSOR_TEST);
+		glScissor (pBox->x1,
+				   s->height - pBox->y2,
+				   pBox->x2 - pBox->x1,
+				   pBox->y2 - pBox->y1);
+		glClear (mask);
 
-	glPopAttrib ();
-    }
-    else
-    {
-	glClear (mask);
-    }
+		glPopAttrib ();
+	}
+	else
+	{
+		glClear (mask);
+	}
 }
 
 /* Returns default viewport for some window geometry. If the window spans
@@ -3004,187 +3004,187 @@ clearScreenOutput (CompScreen	*s,
    the current viewport is then always returned. */
 void
 viewportForGeometry (CompScreen *s,
-		     int	x,
-		     int	y,
-		     int	width,
-		     int	height,
-		     int	borderWidth,
-		     int	*viewportX,
-		     int	*viewportY)
+					 int	x,
+					 int	y,
+					 int	width,
+					 int	height,
+					 int	borderWidth,
+					 int	*viewportX,
+					 int	*viewportY)
 {
-    int	centerX;
-    int	centerY;
+	int	centerX;
+	int	centerY;
 
-    width  += borderWidth * 2;
-    height += borderWidth * 2;
+	width  += borderWidth * 2;
+	height += borderWidth * 2;
 
-    if ((x < s->width  && x + width  > 0) &&
-	(y < s->height && y + height > 0))
-    {
+	if ((x < s->width  && x + width	 > 0) &&
+		(y < s->height && y + height > 0))
+	{
+		if (viewportX)
+			*viewportX = s->x;
+
+		if (viewportY)
+			*viewportY = s->y;
+
+		return;
+	}
+
 	if (viewportX)
-	    *viewportX = s->x;
+	{
+		centerX = x + (width >> 1);
+		if (centerX < 0)
+			*viewportX = s->x + ((centerX / s->width) - 1) % s->hsize;
+		else
+			*viewportX = s->x + (centerX / s->width) % s->hsize;
+	}
 
 	if (viewportY)
-	    *viewportY = s->y;
-
-	return;
-    }
-
-    if (viewportX)
-    {
-	centerX = x + (width >> 1);
-	if (centerX < 0)
-	    *viewportX = s->x + ((centerX / s->width) - 1) % s->hsize;
-	else
-	    *viewportX = s->x + (centerX / s->width) % s->hsize;
-    }
-
-    if (viewportY)
-    {
-	centerY = y + (height >> 1);
-	if (centerY < 0)
-	    *viewportY = s->y + ((centerY / s->height) - 1) % s->vsize;
-	else
-	    *viewportY = s->y + (centerY / s->height) % s->vsize;
-    }
+	{
+		centerY = y + (height >> 1);
+		if (centerY < 0)
+			*viewportY = s->y + ((centerY / s->height) - 1) % s->vsize;
+		else
+			*viewportY = s->y + (centerY / s->height) % s->vsize;
+	}
 }
 
 int
 outputDeviceForGeometry (CompScreen *s,
-			 int	    x,
-			 int	    y,
-			 int	    width,
-			 int	    height,
-			 int	    borderWidth)
+						 int		x,
+						 int		y,
+						 int		width,
+						 int		height,
+						 int		borderWidth)
 {
-    int output = s->currentOutputDev;
-    int x1, y1, x2, y2;
+	int output = s->currentOutputDev;
+	int x1, y1, x2, y2;
 
-    width  += borderWidth * 2;
-    height += borderWidth * 2;
+	width  += borderWidth * 2;
+	height += borderWidth * 2;
 
-    x1 = s->outputDev[output].region.extents.x1;
-    y1 = s->outputDev[output].region.extents.y1;
-    x2 = s->outputDev[output].region.extents.x2;
-    y2 = s->outputDev[output].region.extents.y2;
+	x1 = s->outputDev[output].region.extents.x1;
+	y1 = s->outputDev[output].region.extents.y1;
+	x2 = s->outputDev[output].region.extents.x2;
+	y2 = s->outputDev[output].region.extents.y2;
 
-    if (x1 >= x + width  ||
-	y1 >= y + height ||
-	x2 <= x		 ||
-	y2 <= y)
-    {
-	output = outputDeviceForPoint (s, x + width  / 2, y + height / 2);
-    }
+	if (x1 >= x + width	 ||
+		y1 >= y + height ||
+		x2 <= x		 ||
+		y2 <= y)
+	{
+		output = outputDeviceForPoint (s, x + width	 / 2, y + height / 2);
+	}
 
-    return output;
+	return output;
 }
 
 Bool
 updateDefaultIcon (CompScreen *screen)
 {
-    CompIcon *icon;
-    char     *file = screen->opt[COMP_SCREEN_OPTION_DEFAULT_ICON].value.s;
-    void     *data;
-    int      width, height;
+	CompIcon *icon;
+	char	 *file = screen->opt[COMP_SCREEN_OPTION_DEFAULT_ICON].value.s;
+	void	 *data;
+	int		 width, height;
 
-    if (screen->defaultIcon)
-    {
-	finiTexture (screen, &screen->defaultIcon->texture);
-	free (screen->defaultIcon);
-	screen->defaultIcon = NULL;
-    }
+	if (screen->defaultIcon)
+	{
+		finiTexture (screen, &screen->defaultIcon->texture);
+		free (screen->defaultIcon);
+		screen->defaultIcon = NULL;
+	}
 
-    if (!readImageFromFile (screen->display, file, &width, &height, &data))
-	return FALSE;
+	if (!readImageFromFile (screen->display, file, &width, &height, &data))
+		return FALSE;
 
-    icon = malloc (sizeof (CompIcon) + width * height * sizeof (CARD32));
-    if (!icon)
-    {
+	icon = malloc (sizeof (CompIcon) + width * height * sizeof (CARD32));
+	if (!icon)
+	{
+		free (data);
+		return FALSE;
+	}
+
+	initTexture (screen, &icon->texture);
+
+	icon->width	 = width;
+	icon->height = height;
+
+	memcpy (icon + 1, data, + width * height * sizeof (CARD32));
+
+	screen->defaultIcon = icon;
+
 	free (data);
-	return FALSE;
-    }
 
-    initTexture (screen, &icon->texture);
-
-    icon->width  = width;
-    icon->height = height;
-
-    memcpy (icon + 1, data, + width * height * sizeof (CARD32));
-
-    screen->defaultIcon = icon;
-
-    free (data);
-
-    return TRUE;
+	return TRUE;
 }
 
 CompCursor *
 findCursorAtScreen (CompScreen *screen)
 {
-    return screen->cursors;
+	return screen->cursors;
 }
 
 CompCursorImage *
-findCursorImageAtScreen (CompScreen    *screen,
-			 unsigned long serial)
+findCursorImageAtScreen (CompScreen	   *screen,
+						 unsigned long serial)
 {
-    CompCursorImage *image;
+	CompCursorImage *image;
 
-    for (image = screen->cursorImages; image; image = image->next)
-	if (image->serial == serial)
-	    return image;
+	for (image = screen->cursorImages; image; image = image->next)
+		if (image->serial == serial)
+			return image;
 
-    return NULL;
+	return NULL;
 }
 
 void
 setCurrentActiveWindowHistory (CompScreen *s,
-			       int	  x,
-			       int	  y)
+							   int	  x,
+							   int	  y)
 {
-    int	i, min = 0;
+	int	i, min = 0;
 
-    for (i = 0; i < ACTIVE_WINDOW_HISTORY_NUM; i++)
-    {
-	if (s->history[i].x == x && s->history[i].y == y)
+	for (i = 0; i < ACTIVE_WINDOW_HISTORY_NUM; i++)
 	{
-	    s->currentHistory = i;
-	    return;
+		if (s->history[i].x == x && s->history[i].y == y)
+		{
+			s->currentHistory = i;
+			return;
+		}
 	}
-    }
 
-    for (i = 1; i < ACTIVE_WINDOW_HISTORY_NUM; i++)
-	if (s->history[i].activeNum < s->history[min].activeNum)
-	    min = i;
+	for (i = 1; i < ACTIVE_WINDOW_HISTORY_NUM; i++)
+		if (s->history[i].activeNum < s->history[min].activeNum)
+			min = i;
 
-    s->currentHistory = min;
+	s->currentHistory = min;
 
-    s->history[min].activeNum = s->activeNum;
-    s->history[min].x	      = x;
-    s->history[min].y	      = y;
+	s->history[min].activeNum = s->activeNum;
+	s->history[min].x		  = x;
+	s->history[min].y		  = y;
 
-    memset (s->history[min].id, 0, sizeof (s->history[min].id));
+	memset (s->history[min].id, 0, sizeof (s->history[min].id));
 }
 
 void
 addToCurrentActiveWindowHistory (CompScreen *s,
-				 Window	    id)
+								 Window		id)
 {
-    CompActiveWindowHistory *history = &s->history[s->currentHistory];
-    Window		    tmp, next = id;
-    int			    i;
+	CompActiveWindowHistory *history = &s->history[s->currentHistory];
+	Window			tmp, next = id;
+	int				i;
 
-    /* walk and move history */
-    for (i = 0; i < ACTIVE_WINDOW_HISTORY_SIZE; i++)
-    {
-	tmp = history->id[i];
-	history->id[i] = next;
-	next = tmp;
+	/* walk and move history */
+	for (i = 0; i < ACTIVE_WINDOW_HISTORY_SIZE; i++)
+	{
+		tmp = history->id[i];
+		history->id[i] = next;
+		next = tmp;
 
-	/* we're done when we find an old instance or an empty slot */
-	if (tmp == id || tmp == None)
-	    break;
-    }
+		/* we're done when we find an old instance or an empty slot */
+		if (tmp == id || tmp == None)
+			break;
+	}
 
-    history->activeNum = s->activeNum;
+	history->activeNum = s->activeNum;
 }
