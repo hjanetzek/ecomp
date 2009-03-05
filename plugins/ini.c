@@ -36,7 +36,7 @@
 #define DEFAULT_PLUGINS     "ini,inotify,dbus,regex,text,png,decoration,move,wall,scale,scaleaddon,expo,ring"
 #define NUM_DEFAULT_PLUGINS 7
 #define MAX_OPTION_LENGTH   1024
-#define HOME_OPTIONDIR     ".ecomp/options"
+#define HOME_OPTIONDIR     ".ecomp"
 #define CORE_NAME           "general"
 #define FILE_SUFFIX         ".conf"
 
@@ -58,6 +58,7 @@ static CompMetadata iniMetadata;
 static Bool iniSaveOptions (CompDisplay *d,
 			    int         screen,
 			    char        *plugin);
+
 
 /*
  * IniFileData
@@ -804,7 +805,7 @@ iniLoadOptionsFromFile (CompDisplay *d,
 		    value.action.bell = action.a.bell;
 		    value.action.edgeMask = action.a.edgeMask;
 		    value.action.edgeButton = action.a.edgeButton;
-
+		    
 		    if (plugin)
 		    {
 			if (s)
@@ -966,46 +967,46 @@ iniSaveOptions (CompDisplay *d,
 		else
 		    fprintf (optionFile, "%s=\n", option->name);
 		break;
-	case CompOptionTypeAction:
-	    firstInList = TRUE;
-	    if (option->value.action.type & CompBindingTypeKey)
-		strVal = keyBindingToString (d, &option->value.action.key);
-	    else
-		strVal = strdup ("");
-	    fprintf (optionFile, "%s_%s=%s\n", option->name, "key", strVal);
-	    free (strVal);
-
-	    if (option->value.action.type & CompBindingTypeButton)
-		strVal = buttonBindingToString (d, &option->value.action.button);
-	    else
-		strVal = strdup ("");
-	    fprintf (optionFile, "%s_%s=%s\n", option->name, "button", strVal);
-	    free (strVal);
-
-	    fprintf (optionFile, "%s_%s=%i\n", option->name, "bell",
-		     option->value.action.bell);
-
-	    strVal = malloc (sizeof(char) * MAX_OPTION_LENGTH);
-	    strcpy (strVal, "");
-	    firstInList = TRUE;
-	    for (i = 0; i < SCREEN_EDGE_NUM; i++)
-	    {
-		if (option->value.action.edgeMask & (1 << i))
-		{
-		    if (!firstInList)
-		    	strncat (strVal, ",", MAX_OPTION_LENGTH);
-		    firstInList = FALSE;
-
-		    strncat (strVal, edgeToString (i), MAX_OPTION_LENGTH);
-		}
-	    }
-	    fprintf (optionFile, "%s_%s=%s\n", option->name, "edge", strVal);
-	    free (strVal);
-
-	    fprintf (optionFile, "%s_%s=%i\n", option->name, "edgebutton",
-		     (option->value.action.type & CompBindingTypeEdgeButton) ?
-		     option->value.action.edgeButton : 0);
-  	    break;
+	/* case CompOptionTypeAction:
+	 *     firstInList = TRUE;
+	 *     if (option->value.action.type & CompBindingTypeKey)
+	 * 	strVal = keyBindingToString (d, &option->value.action.key);
+	 *     else
+	 * 	strVal = strdup ("");
+	 *     fprintf (optionFile, "%s_%s=%s\n", option->name, "key", strVal);
+	 *     free (strVal);
+	 * 
+	 *     if (option->value.action.type & CompBindingTypeButton)
+	 * 	strVal = buttonBindingToString (d, &option->value.action.button);
+	 *     else
+	 * 	strVal = strdup ("");
+	 *     fprintf (optionFile, "%s_%s=%s\n", option->name, "button", strVal);
+	 *     free (strVal);
+	 * 
+	 *     fprintf (optionFile, "%s_%s=%i\n", option->name, "bell",
+	 * 	     option->value.action.bell);
+	 * 
+	 *     strVal = malloc (sizeof(char) * MAX_OPTION_LENGTH);
+	 *     strcpy (strVal, "");
+	 *     firstInList = TRUE;
+	 *     for (i = 0; i < SCREEN_EDGE_NUM; i++)
+	 *     {
+	 * 	if (option->value.action.edgeMask & (1 << i))
+	 * 	{
+	 * 	    if (!firstInList)
+	 * 	    	strncat (strVal, ",", MAX_OPTION_LENGTH);
+	 * 	    firstInList = FALSE;
+	 * 
+	 * 	    strncat (strVal, edgeToString (i), MAX_OPTION_LENGTH);
+	 * 	}
+	 *     }
+	 *     fprintf (optionFile, "%s_%s=%s\n", option->name, "edge", strVal);
+	 *     free (strVal);
+	 * 
+	 *     fprintf (optionFile, "%s_%s=%i\n", option->name, "edgebutton",
+	 * 	     (option->value.action.type & CompBindingTypeEdgeButton) ?
+	 * 	     option->value.action.edgeButton : 0);
+  	 *     break; */
 	case CompOptionTypeList:
 	    firstInList = TRUE;
 	    switch (option->value.list.type)

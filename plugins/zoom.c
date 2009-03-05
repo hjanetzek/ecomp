@@ -902,14 +902,7 @@ zoomHandleMotionEvent (CompScreen *s,
 	}
     }
 }
-#define ECO_PLUGIN_ZOOM   7
-#define ECO_ACT_MOUSE_MOVE 3
-#define ECO_ACT_MOUSE_DOWN 4
-#define ECO_ACT_MOUSE_UP   5
-#define ECO_GET_BUTTON(val) val & 0x00000f
-#define ECO_GET_DBLCLICK(val) (val & 0x0000f0) >> 4
-#define ECO_GET_X(val) (val >> 16)
-#define ECO_GET_Y(val) (val & 0x000fff)
+
 
 static void
 zoomHandleEvent (CompDisplay *d,

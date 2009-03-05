@@ -2092,7 +2092,7 @@ wobblyHandleEvent (CompDisplay *d,
 {
     Window     activeWindow = d->activeWindow;
     CompWindow *w;
-    CompScreen *s;
+    /* CompScreen *s; */
 
     WOBBLY_DISPLAY (d);
 
@@ -2114,39 +2114,39 @@ wobblyHandleEvent (CompDisplay *d,
 	}
 	break;
     default:
-	if (event->type == d->xkbEvent)
-	{
-	    XkbAnyEvent *xkbEvent = (XkbAnyEvent *) event;
-
-	    if (xkbEvent->xkb_type == XkbStateNotify)
-	    {
-		XkbStateNotifyEvent *stateEvent = (XkbStateNotifyEvent *) event;
-		CompAction	    *action;
-		Bool		    inverted;
-		unsigned int	    mods = 0xffffffff;
-
-		action   = &wd->opt[WOBBLY_DISPLAY_OPTION_SNAP].value.action;
-		inverted = wd->opt[WOBBLY_DISPLAY_OPTION_SNAP_INVERTED].value.b;
-
-		if (action->type & CompBindingTypeKey)
-		    mods = action->key.modifiers;
-
-		if ((stateEvent->mods & mods) == mods)
-		{
-		    if (inverted)
-			wobblyDisableSnapping (d, NULL, 0, NULL, 0);
-		    else
-			wobblyEnableSnapping (d, NULL, 0, NULL, 0);
-		}
-		else
-		{
-		    if (inverted)
-			wobblyEnableSnapping (d, NULL, 0, NULL, 0);
-		    else
-			wobblyDisableSnapping (d, NULL, 0, NULL, 0);
-		}
-	    }
-	}
+	/* if (event->type == d->xkbEvent)
+	 * {
+	 *     XkbAnyEvent *xkbEvent = (XkbAnyEvent *) event;
+	 * 
+	 *     if (xkbEvent->xkb_type == XkbStateNotify)
+	 *     {
+	 * 	XkbStateNotifyEvent *stateEvent = (XkbStateNotifyEvent *) event;
+	 * 	CompAction	    *action;
+	 * 	Bool		    inverted;
+	 * 	unsigned int	    mods = 0xffffffff;
+	 * 
+	 * 	action   = &wd->opt[WOBBLY_DISPLAY_OPTION_SNAP].value.action;
+	 * 	inverted = wd->opt[WOBBLY_DISPLAY_OPTION_SNAP_INVERTED].value.b;
+	 * 
+	 * 	if (action->type & CompBindingTypeKey)
+	 * 	    mods = action->key.modifiers;
+	 * 
+	 * 	if ((stateEvent->mods & mods) == mods)
+	 * 	{
+	 * 	    if (inverted)
+	 * 		wobblyDisableSnapping (d, NULL, 0, NULL, 0);
+	 * 	    else
+	 * 		wobblyEnableSnapping (d, NULL, 0, NULL, 0);
+	 * 	}
+	 * 	else
+	 * 	{
+	 * 	    if (inverted)
+	 * 		wobblyEnableSnapping (d, NULL, 0, NULL, 0);
+	 * 	    else
+	 * 		wobblyDisableSnapping (d, NULL, 0, NULL, 0);
+	 * 	}
+	 *     }
+	 * } */
 	break;
     }
 

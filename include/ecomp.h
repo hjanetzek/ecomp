@@ -324,7 +324,7 @@ typedef enum {
     CompOptionTypeFloat,
     CompOptionTypeString,
     CompOptionTypeColor,
-    CompOptionTypeAction,
+    /* CompOptionTypeAction, */
     CompOptionTypeMatch,
     CompOptionTypeList
 } CompOptionType;
@@ -797,8 +797,8 @@ struct _CompDisplay {
     Bool shapeExtension;
     int  shapeEvent, shapeError;
 
-    Bool xkbExtension;
-    int  xkbEvent, xkbError;
+    /* Bool xkbExtension;
+     * int  xkbEvent, xkbError; */
 
     Bool xineramaExtension;
     int  xineramaEvent, xineramaError;
@@ -943,12 +943,12 @@ struct _CompDisplay {
     Window below;
     char   displayString[256];
 
-    XModifierKeymap *modMap;
-    unsigned int    modMask[CompModNum];
-    unsigned int    ignoredModMask;
+    /* XModifierKeymap *modMap;
+     * unsigned int    modMask[CompModNum];
+     * unsigned int    ignoredModMask; */
 
-    KeyCode escapeKeyCode;
-    KeyCode returnKeyCode;
+    /* KeyCode escapeKeyCode;
+     * KeyCode returnKeyCode; */
 
     CompOption opt[COMP_DISPLAY_OPTION_NUM];
 
@@ -1775,17 +1775,17 @@ typedef void (*InitWindowWalkerProc) (CompScreen *screen,
 #define COMP_SCREEN_DAMAGE_REGION_MASK  (1 << 1)
 #define COMP_SCREEN_DAMAGE_ALL_MASK     (1 << 2)
 
-typedef struct _CompKeyGrab {
-    int		 keycode;
-    unsigned int modifiers;
-    int		 count;
-} CompKeyGrab;
-
-typedef struct _CompButtonGrab {
-    int		 button;
-    unsigned int modifiers;
-    int		 count;
-} CompButtonGrab;
+/* typedef struct _CompKeyGrab {
+ *     int		 keycode;
+ *     unsigned int modifiers;
+ *     int		 count;
+ * } CompKeyGrab;
+ * 
+ * typedef struct _CompButtonGrab {
+ *     int		 button;
+ *     unsigned int modifiers;
+ *     int		 count;
+ * } CompButtonGrab; */
 
 typedef struct _CompGrab {
     Bool       active;
@@ -1793,18 +1793,18 @@ typedef struct _CompGrab {
     const char *name;
 } CompGrab;
 
-typedef struct _CompGroup {
-    struct _CompGroup *next;
-    unsigned int      refCnt;
-    Window	      id;
-} CompGroup;
+/* typedef struct _CompGroup {
+ *     struct _CompGroup *next;
+ *     unsigned int      refCnt;
+ *     Window	      id;
+ * } CompGroup; */
  
-  //typedef struct _CompStartupSequence {
-  //  struct _CompStartupSequence *next;
-  //  SnStartupSequence		*sequence;
-  //  unsigned int		viewportX;
-  //  unsigned int		viewportY;
-  //} CompStartupSequence;
+/* typedef struct _CompStartupSequence {
+ *  struct _CompStartupSequence *next;
+ *  SnStartupSequence		*sequence;
+ *  unsigned int		viewportX;
+ *  unsigned int		viewportY;
+ * } CompStartupSequence; */
   
 typedef struct _CompFBConfig {
     GLXFBConfig fbConfig;
@@ -1908,7 +1908,7 @@ struct _CompScreen {
     Window	      overlay;
     Window	      output;
     XWindowAttributes attrib;
-    Window	      grabWindow;
+    /* Window	      grabWindow; */
     CompFBConfig      glxPixmapFBConfigs[MAX_DEPTH + 1];
     int		      textureRectangle;
     int		      textureNonPowerOfTwo;
@@ -1923,8 +1923,8 @@ struct _CompScreen {
     XRectangle        *exposeRects;
     int		      sizeExpose;
     int		      nExpose;
-    CompTexture       backgroundTexture;
-    Bool	      backgroundLoaded;
+    /* CompTexture       backgroundTexture;
+     * Bool	      backgroundLoaded; */
     unsigned int      pendingDestroys;
     int		      desktopWindowCount;
     unsigned int      mapNum;
@@ -1944,34 +1944,34 @@ struct _CompScreen {
 
     CompScreenEdge screenEdge[SCREEN_EDGE_NUM];
 
-  //SnMonitorContext    *snContext;
-  // CompStartupSequence *startupSequences;
-  //unsigned int        startupSequenceTimeoutHandle;
+    /* SnMonitorContext    *snContext;
+     * CompStartupSequence *startupSequences;
+     * unsigned int        startupSequenceTimeoutHandle; */
 
     int filter[3];
 
-    CompGroup *groups;
+    //CompGroup *groups;
 
     CompIcon *defaultIcon;
 
     Bool canDoSaturated;
     Bool canDoSlightlySaturated;
 
-  //  Window wmSnSelectionWindow;
-  //  Atom   wmSnAtom;
-  //  Time   wmSnTimestamp;
+    /* Window wmSnSelectionWindow;
+     * Atom   wmSnAtom;
+     * Time   wmSnTimestamp; */
 
-    Cursor normalCursor;
-    Cursor busyCursor;
+    /* Cursor normalCursor;
+     * Cursor busyCursor; */
 
     CompWindow **clientList;
     int	       nClientList;
 
-    CompButtonGrab *buttonGrab;
-    int		   nButtonGrab;
-    CompKeyGrab    *keyGrab;
-    int		   nKeyGrab;
-
+    /* CompButtonGrab *buttonGrab;
+     * int		   nButtonGrab;
+     * CompKeyGrab    *keyGrab;
+     * int		   nKeyGrab; */
+    
     CompGrab *grabs;
     int	     grabSize;
     int	     maxGrab;
@@ -2177,16 +2177,16 @@ removeScreenGrab (CompScreen *s,
 Bool
 otherScreenGrabExist (CompScreen *s, ...);
 
-Bool
-addScreenAction (CompScreen *s,
-		 CompAction *action);
-
-void
-removeScreenAction (CompScreen *s,
-		    CompAction *action);
-
-void
-updatePassiveGrabs (CompScreen *s);
+/* Bool
+ * addScreenAction (CompScreen *s,
+ * 		 CompAction *action);
+ * 
+ * void
+ * removeScreenAction (CompScreen *s,
+ * 		    CompAction *action);
+ * 
+ * void
+ * updatePassiveGrabs (CompScreen *s); */
 
 void
 updateWorkareaForScreen (CompScreen *s);
@@ -2227,20 +2227,20 @@ moveWindowToViewportPosition (CompWindow *w,
 			      int        y,
 			      Bool       sync);
 
-CompGroup *
-addGroupToScreen (CompScreen *s,
-		  Window     id);
-void
-removeGroupFromScreen (CompScreen *s,
-		       CompGroup  *group);
+/* CompGroup *
+ * addGroupToScreen (CompScreen *s,
+ * 		  Window     id);
+ * void
+ * removeGroupFromScreen (CompScreen *s,
+ * 		       CompGroup  *group);
+ * 
+ * CompGroup *
+ * findGroupAtScreen (CompScreen *s,
+ * 		   Window     id); */
 
-CompGroup *
-findGroupAtScreen (CompScreen *s,
-		   Window     id);
-
-void
-applyStartupProperties (CompScreen *screen,
-			CompWindow *window);
+/* void
+ * applyStartupProperties (CompScreen *screen,
+ * 			CompWindow *window); */
 
 void
 sendWindowActivationRequest (CompScreen *s,
@@ -2254,13 +2254,13 @@ void
 screenLighting (CompScreen *s,
 		Bool       lighting);
 
-void
-enableScreenEdge (CompScreen *s,
-		  int	     edge);
-
-void
-disableScreenEdge (CompScreen *s,
-		   int	      edge);
+/* void
+ * enableScreenEdge (CompScreen *s,
+ * 		  int	     edge);
+ * 
+ * void
+ * disableScreenEdge (CompScreen *s,
+ * 		   int	      edge); */
 
 Window
 getTopWindow (CompScreen *s);
@@ -2448,7 +2448,7 @@ struct _CompWindow {
     char *resName;
     char *resClass;
 
-    CompGroup *group;
+    /* CompGroup *group; */
 
     unsigned int lastPong;
     Bool	 alive;

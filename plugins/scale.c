@@ -998,29 +998,29 @@ scaleCheckForWindowAt (CompScreen *s,
 }
 
 
-static void
-sendDndStatusMessage (CompScreen *s,
-		      Window	 source)
-{
-    XEvent xev;
-
-    SCALE_SCREEN (s);
-
-    xev.xclient.type    = ClientMessage;
-    xev.xclient.display = s->display->display;
-    xev.xclient.format  = 32;
-
-    xev.xclient.message_type = s->display->xdndStatusAtom;
-    xev.xclient.window	     = source;
-
-    xev.xclient.data.l[0] = ss->dndTarget;
-    xev.xclient.data.l[1] = 2;
-    xev.xclient.data.l[2] = 0;
-    xev.xclient.data.l[3] = 0;
-    xev.xclient.data.l[4] = None;
-
-    XSendEvent (s->display->display, source, FALSE, 0, &xev);
-}
+/* static void
+ * sendDndStatusMessage (CompScreen *s,
+ * 		      Window	 source)
+ * {
+ *     XEvent xev;
+ * 
+ *     SCALE_SCREEN (s);
+ * 
+ *     xev.xclient.type    = ClientMessage;
+ *     xev.xclient.display = s->display->display;
+ *     xev.xclient.format  = 32;
+ * 
+ *     xev.xclient.message_type = s->display->xdndStatusAtom;
+ *     xev.xclient.window	     = source;
+ * 
+ *     xev.xclient.data.l[0] = ss->dndTarget;
+ *     xev.xclient.data.l[1] = 2;
+ *     xev.xclient.data.l[2] = 0;
+ *     xev.xclient.data.l[3] = 0;
+ *     xev.xclient.data.l[4] = None;
+ * 
+ *     XSendEvent (s->display->display, source, FALSE, 0, &xev);
+ * } */
 
 
 /* XXX move this to window - duplicate sendMoveResizeWindowMessage in expo */
@@ -1834,42 +1834,42 @@ scaleWindowRemove (CompDisplay *d,
     }
 }
 
-static Bool
-scaleHoverTimeout (void *closure)
-{
-    CompScreen *s = closure;
-
-    SCALE_SCREEN (s);
-    SCALE_DISPLAY (s->display);
-
-    if (ss->grab && ss->state != SCALE_STATE_IN)
-    {
-	CompWindow *w;
-	/* CompOption o;
-	 * CompAction *action =
-	 *     &sd->opt[SCALE_DISPLAY_OPTION_INITIATE].value.action; */
-
-	w = findWindowAtDisplay (s->display, sd->selectedWindow);
-	if (w)
-	{
-	    sd->lastActiveNum    = w->activeNum;
-	    sd->lastActiveWindow = w->id;
-
-	    moveInputFocusToWindow (w);
-	}
-
-	/* o.type    = CompOptionTypeInt;
-	 * o.name    = "root";
-	 * o.value.i = s->root;
-	 * 
-	 * scaleTerminate (s->display, action, 0, &o, 1); */
-	scaleTerminate2(s->display, s->root, 0, 0);
-    }
-
-    ss->hoverHandle = 0;
-
-    return FALSE;
-}
+/* static Bool
+ * scaleHoverTimeout (void *closure)
+ * {
+ *     CompScreen *s = closure;
+ * 
+ *     SCALE_SCREEN (s);
+ *     SCALE_DISPLAY (s->display);
+ * 
+ *     if (ss->grab && ss->state != SCALE_STATE_IN)
+ *     {
+ * 	CompWindow *w;
+ * 	/\* CompOption o;
+ * 	 * CompAction *action =
+ * 	 *     &sd->opt[SCALE_DISPLAY_OPTION_INITIATE].value.action; *\/
+ * 
+ * 	w = findWindowAtDisplay (s->display, sd->selectedWindow);
+ * 	if (w)
+ * 	{
+ * 	    sd->lastActiveNum    = w->activeNum;
+ * 	    sd->lastActiveWindow = w->id;
+ * 
+ * 	    moveInputFocusToWindow (w);
+ * 	}
+ * 
+ * 	/\* o.type    = CompOptionTypeInt;
+ * 	 * o.name    = "root";
+ * 	 * o.value.i = s->root;
+ * 	 * 
+ * 	 * scaleTerminate (s->display, action, 0, &o, 1); *\/
+ * 	scaleTerminate2(s->display, s->root, 0, 0);
+ *     }
+ * 
+ *     ss->hoverHandle = 0;
+ * 
+ *     return FALSE;
+ * } */
 
 
 static void

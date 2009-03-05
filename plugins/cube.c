@@ -629,52 +629,52 @@ cubeUnloadBackgrounds (CompScreen *s)
     }
 }
 
-static void
-cubeLoadBackground (CompScreen *s,
-		    int	       n)
-{
-    CompOptionValue *value;
-    unsigned int    width, height;
-    int		    i;
-
-    CUBE_SCREEN (s);
-
-    value = &cs->opt[CUBE_SCREEN_OPTION_BACKGROUNDS].value;
-
-    if (!cs->bg)
-    {
-	cs->bg = malloc (sizeof (CompTexture) * value->list.nValue);
-	if (!cs->bg)
-	    return;
-
-	for (i = 0; i < value->list.nValue; i++)
-	    initTexture (s, &cs->bg[i]);
-
-	cs->nBg = value->list.nValue;
-    }
-
-    if (cs->bg[n].target)
-    {
-	if (readImageToTexture (s, &cs->bg[n], value->list.value[n].s,
-				&width, &height))
-	{
-	    if (cs->fullscreenOutput)
-	    {
-		cs->bg[n].matrix.xx *= (float) width  / s->outputDev[0].width;
-		cs->bg[n].matrix.yy *= (float) height / s->outputDev[0].height;
-	    }
-	    else
-	    {
-		cs->bg[n].matrix.xx *= (float) width  / s->width;
-		cs->bg[n].matrix.yy *= (float) height / s->height;
-	    }
-	}
-	else
-	{
-	    cs->bg[n].target = 0;
-	}
-    }
-}
+/* static void
+ * cubeLoadBackground (CompScreen *s,
+ * 		    int	       n)
+ * {
+ *     CompOptionValue *value;
+ *     unsigned int    width, height;
+ *     int		    i;
+ * 
+ *     CUBE_SCREEN (s);
+ * 
+ *     value = &cs->opt[CUBE_SCREEN_OPTION_BACKGROUNDS].value;
+ * 
+ *     if (!cs->bg)
+ *     {
+ * 	cs->bg = malloc (sizeof (CompTexture) * value->list.nValue);
+ * 	if (!cs->bg)
+ * 	    return;
+ * 
+ * 	for (i = 0; i < value->list.nValue; i++)
+ * 	    initTexture (s, &cs->bg[i]);
+ * 
+ * 	cs->nBg = value->list.nValue;
+ *     }
+ * 
+ *     if (cs->bg[n].target)
+ *     {
+ * 	if (readImageToTexture (s, &cs->bg[n], value->list.value[n].s,
+ * 				&width, &height))
+ * 	{
+ * 	    if (cs->fullscreenOutput)
+ * 	    {
+ * 		cs->bg[n].matrix.xx *= (float) width  / s->outputDev[0].width;
+ * 		cs->bg[n].matrix.yy *= (float) height / s->outputDev[0].height;
+ * 	    }
+ * 	    else
+ * 	    {
+ * 		cs->bg[n].matrix.xx *= (float) width  / s->width;
+ * 		cs->bg[n].matrix.yy *= (float) height / s->height;
+ * 	    }
+ * 	}
+ * 	else
+ * 	{
+ * 	    cs->bg[n].target = 0;
+ * 	}
+ *     }
+ * } */
 
 static Bool
 cubeSetScreenOption (CompPlugin      *plugin,
@@ -1574,49 +1574,49 @@ cubePaintTransformedOutput (CompScreen		    *s,
     WRAP (cs, s, paintTransformedOutput, cubePaintTransformedOutput);
 }
 
-static void
-cubeSetBackgroundOpacity (CompScreen* s)
-{
-    CUBE_SCREEN (s);
-
-    if (cs->desktopOpacity != OPAQUE)
-    {
-	if (s->desktopWindowCount)
-	{
-	    glColor4us (0, 0, 0, 0);
-	    glEnable (GL_BLEND);
-	}
-	else
-	{
-	    glColor4us (0xffff, 0xffff, 0xffff, cs->desktopOpacity);
-	    glEnable (GL_BLEND);
-	    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	}
-    }
-}
-
-static void
-cubeUnSetBackgroundOpacity (CompScreen* s)
-{
-    CUBE_SCREEN (s);
-
-    if (cs->desktopOpacity != OPAQUE)
-    {
-	if (s->desktopWindowCount)
-	{
-	    glColor3usv (defaultColor);
-	    glDisable (GL_BLEND);
-	}
-	else
-	{
-	    glColor3usv (defaultColor);
-	    glDisable (GL_BLEND);
-	    glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	    screenTexEnvMode(s, GL_REPLACE);
-	}
-    }
-}
+/* static void
+ * cubeSetBackgroundOpacity (CompScreen* s)
+ * {
+ *     CUBE_SCREEN (s);
+ * 
+ *     if (cs->desktopOpacity != OPAQUE)
+ *     {
+ * 	if (s->desktopWindowCount)
+ * 	{
+ * 	    glColor4us (0, 0, 0, 0);
+ * 	    glEnable (GL_BLEND);
+ * 	}
+ * 	else
+ * 	{
+ * 	    glColor4us (0xffff, 0xffff, 0xffff, cs->desktopOpacity);
+ * 	    glEnable (GL_BLEND);
+ * 	    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+ * 	    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+ * 	}
+ *     }
+ * }
+ * 
+ * static void
+ * cubeUnSetBackgroundOpacity (CompScreen* s)
+ * {
+ *     CUBE_SCREEN (s);
+ * 
+ *     if (cs->desktopOpacity != OPAQUE)
+ *     {
+ * 	if (s->desktopWindowCount)
+ * 	{
+ * 	    glColor3usv (defaultColor);
+ * 	    glDisable (GL_BLEND);
+ * 	}
+ * 	else
+ * 	{
+ * 	    glColor3usv (defaultColor);
+ * 	    glDisable (GL_BLEND);
+ * 	    glBlendFunc (GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+ * 	    screenTexEnvMode(s, GL_REPLACE);
+ * 	}
+ *     }
+ * } */
 
 /* static void
  * cubePaintBackground (CompScreen   *s,

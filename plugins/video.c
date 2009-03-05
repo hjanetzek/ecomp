@@ -936,7 +936,7 @@ videoHandleEvent (CompDisplay *d,
       {
 	Window client = (Window)event->xclient.data.l[0];
 	
-	printf("got video message 0x%x\n", (Window)event->xclient.data.l[0]);
+	/* printf("got video message 0x%x\n", (Window)event->xclient.data.l[0]); */
 	w = findWindowAtDisplay (d, client);
 	if (w)
 	  {
@@ -973,7 +973,7 @@ videoHandleEvent (CompDisplay *d,
 	    VideoScreen *vs;
 	    CompScreen  *s;
 	    BoxRec	box;
-	    int		bw;
+	    /* int		bw; */
 
 	    for (s = d->screens; s; s = s->next)
 	      {
@@ -1005,20 +1005,19 @@ videoHandleEvent (CompDisplay *d,
 
 			    updateWindowVideoContext (w, vw->source);    			    
 
-			    /*if((de->geometry.x != vw->context->box.extents.x1) ||
-			       (de->geometry.y != vw->context->box.extents.y1) ||
-			       (de->geometry.x + de->geometry.width  != vw->context->box.extents.x2) ||
-			       (de->geometry.y + de->geometry.height != vw->context->box.extents.y2))
-			       {
-			       /*vw->context->box.extents.x1 = de->geometry.x;
-				vw->context->box.extents.y1 = de->geometry.y;
-				vw->context->box.extents.x2 = de->geometry.x + de->geometry.width;
-				vw->context->box.extents.y2 = de->geometry.y + de->geometry.height;
-			    
-				//if (vw->source)
-				
-				// }
-				*/
+			    /* if((de->geometry.x != vw->context->box.extents.x1) ||
+			     *   (de->geometry.y != vw->context->box.extents.y1) ||
+			     *   (de->geometry.x + de->geometry.width  != vw->context->box.extents.x2) ||
+			     *   (de->geometry.y + de->geometry.height != vw->context->box.extents.y2))
+			     *   {
+			     *   vw->context->box.extents.x1 = de->geometry.x;
+			     *   vw->context->box.extents.y1 = de->geometry.y;
+			     *   vw->context->box.extents.x2 = de->geometry.x + de->geometry.width;
+			     *   vw->context->box.extents.y2 = de->geometry.y + de->geometry.height;
+			     * 
+			     *   if (vw->source)
+			     * 	
+			     *   } */
 			  }
 		      }
 		  }

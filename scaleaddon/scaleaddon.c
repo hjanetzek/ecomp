@@ -544,48 +544,50 @@ scaleaddonScalePaintDecoration (CompWindow              *w,
 	    scaleaddonDrawWindowTitle (w);
     }
 }
-
-static void
-scaleaddonHandleEcompEvent (CompDisplay *d,
-			     char        *pluginName,
-			     char        *eventName,
-			     CompOption  *option,
-			     int         nOption)
-{
-    ADDON_DISPLAY(d);
-
-    UNWRAP (ad, d, handleEcompEvent);
-    (*d->handleEcompEvent) (d, pluginName, eventName, option, nOption);
-    WRAP (ad, d, handleEcompEvent, scaleaddonHandleEcompEvent);
-
-    if ((strcmp (pluginName, "scale") == 0) &&
-	(strcmp (eventName, "activate") == 0))
-    {
-	Window xid = getIntOptionNamed (option, nOption, "root", 0);
-	Bool activated = getIntOptionNamed (option, nOption, "activated", FALSE);
-	CompScreen *s = findScreenAtDisplay (d, xid);
-
-	if (s)
-	{
-	    if (activated)
-	    {
-		addScreenAction (s, scaleaddonGetZoom (s->display));
-	    }
-	    else
-	    {
-		CompWindow *w;
-
-		for (w = s->windows; w; w = w->next)
-		{
-		    ADDON_WINDOW (w);
-		    aw->rescaled = FALSE;
-		}
-
-		removeScreenAction (s, scaleaddonGetZoom (s->display));
-	    }
-	}
-    }
-}
+/* removed addScreenAction -> TODO add this as eco action for scale */
+/* static void
+ * scaleaddonHandleEcompEvent (CompDisplay *d,
+ * 			     char        *pluginName,
+ * 			     char        *eventName,
+ * 			     CompOption  *option,
+ * 			     int         nOption)
+ * {
+ *     ADDON_DISPLAY(d);
+ * 
+ *     UNWRAP (ad, d, handleEcompEvent);
+ *     (*d->handleEcompEvent) (d, pluginName, eventName, option, nOption);
+ *     WRAP (ad, d, handleEcompEvent, scaleaddonHandleEcompEvent);
+ * 
+ * 
+ *     
+ *     if ((strcmp (pluginName, "scale") == 0) &&
+ *     	(strcmp (eventName, "activate") == 0))
+ *     {
+ *     	Window xid = getIntOptionNamed (option, nOption, "root", 0);
+ *     	Bool activated = getIntOptionNamed (option, nOption, "activated", FALSE);
+ *     	CompScreen *s = findScreenAtDisplay (d, xid);
+ *     
+ *     	if (s)
+ *     	{
+ *     	    if (activated)
+ *     	    {
+ *     		addScreenAction (s, scaleaddonGetZoom (s->display));
+ *     	    }
+ *     	    else
+ *     	    {
+ *     		CompWindow *w;
+ *     
+ *     		for (w = s->windows; w; w = w->next)
+ *     		{
+ *     		    ADDON_WINDOW (w);
+ *     		    aw->rescaled = FALSE;
+ *     		}
+ *     
+ *     		removeScreenAction (s, scaleaddonGetZoom (s->display));
+ *     	    }
+ *     	}
+ *     }
+ * } */
 
 /**
  * experimental organic layout method
@@ -963,17 +965,22 @@ static Bool
 scaleaddonLayoutSlotsAndAssignWindows (CompScreen *s)
 {
     Bool status;
-
+    //    printf("scaleaddonLayoutSlotsAndAssignWindows(CompScreen* s);\n");
+    
     ADDON_SCREEN (s);
     SCALE_SCREEN (s);
 
     switch (scaleaddonGetLayoutMode (s))
     {
     case LayoutModeOrganicExperimental:
+      //printf("1\n");
+      
 	status = layoutOrganicThumbs (s);
 	break;
     case LayoutModeNormal:
     default:
+      // printf("2\n");
+      
 	UNWRAP (as, ss, layoutSlotsAndAssignWindows);
 	status = (*ss->layoutSlotsAndAssignWindows) (s);
 	WRAP (as, ss, layoutSlotsAndAssignWindows,
@@ -1045,7 +1052,7 @@ scaleaddonInitDisplay (CompPlugin  *p,
     }
 
     WRAP (ad, d, handleEvent, scaleaddonHandleEvent);
-    WRAP (ad, d, handleEcompEvent, scaleaddonHandleEcompEvent);
+    /* WRAP (ad, d, handleEcompEvent, scaleaddonHandleEcompEvent); */
 
     d->privates[displayPrivateIndex].ptr = ad;
 
@@ -1063,7 +1070,7 @@ scaleaddonFiniDisplay (CompPlugin  *p,
     ADDON_DISPLAY (d);
 
     UNWRAP (ad, d, handleEvent);
-    UNWRAP (ad, d, handleEcompEvent);
+    /* UNWRAP (ad, d, handleEcompEvent); */
 
     freeScreenPrivateIndex (d, ad->screenPrivateIndex);
 

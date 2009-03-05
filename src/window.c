@@ -656,7 +656,10 @@ bindWindow (CompWindow *w)
 	/* We have to grab the server here to make sure that window
 	   is mapped when getting the window pixmap */
 	XGrabServer (w->screen->display->display);
-	XGetWindowAttributes (w->screen->display->display, w->id, &attr);
+	XGetWindowAttributes (w->screen->display->display,
+			      //(w->clientId ? w->clientId : w->id),//
+			      w->id,
+			      &attr);
 	if (attr.map_state != IsViewable)
 	{
 	    XUngrabServer (w->screen->display->display);
@@ -666,6 +669,7 @@ bindWindow (CompWindow *w)
 	}
 
 	w->pixmap = XCompositeNameWindowPixmap (w->screen->display->display,
+						//(w->clientId ? w->clientId : w->id));
 						w->id);
 
 	XUngrabServer (w->screen->display->display);
@@ -1115,7 +1119,7 @@ addWindow (CompScreen *screen,
     w->destroyRefCnt = 1;
     w->unmapRefCnt   = 1;
 
-    w->group = NULL;
+    /* w->group = NULL; */
 
     w->damageRects = 0;
     w->sizeDamage  = 0;
@@ -2015,34 +2019,34 @@ updateWindowAttributes (CompWindow             *w,
 }
 
 
-static void
-sendViewportMoveRequest (CompScreen *s,
-			 int	    x,
-			 int	    y)
-{
-  D(("sendViewportMoveRequest %d:%d\n",x,y));
-  
-    XEvent xev;
-
-    xev.xclient.type    = ClientMessage;
-    xev.xclient.display = s->display->display;
-    xev.xclient.format  = 32;
-
-    xev.xclient.message_type = s->display->desktopViewportAtom;
-    xev.xclient.window	     = s->root;
-
-    xev.xclient.data.l[0] = 0; /* from ecomp */
-    xev.xclient.data.l[1] = x;
-    xev.xclient.data.l[2] = y;
-    xev.xclient.data.l[3] = 0;
-    xev.xclient.data.l[4] = 0;
-
-    XSendEvent (s->display->display,
-		s->root,
-		FALSE,
-		SubstructureRedirectMask | SubstructureNotifyMask,
-		&xev);
-}
+/* static void
+ * sendViewportMoveRequest (CompScreen *s,
+ * 			 int	    x,
+ * 			 int	    y)
+ * {
+ *   D(("sendViewportMoveRequest %d:%d\n",x,y));
+ *   
+ *     XEvent xev;
+ * 
+ *     xev.xclient.type    = ClientMessage;
+ *     xev.xclient.display = s->display->display;
+ *     xev.xclient.format  = 32;
+ * 
+ *     xev.xclient.message_type = s->display->desktopViewportAtom;
+ *     xev.xclient.window	     = s->root;
+ * 
+ *     xev.xclient.data.l[0] = 0; /\* from ecomp *\/
+ *     xev.xclient.data.l[1] = x;
+ *     xev.xclient.data.l[2] = y;
+ *     xev.xclient.data.l[3] = 0;
+ *     xev.xclient.data.l[4] = 0;
+ * 
+ *     XSendEvent (s->display->display,
+ * 		s->root,
+ * 		FALSE,
+ * 		SubstructureRedirectMask | SubstructureNotifyMask,
+ * 		&xev);
+ * } */
 
 void
 activateWindow (CompWindow *w)
@@ -2086,9 +2090,6 @@ hideWindow (CompWindow *w)
 
     w->pendingUnmaps++;
 
-    /*XXX what is this for?!*/
-    //if (w->shaded && w->id == w->screen->display->activeWindow)
-    //	moveInputFocusToWindow (w);
 
     //XUnmapWindow (w->screen->display->display, w->id);
 
@@ -2153,7 +2154,7 @@ unredirectWindow (CompWindow *w)
 
     releaseWindow (w);
 
-    XCompositeUnredirectWindow (w->screen->display->display, w->id,
+    XCompositeUnredirectWindow (w->screen->display->display, w->id, //(w->clientId ? w->clientId : w->id),
 				CompositeRedirectManual);
 
     w->redirected = FALSE;
@@ -2169,7 +2170,7 @@ redirectWindow (CompWindow *w)
     if (w->redirected)
 	return;
 
-    XCompositeRedirectWindow (w->screen->display->display, w->id,
+    XCompositeRedirectWindow (w->screen->display->display, w->id, //(w->clientId ? w->clientId : w->id),
 			      CompositeRedirectManual);
 
     w->redirected = TRUE;

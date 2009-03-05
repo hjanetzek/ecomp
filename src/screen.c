@@ -56,24 +56,24 @@
 void
 ecompActionTerminateNotify (CompScreen *s, int plugin)
 {
-  XEvent ev;
+    XEvent ev;
   
-  ev.type		    = ClientMessage;
-  ev.xclient.window	    = s->root;
-  ev.xclient.display = s->display->display;
-  ev.xclient.message_type = s->display->eManagedAtom;
-  ev.xclient.format	    = 32;
-  ev.xclient.data.l[0]    = 2;
-  ev.xclient.data.l[1]    = plugin;
-  ev.xclient.data.l[2]    = 0;
-  ev.xclient.data.l[3]    = 0;
-  ev.xclient.data.l[4]    = 0;
+    ev.type		    = ClientMessage;
+    ev.xclient.window	    = s->root;
+    ev.xclient.display = s->display->display;
+    ev.xclient.message_type = s->display->eManagedAtom;
+    ev.xclient.format	    = 32;
+    ev.xclient.data.l[0]    = 2;
+    ev.xclient.data.l[1]    = plugin;
+    ev.xclient.data.l[2]    = 0;
+    ev.xclient.data.l[3]    = 0;
+    ev.xclient.data.l[4]    = 0;
     
-  XSendEvent (s->display->display,
-	      s->root,
-	      FALSE,
-	      SubstructureRedirectMask | SubstructureNotifyMask,
-	      &ev);
+    XSendEvent (s->display->display,
+		s->root,
+		FALSE,
+		SubstructureRedirectMask | SubstructureNotifyMask,
+		&ev);
 }
 
 
@@ -388,42 +388,42 @@ setScreenOption (CompScreen      *screen,
 	    return TRUE;
 	}
 	break;
-	/*case COMP_SCREEN_OPTION_HSIZE:
-	if (compSetIntOption (o, value))
-	{
-	    CompOption *vsize;
-
-	    vsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
-				    "vsize", NULL);
-
-	    if (!vsize)
-		return FALSE;
-
-	    if (o->value.i * screen->width > MAXSHORT)
-		return FALSE;
-
-	    setVirtualScreenSize (screen, o->value.i, vsize->value.i);
-	    return TRUE;
-	}
-	break;
-    case COMP_SCREEN_OPTION_VSIZE:
-	if (compSetIntOption (o, value))
-	{
-	    CompOption *hsize;
-
-	    hsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
-				    "hsize", NULL);
-
-	    if (!hsize)
-		return FALSE;
-
-	    if (o->value.i * screen->height > MAXSHORT)
-		return FALSE;
-
-	    setVirtualScreenSize (screen, hsize->value.i, o->value.i);
-	    return TRUE;
-	}
-	break;*/
+	/* case COMP_SCREEN_OPTION_HSIZE:
+	 *   if (compSetIntOption (o, value))
+	 *   {
+	 *   CompOption *vsize;
+	 * 
+	 *   vsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
+	 *   "vsize", NULL);
+	 * 
+	 *   if (!vsize)
+	 *   return FALSE;
+	 * 
+	 *   if (o->value.i * screen->width > MAXSHORT)
+	 *   return FALSE;
+	 * 
+	 *   setVirtualScreenSize (screen, o->value.i, vsize->value.i);
+	 *   return TRUE;
+	 *   }
+	 *   break;
+	 *   case COMP_SCREEN_OPTION_VSIZE:
+	 *   if (compSetIntOption (o, value))
+	 *   {
+	 *   CompOption *hsize;
+	 * 
+	 *   hsize = compFindOption (screen->opt, NUM_OPTIONS (screen),
+	 *   "hsize", NULL);
+	 * 
+	 *   if (!hsize)
+	 *   return FALSE;
+	 * 
+	 *   if (o->value.i * screen->height > MAXSHORT)
+	 *   return FALSE;
+	 * 
+	 *   setVirtualScreenSize (screen, hsize->value.i, o->value.i);
+	 *   return TRUE;
+	 *   }
+	 *   break; */
     case COMP_SCREEN_OPTION_DEFAULT_ICON:
 	if (compSetStringOption (o, value))
 	    return updateDefaultIcon (screen);
@@ -792,7 +792,7 @@ detectRefreshRateOfScreen (CompScreen *s)
     }
 }
 
-/* TODO, remove this when the grabWindow is not needed anymore */
+
 /* static voida
  * setSupportingWmCheck (CompScreen *s)
  * {
@@ -876,47 +876,46 @@ getDesktopHints (CompScreen *s)
 	XFree (propData);
     }
 
-    /*
-    result = XGetWindowProperty (s->display->display, s->root,
-				 d->currentDesktopAtom, 0L, 1L, FALSE,
-				 XA_CARDINAL, &actual, &format,
-				 &n, &left, &propData);
-
-    if (result == Success && n && propData && useDesktopHints)
-    {
-	memcpy (data, propData, sizeof (unsigned long));
-	XFree (propData);
-
-	if (data[0] < s->nDesktop)
-	    s->currentDesktop = data[0];
-    }
-    */
     
-    /* result = XGetWindowProperty (s->display->display, s->root,
-				 d->showingDesktopAtom, 0L, 1L, FALSE,
-				 XA_CARDINAL, &actual, &format,
-				 &n, &left, &propData);
-
-    if (result == Success && n && propData)
-    {
-	memcpy (data, propData, sizeof (unsigned long));
-	XFree (propData);
-
-	if (data[0])
-	    (*s->enterShowDesktopMode) (s);
-	    }*/
-
-    /*data[0] = s->currentDesktop;
-
-    XChangeProperty (d->display, s->root, d->currentDesktopAtom,
-		     XA_CARDINAL, 32, PropModeReplace,
-		     (unsigned char *) data, 1);
-
-    data[0] = s->showingDesktopMask ? TRUE : FALSE;
-
-    XChangeProperty (d->display, s->root, d->showingDesktopAtom,
-		     XA_CARDINAL, 32, PropModeReplace,
-		     (unsigned char *) data, 1);*/
+    /*   result = XGetWindowProperty (s->display->display, s->root,
+     *   d->currentDesktopAtom, 0L, 1L, FALSE,
+     *   XA_CARDINAL, &actual, &format,
+     *   &n, &left, &propData);
+     * 
+     *   if (result == Success && n && propData && useDesktopHints)
+     *   {
+     *   memcpy (data, propData, sizeof (unsigned long));
+     *   XFree (propData);
+     * 
+     *   if (data[0] < s->nDesktop)
+     *   s->currentDesktop = data[0];
+     *   }
+     * 
+     * result = XGetWindowProperty (s->display->display, s->root,
+     *    d->showingDesktopAtom, 0L, 1L, FALSE,
+     *    XA_CARDINAL, &actual, &format,
+     *    &n, &left, &propData);
+     * 
+     *    if (result == Success && n && propData)
+     *    {
+     *    memcpy (data, propData, sizeof (unsigned long));
+     *    XFree (propData);
+     * 
+     *    if (data[0])
+     *    (*s->enterShowDesktopMode) (s);
+     *    }
+     * 
+     * data[0] = s->currentDesktop;
+     * 
+     *   XChangeProperty (d->display, s->root, d->currentDesktopAtom,
+     *   XA_CARDINAL, 32, PropModeReplace,
+     *   (unsigned char *) data, 1);
+     * 
+     *   data[0] = s->showingDesktopMask ? TRUE : FALSE;
+     * 
+     *   XChangeProperty (d->display, s->root, d->showingDesktopAtom,
+     *   XA_CARDINAL, 32, PropModeReplace,
+     *   (unsigned char *) data, 1); */
 }
 
 void
@@ -994,87 +993,87 @@ makeOutputWindow (CompScreen *s)
 static void
 enterShowDesktopMode (CompScreen *s)
 {
-  /* CompDisplay   *d = s->display;
-    CompWindow    *w;
-    unsigned long data = 1;
-    int		  count = 0;
-    CompOption    *st = &d->opt[COMP_DISPLAY_OPTION_HIDE_SKIP_TASKBAR_WINDOWS];
-
-    s->showingDesktopMask = ~(CompWindowTypeDesktopMask |
-			      CompWindowTypeDockMask);
-
-    for (w = s->windows; w; w = w->next)
-    {
-	if ((s->showingDesktopMask & w->type) &&
-	    (!(w->state & CompWindowStateSkipTaskbarMask) || st->value.b))
-	{
-	    if (!w->inShowDesktopMode && (*s->focusWindow) (w))
-	    {
-		w->inShowDesktopMode = TRUE;
-		hideWindow (w);
-	    }
-	}
-
-	if (w->inShowDesktopMode)
-	    count++;
-    }
-
-    if (!count)
-    {
-	s->showingDesktopMask = 0;
-	data = 0;
-    }
-
-    XChangeProperty (s->display->display, s->root,
-		     s->display->showingDesktopAtom,
-		     XA_CARDINAL, 32, PropModeReplace,
-		     (unsigned char *) &data, 1);*/
+    /* CompDisplay   *d = s->display;
+     *    CompWindow    *w;
+     *    unsigned long data = 1;
+     *    int		  count = 0;
+     *    CompOption    *st = &d->opt[COMP_DISPLAY_OPTION_HIDE_SKIP_TASKBAR_WINDOWS];
+     * 
+     *    s->showingDesktopMask = ~(CompWindowTypeDesktopMask |
+     *    CompWindowTypeDockMask);
+     * 
+     *    for (w = s->windows; w; w = w->next)
+     *    {
+     *    if ((s->showingDesktopMask & w->type) &&
+     *    (!(w->state & CompWindowStateSkipTaskbarMask) || st->value.b))
+     *    {
+     *    if (!w->inShowDesktopMode && (*s->focusWindow) (w))
+     *    {
+     *    w->inShowDesktopMode = TRUE;
+     *    hideWindow (w);
+     *    }
+     *    }
+     * 
+     *    if (w->inShowDesktopMode)
+     *    count++;
+     *    }
+     * 
+     *    if (!count)
+     *    {
+     *    s->showingDesktopMask = 0;
+     *    data = 0;
+     *    }
+     * 
+     *    XChangeProperty (s->display->display, s->root,
+     *    s->display->showingDesktopAtom,
+     *    XA_CARDINAL, 32, PropModeReplace,
+     *    (unsigned char *) &data, 1); */
 }
 
 static void
 leaveShowDesktopMode (CompScreen *s,
 		      CompWindow *window)
 {
-    CompWindow    *w;
-    unsigned long data = 0;
-
-    if (window)
-    {
-	if (!window->inShowDesktopMode)
-	    return;
-
-	window->inShowDesktopMode = FALSE;
-	showWindow (window);
-
-	/* return if some other window is still in show desktop mode */
-	for (w = s->windows; w; w = w->next)
-	    if (w->inShowDesktopMode)
-		return;
-
-	s->showingDesktopMask = 0;
-    }
-    else
-    {
-	s->showingDesktopMask = 0;
-
-	for (w = s->windows; w; w = w->next)
-	{
-	    if (!w->inShowDesktopMode)
-		continue;
-
-	    w->inShowDesktopMode = FALSE;
-	    showWindow (w);
-	}
-
-	/* focus default window - most likely this will be the window
-	   which had focus before entering showdesktop mode */
-	//focusDefaultWindow (s->display);
-    }
-
-    XChangeProperty (s->display->display, s->root,
-		     s->display->showingDesktopAtom,
-		     XA_CARDINAL, 32, PropModeReplace,
-		     (unsigned char *) &data, 1);
+    /* CompWindow    *w;
+     * unsigned long data = 0;
+     * 
+     * if (window)
+     * {
+     * 	if (!window->inShowDesktopMode)
+     * 	    return;
+     * 
+     * 	window->inShowDesktopMode = FALSE;
+     * 	showWindow (window);
+     * 
+     * 	\* return if some other window is still in show desktop mode *\/
+     * 	for (w = s->windows; w; w = w->next)
+     * 	    if (w->inShowDesktopMode)
+     * 		return;
+     * 
+     * 	s->showingDesktopMask = 0;
+     * }
+     * else
+     * {
+     * 	s->showingDesktopMask = 0;
+     * 
+     * 	for (w = s->windows; w; w = w->next)
+     * 	{
+     * 	    if (!w->inShowDesktopMode)
+     * 		continue;
+     * 
+     * 	    w->inShowDesktopMode = FALSE;
+     * 	    showWindow (w);
+     * 	}
+     * 
+     * 	/\* focus default window - most likely this will be the window
+     * 	   which had focus before entering showdesktop mode *\/
+     * 	//focusDefaultWindow (s->display);
+     * }
+     * 
+     * XChangeProperty (s->display->display, s->root,
+     * 		     s->display->showingDesktopAtom,
+     * 		     XA_CARDINAL, 32, PropModeReplace,
+     * 		     (unsigned char *) &data, 1); */
 }
 
 static CompWindow *
@@ -1119,7 +1118,7 @@ addScreen (CompDisplay *display,
 	   Atom	       wmSnAtom,
 	   Time	       wmSnTimestamp)
 {
-  D(("addScreen - begin %d\n", screenNum));
+    D(("addScreen - begin %d\n", screenNum));
   
     CompScreen		 *s;
     Display		 *dpy = display->display;
@@ -1190,10 +1189,10 @@ addScreen (CompDisplay *display,
      * 	s->screenEdge[i].count = 0;
      * } */
 
-    s->buttonGrab  = 0;
-    s->nButtonGrab = 0;
-    s->keyGrab     = 0;
-    s->nKeyGrab    = 0;
+    /* s->buttonGrab  = 0;
+     * s->nButtonGrab = 0;
+     * s->keyGrab     = 0;
+     * s->nKeyGrab    = 0; */
 
     s->grabs    = 0;
     s->grabSize = 0;
@@ -1211,7 +1210,7 @@ addScreen (CompDisplay *display,
     s->mapNum    = 1;
     s->activeNum = 1;
 
-    s->groups = NULL;
+    /* s->groups = NULL; */
 
     s->damageMask  = COMP_SCREEN_DAMAGE_ALL_MASK;
     s->next	   = 0;
@@ -1283,8 +1282,8 @@ addScreen (CompDisplay *display,
     s->focusWindow		  = focusWindow;
     s->placeWindow                = placeWindow;
 
-    s->paintCursor      = paintCursor;
-    s->damageCursorRect	= damageCursorRect;
+    /* s->paintCursor      = paintCursor;
+     * s->damageCursorRect	= damageCursorRect; */
 
     s->windowAddNotify    = windowAddNotify;
     s->windowResizeNotify = windowResizeNotify;
@@ -1730,8 +1729,8 @@ addScreen (CompDisplay *display,
 	return FALSE;
     }
 
-    initTexture (s, &s->backgroundTexture);
-    s->backgroundLoaded = FALSE;
+    /* initTexture (s, &s->backgroundTexture);
+     * s->backgroundLoaded = FALSE; */
 
     s->defaultIcon = NULL;
 
@@ -1834,12 +1833,12 @@ addScreen (CompDisplay *display,
      * 
      * updateScreenEdges (s); */
 
-    //    setDesktopHints (s);
-    //setSupportingWmCheck (s);
-    //setSupported (s);
+    /*    setDesktopHints (s);
+     * setSupportingWmCheck (s);
+     * setSupported (s); */
 
-    s->normalCursor = XCreateFontCursor (dpy, XC_left_ptr);
-    s->busyCursor   = XCreateFontCursor (dpy, XC_watch);
+    /* s->normalCursor = XCreateFontCursor (dpy, XC_left_ptr);
+     * s->busyCursor   = XCreateFontCursor (dpy, XC_watch); */
 
     // XDefineCursor (dpy, s->root, s->normalCursor);
 
@@ -2023,15 +2022,15 @@ unhookWindowFromScreen (CompScreen *s,
 	lastDamagedWindow = NULL;
 }
 
-#define POINTER_GRAB_MASK (ButtonReleaseMask | \
-			   ButtonPressMask   | \
-			   PointerMotionMask)
+/* #define POINTER_GRAB_MASK (ButtonReleaseMask |	\
+ * 			   ButtonPressMask   |	\
+ * 			   PointerMotionMask) */
 int
 pushScreenGrab (CompScreen *s,
 		Cursor     cursor,
 		const char *name)
 {
-  C(("pushScreenGrab\n"));
+    C(("pushScreenGrab\n"));
 /* #ifdef KEYBINDING    
  *   if (s->maxGrab == 0)
  *     {
@@ -2070,22 +2069,22 @@ pushScreenGrab (CompScreen *s,
  * 	
  *     }
  * #endif     */
-  if (s->grabSize <= s->maxGrab)
+    if (s->grabSize <= s->maxGrab)
     {
-      s->grabs = realloc (s->grabs, sizeof (CompGrab) * (s->maxGrab + 1));
-      if (!s->grabs)
-	return 0;
+	s->grabs = realloc (s->grabs, sizeof (CompGrab) * (s->maxGrab + 1));
+	if (!s->grabs)
+	    return 0;
 	
-      s->grabSize = s->maxGrab + 1;
+	s->grabSize = s->maxGrab + 1;
     }
 
-  s->grabs[s->maxGrab].cursor = cursor;
-  s->grabs[s->maxGrab].active = TRUE;
-  s->grabs[s->maxGrab].name   = name;
+    s->grabs[s->maxGrab].cursor = cursor;
+    s->grabs[s->maxGrab].active = TRUE;
+    s->grabs[s->maxGrab].name   = name;
 
-  s->maxGrab++;
+    s->maxGrab++;
 
-  return s->maxGrab;
+    return s->maxGrab;
 }
 
 void
@@ -2093,7 +2092,7 @@ updateScreenGrab (CompScreen *s,
 		  int        index,
 		  Cursor     cursor)
 {
-  D(("updateScreenGrab\n"));
+    D(("updateScreenGrab\n"));
 /* #ifdef KEYBINDING    
  *   index--;
  * 
@@ -2114,7 +2113,7 @@ removeScreenGrab (CompScreen *s,
 		  int	     index,
 		  XPoint     *restorePointer)
 {
-  D(("removeScreenGrab\n"));
+    D(("removeScreenGrab\n"));
    
     int maxGrab;
 
@@ -2195,80 +2194,80 @@ otherScreenGrabExist (CompScreen *s, ...)
 
     return FALSE;
 }
-#ifdef KEYBINDING
-static void
-grabUngrabOneKey (CompScreen   *s,
-		  unsigned int modifiers,
-		  int          keycode,
-		  Bool         grab)
-{
-    if (grab)
-    {
-	XGrabKey (s->display->display,
-		  keycode,
-		  modifiers,
-		  s->root,
-		  TRUE,
-		  GrabModeAsync,
-		  GrabModeAsync);
-    }
-    else
-    {
-	XUngrabKey (s->display->display,
-		    keycode,
-		    modifiers,
-		    s->root);
-    }
-}
-
-static Bool
-grabUngrabKeys (CompScreen   *s,
-		unsigned int modifiers,
-		int          keycode,
-		Bool         grab)
-{
-    XModifierKeymap *modMap = s->display->modMap;
-    int ignore, mod, k;
-
-    compCheckForError (s->display->display);
-
-    for (ignore = 0; ignore <= s->display->ignoredModMask; ignore++)
-    {
-	if (ignore & ~s->display->ignoredModMask)
-	    continue;
-
-	if (keycode != 0)
-	{
-	    grabUngrabOneKey (s, modifiers | ignore, keycode, grab);
-	}
-	else
-	{
-	    for (mod = 0; mod < 8; mod++)
-	    {
-		if (modifiers & (1 << mod))
-		{
-		    for (k = mod * modMap->max_keypermod;
-			 k < (mod + 1) * modMap->max_keypermod;
-			 k++)
-		    {
-			if (modMap->modifiermap[k])
-			{
-			    grabUngrabOneKey (
-				s,
-				(modifiers & ~(1 << mod)) | ignore,
-				modMap->modifiermap[k],
-				grab);
-			}
-		    }
-		}
-	    }
-	}
-	if (compCheckForError (s->display->display))
-	    return FALSE;
-    }
-    return TRUE;
-}
-#endif
+/* #ifdef KEYBINDING
+ * static void
+ * grabUngrabOneKey (CompScreen   *s,
+ * 		  unsigned int modifiers,
+ * 		  int          keycode,
+ * 		  Bool         grab)
+ * {
+ *     if (grab)
+ *     {
+ * 	XGrabKey (s->display->display,
+ * 		  keycode,
+ * 		  modifiers,
+ * 		  s->root,
+ * 		  TRUE,
+ * 		  GrabModeAsync,
+ * 		  GrabModeAsync);
+ *     }
+ *     else
+ *     {
+ * 	XUngrabKey (s->display->display,
+ * 		    keycode,
+ * 		    modifiers,
+ * 		    s->root);
+ *     }
+ * }
+ * 
+ * static Bool
+ * grabUngrabKeys (CompScreen   *s,
+ * 		unsigned int modifiers,
+ * 		int          keycode,
+ * 		Bool         grab)
+ * {
+ *     XModifierKeymap *modMap = s->display->modMap;
+ *     int ignore, mod, k;
+ * 
+ *     compCheckForError (s->display->display);
+ * 
+ *     for (ignore = 0; ignore <= s->display->ignoredModMask; ignore++)
+ *     {
+ * 	if (ignore & ~s->display->ignoredModMask)
+ * 	    continue;
+ * 
+ * 	if (keycode != 0)
+ * 	{
+ * 	    grabUngrabOneKey (s, modifiers | ignore, keycode, grab);
+ * 	}
+ * 	else
+ * 	{
+ * 	    for (mod = 0; mod < 8; mod++)
+ * 	    {
+ * 		if (modifiers & (1 << mod))
+ * 		{
+ * 		    for (k = mod * modMap->max_keypermod;
+ * 			 k < (mod + 1) * modMap->max_keypermod;
+ * 			 k++)
+ * 		    {
+ * 			if (modMap->modifiermap[k])
+ * 			{
+ * 			    grabUngrabOneKey (
+ * 				s,
+ * 				(modifiers & ~(1 << mod)) | ignore,
+ * 				modMap->modifiermap[k],
+ * 				grab);
+ * 			}
+ * 		    }
+ * 		}
+ * 	    }
+ * 	}
+ * 	if (compCheckForError (s->display->display))
+ * 	    return FALSE;
+ *     }
+ *     return TRUE;
+ * }
+ * #endif */
 
 /* static Bool
  * addPassiveKeyGrab (CompScreen	  *s,
@@ -2344,24 +2343,24 @@ grabUngrabKeys (CompScreen   *s,
  * #endif
  * } */
 
-static void
-updatePassiveKeyGrabs (CompScreen *s)
-{
-#ifdef KEYBINDING  
-    int i;
-
-    XUngrabKey (s->display->display, AnyKey, AnyModifier, s->root);
-
-    for (i = 0; i < s->nKeyGrab; i++)
-    {
-	if (!(s->keyGrab[i].modifiers & CompNoMask))
-	{
-	    grabUngrabKeys (s, s->keyGrab[i].modifiers,
-			    s->keyGrab[i].keycode, TRUE);
-	}
-    }
-#endif
-}
+/* static void
+ * updatePassiveKeyGrabs (CompScreen *s)
+ * {
+ * #ifdef KEYBINDING  
+ *     int i;
+ * 
+ *     XUngrabKey (s->display->display, AnyKey, AnyModifier, s->root);
+ * 
+ *     for (i = 0; i < s->nKeyGrab; i++)
+ *     {
+ * 	if (!(s->keyGrab[i].modifiers & CompNoMask))
+ * 	{
+ * 	    grabUngrabKeys (s, s->keyGrab[i].modifiers,
+ * 			    s->keyGrab[i].keycode, TRUE);
+ * 	}
+ *     }
+ * #endif
+ * } */
 
 /* static Bool
  * addPassiveButtonGrab (CompScreen        *s,
@@ -2424,68 +2423,69 @@ updatePassiveKeyGrabs (CompScreen *s)
  * #endif
  * } */
 
-Bool
-addScreenAction (CompScreen *s,
-		 CompAction *action)
-{
-  /* if (action->type & CompBindingTypeKey)
-   *   {
-   * 	  if (!addPassiveKeyGrab (s, &action->key))
-   * 		{
-   * 		  return FALSE;
-   * 		}
-   *   }
-   *   
-   * 
-   * if (action->type & CompBindingTypeButton)
-   *   {
-   *     if (!addPassiveButtonGrab (s, &action->button))
-   * 		{
-   * 		  if (action->type & CompBindingTypeKey)
-   * 			removePassiveKeyGrab (s, &action->key);
-   * 	    
-   * 		  return FALSE;
-   * 		}
-   *   }
-   * 
-   * if (action->edgeMask)
-   *   {
-   * 	  int i;
-   * 
-   * 	  for (i = 0; i < SCREEN_EDGE_NUM; i++)
-   * 	    if (action->edgeMask & (1 << i))
-   * 		  enableScreenEdge (s, i);
-   *   } */
-  return TRUE;
-}
+/* Bool
+ * addScreenAction (CompScreen *s,
+ * 		 CompAction *action)
+ * {
+ *     if (action->type & CompBindingTypeKey)
+ *       {
+ *     	  if (!addPassiveKeyGrab (s, &action->key))
+ *     		{
+ *     		  return FALSE;
+ *     		}
+ *       }
+ *       
+ *     
+ *     if (action->type & CompBindingTypeButton)
+ *       {
+ *         if (!addPassiveButtonGrab (s, &action->button))
+ *     		{
+ *     		  if (action->type & CompBindingTypeKey)
+ *     			removePassiveKeyGrab (s, &action->key);
+ *     	    
+ *     		  return FALSE;
+ *     		}
+ *       }
+ *     
+ *     if (action->edgeMask)
+ *       {
+ *     	  int i;
+ *     
+ *     	  for (i = 0; i < SCREEN_EDGE_NUM; i++)
+ *     	    if (action->edgeMask & (1 << i))
+ *     		  enableScreenEdge (s, i);
+ *       }
+ *     return TRUE;
+ * } */
 
-void
-removeScreenAction (CompScreen *s,
-		    CompAction *action)
-{
-    /* if (action->type & CompBindingTypeKey)
-     * 	removePassiveKeyGrab (s, &action->key);
-     * 
-     * if (action->type & CompBindingTypeButton)
-     * 	removePassiveButtonGrab (s, &action->button);
-     * 
-     * if (action->edgeMask)
-     * {
-     * 	int i;
-     * 
-     * 	for (i = 0; i < SCREEN_EDGE_NUM; i++)
-     * 	    if (action->edgeMask & (1 << i))
-     * 		disableScreenEdge (s, i);
-     * } */
-}
+/* void
+ * removeScreenAction (CompScreen *s,
+ * 		    CompAction *action)
+ * {
+ *     if (action->type & CompBindingTypeKey)
+ *     	removePassiveKeyGrab (s, &action->key);
+ *     
+ *     if (action->type & CompBindingTypeButton)
+ *     	removePassiveButtonGrab (s, &action->button);
+ *     
+ *     if (action->edgeMask)
+ *     {
+ *     	int i;
+ *     
+ *     	for (i = 0; i < SCREEN_EDGE_NUM; i++)
+ *     	    if (action->edgeMask & (1 << i))
+ *     		disableScreenEdge (s, i);
+ *     }
+ * } */
 
-void
-updatePassiveGrabs (CompScreen *s)
-{
-    updatePassiveKeyGrabs (s);
-}
+/* void
+ * updatePassiveGrabs (CompScreen *s)
+ * {
+ *     updatePassiveKeyGrabs (s);
+ * } */
 
 
+/* XXX check if this is set by e17 */
 Window
 getActiveWindow (CompDisplay *display,
 		 Window      root)
@@ -2510,28 +2510,28 @@ getActiveWindow (CompDisplay *display,
     return w;
 }
 
-
+/* XXX use ECOMORPH_ATOM message  */
 void
 sendScreenViewportMessage(CompScreen *s)
 { 
 
-  //printf ("sendMoveScreenViewportMessage %d:%d\n", s->x, s->y);
+    //printf ("sendMoveScreenViewportMessage %d:%d\n", s->x, s->y);
   
-  CompDisplay *d = s->display;
-  XEvent ev;
+    CompDisplay *d = s->display;
+    XEvent ev;
     
-  ev.type		    = ClientMessage;
-  ev.xclient.window	    = s->root;
-  ev.xclient.message_type = d->desktopViewportAtom;
-  ev.xclient.format	    = 32;
-  ev.xclient.data.l[0]    = 2; /* from ecomp to wm */
-  ev.xclient.data.l[1]    = s->x;
-  ev.xclient.data.l[2]    = s->y;
-  ev.xclient.data.l[3]    = 0;
-  ev.xclient.data.l[4]    = 0; 
+    ev.type		    = ClientMessage;
+    ev.xclient.window	    = s->root;
+    ev.xclient.message_type = d->desktopViewportAtom;
+    ev.xclient.format	    = 32;
+    ev.xclient.data.l[0]    = 2; /* from ecomp to wm */
+    ev.xclient.data.l[1]    = s->x;
+    ev.xclient.data.l[2]    = s->y;
+    ev.xclient.data.l[3]    = 0;
+    ev.xclient.data.l[4]    = 0; 
     
-  XSendEvent (d->display, s->root, FALSE, 
-	      SubstructureRedirectMask | StructureNotifyMask, &ev);
+    XSendEvent (d->display, s->root, FALSE, 
+		SubstructureRedirectMask | StructureNotifyMask, &ev);
 }
 
 
@@ -2543,7 +2543,6 @@ moveScreenViewport (CompScreen *s,
 {
     CompWindow *w;
     int         m, wx, wy, vWidth, vHeight;
-
     
     tx = s->x - tx;
     tx = MOD (tx, s->hsize);
@@ -2555,17 +2554,15 @@ moveScreenViewport (CompScreen *s,
 
     //if(sync) printf ("moveScreenViewport - current %d:%d, move %d:%d\n", s->x, s->y, tx, ty);
     if (!tx && !ty) /*XXX remove sync when not needed*/
-      { 
+    { 
 	if (sync)
-	  for (w = s->windows; w; w = w->next)
+	    for (w = s->windows; w; w = w->next)
 	    {
-	      if (w->clientId)
-		syncWindowPosition (w);
+		if (w->clientId)
+		    syncWindowPosition (w);
 	    }	
 	return;	
-      }
-    
-
+    }
 
     s->x += tx;
     s->y += ty;
@@ -2578,7 +2575,7 @@ moveScreenViewport (CompScreen *s,
 
     for (w = s->windows; w; w = w->next)
     {
-       if (!w->clientId)
+	if (!w->clientId)
       	    continue;
 
 	if (w->type & (CompWindowTypeDesktopMask | CompWindowTypeDockMask))
@@ -2629,30 +2626,31 @@ moveScreenViewport (CompScreen *s,
 	moveWindow (w, wx, wy, sync, TRUE);
 
 	if (sync)
-	  syncWindowPosition (w);
+	    syncWindowPosition (w);
     }
 
-    if (sync)
-    {
-        //sendScreenViewportMessage(s);
-
-	//setCurrentActiveWindowHistory (s, s->x, s->y);
-
-	/*w = findWindowAtDisplay (s->display, s->display->activeWindow);
-	if (w)
-	{
-	    int x, y;
-
-	    defaultViewportForWindow (w, &x, &y);
-
-	    // add window to current history if it's default viewport is
-	    //   still the current one. 
-	    if (s->x == x && s->y == y)
-		addToCurrentActiveWindowHistory (s, w->id);
-	}*/
-    }
+    /* if (sync)
+     * {
+     *     sendScreenViewportMessage(s);
+     * 
+     * 	setCurrentActiveWindowHistory (s, s->x, s->y);
+     * 
+     * 	w = findWindowAtDisplay (s->display, s->display->activeWindow);
+     * 	  if (w)
+     * 	  {
+     * 	  int x, y;
+     * 
+     * 	  defaultViewportForWindow (w, &x, &y);
+     * 
+     * 	  // add window to current history if it's default viewport is
+     * 	  //   still the current one. 
+     * 	  if (s->x == x && s->y == y)
+     * 	  addToCurrentActiveWindowHistory (s, w->id);
+     * 	  }
+     * } */
 }
 
+/* TODO cant this be handled by e? */
 void
 moveWindowToViewportPosition (CompWindow *w,
 			      int	 x,
@@ -2719,67 +2717,68 @@ moveWindowToViewportPosition (CompWindow *w,
     }
 }
 
-CompGroup *
-addGroupToScreen (CompScreen *s,
-		  Window     id)
-{
-    CompGroup *group;
+/* CompGroup *
+ * addGroupToScreen (CompScreen *s,
+ * 		  Window     id)
+ * {
+ *     CompGroup *group;
+ * 
+ *     group = malloc (sizeof (CompGroup));
+ *     if (!group)
+ * 	return NULL;
+ * 
+ *     group->next   = s->groups;
+ *     group->refCnt = 1;
+ *     group->id     = id;
+ * 
+ *     s->groups = group;
+ * 
+ *     return group;
+ * }
+ * 
+ * void
+ * removeGroupFromScreen (CompScreen *s,
+ * 		       CompGroup  *group)
+ * {
+ *     group->refCnt--;
+ *     if (group->refCnt)
+ * 	return;
+ * 
+ *     if (group == s->groups)
+ *     {
+ * 	s->groups = group->next;
+ *     }
+ *     else
+ *     {
+ * 	CompGroup *g;
+ * 
+ * 	for (g = s->groups; g; g = g->next)
+ * 	{
+ * 	    if (g->next == group)
+ * 	    {
+ * 		g->next = group->next;
+ * 		break;
+ * 	    }
+ * 	}
+ *     }
+ * 
+ *     free (group);
+ * }
+ * 
+ * CompGroup *
+ * findGroupAtScreen (CompScreen *s,
+ * 		   Window     id)
+ * {
+ *     CompGroup *g;
+ * 
+ *     for (g = s->groups; g; g = g->next)
+ * 	if (g->id == id)
+ * 	    return g;
+ * 
+ *     return NULL;
+ * } */
 
-    group = malloc (sizeof (CompGroup));
-    if (!group)
-	return NULL;
-
-    group->next   = s->groups;
-    group->refCnt = 1;
-    group->id     = id;
-
-    s->groups = group;
-
-    return group;
-}
-
-void
-removeGroupFromScreen (CompScreen *s,
-		       CompGroup  *group)
-{
-    group->refCnt--;
-    if (group->refCnt)
-	return;
-
-    if (group == s->groups)
-    {
-	s->groups = group->next;
-    }
-    else
-    {
-	CompGroup *g;
-
-	for (g = s->groups; g; g = g->next)
-	{
-	    if (g->next == group)
-	    {
-		g->next = group->next;
-		break;
-	    }
-	}
-    }
-
-    free (group);
-}
-
-CompGroup *
-findGroupAtScreen (CompScreen *s,
-		   Window     id)
-{
-    CompGroup *g;
-
-    for (g = s->groups; g; g = g->next)
-	if (g->id == id)
-	    return g;
-
-    return NULL;
-}
-
+/* XXX use ECOMORPH_ATOM message  */
 void
 sendWindowActivationRequest (CompScreen *s,
 			     Window	id)

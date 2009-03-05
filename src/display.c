@@ -45,10 +45,10 @@
 
 //#define DEBUG 1
 
-static unsigned int virtualModMask[] = {
-    CompAltMask, CompMetaMask, CompSuperMask, CompHyperMask,
-    CompModeSwitchMask, CompNumLockMask, CompScrollLockMask
-};
+/* static unsigned int virtualModMask[] = {
+ *     CompAltMask, CompMetaMask, CompSuperMask, CompHyperMask,
+ *     CompModeSwitchMask, CompNumLockMask, CompScrollLockMask
+ * }; */
 
 typedef struct _CompTimeout {
     struct _CompTimeout *next;
@@ -565,152 +565,152 @@ getTimeToNextRedraw (CompScreen     *s,
     return s->redrawTime - diff;
 }
 
-static const int maskTable[] = {
-    ShiftMask, LockMask, ControlMask, Mod1Mask,
-    Mod2Mask, Mod3Mask, Mod4Mask, Mod5Mask
-};
-static const int maskTableSize = sizeof (maskTable) / sizeof (int);
-
-void
-updateModifierMappings (CompDisplay *d)
-{
-    unsigned int    modMask[CompModNum];
-    int		    i, minKeycode, maxKeycode, keysymsPerKeycode = 0;
-    KeySym*         key;
-
-    for (i = 0; i < CompModNum; i++)
-	modMask[i] = 0;
-
-    XDisplayKeycodes (d->display, &minKeycode, &maxKeycode);
-    key = XGetKeyboardMapping (d->display,
-			       minKeycode, (maxKeycode - minKeycode + 1),
-		     	       &keysymsPerKeycode);
-
-    if (d->modMap)
-	XFreeModifiermap (d->modMap);
-
-    d->modMap = XGetModifierMapping (d->display);
-    if (d->modMap && d->modMap->max_keypermod > 0)
-    {
-	KeySym keysym;
-	int    index, size, mask;
-
-	size = maskTableSize * d->modMap->max_keypermod;
-
-	for (i = 0; i < size; i++)
-	{
-	    if (!d->modMap->modifiermap[i])
-		continue;
-
-	    index = 0;
-	    do
-	    {
-		keysym = XKeycodeToKeysym (d->display,
-					   d->modMap->modifiermap[i],
-					   index++);
-	    } while (!keysym && index < keysymsPerKeycode);
-
-	    if (keysym)
-	    {
-		mask = maskTable[i / d->modMap->max_keypermod];
-
-		if (keysym == XK_Alt_L ||
-		    keysym == XK_Alt_R)
-		{
-		    modMask[CompModAlt] |= mask;
-		}
-		else if (keysym == XK_Meta_L ||
-			 keysym == XK_Meta_R)
-		{
-		    modMask[CompModMeta] |= mask;
-		}
-		else if (keysym == XK_Super_L ||
-			 keysym == XK_Super_R)
-		{
-		    modMask[CompModSuper] |= mask;
-		}
-		else if (keysym == XK_Hyper_L ||
-			 keysym == XK_Hyper_R)
-		{
-		    modMask[CompModHyper] |= mask;
-		}
-		else if (keysym == XK_Mode_switch)
-		{
-		    modMask[CompModModeSwitch] |= mask;
-		}
-		else if (keysym == XK_Scroll_Lock)
-		{
-		    modMask[CompModScrollLock] |= mask;
-		}
-		else if (keysym == XK_Num_Lock)
-		{
-		    modMask[CompModNumLock] |= mask;
-		}
-	    }
-	}
-
-	for (i = 0; i < CompModNum; i++)
-	{
-	    if (!modMask[i])
-		modMask[i] = CompNoMask;
-	}
-
-	if (memcmp (modMask, d->modMask, sizeof (modMask)))
-	{
-	    CompScreen *s;
-
-	    memcpy (d->modMask, modMask, sizeof (modMask));
-
-	    d->ignoredModMask = LockMask |
-		(modMask[CompModNumLock]    & ~CompNoMask) |
-		(modMask[CompModScrollLock] & ~CompNoMask);
-
-	    for (s = d->screens; s; s = s->next)
-		updatePassiveGrabs (s);
-	}
-    }
-
-    if (key)
-	XFree (key);
-}
-
-unsigned int
-virtualToRealModMask (CompDisplay  *d,
-		      unsigned int modMask)
-{
-    int i;
-
-    for (i = 0; i < CompModNum; i++)
-    {
-	if (modMask & virtualModMask[i])
-	{
-	    modMask &= ~virtualModMask[i];
-	    modMask |= d->modMask[i];
-	}
-    }
-
-    return modMask;
-}
-
-unsigned int
-keycodeToModifiers (CompDisplay *d,
-		    int         keycode)
-{
-    unsigned int mods = 0;
-    int mod, k;
-
-    for (mod = 0; mod < maskTableSize; mod++)
-    {
-	for (k = 0; k < d->modMap->max_keypermod; k++)
-	{
-	    if (d->modMap->modifiermap[mod * d->modMap->max_keypermod + k] ==
-		keycode)
-		mods |= maskTable[mod];
-	}
-    }
-
-    return mods;
-}
+/* static const int maskTable[] = {
+ *     ShiftMask, LockMask, ControlMask, Mod1Mask,
+ *     Mod2Mask, Mod3Mask, Mod4Mask, Mod5Mask
+ * };
+ * static const int maskTableSize = sizeof (maskTable) / sizeof (int);
+ * 
+ * void
+ * updateModifierMappings (CompDisplay *d)
+ * {
+ *     unsigned int    modMask[CompModNum];
+ *     int		    i, minKeycode, maxKeycode, keysymsPerKeycode = 0;
+ *     KeySym*         key;
+ * 
+ *     for (i = 0; i < CompModNum; i++)
+ * 	modMask[i] = 0;
+ * 
+ *     XDisplayKeycodes (d->display, &minKeycode, &maxKeycode);
+ *     key = XGetKeyboardMapping (d->display,
+ * 			       minKeycode, (maxKeycode - minKeycode + 1),
+ * 		     	       &keysymsPerKeycode);
+ * 
+ *     if (d->modMap)
+ * 	XFreeModifiermap (d->modMap);
+ * 
+ *     d->modMap = XGetModifierMapping (d->display);
+ *     if (d->modMap && d->modMap->max_keypermod > 0)
+ *     {
+ * 	KeySym keysym;
+ * 	int    index, size, mask;
+ * 
+ * 	size = maskTableSize * d->modMap->max_keypermod;
+ * 
+ * 	for (i = 0; i < size; i++)
+ * 	{
+ * 	    if (!d->modMap->modifiermap[i])
+ * 		continue;
+ * 
+ * 	    index = 0;
+ * 	    do
+ * 	    {
+ * 		keysym = XKeycodeToKeysym (d->display,
+ * 					   d->modMap->modifiermap[i],
+ * 					   index++);
+ * 	    } while (!keysym && index < keysymsPerKeycode);
+ * 
+ * 	    if (keysym)
+ * 	    {
+ * 		mask = maskTable[i / d->modMap->max_keypermod];
+ * 
+ * 		if (keysym == XK_Alt_L ||
+ * 		    keysym == XK_Alt_R)
+ * 		{
+ * 		    modMask[CompModAlt] |= mask;
+ * 		}
+ * 		else if (keysym == XK_Meta_L ||
+ * 			 keysym == XK_Meta_R)
+ * 		{
+ * 		    modMask[CompModMeta] |= mask;
+ * 		}
+ * 		else if (keysym == XK_Super_L ||
+ * 			 keysym == XK_Super_R)
+ * 		{
+ * 		    modMask[CompModSuper] |= mask;
+ * 		}
+ * 		else if (keysym == XK_Hyper_L ||
+ * 			 keysym == XK_Hyper_R)
+ * 		{
+ * 		    modMask[CompModHyper] |= mask;
+ * 		}
+ * 		else if (keysym == XK_Mode_switch)
+ * 		{
+ * 		    modMask[CompModModeSwitch] |= mask;
+ * 		}
+ * 		else if (keysym == XK_Scroll_Lock)
+ * 		{
+ * 		    modMask[CompModScrollLock] |= mask;
+ * 		}
+ * 		else if (keysym == XK_Num_Lock)
+ * 		{
+ * 		    modMask[CompModNumLock] |= mask;
+ * 		}
+ * 	    }
+ * 	}
+ * 
+ * 	for (i = 0; i < CompModNum; i++)
+ * 	{
+ * 	    if (!modMask[i])
+ * 		modMask[i] = CompNoMask;
+ * 	}
+ * 
+ * 	if (memcmp (modMask, d->modMask, sizeof (modMask)))
+ * 	{
+ * 	    CompScreen *s;
+ * 
+ * 	    memcpy (d->modMask, modMask, sizeof (modMask));
+ * 
+ * 	    d->ignoredModMask = LockMask |
+ * 		(modMask[CompModNumLock]    & ~CompNoMask) |
+ * 		(modMask[CompModScrollLock] & ~CompNoMask);
+ * 
+ * 	    for (s = d->screens; s; s = s->next)
+ * 		updatePassiveGrabs (s);
+ * 	}
+ *     }
+ * 
+ *     if (key)
+ * 	XFree (key);
+ * }
+ * 
+ * unsigned int
+ * virtualToRealModMask (CompDisplay  *d,
+ * 		      unsigned int modMask)
+ * {
+ *     int i;
+ * 
+ *     for (i = 0; i < CompModNum; i++)
+ *     {
+ * 	if (modMask & virtualModMask[i])
+ * 	{
+ * 	    modMask &= ~virtualModMask[i];
+ * 	    modMask |= d->modMask[i];
+ * 	}
+ *     }
+ * 
+ *     return modMask;
+ * }
+ * 
+ * unsigned int
+ * keycodeToModifiers (CompDisplay *d,
+ * 		    int         keycode)
+ * {
+ *     unsigned int mods = 0;
+ *     int mod, k;
+ * 
+ *     for (mod = 0; mod < maskTableSize; mod++)
+ *     {
+ * 	for (k = 0; k < d->modMap->max_keypermod; k++)
+ * 	{
+ * 	    if (d->modMap->modifiermap[mod * d->modMap->max_keypermod + k] ==
+ * 		keycode)
+ * 		mods |= maskTable[mod];
+ * 	}
+ *     }
+ * 
+ *     return mods;
+ * } */
 
 static int
 doPoll (int timeout)
@@ -910,39 +910,41 @@ eventLoop (void)
 	
 	while (XPending (display->display))
 	{
-	    XNextEvent (display->display, &event);
+	  XNextEvent (display->display, &event);
 
-	    switch (event.type) {
-	    case ButtonPress:
-	    case ButtonRelease:
-		pointerX = event.xbutton.x_root;
-		pointerY = event.xbutton.y_root;
-		break;
-	    case KeyPress:
-	    case KeyRelease:
-		pointerX = event.xkey.x_root;
-		pointerY = event.xkey.y_root;
-		break;
-	    case MotionNotify:
-		pointerX = event.xmotion.x_root;
-		pointerY = event.xmotion.y_root;
-		break;
-	    case EnterNotify:
-	    case LeaveNotify:
-		pointerX = event.xcrossing.x_root;
-		pointerY = event.xcrossing.y_root;
-		break;
-	    case ClientMessage:
-		if (event.xclient.message_type == display->xdndPositionAtom)
-		{
-		    pointerX = event.xclient.data.l[2] >> 16;
-		    pointerY = event.xclient.data.l[2] & 0xffff;
-		}
-	    default:
-		break;
-	    }
+	  /* TODO handle dnd info from e17, used for scale plugin */
 
-	    //sn_display_process_event (display->snDisplay, &event);
+	  /* switch (event.type) {
+	     * case ButtonPress:
+	     * case ButtonRelease:
+	     * 	pointerX = event.xbutton.x_root;
+	     * 	pointerY = event.xbutton.y_root;
+	     * 	break;
+	     * case KeyPress:
+	     * case KeyRelease:
+	     * 	pointerX = event.xkey.x_root;
+	     * 	pointerY = event.xkey.y_root;
+	     * 	break;
+	     * case MotionNotify:
+	     * 	pointerX = event.xmotion.x_root;
+	     * 	pointerY = event.xmotion.y_root;
+	     * 	break;
+	     * case EnterNotify:
+	     * case LeaveNotify:
+	     * 	pointerX = event.xcrossing.x_root;
+	     * 	pointerY = event.xcrossing.y_root;
+	     * 	break;
+	     * case ClientMessage:
+	     * 	if (event.xclient.message_type == display->xdndPositionAtom)
+	     * 	{
+	     * 	    pointerX = event.xclient.data.l[2] >> 16;
+	     * 	    pointerY = event.xclient.data.l[2] & 0xffff;
+	     * 	}
+	     * default:
+	     * 	break;
+	     * }
+	     * 
+	     * //sn_display_process_event (display->snDisplay, &event); */
 
 	    inHandleEvent = TRUE;
 
@@ -1264,23 +1266,23 @@ compCheckForError (Display *dpy)
 }
 
 /* add actions that should be automatically added as no screens
-   existed when they were initialized. */
-/* #ifdef KEYBINDING */
-/* static void */
-/* addScreenActions (CompScreen *s) */
-/* { */
-/*     int i; */
-
-/*     for (i = 0; i < COMP_DISPLAY_OPTION_NUM; i++) */
-/*     { */
-/* 	if (s->display->opt[i].type == CompOptionTypeAction) */
-/* 	{ */
-/* 	    if (s->display->opt[i].value.action.state & CompActionStateAutoGrab) */
-/* 		addScreenAction (s, &s->display->opt[i].value.action); */
-/* 	} */
-/*     } */
-/* } */
-/* #endif */
+ *    existed when they were initialized.
+ * #ifdef KEYBINDING
+ * static void
+ * addScreenActions (CompScreen *s)
+ * {
+ *     int i;
+ * 
+ *     for (i = 0; i < COMP_DISPLAY_OPTION_NUM; i++)
+ *     {
+ * 	if (s->display->opt[i].type == CompOptionTypeAction)
+ * 	{
+ * 	    if (s->display->opt[i].value.action.state & CompActionStateAutoGrab)
+ * 		addScreenAction (s, &s->display->opt[i].value.action);
+ * 	}
+ *     }
+ * }
+ * #endif */
 
 void
 addScreenToDisplay (CompDisplay *display,
@@ -1294,9 +1296,9 @@ addScreenToDisplay (CompDisplay *display,
 	prev->next = s;
     else
 	display->screens = s;
-#ifdef KEYBOARD
-    addScreenActions (s);
-#endif
+/* #ifdef KEYBOARD
+ *     addScreenActions (s);
+ * #endif */
 }
 
 Bool
@@ -1309,7 +1311,7 @@ addDisplay (char *name)
     int  i;
     int		compositeMajor, compositeMinor;
     int		fixesMinor;
-    int		xkbOpcode;
+    /* int		xkbOpcode; */
     int		firstScreen, lastScreen;
 
     d = &compDisplay;
@@ -1328,12 +1330,12 @@ addDisplay (char *name)
     d->screenPrivateIndices = 0;
     d->screenPrivateLen     = 0;
 
-    d->modMap = 0;
+    /* d->modMap = 0; */
 
-    for (i = 0; i < CompModNum; i++)
-	d->modMask[i] = CompNoMask;
+    /* for (i = 0; i < CompModNum; i++)
+     * 	d->modMask[i] = CompNoMask; */
 
-    d->ignoredModMask = LockMask;
+    /* d->ignoredModMask = LockMask; */
 
     d->plugin.list.type   = CompOptionTypeString;
     d->plugin.list.nValue = 0;
@@ -1374,9 +1376,9 @@ addDisplay (char *name)
 
     XSetErrorHandler (errorHandler);
 
-#ifdef KEYBINDING
-    updateModifierMappings (d);
-#endif
+/* #ifdef KEYBINDING
+ *     updateModifierMappings (d);
+ * #endif */
 
     d->setDisplayOption		 = setDisplayOption;
     d->setDisplayOptionForPlugin = setDisplayOptionForPlugin;
@@ -1615,25 +1617,25 @@ addDisplay (char *name)
 					      &d->shapeEvent,
 					      &d->shapeError);
 
-    d->xkbExtension = XkbQueryExtension (dpy,
-					 &xkbOpcode,
-					 &d->xkbEvent,
-					 &d->xkbError,
-					 NULL, NULL);
-    if (d->xkbExtension)
-    {
-	XkbSelectEvents (dpy,
-			 XkbUseCoreKbd,
-			 XkbBellNotifyMask | XkbStateNotifyMask,
-			 XkbAllEventsMask);
-    }
-    else
-    {
-	compLogMessage (d, "core", CompLogLevelFatal,
-			"No XKB extension");
-
-	d->xkbEvent = d->xkbError = -1;
-    }
+    /* d->xkbExtension = XkbQueryExtension (dpy,
+     * 					 &xkbOpcode,
+     * 					 &d->xkbEvent,
+     * 					 &d->xkbError,
+     * 					 NULL, NULL);
+     * if (d->xkbExtension)
+     * {
+     * 	XkbSelectEvents (dpy,
+     * 			 XkbUseCoreKbd,
+     * 			 XkbBellNotifyMask | XkbStateNotifyMask,
+     * 			 XkbAllEventsMask);
+     * }
+     * else
+     * {
+     * 	compLogMessage (d, "core", CompLogLevelFatal,
+     * 			"No XKB extension");
+     * 
+     * 	d->xkbEvent = d->xkbError = -1;
+     * } */
 
     d->xineramaExtension = XineramaQueryExtension (dpy,
 						   &d->xineramaEvent,
@@ -1647,8 +1649,8 @@ addDisplay (char *name)
 
     compDisplays = d;
 
-    d->escapeKeyCode = XKeysymToKeycode (dpy, XStringToKeysym ("Escape"));
-    d->returnKeyCode = XKeysymToKeycode (dpy, XStringToKeysym ("Return"));
+    /* d->escapeKeyCode = XKeysymToKeycode (dpy, XStringToKeysym ("Escape"));
+     * d->returnKeyCode = XKeysymToKeycode (dpy, XStringToKeysym ("Return")); */
 
     if (onlyCurrentScreen)
     {
@@ -1669,9 +1671,9 @@ addDisplay (char *name)
 	XSetWindowAttributes attr;
 	Window		     currentWmSnOwner, currentCmSnOwner;
 	char		     buf[128];
-	Window		     rootDummy, childDummy;
-	unsigned int	     uDummy;
-	int		     x, y, dummy;
+	/* Window		     rootDummy, childDummy;
+	 * unsigned int	     uDummy; */
+	/* int		     x, y, dummy; */
 
 	sprintf (buf, "WM_S%d", i);
 	wmSnAtom = XInternAtom (dpy, buf, 0);
@@ -1728,13 +1730,15 @@ addDisplay (char *name)
 		      StructureNotifyMask      |
 		      PropertyChangeMask       |
                       ExposureMask             |
+		      /* TODO get theevents from e? */
                       LeaveWindowMask	       |
 		      FocusChangeMask	       |
-                      EnterWindowMask          |
-		      KeyPressMask	       |
-		      KeyReleaseMask	       |
-		      ButtonPressMask	       |
-		      ButtonReleaseMask);
+                      EnterWindowMask
+		      /* KeyPressMask	       |
+		       * KeyReleaseMask	       |
+		       * ButtonPressMask	       |
+		       * ButtonReleaseMask */
+		      );
         
                                        		
         
@@ -1754,12 +1758,12 @@ addDisplay (char *name)
 			    "Failed to manage screen: %d", i);
 	}
 
-	if (XQueryPointer (dpy, XRootWindow (dpy, i),
-			   &rootDummy, &childDummy,
-			   &x, &y, &dummy, &dummy, &uDummy))
+	/* if (XQueryPointer (dpy, XRootWindow (dpy, i),
+	 * 		   &rootDummy, &childDummy,
+	 * 		   &x, &y, &dummy, &dummy, &uDummy)) */
 	{
-	    lastPointerX = pointerX = x;
-	    lastPointerY = pointerY = y;
+	    lastPointerX = pointerX = 0;
+	    lastPointerY = pointerY = 0;
 	}
 
 	XUngrabServer (dpy);
@@ -1860,7 +1864,7 @@ findTopLevelWindowAtDisplay (CompDisplay *d,
     return 0;
 }
 
-
+/*XXX hm this could conlfict with e17 */
 void
 warpPointer (CompScreen *s,
 	     int	 dx,
@@ -1903,37 +1907,37 @@ warpPointer (CompScreen *s,
 }
 
 
-Bool
-setDisplayAction (CompDisplay     *display,
-		  CompOption      *o,
-		  CompOptionValue *value)
-{
-    CompScreen *s;
-
-    for (s = display->screens; s; s = s->next)
-	if (!addScreenAction (s, &value->action))
-	    break;
-
-    if (s)
-    {
-	CompScreen *failed = s;
-
-	for (s = display->screens; s && s != failed; s = s->next)
-	    removeScreenAction (s, &value->action);
-
-	return FALSE;
-    }
-    else
-    {
-	for (s = display->screens; s; s = s->next)
-	    removeScreenAction (s, &o->value.action);
-    }
-
-    if (compSetActionOption (o, value))
-	return TRUE;
-
-    return FALSE;
-}
+/* Bool
+ * setDisplayAction (CompDisplay     *display,
+ * 		  CompOption      *o,
+ * 		  CompOptionValue *value)
+ * {
+ *     CompScreen *s;
+ * 
+ *     for (s = display->screens; s; s = s->next)
+ * 	if (!addScreenAction (s, &value->action))
+ * 	    break;
+ * 
+ *     if (s)
+ *     {
+ * 	CompScreen *failed = s;
+ * 
+ * 	for (s = display->screens; s && s != failed; s = s->next)
+ * 	    removeScreenAction (s, &value->action);
+ * 
+ * 	return FALSE;
+ *     }
+ *     else
+ *     {
+ * 	for (s = display->screens; s; s = s->next)
+ * 	    removeScreenAction (s, &o->value.action);
+ *     }
+ * 
+ *     if (compSetActionOption (o, value))
+ * 	return TRUE;
+ * 
+ *     return FALSE;
+ * } */
 
 void
 clearTargetOutput (CompDisplay	*display,

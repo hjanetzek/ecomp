@@ -255,10 +255,11 @@ bindPixmapToTexture (CompScreen  *screen,
        then use that target and avoid a possible round trip in
        glXQueryDrawable. Allow the server to choose texture target
        when it supports more than one for this fbconfig. */
+
     if (!(config->textureTargets & GLX_TEXTURE_2D_BIT_EXT))
-	target = GLX_TEXTURE_RECTANGLE_EXT;
+      target = GLX_TEXTURE_RECTANGLE_EXT;
     else if (!(config->textureTargets & GLX_TEXTURE_RECTANGLE_BIT_EXT))
-	target = GLX_TEXTURE_2D_EXT;
+      target = GLX_TEXTURE_2D_EXT;
 
     if (target)
     {

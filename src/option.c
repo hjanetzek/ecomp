@@ -378,8 +378,8 @@ compSetOption (CompOption      *option,
 	return compSetColorOption (option, value);
     case CompOptionTypeMatch:
 	return compSetMatchOption (option, value);
-    case CompOptionTypeAction:
-	return compSetActionOption (option, value);
+    /* case CompOptionTypeAction:
+     * 	return compSetActionOption (option, value); */
     case CompOptionTypeList:
 	return compSetOptionList (option, value);
     }
@@ -747,8 +747,8 @@ char *
 optionTypeToString (CompOptionType type)
 {
     switch (type) {
-    case CompOptionTypeAction:
-	return "action";
+    /* case CompOptionTypeAction:
+     * 	return "action"; */
     case CompOptionTypeMatch:
 	return "match";
     case CompOptionTypeBool:

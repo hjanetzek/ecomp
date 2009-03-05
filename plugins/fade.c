@@ -472,62 +472,62 @@ fadeHandleEvent (CompDisplay *d,
 	}
 	break;
     default:
-	if (event->type == d->xkbEvent)
-	{
-	    XkbAnyEvent *xkbEvent = (XkbAnyEvent *) event;
-
-	    if (xkbEvent->xkb_type == XkbBellNotify)
-	    {
-		XkbBellNotifyEvent *xkbBellEvent = (XkbBellNotifyEvent *)
-		    xkbEvent;
-
-		w = findWindowAtDisplay (d, xkbBellEvent->window);
-		if (!w)
-		    w = findWindowAtDisplay (d, d->activeWindow);
-
-		if (w)
-		{
-		    CompScreen *s = w->screen;
-
-		    FADE_SCREEN (s);
-
-		    if (fs->opt[FADE_SCREEN_OPTION_VISUAL_BELL].value.b)
-		    {
-			int option;
-
-			option = FADE_SCREEN_OPTION_FULLSCREEN_VISUAL_BELL;
-			if (fs->opt[option].value.b)
-			{
-			    for (w = s->windows; w; w = w->next)
-			    {
-				if (w->destroyed)
-				    continue;
-
-				if (w->attrib.map_state != IsViewable)
-				    continue;
-
-				if (w->damaged)
-				{
-				    FADE_WINDOW (w);
-
-				    fw->brightness = w->paint.brightness / 2;
-				}
-			    }
-
-			    damageScreen (s);
-			}
-			else
-			{
-			    FADE_WINDOW (w);
-
-			    fw->brightness = w->paint.brightness / 2;
-
-			    addWindowDamage (w);
-			}
-		    }
-		}
-	    }
-	}
+	/* if (event->type == d->xkbEvent)
+	 * {
+	 *     XkbAnyEvent *xkbEvent = (XkbAnyEvent *) event;
+	 * 
+	 *     if (xkbEvent->xkb_type == XkbBellNotify)
+	 *     {
+	 * 	XkbBellNotifyEvent *xkbBellEvent = (XkbBellNotifyEvent *)
+	 * 	    xkbEvent;
+	 * 
+	 * 	w = findWindowAtDisplay (d, xkbBellEvent->window);
+	 * 	if (!w)
+	 * 	    w = findWindowAtDisplay (d, d->activeWindow);
+	 * 
+	 * 	if (w)
+	 * 	{
+	 * 	    CompScreen *s = w->screen;
+	 * 
+	 * 	    FADE_SCREEN (s);
+	 * 
+	 * 	    if (fs->opt[FADE_SCREEN_OPTION_VISUAL_BELL].value.b)
+	 * 	    {
+	 * 		int option;
+	 * 
+	 * 		option = FADE_SCREEN_OPTION_FULLSCREEN_VISUAL_BELL;
+	 * 		if (fs->opt[option].value.b)
+	 * 		{
+	 * 		    for (w = s->windows; w; w = w->next)
+	 * 		    {
+	 * 			if (w->destroyed)
+	 * 			    continue;
+	 * 
+	 * 			if (w->attrib.map_state != IsViewable)
+	 * 			    continue;
+	 * 
+	 * 			if (w->damaged)
+	 * 			{
+	 * 			    FADE_WINDOW (w);
+	 * 
+	 * 			    fw->brightness = w->paint.brightness / 2;
+	 * 			}
+	 * 		    }
+	 * 
+	 * 		    damageScreen (s);
+	 * 		}
+	 * 		else
+	 * 		{
+	 * 		    FADE_WINDOW (w);
+	 * 
+	 * 		    fw->brightness = w->paint.brightness / 2;
+	 * 
+	 * 		    addWindowDamage (w);
+	 * 		}
+	 * 	    }
+	 * 	}
+	 *     }
+	 * } */
 	break;
     }
 
