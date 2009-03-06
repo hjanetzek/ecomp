@@ -64,19 +64,21 @@ void fxMagicLampInit(CompScreen * s, CompWindow * w)
     int maxWaves;
     float waveAmpMin, waveAmpMax;
 
-    if (aw->curAnimEffect == AnimEffectMagicLamp)
+    /* if (aw->curAnimEffect == AnimEffectMagicLamp)
+     * {
+     *   maxWaves = 1; //animGetI(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_MAX_WAVES);
+     *   waveAmpMin = 0;
+     *   
+     *   //animGetF(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_WAVE_AMP_MIN);
+     *   waveAmpMax = 100;
+     *   
+     *   //    animGetF(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_WAVE_AMP_MAX);
+     * } */
+    //else
     {
-	maxWaves = animGetI(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_MAX_WAVES);
-	waveAmpMin =
-	    animGetF(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_WAVE_AMP_MIN);
-	waveAmpMax =
-	    animGetF(as, aw, ANIM_SCREEN_OPTION_MAGIC_LAMP_WAVE_AMP_MAX);
-    }
-    else
-    {
-	maxWaves = 0;
-	waveAmpMin = 0;
-	waveAmpMax = 0;
+	maxWaves = 1;
+	waveAmpMin = 100;
+	waveAmpMax = 100;
     }
     if (waveAmpMax < waveAmpMin)
 	waveAmpMax = waveAmpMin;
@@ -91,26 +93,33 @@ void fxMagicLampInit(CompScreen * s, CompWindow * w)
 	    distance = aw->icon.y - WIN_Y(w);
 
 	// Initialize waves
-	model->magicLampWaveCount =
-	    1 + (float)maxWaves *distance / screenHeight;
+	model->magicLampWaveCount = 1;
+	
+	//1 + (float)maxWaves *distance / screenHeight;
 
 	if (!(model->magicLampWaves))
 	    model->magicLampWaves =
 		calloc(model->magicLampWaveCount, sizeof(WaveParam));
-
-	int ampDirection = (RAND_FLOAT() < 0.5 ? 1 : -1);
+	int diff = WIN_X(w) + WIN_W(w)/2 - aw->icon.x;
+	
+	//int ampDirection = (RAND_FLOAT() < 0.5 ? 1 : -1);
+	int ampDirection = diff > 0 ? -1 : 1;
 	int i;
 	float minHalfWidth = 0.22f;
 	float maxHalfWidth = 0.38f;
-
+	
 	for (i = 0; i < model->magicLampWaveCount; i++)
 	{
-	    model->magicLampWaves[i].amp =
-		ampDirection * (waveAmpMax - waveAmpMin) *
-		rand() / RAND_MAX + ampDirection * waveAmpMin;
-	    model->magicLampWaves[i].halfWidth =
-		RAND_FLOAT() * (maxHalfWidth -
-				minHalfWidth) + minHalfWidth;
+	  model->magicLampWaves[i].amp = 
+	  
+	      // ampDirection * (waveAmpMax - waveAmpMin) *
+	      // rand() / RAND_MAX +
+	  (double)diff / 2.0; //ampDirection * (waveAmpMin);
+
+	  model->magicLampWaves[i].halfWidth = 0.5f;
+	  
+		/* RAND_FLOAT() * (maxHalfWidth -
+		 * 		minHalfWidth) + minHalfWidth; */
 
 	    // avoid offset at top and bottom part by added waves
 	    float availPos = 1 - 2 * model->magicLampWaves[i].halfWidth;
