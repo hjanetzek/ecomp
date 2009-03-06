@@ -1954,7 +1954,7 @@ scaleHandleEvent (CompDisplay *d,
 	    {
 	      scaleSelectWindowAt (s, option, option2, 0);
 	    }
-	  else if (action == ECO_ACT_MOUSE_DOWN)
+	  else if (action == ECO_ACT_MOUSE_UP)
 	    {
 	      if (scaleSelectWindowAt (s, ECO_GET_X(option2), ECO_GET_Y(option2), 0))
 		{
