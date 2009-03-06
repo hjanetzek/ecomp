@@ -476,8 +476,8 @@ wallReleaseMoveWindow (CompScreen *s)
   WALL_SCREEN (s);
 
   w = findWindowAtScreen (s, ws->moveWindow);
-  if (w)
-    syncWindowPosition (w);
+  /* if (w)
+   *   syncWindowPosition (w); */
   ws->moveWindow = 0;
 }
 
@@ -511,68 +511,69 @@ wallMoveViewport (CompScreen *s,
 		  int        y,
 		  Window     moveWindow)
 {
-  WALL_SCREEN (s);
+	WALL_SCREEN (s);
 
-  if (!x && !y)
-    return FALSE;
+	CompWindow *w = NULL;
+  
+	if (!x && !y)
+		return FALSE;
 
-  if (wallCheckDestination (s, x, y))
+	if (wallCheckDestination (s, x, y))
     {
-      if (ws->moveWindow != moveWindow)
-	{
-	  CompWindow *w;
-
-	  wallReleaseMoveWindow (s);
-	  w = findWindowAtScreen (s, moveWindow);
-	  if (w)
-    	    {
-	      if (!(w->state & CompWindowStateStickyMask))
+		if (ws->moveWindow != moveWindow)
 		{
-		  ws->moveWindow = w->id;
-		  ws->moveWindowX = w->attrib.x;
-		  ws->moveWindowY = w->attrib.y;
-		  raiseWindow (w);
+			wallReleaseMoveWindow (s);
+			w = findWindowAtScreen (s, moveWindow);
+			if (w)
+    	    {
+				if (!(w->state & CompWindowStateStickyMask))
+				{
+					ws->moveWindow = w->id;
+					ws->moveWindowX = w->attrib.x;
+					ws->moveWindowY = w->attrib.y;
+					raiseWindow (w);
+				}
+			}
 		}
-	    }
-	}
 
-      ws->fromX = s->x;
-      ws->fromY = s->y;
+		ws->fromX = s->x;
+		ws->fromY = s->y;
 	
 	
-      if (!ws->moving)
-	{
-	  ws->curPosX = s->x;
-	  ws->curPosY = s->y;
-	}
-      ws->gotoX = s->x - x;
-      ws->gotoY = s->y - y;
+		if (!ws->moving)
+		{
+			ws->curPosX = s->x;
+			ws->curPosY = s->y;
+		}
+		ws->gotoX = s->x - x;
+		ws->gotoY = s->y - y;
 
-      moveScreenViewport (s, x, y, TRUE);
-
-      ws->moving = TRUE;
-      ws->boxOutputDevice = s->currentOutputDev;
+		if (w) w->placed = FALSE;
+		moveScreenViewport (s, x, y, TRUE);
+		if (w) w->placed = TRUE;
+		
+		ws->moving = TRUE;
+		ws->boxOutputDevice = s->currentOutputDev;
     }
-
-  if (ws->moving)
+	if (ws->moving)
     {
-      if (wallGetShowSwitcher (s->display))
-	ws->boxTimeout = wallGetPreviewTimeout (s->display) * 1000;
-      else
-	ws->boxTimeout = 0;
+		if (wallGetShowSwitcher (s->display))
+			ws->boxTimeout = wallGetPreviewTimeout (s->display) * 1000;
+		else
+			ws->boxTimeout = 0;
 
-      if (otherScreenGrabExist (s, "move", "scale", "group-drag", "wall", 0))
-	{
-	  ws->boxTimeout = 0;
-	  ws->moving = FALSE;
-	}
+		if (otherScreenGrabExist (s, "move", "scale", "group-drag", "wall", 0))
+		{
+			ws->boxTimeout = 0;
+			ws->moving = FALSE;
+		}
 
-      ws->timer = wallGetSlideDuration (s->display) * 1000;
+		ws->timer = wallGetSlideDuration (s->display) * 1000;
     }
 
-  damageScreen (s);
+	damageScreen (s);
 
-  return ws->moving;
+	return ws->moving;
 }
 
 
@@ -644,11 +645,11 @@ wallHandleEvent (CompDisplay *d,
 	    }
 	  else if(moveType == 1) /* window grabbed by mouse */
 	    { 
-	      w = findWindowAtScreen(s, win);
-	      if(w)
-		{ 
-		  moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
-		}
+	    /*   w = findWindowAtScreen(s, win);
+	     *   if(w)
+		 * { 
+		 *   moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
+		 * } */
 	      wallMoveViewport (s, amountX, amountY, win);		
 	    }
 	  else if(moveType == 2) /* move with window to desk (keybinding) )*/
@@ -1054,17 +1055,17 @@ wallPreparePaintScreen (CompScreen *s,
 
       wallComputeTranslation (s, &ws->curPosX, &ws->curPosY);
 
-      if (ws->moveWindow)
-	{
-	  w = findWindowAtScreen (s, ws->moveWindow);
-	  if (w)
-    	    {
-	      moveWindowToViewportPosition (w,
-					    ws->moveWindowX - s->width * dx,
-					    ws->moveWindowY - s->height * dy,
-					    FALSE);
-	    }
-	}
+    /*   if (ws->moveWindow)
+	 * {
+	 *   w = findWindowAtScreen (s, ws->moveWindow);
+	 *   if (w)
+     * 	    {
+	 * 			moveWindowToViewportPosition (w,
+	 * 				    ws->moveWindowX - s->width * dx,
+	 * 				    ws->moveWindowY - s->height * dy,
+	 * 				    FALSE);
+	 *     }
+	 * } */
     }
 
   if (ws->moving && ws->curPosX == ws->gotoX && ws->curPosY == ws->gotoY)
@@ -1075,13 +1076,13 @@ wallPreparePaintScreen (CompScreen *s,
       if (ws->moveWindow)
 	{
 	  w = findWindowAtScreen (s, ws->moveWindow);
-	  if (w)
-	    {
-	      moveWindowToViewportPosition (w,
-					    ws->moveWindowX,
-					    ws->moveWindowY,
-					    TRUE);
-	    }
+	  /* if (w)
+	   *   {	   	
+	   *     moveWindowToViewportPosition (w,
+	   * 				    ws->moveWindowX,
+	   * 				    ws->moveWindowY,
+	   * 				    TRUE);
+	   *   } */
 	  wallReleaseMoveWindow (s);
 	}
     }

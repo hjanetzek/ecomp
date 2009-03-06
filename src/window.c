@@ -1062,7 +1062,9 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	w->frame = None;
 
-	//w->placed		 = FALSE;
+	/*TODO remove */
+	w->placed		 = TRUE;
+	
 	w->minimized	 = FALSE;
 	w->inShowDesktopMode = FALSE;
 	w->shaded		 = FALSE;

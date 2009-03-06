@@ -2578,8 +2578,10 @@ moveScreenViewport (CompScreen *s,
 		if (!w->clientId)
 			continue;
 
-		if (w->type & (CompWindowTypeDesktopMask | CompWindowTypeDockMask))
-			continue;
+		if (!w->placed) continue;
+		
+		/* if (w->type & (CompWindowTypeDesktopMask | CompWindowTypeDockMask))
+		 * 	continue; */
 
 		if (w->state & CompWindowStateStickyMask)
 			continue;
