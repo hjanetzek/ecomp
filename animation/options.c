@@ -34,8 +34,13 @@ animGetOptVal(AnimScreen *as,
 	      AnimWindow *aw,
 	      int optionId)
 {
+	if (aw->curAnimSelectionRow >=
+		as->eventOptionSets[aw->curWindowEvent]->nSets)
+	 	return &as->opt[optionId].value;
+	
     OptionSet *os =
-	&as->eventOptionSets[aw->curWindowEvent]->sets[aw->curAnimSelectionRow];
+		&as->eventOptionSets[aw->curWindowEvent]->sets[aw->curAnimSelectionRow];
+		
     IdValuePair *pair = os->pairs;
 
     int i;
