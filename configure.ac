@@ -128,7 +128,9 @@ ECOMP_REQUIRES="xcomposite \
 		 sm	    \
 		 libxml-2.0 \
 		 libxslt \
-		 pango"
+		 pango \
+		 eina-0 \
+		 eet"
 
 
 PKG_CHECK_MODULES(ECOMP, $ECOMP_REQUIRES)
