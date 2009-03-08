@@ -2,7 +2,7 @@ Source: ecomp
 Section: x11
 Priority: optional
 Maintainer: quaker <quaker66@gmail.com>
-Build-Depends: cdbs, debhelper (>= 6), e17-dev, efl-dev
+Build-Depends: cdbs, debhelper (>= 6), efl-dev
 Standards-Version: 3.7.3
 
 Package: ecomorph-core
