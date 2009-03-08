@@ -126,13 +126,13 @@ iniOptionValueToString (CompOptionValue *value, CompOptionType type)
 
 	switch (type)
 	{
-	case CompOptionTypeBool:
-	case CompOptionTypeInt:
-		snprintf(tmp, 256, "%i", (int)value->i);
-		break;
-	case CompOptionTypeFloat:
-		snprintf(tmp, 256, "%f", value->f);
-		break;
+	/* case CompOptionTypeBool:
+	 * case CompOptionTypeInt:
+	 * 	snprintf(tmp, 256, "%i", (int)value->i);
+	 * 	break;
+	 * case CompOptionTypeFloat:
+	 * 	snprintf(tmp, 256, "%f", value->f);
+	 * 	break; */
 	case CompOptionTypeString:
 		snprintf (tmp, MAX_OPTION_LENGTH, "%s", strdup (value->s));
 		break;
@@ -275,12 +275,12 @@ typedef struct _IniOptData
 }IniOptData;
 
 static Bool
-iniGetOptList(Option *opt, CompListValue *list, CompOptionType type)
+iniGetOptList(Option *listOpt, CompListValue *list, CompOptionType type)
 {
 	Eina_List *l;
-	int count = eina_list_count(opt->listValue);
+	Option *opt;
+	int count = eina_list_count(listOpt->listValue);
 	int i = 0;
-	char *item;
 
 	if (count == 0)
 		return FALSE;
@@ -288,33 +288,32 @@ iniGetOptList(Option *opt, CompListValue *list, CompOptionType type)
 	list->nValue = count;
 	list->value = malloc (sizeof (CompOptionValue) * count);
 
-	for (l = opt->listValue; l; l = l->next, i++)
+	for (l = listOpt->listValue; l; l = l->next, i++)
 	{
-		item = ((Option *) l->data)->stringValue;
-		printf("   %s\n", item);
+		opt = l->data;
 		switch (type)
 		{
 		case CompOptionTypeString:
-			list->value[i].s = strdup (item);
+			list->value[i].s = strdup (opt->stringValue);
 			break;
 		case CompOptionTypeBool:
-			list->value[i].b = (Bool) atoi (item);
+			list->value[i].b = (Bool) opt->intValue;
 			break;
 		case CompOptionTypeInt:
-			list->value[i].i = atoi (item);
+			list->value[i].i = opt->intValue;
 			break;
 		case CompOptionTypeFloat:
-			list->value[i].f = atof (item);
+			list->value[i].f = (float) opt->doubleValue;
 			break;
 		case CompOptionTypeMatch:
 			matchInit (&list->value[i].match);
-			matchAddFromString (&list->value[i].match, item);
+			matchAddFromString (&list->value[i].match, opt->stringValue);
 			break;
 		default:
 			break;
 		}
 	}
-
+	
 	return TRUE;
 }
 
@@ -357,8 +356,7 @@ iniLoadGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 	CompOptionValue value;
 	int hasValue = FALSE, status;
 
-	if (opt->type != CompOptionTypeList)
-		printf("load: %s -> %s\n", (char *)optionName, opt->stringValue);
+
 
 	optionValue = opt->stringValue;
 
@@ -370,22 +368,27 @@ iniLoadGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 		switch (o->type)
 		{
 		case CompOptionTypeBool:
+			printf("load: %s: %d\n", optionName, opt->intValue);
 			hasValue = TRUE;
-			value.b = (Bool) atoi (optionValue);
+			value.b = (Bool) opt->intValue;
 			break;
 		case CompOptionTypeInt:
+			printf("load: %s: %d\n", optionName, opt->intValue);
 			hasValue = TRUE;
-			value.i = atoi (optionValue);
+			value.i = opt->intValue;
 			break;
 		case CompOptionTypeFloat:
+			printf("load: %s: %f\n", optionName, opt->doubleValue);
 			hasValue = TRUE;
-			value.f = atof (optionValue);
+			value.f = (float) opt->doubleValue;
 			break;
 		case CompOptionTypeString:
+			printf("load: %s: %s\n", optionName, opt->stringValue);
 			hasValue = TRUE;
-			value.s = strdup (optionValue);
+			value.s = strdup (opt->stringValue);
 			break;
 		case CompOptionTypeColor:
+			printf("load: %s: %s\n", optionName, opt->stringValue);
 			hasValue = stringToColor (optionValue, value.c);
 			break;
 		case CompOptionTypeList:
@@ -393,6 +396,7 @@ iniLoadGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 			hasValue = iniGetOptList(opt, &value.list, value.list.type);
 			break;
 		case CompOptionTypeMatch:
+			printf("load: %s: %s\n", optionName, opt->stringValue);
 			hasValue = TRUE;
 			matchInit (&value.match);
 			matchAddFromString (&value.match, optionValue);
@@ -599,8 +603,32 @@ iniSaveOptions (CompDisplay *d,
 		switch (option->type)
 		{
 		case CompOptionTypeBool:
+			if (!(opt = eina_hash_find(options->data, option->name)))
+			{
+				opt = calloc(1, sizeof(Option));
+				opt->type = option->type;
+				options->data = eet_eina_hash_add(options->data, option->name, opt);
+			}
+			opt->intValue = (int) option->value.b;
+			break;
 		case CompOptionTypeInt:
+			if (!(opt = eina_hash_find(options->data, option->name)))
+			{
+				opt = calloc(1, sizeof(Option));
+				opt->type = option->type;
+				options->data = eet_eina_hash_add(options->data, option->name, opt);
+			}
+			opt->intValue = option->value.i;
+			break;
 		case CompOptionTypeFloat:
+			if (!(opt = eina_hash_find(options->data, option->name)))
+			{
+				opt = calloc(1, sizeof(Option));
+				opt->type = option->type;
+				options->data = eet_eina_hash_add(options->data, option->name, opt);
+			}
+			opt->doubleValue = (double) option->value.f;
+			break;			
 		case CompOptionTypeString:
 		case CompOptionTypeColor:
 		case CompOptionTypeMatch:
@@ -618,7 +646,7 @@ iniSaveOptions (CompDisplay *d,
 
 				opt->stringValue = strVal;
 
-				printf("add option %s -> %s\n", option->name, opt->stringValue);
+				printf("add option %s: %s\n", option->name, opt->stringValue);
 			}
 			break;
 		case CompOptionTypeList:
@@ -643,28 +671,55 @@ iniSaveOptions (CompDisplay *d,
 				printf("add option %s:\n", option->name);
 
 				Option *item;
-
+				CompListValue *list = &option->value.list;
+				
 				EINA_LIST_FREE(opt->listValue, item)
 				{
 					if (item->stringValue) free (item->stringValue);
 					free(item);
 				}
-				for (i = 0; i < option->value.list.nValue; i++)
+					
+				for (i = 0; i < list->nValue; i++)
 				{
-					itemVal = iniOptionValueToString (&option->value.list.value[i],
-													  option->value.list.type);
+					Option *o;
 
-					if (itemVal)
+					switch (list->type)
 					{
-						Option *o;
+					case CompOptionTypeString:
+					case CompOptionTypeMatch:
+						itemVal = iniOptionValueToString (&list->value[i],
+														  list->type);					
+						if (itemVal)
+						{
+							o = calloc(1, sizeof(Option));
+							o->type = list->type;
+							o->stringValue = itemVal;
+							opt->listValue = eina_list_append(opt->listValue, o);
+						}
+						break;
+					case CompOptionTypeBool:
 						o = calloc(1, sizeof(Option));
-						o->type = option->value.list.type;
-						o->stringValue = itemVal;
-						printf("   %s\n", o->stringValue);
+						o->type = list->type;
+						o->intValue = (int) list->value[i].b;
 						opt->listValue = eina_list_append(opt->listValue, o);
+						break;
+					case CompOptionTypeInt:
+						o = calloc(1, sizeof(Option));
+						o->type = list->type;
+						o->intValue = list->value[i].i;
+						opt->listValue = eina_list_append(opt->listValue, o);
+						break;
+					case CompOptionTypeFloat:
+						o = calloc(1, sizeof(Option));
+						o->type = list->type;
+						o->doubleValue = (double) list->value[i].f;
+						opt->listValue = eina_list_append(opt->listValue, o);
+						break;			
+					default:
+						break;
 					}
 				}
-
+				
 				break;
 			}
 			default:
