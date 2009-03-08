@@ -7,6 +7,6 @@ Standards-Version: 3.7.3
 
 Package: ecomorph-core
 Architecture: any
-Depends: ${shlibs:Depends}, libecompconfig0, python-ecompconfig, ecsm
+Depends: ${shlibs:Depends}
 Description: A compiz port for E17
  This package provides a core.
