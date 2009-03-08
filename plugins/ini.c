@@ -33,11 +33,9 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <ecomp.h>
-#include <eina-0/Eina.h>
+#include <Eina.h>
 #include <Eet.h>
 
-#define DEFAULT_PLUGINS		"ini,inotify,dbus,regex,text,png,decoration,move,wall,scale,scaleaddon,expo,ring"
-#define NUM_DEFAULT_PLUGINS 7
 #define MAX_OPTION_LENGTH	1024
 #define HOME_OPTIONDIR	   ".ecomp"
 #define CORE_NAME			"core"
