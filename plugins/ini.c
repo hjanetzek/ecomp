@@ -751,6 +751,38 @@ iniSaveOptions (CompDisplay *d,
 	return TRUE;
 }
 
+/* taken from ecore_file */
+static int
+copyFile(const char *src, const char *dst)
+{
+	FILE               *f1, *f2;
+	char                buf[16384];
+	char                realpath1[4096];
+	char                realpath2[4096];
+	size_t              num;
+	int                 ret = 1;
+
+	if (!realpath(src, realpath1)) return 0;
+	if (realpath(dst, realpath2) && !strcmp(realpath1, realpath2)) return 0;
+
+	f1 = fopen(src, "rb");
+	if (!f1) return 0;
+	f2 = fopen(dst, "wb");
+	if (!f2)
+	{
+		fclose(f1);
+		return 0;
+	}
+	while ((num = fread(buf, 1, sizeof(buf), f1)) > 0)
+	{
+		if (fwrite(buf, 1, num, f2) != num) ret = 0;
+	}
+	fclose(f1);
+	fclose(f2);
+	return ret;
+}
+
+
 static Bool
 iniLoadOptions (CompDisplay *d, int screen, char *plugin)
 {
@@ -772,18 +804,22 @@ iniLoadOptions (CompDisplay *d, int screen, char *plugin)
 		return FALSE;
 	}
 
-	fullPath = malloc (sizeof (char) * (strlen (directory) + 10));
+	fullPath = malloc (sizeof (char) * (strlen (directory) + 11));
 	sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
 
 	Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 
 	if (!optionFile && iniMakeDirectories ())
-		optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
-
-	if (!optionFile)
 	{
-		goto error;
+		char *tmpPath = malloc (sizeof (char) * (strlen (METADATADIR) + 11));
+		sprintf (tmpPath, "%s/%s", METADATADIR, "ecomp.eet");
+		printf("load defaults: %s\n", tmpPath);
+		
+		if (copyFile(tmpPath, fullPath))
+			optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 	}
+	
+	if (!optionFile) goto error;
 
 	printf("open read %s\n", filename);
 

@@ -61,7 +61,7 @@ libvideo_la_SOURCES = video.c
 
 libini_la_LDFLAGS = -module -avoid-version -no-undefined
 libini_la_SOURCES = ini.c
-
+ 
 if USE_LIBRSVG
 libsvg_la_DEPENDENCIES = $(top_builddir)/libdecoration/libdecoration.la
 libsvg_la_LDFLAGS = -module -avoid-version -no-undefined
@@ -112,7 +112,8 @@ INCLUDES =					\
 	-DPLUGINDIR=\"$(plugindir)\"		\
 	-DIMAGEDIR=\"$(imagedir)\"		\
 	-I$(top_srcdir)/include                 \
-	-DMETADATADIR=\"$(metadatadir)\"
+	-DMETADATADIR=\"$(metadatadir)\"        \
+	-DDATADIR=\"$(datadir)\"
 
 moduledir = $(plugindir)
 

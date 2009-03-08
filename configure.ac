@@ -405,6 +405,7 @@ bcop/Makefile
 bcop/src/Makefile
 bcop/src/bcop
 po/Makefile.in
+data/Makefile
 ])
 
 #scalefilter/Makefile
