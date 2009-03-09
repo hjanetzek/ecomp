@@ -2153,6 +2153,9 @@ getWindowIcon (CompWindow *w, int width, int height)
 	int		 i, wh, diff, oldDiff;
 
 	/* need to fetch icon property */
+	if (w->nIcon > 0)
+		freeWindowIcons(w);
+	
 	if (w->nIcon == 0)
 	{
 		Atom		  actual;
