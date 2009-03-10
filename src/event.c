@@ -1056,6 +1056,39 @@ handleEcompEvent (CompDisplay *d,
 				  int		  nOption)
 {
 }
+/*TODO move to plugin */
+static void
+changeWindowOpacity (CompWindow *w,
+		     int	direction)
+{
+    CompScreen *s = w->screen;
+    int	       step, opacity;
+
+    if (w->attrib.override_redirect)
+	return;
+
+    if (w->type & CompWindowTypeDesktopMask)
+	return;
+
+    step = (0xff * s->opt[COMP_SCREEN_OPTION_OPACITY_STEP].value.i) / 100;
+
+    w->opacityFactor = w->opacityFactor + step * direction;
+    if (w->opacityFactor > 0xff)
+    {
+	w->opacityFactor = 0xff;
+    }
+    else if (w->opacityFactor < step)
+    {
+	w->opacityFactor = step;
+    }
+
+    opacity = (w->opacity * w->opacityFactor) / 0xff;
+    if (opacity != w->paint.opacity)
+    {
+	w->paint.opacity = opacity;
+	addWindowDamage (w);
+    }
+}
 
 void
 handleEvent (CompDisplay *d,
@@ -1458,7 +1491,22 @@ handleEvent (CompDisplay *d,
 				}
 			}
 		}
-
+		/*TODO move to plugin */
+		else if (event->xclient.message_type == d->ecoPluginAtom)
+		{
+		    Window win = event->xclient.data.l[0];
+		    if(event->xclient.data.l[1] != ECO_PLUGIN_OPACITY) break;
+		    unsigned int option2 = event->xclient.data.l[4];
+		    w = findWindowAtDisplay(d, d->activeWindow);
+		    if (w)
+		    {
+		    if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+			changeWindowOpacity (w, 1);
+		    else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+			changeWindowOpacity (w, -1);
+		    }
+		}
+		
 		else if (event->xclient.message_type == d->winActiveAtom)
 		{
 			//printf("got winActive client massage\n");
