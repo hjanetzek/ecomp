@@ -84,11 +84,6 @@ typedef struct _ShiftDrawSlot {
 typedef struct _ShiftDisplay {
     int		    screenPrivateIndex;
     HandleEventProc handleEvent;
-
-    KeyCode leftKey;
-    KeyCode rightKey;
-    KeyCode upKey;
-    KeyCode downKey;
 } ShiftDisplay;
 
 typedef struct _ShiftScreen {
@@ -1811,243 +1806,6 @@ shiftTerminate (CompDisplay     *d,
     return FALSE;
 }
 
-static Bool
-shiftInitiateScreen (CompScreen      *s,
-					 CompAction      *action,
-					 CompActionState state,
-					 CompOption      *option,
-					 int	      nOption)
-{
-    CompMatch *match;
-    int       count; 
-
-    SHIFT_SCREEN (s);
-
-    if (otherScreenGrabExist (s, "shift", 0))
-		return FALSE;
-	   
-    ss->currentMatch = shiftGetWindowMatch (s);
-
-    match = getMatchOptionNamed (option, nOption, "match", NULL);
-    if (match)
-    {
-		matchFini (&ss->match);
-		matchInit (&ss->match);
-		if (matchCopy (&ss->match, match))
-		{
-			matchUpdate (s->display, &ss->match);
-			ss->currentMatch = &ss->match;
-		}
-    }
-
-    count = shiftCountWindows (s);
-
-    if (count < 1)
-		return FALSE;
-
-	if (!ss->grabIndex)
-    	ss->grabIndex = pushScreenGrab (s, s->invisibleCursor, "shift");
-    
-    if (ss->grabIndex)
-    {
-		ss->state = ShiftStateOut;
-		shiftActivateEvent(s, TRUE);
-
-		if (!shiftCreateWindowList (s))
-			return FALSE;
-
-    	ss->selectedWindow = ss->windows[0]->id;
-		shiftRenderWindowTitle (s);
-		ss->mvTarget = 0;
-		ss->mvAdjust = 0;
-		ss->mvVelocity = 0;
-
-    	ss->moreAdjust = TRUE;
-		damageScreen (s);
-    }
-
-    ss->usedOutput = s->currentOutputDev;
-    
-    return TRUE;
-}
-
-static Bool
-shiftDoSwitch (CompDisplay     *d,
-			   CompAction      *action,
-			   CompActionState state,
-			   CompOption      *option,
-			   int             nOption,
-			   Bool            nextWindow,
-			   ShiftType        type)
-{
-    CompScreen *s;
-    Window     xid;
-    Bool       ret = TRUE;
-    Bool       initial = FALSE;
-
-    xid = getIntOptionNamed (option, nOption, "root", 0);
-
-    s = findScreenAtDisplay (d, xid);
-    if (s)
-    {
-		SHIFT_SCREEN (s);
-
-		if ((ss->state == ShiftStateNone) || (ss->state == ShiftStateIn))
-		{
-			ss->type = type;
-			ret = shiftInitiateScreen (s, action, state, option, nOption);
-
-
-			/* if (state & CompActionStateInitKey)
-			 * 	action->state |= CompActionStateTermKey;
-			 * 
-			 * if (state & CompActionStateInitButton)
-			 * 	action->state |= CompActionStateTermButton; */
-
-			if (state & CompActionStateInitEdge)
-				action->state |= CompActionStateTermEdge;
-
-			initial = TRUE;
-		}
-
-		if (ret)
-		{
-    	    switchToWindow (s, nextWindow);
-			if (initial && FALSE) //Huh?!
-			{
-				ss->mvTarget += ss->mvAdjust;
-				ss->mvAdjust  = 0.0;
-			}
-		}
-    }
-
-    return ret;
-}
-
-static Bool
-shiftInitiate (CompDisplay     *d,
-			   CompAction      *action,
-			   CompActionState state,
-			   CompOption      *option,
-			   int             nOption)
-{
-    CompScreen *s;
-    Window     xid;
-    Bool       ret = TRUE;
-
-    xid = getIntOptionNamed (option, nOption, "root", 0);
-
-    s = findScreenAtDisplay (d, xid);
-    if (s)
-    {
-		SHIFT_SCREEN (s);
-
-		ss->type = ShiftTypeNormal;
-	
-		if ((ss->state == ShiftStateNone) || (ss->state == ShiftStateIn))
-			ret = shiftInitiateScreen (s, action, state, option, nOption);
-		else
-			ret = shiftTerminate (d, action, state, option, nOption);
-    }
-
-    return ret;
-}
-
-static Bool
-shiftInitiateAll (CompDisplay     *d,
-				  CompAction      *action,
-				  CompActionState state,
-				  CompOption      *option,
-				  int             nOption)
-{
-    CompScreen *s;
-    Window     xid;
-    Bool       ret = TRUE;
-
-    xid = getIntOptionNamed (option, nOption, "root", 0);
-
-    s = findScreenAtDisplay (d, xid);
-    if (s)
-    {
-		SHIFT_SCREEN (s);
-
-		ss->type = ShiftTypeAll;
-	
-		if ((ss->state == ShiftStateNone) || (ss->state == ShiftStateIn))
-			ret = shiftInitiateScreen (s, action, state, option, nOption);
-		else
-			ret = shiftTerminate (d, action, state, option, nOption);
-    }
-
-    return ret;
-}
-
-static Bool
-shiftNext (CompDisplay     *d,
-		   CompAction      *action,
-		   CompActionState state,
-		   CompOption      *option,
-		   int	           nOption)
-{
-    return shiftDoSwitch (d, action, state, option, nOption,
-						  TRUE, ShiftTypeNormal);
-}
-
-static Bool
-shiftPrev (CompDisplay     *d,
-		   CompAction      *action,
-		   CompActionState state,
-		   CompOption      *option,
-		   int	           nOption)
-{
-    return shiftDoSwitch (d, action, state, option, nOption,
-						  FALSE, ShiftTypeNormal);
-}
-
-static Bool
-shiftNextAll (CompDisplay     *d,
-			  CompAction      *action,
-			  CompActionState state,
-			  CompOption      *option,
-			  int	     nOption)
-{
-    return shiftDoSwitch (d, action, state, option, nOption,
-						  TRUE, ShiftTypeAll);
-}
-
-static Bool
-shiftPrevAll (CompDisplay     *d,
-			  CompAction      *action,
-			  CompActionState state,
-			  CompOption      *option,
-			  int	     nOption)
-{
-    return shiftDoSwitch (d, action, state, option, nOption,
-						  FALSE, ShiftTypeAll);
-}
-
-static Bool
-shiftNextGroup (CompDisplay     *d,
-				CompAction      *action,
-				CompActionState state,
-				CompOption      *option,
-				int	       nOption)
-{
-    return shiftDoSwitch (d, action, state, option, nOption,
-						  TRUE, ShiftTypeGroup);
-}
-
-static Bool
-shiftPrevGroup (CompDisplay     *d,
-				CompAction      *action,
-				CompActionState state,
-				CompOption      *option,
-				int	       nOption)
-{
-    return shiftDoSwitch (d, action, state, option, nOption,
-						  FALSE, ShiftTypeGroup);
-}
-
 
 static void 
 shiftWindowRemove (CompDisplay * d,
@@ -2449,28 +2207,6 @@ shiftInitDisplay (CompPlugin  *p,
 		return FALSE;
     }
 
-    sd->leftKey  = XKeysymToKeycode (d->display, XStringToKeysym ("Left"));
-    sd->rightKey = XKeysymToKeycode (d->display, XStringToKeysym ("Right"));
-    sd->upKey    = XKeysymToKeycode (d->display, XStringToKeysym ("Up"));
-    sd->downKey  = XKeysymToKeycode (d->display, XStringToKeysym ("Down"));
-
-    shiftSetInitiateInitiate (d, shiftInitiate);
-    shiftSetInitiateTerminate (d, shiftTerminate);
-    shiftSetInitiateAllInitiate (d, shiftInitiateAll);
-    shiftSetInitiateAllTerminate (d, shiftTerminate);
-    shiftSetNextInitiate (d, shiftNext);
-    shiftSetNextTerminate (d, shiftTerminate);
-    shiftSetPrevInitiate (d, shiftPrev);
-    shiftSetPrevTerminate (d, shiftTerminate);
-    shiftSetNextAllInitiate (d, shiftNextAll);
-    shiftSetNextAllTerminate (d, shiftTerminate);
-    shiftSetPrevAllInitiate (d, shiftPrevAll);
-    shiftSetPrevAllTerminate (d, shiftTerminate);
-    shiftSetNextGroupInitiate (d, shiftNextGroup);
-    shiftSetNextGroupTerminate (d, shiftTerminate);
-    shiftSetPrevGroupInitiate (d, shiftPrevGroup);
-    shiftSetPrevGroupTerminate (d, shiftTerminate);
-
     WRAP (sd, d, handleEvent, shiftHandleEvent);
 
     d->privates[displayPrivateIndex].ptr = sd;
@@ -2511,35 +2247,23 @@ shiftInitScreen (CompPlugin *p,
     }
 
     ss->grabIndex = 0;
-
     ss->state = ShiftStateNone;
-
     ss->windows = NULL;
     ss->windowsSize = 0;
-
     ss->drawSlots = NULL;
     ss->slotsSize = 0;
-
     ss->activeSlot = NULL;
-
     ss->selectedWindow = None;
-
     ss->moreAdjust   = FALSE;
-
     ss->usedOutput = 0;
-
     ss->mvAdjust = 0;
     ss->mvVelocity = 0;
     ss->mvTarget = 0;
     ss->invert = FALSE;
-
     ss->textPixmap = None;
-
     ss->anim         = 0.0;
     ss->animVelocity = 0.0;
-
     ss->buttonPressed = FALSE;
-
     matchInit (&ss->match);
 
     WRAP (ss, s, preparePaintScreen, shiftPreparePaintScreen);
