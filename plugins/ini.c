@@ -95,15 +95,15 @@ eet_eina_hash_add(Eina_Hash *hash, const char *key, const void *data)
  */
 typedef struct _IniFileData IniFileData;
 struct _IniFileData {
-  char		 *filename;
-  char		 *plugin;
-  int			 screen;
+	char		 *filename;
+	char		 *plugin;
+	int			 screen;
 
-  Bool		 blockWrites;
-  Bool		 blockReads;
+	Bool		 blockWrites;
+	Bool		 blockReads;
 
-  IniFileData		 *next;
-  IniFileData		 *prev;
+	IniFileData		 *next;
+	IniFileData		 *prev;
 };
 
 /*
@@ -236,13 +236,13 @@ iniOptionValueToString (CompOptionValue *value, CompOptionType type)
 
 	switch (type)
 	{
-	/* case CompOptionTypeBool:
-	 * case CompOptionTypeInt:
-	 * 	snprintf(tmp, 256, "%i", (int)value->i);
-	 * 	break;
-	 * case CompOptionTypeFloat:
-	 * 	snprintf(tmp, 256, "%f", value->f);
-	 * 	break; */
+		/* case CompOptionTypeBool:
+		 * case CompOptionTypeInt:
+		 * 	snprintf(tmp, 256, "%i", (int)value->i);
+		 * 	break;
+		 * case CompOptionTypeFloat:
+		 * 	snprintf(tmp, 256, "%f", value->f);
+		 * 	break; */
 	case CompOptionTypeString:
 		snprintf (tmp, MAX_OPTION_LENGTH, "%s", strdup (value->s));
 		break;
@@ -397,7 +397,7 @@ iniGetOptList(Option *listOpt, CompListValue *list, CompOptionType type)
 
 	list->nValue = count;
 	list->value = malloc (sizeof (CompOptionValue) * count);
-	printf(" - >");
+	/* printf(" - >"); */
 	for (l = listOpt->listValue; l; l = l->next, i++)
 	{
 		opt = l->data;
@@ -405,30 +405,30 @@ iniGetOptList(Option *listOpt, CompListValue *list, CompOptionType type)
 		{
 		case CompOptionTypeString:
 			list->value[i].s = strdup (opt->stringValue);
-			printf("%s ", opt->stringValue);
+			/* printf("%s ", opt->stringValue); */
 			break;
 		case CompOptionTypeBool:
 			list->value[i].b = (Bool) opt->intValue;
-			printf("%d ", opt->intValue);
+			/* printf("%d ", opt->intValue); */
 			break;
 		case CompOptionTypeInt:
 			list->value[i].i = opt->intValue;
-			printf("%d ", opt->intValue);
+			/* printf("%d ", opt->intValue); */
 			break;
 		case CompOptionTypeFloat:
 			list->value[i].f = (float) opt->doubleValue;
-			printf("%f ", opt->doubleValue);
+			/* printf("%f ", opt->doubleValue); */
 			break;
 		case CompOptionTypeMatch:
 			matchInit (&list->value[i].match);
 			matchAddFromString (&list->value[i].match, opt->stringValue);
-			printf("%s ", opt->stringValue);
+			/* printf("%s ", opt->stringValue); */
 			break;
 		default:
 			break;
 		}
 	}
-	printf("\n");
+	/* printf("\n"); */
 	return TRUE;
 }
 
@@ -481,35 +481,35 @@ iniLoadGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 		switch (o->type)
 		{
 		case CompOptionTypeBool:
-			printf("load: %s: %d\n", optionName, opt->intValue);
+			/* printf("load: %s: %d\n", optionName, opt->intValue); */
 			hasValue = TRUE;
 			value.b = (Bool) opt->intValue;
 			break;
 		case CompOptionTypeInt:
-			printf("load: %s: %d\n", optionName, opt->intValue);
+			/* printf("load: %s: %d\n", optionName, opt->intValue); */
 			hasValue = TRUE;
 			value.i = opt->intValue;
 			break;
 		case CompOptionTypeFloat:
-			printf("load: %s: %f\n", optionName, opt->doubleValue);
+			/* printf("load: %s: %f\n", optionName, opt->doubleValue); */
 			hasValue = TRUE;
 			value.f = (float) opt->doubleValue;
 			break;
 		case CompOptionTypeString:
-			printf("load: %s: %s\n", optionName, opt->stringValue);
+			/* printf("load: %s: %s\n", optionName, opt->stringValue); */
 			hasValue = TRUE;
 			value.s = strdup (opt->stringValue);
 			break;
 		case CompOptionTypeColor:
-			printf("load: %s: %s\n", optionName, opt->stringValue);
+			/* printf("load: %s: %s\n", optionName, opt->stringValue); */
 			hasValue = stringToColor (optionValue, value.c);
 			break;
 		case CompOptionTypeList:
-			printf("load list: %s\n", optionName);
+			/* printf("load list: %s\n", optionName); */
 			hasValue = iniGetOptList(opt, &value.list, value.list.type);
 			break;
 		case CompOptionTypeMatch:
-			printf("load: %s: %s\n", optionName, opt->stringValue);
+			/* printf("load: %s: %s\n", optionName, opt->stringValue); */
 			hasValue = TRUE;
 			matchInit (&value.match);
 			matchAddFromString (&value.match, optionValue);
@@ -692,7 +692,7 @@ iniSaveOptions (CompDisplay *d,
 	Option *opt;
 	if (!options)
 	{
-		printf("calloc options\n");
+		/* printf("calloc options\n"); */
 		options = calloc (1, sizeof (Group));
 	}
 
@@ -760,7 +760,7 @@ iniSaveOptions (CompDisplay *d,
 
 				opt->stringValue = strVal;
 
-				printf("add option %s: %s\n", option->name, opt->stringValue);
+				/* printf("add option %s: %s\n", option->name, opt->stringValue); */
 			}
 			break;
 		case CompOptionTypeList:
@@ -782,7 +782,7 @@ iniSaveOptions (CompDisplay *d,
 					options->data = eet_eina_hash_add(options->data, option->name, opt);
 				}
 
-				printf("add option %s:\n", option->name);
+				/* printf("add option %s:\n", option->name); */
 
 				Option *item;
 				CompListValue *list = &option->value.list;
@@ -906,7 +906,7 @@ iniLoadOptions (CompDisplay *d, int screen, char *plugin)
 
 	INI_DISPLAY (d);
 
-	printf("iniLoadOptions\n");
+	/* printf("iniLoadOptions\n"); */
 
 	filename = directory = NULL;
 
@@ -971,97 +971,101 @@ error:
 
 static void
 iniFileModified (const char *name,
-		 void *closure)
+				 void *closure)
 {
-  CompDisplay *d;
+	CompDisplay *d;
 
 
-  d = (CompDisplay *) closure;
+	d = (CompDisplay *) closure;
 
 
-  char *filename, *directory, *fullPath;
-  Group *options;
+	char *filename, *directory, *fullPath;
+	Group *options;
 
-  INI_DISPLAY (d);
+	INI_DISPLAY (d);
 
-  printf("iniFileModified\n");
-  if(id->locked) return;
-  
-  filename = directory = NULL;
 
-  if (!iniGetHomeDir (&directory))
+	if (id->locked) return;
+
+	/* printf("iniFileModified\n");   */
+
+	filename = directory = NULL;
+
+	if (!iniGetHomeDir (&directory))
     {
-      free (filename);
-      return;
+		free (filename);
+		return;
     }
 
-  fullPath = malloc (sizeof (char) * (strlen (directory) + 11));
-  sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
+	id->locked = TRUE;
 
-  Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
+	fullPath = malloc (sizeof (char) * (strlen (directory) + 11));
+	sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
 
-  if (!optionFile) goto error;
+	Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 
-  printf("open read %s\n", fullPath);
-
-
-  optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
-
-
-  if (!optionFile) goto error;
-
-  char **list;
-  int num, i;
-  
-  list = eet_list(optionFile, "*", &num);
-  if (!list)
-    {
-      eet_close(optionFile);
-      goto error;
-    }
-
-  /* XXX we have only one for now */
-  int screen = 0;;  
-  char plugin[32];
-  
-  for (i = 0; i < num; i++)
-    {
-      options = eet_data_read(optionFile, edd_group, list[i]);
-
-      if (!options)
-	{
-	  eet_close(optionFile);
-	  goto error;
+	if (!optionFile) {
+		goto error;
 	}
+	
+	printf("open read %s\n", fullPath);
 
-      if(strstr(list[i], "screen0"))
-	screen = 0;
-      else
-	screen = -1;
+
+	optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
+
+
+	if (!optionFile) goto error;
+
+	char **list;
+	int num, i;
+  
+	list = eet_list(optionFile, "*", &num);
+	if (!list)
+    {
+		eet_close(optionFile);
+		goto error;
+    }
+
+	/* XXX we have only one for now */
+	int screen = 0;;  
+	char plugin[32];
+  
+	for (i = 0; i < num; i++)
+    {
+		options = eet_data_read(optionFile, edd_group, list[i]);
+
+		if (!options)
+		{
+			eet_close(optionFile);
+			goto error;
+		}
+
+		if(strstr(list[i], "screen0"))
+			screen = 0;
+		else
+			screen = -1;
     
-      char *end = list[i];
-      int len = 1;
+		char *end = list[i];
+		int len = 1;
 	  
-      while (*end++ != '-')
-	len ++;
+		while (*end++ != '-') len++;
 	  
-      snprintf(plugin, len, "%s", list[i]);
-      printf("\nplug: %s - %d\n", plugin, screen);
+		snprintf(plugin, len, "%s", list[i]);
+		printf("plug: %s - %d\n", plugin, screen);
     
-      id->locked = TRUE;
-      if(!strcmp("core", plugin))
-	iniLoadOptionsFromFile (d, options, NULL, screen);
-      else
-	iniLoadOptionsFromFile (d, options, plugin, screen);
-      id->locked = FALSE;
+		if(!strcmp("core", plugin))
+			iniLoadOptionsFromFile (d, options, NULL, screen);
+		else
+			iniLoadOptionsFromFile (d, options, plugin, screen);
     }
    
-  eet_close(optionFile);
+	eet_close(optionFile);
 
- error:
-  free (filename);
-  free (directory);
-  free (fullPath);
+error:
+	id->locked = FALSE;
+	free (filename);
+	free (directory);
+	free (fullPath);
 }
 
 
@@ -1242,12 +1246,12 @@ iniInitDisplay (CompPlugin *p, CompDisplay *d)
 
 	if (iniGetHomeDir (&homeDir))
 	{
-	id->directoryWatch = addFileWatch (d, homeDir,
-					   NOTIFY_DELETE_MASK |
-					   NOTIFY_CREATE_MASK |
-					   NOTIFY_MODIFY_MASK,
-					   iniFileModified, (void *) d);
-	free (homeDir);
+		id->directoryWatch = addFileWatch (d, homeDir,
+										   NOTIFY_DELETE_MASK |
+										   NOTIFY_CREATE_MASK |
+										   NOTIFY_MODIFY_MASK,
+										   iniFileModified, (void *) d);
+		free (homeDir);
 	}
 
 	return TRUE;
@@ -1259,7 +1263,7 @@ iniFiniDisplay (CompPlugin *p, CompDisplay *d)
 	INI_DISPLAY (d);
 
 	if (id->directoryWatch)
-	removeFileWatch (d, id->directoryWatch);
+		removeFileWatch (d, id->directoryWatch);
 
 	freeScreenPrivateIndex (d, id->screenPrivateIndex);
 
