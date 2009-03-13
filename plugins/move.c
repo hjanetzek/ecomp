@@ -420,7 +420,7 @@ movePaintWindow (CompWindow		 *w,
 
 			sAttrib.opacity = (sAttrib.opacity +
 							   ((int)(sAttrib.opacity *
-									  (OPAQUE - md->moveOpacity) * ms->progress))) >> 16;
+									  md->moveOpacity * ms->progress))) >> 16;
 		}
 		if (!ms->grabIndex && ms->progress == 0.0){
 			ms->active = 0;
