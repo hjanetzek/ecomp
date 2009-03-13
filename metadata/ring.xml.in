@@ -5,53 +5,6 @@
 		<_long>Ring Switcher</_long>
 		<category>Window Management</category>
 		<display>
-			<group>
-				<_short>Key bindings</_short>
-				<option name="next" type="action">
-					<_short>Next Window</_short>
-					<_long>Show switcher if not visible and select next window.</_long>
-					<allowed key="true" button="true"/>
-					<default>
-						<key>&lt;Super&gt;Tab</key>
-					</default>
-				</option>
-				<option name="prev" type="action">
-					<_short>Previous Window</_short>
-					<_long>Show switcher if not visible and select previous window.</_long>
-					<allowed key="true" button="true"/>
-					<default>
-						<key>&lt;Super&gt;&lt;Shift&gt;Tab</key>
-					</default>
-				</option>
-				<option name="next_all" type="action">
-					<_short>Next Window (All Workspaces)</_short>
-					<_long>Show switcher if not visible and select next window out of all windows.</_long>
-					<allowed key="true" button="true"/>
-					<default>
-						<key>&lt;Super&gt;&lt;Alt&gt;Tab</key>
-					</default>
-				</option>
-				<option name="prev_all" type="action">
-					<_short>Previous Window (All Workspaces)</_short>
-					<_long>Show switcher if not visible and select previous window out of all windows.</_long>
-					<allowed key="true" button="true"/>
-					<default>
-						<key>&lt;Super&gt;&lt;Shift&gt;&lt;Alt&gt;Tab</key>
-					</default>
-				</option>
-				<option name="next_group" type="action">
-					<_short>Next Window (Group)</_short>
-					<_long>Show switcher if not visible and select next window of the current application.</_long>
-					<allowed key="true" button="true"/>
-					<default/>
-				</option>
-				<option name="prev_group" type="action">
-					<_short>Previous Window (Group)</_short>
-					<_long>Show switcher if not visible and select previous window of the current application.</_long>
-					<allowed key="true" button="true"/>
-					<default/>
-				</option>
-			</group>
 		</display>
 		<screen>
 			<group>

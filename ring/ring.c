@@ -1679,19 +1679,6 @@ ringInitDisplay (CompPlugin  *p,
 		return FALSE;
     }
 
-    ringSetNextInitiate (d, ringNext);
-    ringSetNextTerminate (d, ringTerminate);
-    ringSetPrevInitiate (d, ringPrev);
-    ringSetPrevTerminate (d, ringTerminate);
-    ringSetNextAllInitiate (d, ringNextAll);
-    ringSetNextAllTerminate (d, ringTerminate);
-    ringSetPrevAllInitiate (d, ringPrevAll);
-    ringSetPrevAllTerminate (d, ringTerminate);
-    ringSetNextGroupInitiate (d, ringNextGroup);
-    ringSetNextGroupTerminate (d, ringTerminate);
-    ringSetPrevGroupInitiate (d, ringPrevGroup);
-    ringSetPrevGroupTerminate (d, ringTerminate);
-
     WRAP (rd, d, handleEvent, ringHandleEvent);
 
     d->privates[displayPrivateIndex].ptr = rd;
