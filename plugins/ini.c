@@ -618,8 +618,11 @@ iniLoadOptionsFromFile (CompDisplay *d, Group *options, char *plugin, int screen
 	od.option = option;
 	od.nOption = nOption;
 
-	eina_hash_foreach(options->data, iniLoadGroup, &od);
-	eina_hash_foreach(options->data, iniFreeGroup, NULL);
+	if (options->data)
+		eina_hash_foreach(options->data, iniLoadGroup, &od);
+	if (options->data)
+		eina_hash_foreach(options->data, iniFreeGroup, NULL);
+
 	free (options);
 	
 	return TRUE;
@@ -856,7 +859,8 @@ iniSaveOptions (CompDisplay *d,
 
 	eet_close(optionFile);
 
-	eina_hash_foreach(options->data, iniFreeGroup, NULL);
+	if (options->data)
+		eina_hash_foreach(options->data, iniFreeGroup, NULL);
 
 	free (options);	
 	free (fullPath);
