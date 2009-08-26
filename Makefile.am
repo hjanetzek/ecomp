@@ -23,7 +23,7 @@ DISTCLEANFILES =	 \
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = ecomp.pc ecomp-cube.pc ecomp-scale.pc $(gconfdata)
-
+ACLOCAL_AMFLAGS = -I m4 
 # Some custom targets to make it easier to release things.
 # Use either:
 #		make release-check
