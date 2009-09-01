@@ -69,9 +69,7 @@ ecompActionTerminateNotify (CompScreen *s, int plugin)
 	ev.xclient.data.l[3]	= 0;
 	ev.xclient.data.l[4]	= 0;
 
-	XSendEvent (s->display->display,
-				s->root,
-				FALSE,
+	XSendEvent (s->display->display, s->root, FALSE,
 				SubstructureRedirectMask | SubstructureNotifyMask,
 				&ev);
 }
@@ -101,10 +99,9 @@ reallocScreenPrivate (int  size,
 int
 allocateScreenPrivateIndex (CompDisplay *display)
 {
-	return allocatePrivateIndex (&display->screenPrivateLen,
-								 &display->screenPrivateIndices,
-								 reallocScreenPrivate,
-								 (void *) display);
+	return allocatePrivateIndex
+		(&display->screenPrivateLen, &display->screenPrivateIndices,
+		 reallocScreenPrivate, (void *) display);
 }
 
 
@@ -1616,24 +1613,15 @@ addScreen (CompDisplay *display,
 			if (visualDepth != i)
 				continue;
 
-			(*s->getFBConfigAttrib) (dpy,
-									 fbConfigs[j],
-									 GLX_ALPHA_SIZE,
-									 &alpha);
-			(*s->getFBConfigAttrib) (dpy,
-									 fbConfigs[j],
-									 GLX_BUFFER_SIZE,
-									 &value);
+			(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_ALPHA_SIZE, &alpha);
+			(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_BUFFER_SIZE, &value);
 			if (value != i && (value - alpha) != i)
 				continue;
 
 			value = 0;
 			if (i == 32)
 			{
-				(*s->getFBConfigAttrib) (dpy,
-										 fbConfigs[j],
-										 GLX_BIND_TO_TEXTURE_RGBA_EXT,
-										 &value);
+				(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_BIND_TO_TEXTURE_RGBA_EXT, &value);
 
 				if (value)
 				{
@@ -1649,10 +1637,7 @@ addScreen (CompDisplay *display,
 				if (rgba)
 					continue;
 
-				(*s->getFBConfigAttrib) (dpy,
-										 fbConfigs[j],
-										 GLX_BIND_TO_TEXTURE_RGB_EXT,
-										 &value);
+				(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_BIND_TO_TEXTURE_RGB_EXT, &value);
 				if (!value)
 					continue;
 
@@ -1660,28 +1645,19 @@ addScreen (CompDisplay *display,
 					GLX_TEXTURE_FORMAT_RGB_EXT;
 			}
 
-			(*s->getFBConfigAttrib) (dpy,
-									 fbConfigs[j],
-									 GLX_DOUBLEBUFFER,
-									 &value);
+			(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_DOUBLEBUFFER, &value);
 			if (value > db)
 				continue;
 
 			db = value;
 
-			(*s->getFBConfigAttrib) (dpy,
-									 fbConfigs[j],
-									 GLX_STENCIL_SIZE,
-									 &value);
+			(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_STENCIL_SIZE, &value);
 			if (value > stencil)
 				continue;
 
 			stencil = value;
 
-			(*s->getFBConfigAttrib) (dpy,
-									 fbConfigs[j],
-									 GLX_DEPTH_SIZE,
-									 &value);
+			(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_DEPTH_SIZE, &value);
 			if (value > depth)
 				continue;
 
@@ -1689,27 +1665,18 @@ addScreen (CompDisplay *display,
 
 			if (s->fbo)
 			{
-				(*s->getFBConfigAttrib) (dpy,
-										 fbConfigs[j],
-										 GLX_BIND_TO_MIPMAP_TEXTURE_EXT,
-										 &value);
+				(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_BIND_TO_MIPMAP_TEXTURE_EXT, &value);
 				if (value < mipmap)
 					continue;
 
 				mipmap = value;
 			}
 
-			(*s->getFBConfigAttrib) (dpy,
-									 fbConfigs[j],
-									 GLX_Y_INVERTED_EXT,
-									 &value);
+			(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_Y_INVERTED_EXT, &value);
 
 			s->glxPixmapFBConfigs[i].yInverted = value;
 
-			(*s->getFBConfigAttrib) (dpy,
-									 fbConfigs[j],
-									 GLX_BIND_TO_TEXTURE_TARGETS_EXT,
-									 &value);
+			(*s->getFBConfigAttrib) (dpy, fbConfigs[j], GLX_BIND_TO_TEXTURE_TARGETS_EXT, &value);
 
 			s->glxPixmapFBConfigs[i].textureTargets = value;
 
@@ -1801,46 +1768,9 @@ addScreen (CompDisplay *display,
 
 	XFree (children);
 
-	/* attrib.override_redirect = 1;
-	 * attrib.event_mask		 = PropertyChangeMask; */
-
-	/* s->grabWindow = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
-	 *				   CopyFromParent, InputOnly, CopyFromParent,
-	 *				   CWOverrideRedirect | CWEventMask,
-	 *				   &attrib);
-	 * XMapWindow (dpy, s->grabWindow); */
-
-	/* for (i = 0; i < SCREEN_EDGE_NUM; i++)
-	 * {
-	 *	long xdndVersion = 3;
-	 *
-	 *	s->screenEdge[i].id = XCreateWindow (dpy, s->root, -100, -100, 1, 1, 0,
-	 *						 CopyFromParent, InputOnly,
-	 *						 CopyFromParent, CWOverrideRedirect,
-	 *						 &attrib);
-	 *
-	 *	XChangeProperty (dpy, s->screenEdge[i].id, display->xdndAwareAtom,
-	 *			 XA_ATOM, 32, PropModeReplace,
-	 *			 (unsigned char *) &xdndVersion, 1);
-	 *
-	 *	XSelectInput (dpy, s->screenEdge[i].id,
-	 *			  EnterWindowMask	|
-	 *			  LeaveWindowMask	|
-	 *			  ButtonPressMask	|
-	 *			  ButtonReleaseMask |
-	 *			  PointerMotionMask);
-	 * }
-	 *
-	 * updateScreenEdges (s); */
-
 	/*	  setDesktopHints (s);
 	 * setSupportingWmCheck (s);
 	 * setSupported (s); */
-
-	/* s->normalCursor = XCreateFontCursor (dpy, XC_left_ptr);
-	 * s->busyCursor   = XCreateFontCursor (dpy, XC_watch); */
-
-	// XDefineCursor (dpy, s->root, s->normalCursor);
 
 	s->filter[NOTHING_TRANS_FILTER] = COMP_TEXTURE_FILTER_FAST;
 	s->filter[SCREEN_TRANS_FILTER]	= COMP_TEXTURE_FILTER_GOOD;
@@ -1852,8 +1782,7 @@ addScreen (CompDisplay *display,
 }
 
 void
-damageScreenRegion (CompScreen *screen,
-					Region	   region)
+damageScreenRegion (CompScreen *screen, Region region)
 {
 	if (screen->damageMask & COMP_SCREEN_DAMAGE_ALL_MASK)
 		return;
@@ -1877,9 +1806,7 @@ damagePendingOnScreen (CompScreen *s)
 }
 
 void
-forEachWindowOnScreen (CompScreen	 *screen,
-					   ForEachWindowProc proc,
-					   void		 *closure)
+forEachWindowOnScreen (CompScreen *screen, ForEachWindowProc proc, void *closure)
 {
 	CompWindow *w;
 
@@ -1888,8 +1815,7 @@ forEachWindowOnScreen (CompScreen	 *screen,
 }
 
 CompWindow *
-findWindowAtScreen (CompScreen *s,
-					Window	   id)
+findWindowAtScreen (CompScreen *s, Window id)
 {
 	if (lastFoundWindow && lastFoundWindow->id == id)
 	{
@@ -1908,8 +1834,7 @@ findWindowAtScreen (CompScreen *s,
 }
 
 CompWindow *
-findTopLevelWindowAtScreen (CompScreen *s,
-							Window	   id)
+findTopLevelWindowAtScreen (CompScreen *s, Window id)
 {
 	CompWindow *w;
 
@@ -1921,9 +1846,7 @@ findTopLevelWindowAtScreen (CompScreen *s,
 }
 
 void
-insertWindowIntoScreen (CompScreen *s,
-						CompWindow *w,
-						Window	   aboveId)
+insertWindowIntoScreen (CompScreen *s, CompWindow *w, Window aboveId)
 {
 	CompWindow *p;
 
@@ -1975,8 +1898,7 @@ insertWindowIntoScreen (CompScreen *s,
 }
 
 void
-unhookWindowFromScreen (CompScreen *s,
-						CompWindow *w)
+unhookWindowFromScreen (CompScreen *s, CompWindow *w)
 {
 	CompWindow *next, *prev;
 
@@ -2022,53 +1944,10 @@ unhookWindowFromScreen (CompScreen *s,
 		lastDamagedWindow = NULL;
 }
 
-/* #define POINTER_GRAB_MASK (ButtonReleaseMask |	\
- *			   ButtonPressMask	 |	\
- *			   PointerMotionMask) */
 int
-pushScreenGrab (CompScreen *s,
-				Cursor	   cursor,
-				const char *name)
+pushScreenGrab (CompScreen *s, Cursor cursor, const char *name)
 {
 	C(("pushScreenGrab\n"));
-/* #ifdef KEYBINDING
- *	 if (s->maxGrab == 0)
- *	   {
- *		 int status;
- *
- *		 status = XGrabPointer (s->display->display, s->grabWindow, TRUE,
- *				 POINTER_GRAB_MASK,
- *				 GrabModeAsync, GrabModeAsync,
- *				 s->root, cursor,
- *				 CurrentTime);
- *
- *
- *		   if (status == GrabSuccess)
- *	  {
- *
- *	  status = XGrabKeyboard (s->display->display,
- *				  s->grabWindow, TRUE,
- *				  GrabModeAsync, GrabModeAsync,
- *				  CurrentTime);
- *	  if (status != GrabSuccess)
- *		{
- *		  XUngrabPointer (s->display->display, CurrentTime);
- *		  return 0;
- *		  }
- *	  }
- *	else
- *	{
- *	  return 0;
- *	}
- *
- *	   }
- *	   else
- *	   {
- *		 XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
- *				cursor, CurrentTime);
- *
- *	   }
- * #endif	  */
 	if (s->grabSize <= s->maxGrab)
 	{
 		s->grabs = realloc (s->grabs, sizeof (CompGrab) * (s->maxGrab + 1));
@@ -2088,30 +1967,13 @@ pushScreenGrab (CompScreen *s,
 }
 
 void
-updateScreenGrab (CompScreen *s,
-				  int		 index,
-				  Cursor	 cursor)
+updateScreenGrab (CompScreen *s, int index, Cursor cursor)
 {
 	D(("updateScreenGrab\n"));
-/* #ifdef KEYBINDING
- *	 index--;
- *
- * /\* #ifdef DEBUG
- *	*	  if (index < 0 || index >= s->maxGrab)
- *	*	abort ();
- *	* #endif *\/
- *
- *	 XChangeActivePointerGrab (s->display->display, POINTER_GRAB_MASK,
- *				cursor, CurrentTime);
- *
- *	 s->grabs[index].cursor = cursor;
- * #endif */
 }
 
 void
-removeScreenGrab (CompScreen *s,
-				  int		 index,
-				  XPoint	 *restorePointer)
+removeScreenGrab (CompScreen *s, int index, XPoint *restorePointer)
 {
 	D(("removeScreenGrab\n"));
 
@@ -2133,28 +1995,6 @@ removeScreenGrab (CompScreen *s,
 
 	if (maxGrab != s->maxGrab)
 	{
-/* #ifdef KEYBINDING
- *
- *		 if (maxGrab)
- *	{
- *		XChangeActivePointerGrab (s->display->display,
- *					  POINTER_GRAB_MASK,
- *					  s->grabs[maxGrab - 1].cursor,
- *					  CurrentTime);
- *	}
- *	else
- *	{
- *		if (restorePointer)
- *		warpPointer (s,
- *				 restorePointer->x - pointerX,
- *				 restorePointer->y - pointerY);
- *
- *		XUngrabPointer (s->display->display, CurrentTime);
- *
- *		 XUngrabKeyboard (s->display->display, CurrentTime);
- *
- *	}
- * #endif */
 		s->maxGrab = maxGrab;
 	}
 }
@@ -2194,296 +2034,6 @@ otherScreenGrabExist (CompScreen *s, ...)
 
 	return FALSE;
 }
-/* #ifdef KEYBINDING
- * static void
- * grabUngrabOneKey (CompScreen	  *s,
- *		  unsigned int modifiers,
- *		  int		   keycode,
- *		  Bool		   grab)
- * {
- *	   if (grab)
- *	   {
- *	XGrabKey (s->display->display,
- *		  keycode,
- *		  modifiers,
- *		  s->root,
- *		  TRUE,
- *		  GrabModeAsync,
- *		  GrabModeAsync);
- *	   }
- *	   else
- *	   {
- *	XUngrabKey (s->display->display,
- *			keycode,
- *			modifiers,
- *			s->root);
- *	   }
- * }
- *
- * static Bool
- * grabUngrabKeys (CompScreen	*s,
- *		unsigned int modifiers,
- *		int			 keycode,
- *		Bool		 grab)
- * {
- *	   XModifierKeymap *modMap = s->display->modMap;
- *	   int ignore, mod, k;
- *
- *	   compCheckForError (s->display->display);
- *
- *	   for (ignore = 0; ignore <= s->display->ignoredModMask; ignore++)
- *	   {
- *	if (ignore & ~s->display->ignoredModMask)
- *		continue;
- *
- *	if (keycode != 0)
- *	{
- *		grabUngrabOneKey (s, modifiers | ignore, keycode, grab);
- *	}
- *	else
- *	{
- *		for (mod = 0; mod < 8; mod++)
- *		{
- *		if (modifiers & (1 << mod))
- *		{
- *			for (k = mod * modMap->max_keypermod;
- *			 k < (mod + 1) * modMap->max_keypermod;
- *			 k++)
- *			{
- *			if (modMap->modifiermap[k])
- *			{
- *				grabUngrabOneKey (
- *				s,
- *				(modifiers & ~(1 << mod)) | ignore,
- *				modMap->modifiermap[k],
- *				grab);
- *			}
- *			}
- *		}
- *		}
- *	}
- *	if (compCheckForError (s->display->display))
- *		return FALSE;
- *	   }
- *	   return TRUE;
- * }
- * #endif */
-
-/* static Bool
- * addPassiveKeyGrab (CompScreen	  *s,
- *		   CompKeyBinding *key)
- * {
- * #ifdef KEYBINDING
- *	   CompKeyGrab	*keyGrab;
- *	   unsigned int mask;
- *	   int			i;
- *
- *	   mask = virtualToRealModMask (s->display, key->modifiers);
- *
- *	   for (i = 0; i < s->nKeyGrab; i++)
- *	   {
- *	if (key->keycode == s->keyGrab[i].keycode &&
- *		mask		 == s->keyGrab[i].modifiers)
- *	{
- *		s->keyGrab[i].count++;
- *		return TRUE;
- *	}
- *	   }
- *
- *	   keyGrab = realloc (s->keyGrab, sizeof (CompKeyGrab) * (s->nKeyGrab + 1));
- *	   if (!keyGrab)
- *	return FALSE;
- *
- *	   s->keyGrab = keyGrab;
- *
- *	   if (!(mask & CompNoMask))
- *	   {
- *	if (!grabUngrabKeys (s, mask, key->keycode, TRUE))
- *		return FALSE;
- *	   }
- *
- *	   s->keyGrab[s->nKeyGrab].keycode	 = key->keycode;
- *	   s->keyGrab[s->nKeyGrab].modifiers = mask;
- *	   s->keyGrab[s->nKeyGrab].count	 = 1;
- *
- *	   s->nKeyGrab++;
- * #endif
- *	   return TRUE;
- * }
- *
- * static void
- * removePassiveKeyGrab (CompScreen		*s,
- *			  CompKeyBinding *key)
- * {
- * #ifdef KEYBINDING
- *	   unsigned int mask;
- *	   int			i;
- *
- *	   for (i = 0; i < s->nKeyGrab; i++)
- *	   {
- *	mask = virtualToRealModMask (s->display, key->modifiers);
- *	if (key->keycode == s->keyGrab[i].keycode &&
- *		mask		 == s->keyGrab[i].modifiers)
- *	{
- *		s->keyGrab[i].count--;
- *		if (s->keyGrab[i].count)
- *		return;
- *
- *		memmove (s->keyGrab + i, s->keyGrab + i + 1,
- *			 (s->nKeyGrab - (i + 1)) * sizeof (CompKeyGrab));
- *
- *		s->nKeyGrab--;
- *		s->keyGrab = realloc (s->keyGrab,
- *				  sizeof (CompKeyGrab) * s->nKeyGrab);
- *
- *		if (!(mask & CompNoMask))
- *		grabUngrabKeys (s, mask, key->keycode, FALSE);
- *	}
- *	   }
- * #endif
- * } */
-
-/* static void
- * updatePassiveKeyGrabs (CompScreen *s)
- * {
- * #ifdef KEYBINDING
- *	   int i;
- *
- *	   XUngrabKey (s->display->display, AnyKey, AnyModifier, s->root);
- *
- *	   for (i = 0; i < s->nKeyGrab; i++)
- *	   {
- *	if (!(s->keyGrab[i].modifiers & CompNoMask))
- *	{
- *		grabUngrabKeys (s, s->keyGrab[i].modifiers,
- *				s->keyGrab[i].keycode, TRUE);
- *	}
- *	   }
- * #endif
- * } */
-
-/* static Bool
- * addPassiveButtonGrab (CompScreen		   *s,
- *			  CompButtonBinding *button)
- * {
- * #ifdef KEYBINDING
- *	   CompButtonGrab *buttonGrab;
- *	   int			  i;
- *
- *	   for (i = 0; i < s->nButtonGrab; i++)
- *	   {
- *	if (button->button	  == s->buttonGrab[i].button &&
- *		button->modifiers == s->buttonGrab[i].modifiers)
- *	{
- *		s->buttonGrab[i].count++;
- *		return TRUE;
- *	}
- *	   }
- *
- *	   buttonGrab = realloc (s->buttonGrab,
- *			  sizeof (CompButtonGrab) * (s->nButtonGrab + 1));
- *	   if (!buttonGrab)
- *	return FALSE;
- *
- *	   s->buttonGrab = buttonGrab;
- *
- *	   s->buttonGrab[s->nButtonGrab].button	   = button->button;
- *	   s->buttonGrab[s->nButtonGrab].modifiers = button->modifiers;
- *	   s->buttonGrab[s->nButtonGrab].count	   = 1;
- *
- *	   s->nButtonGrab++;
- * #endif
- *	   return TRUE;
- * }
- *
- * static void
- * removePassiveButtonGrab (CompScreen		  *s,
- *			 CompButtonBinding *button)
- * {
- * #ifdef KEYBINDING
- *	   int			i;
- *
- *	   for (i = 0; i < s->nButtonGrab; i++)
- *	   {
- *	if (button->button	  == s->buttonGrab[i].button &&
- *		button->modifiers == s->buttonGrab[i].modifiers)
- *	{
- *		s->buttonGrab[i].count--;
- *		if (s->buttonGrab[i].count)
- *		return;
- *
- *		memmove (s->buttonGrab + i, s->buttonGrab + i + 1,
- *			 (s->nButtonGrab - (i + 1)) * sizeof (CompButtonGrab));
- *
- *		s->nButtonGrab--;
- *		s->buttonGrab = realloc (s->buttonGrab,
- *					 sizeof (CompButtonGrab) * s->nButtonGrab);
- *	}
- *	   }
- * #endif
- * } */
-
-/* Bool
- * addScreenAction (CompScreen *s,
- *		 CompAction *action)
- * {
- *	   if (action->type & CompBindingTypeKey)
- *		 {
- *		  if (!addPassiveKeyGrab (s, &action->key))
- *			{
- *			  return FALSE;
- *			}
- *		 }
- *
- *
- *	   if (action->type & CompBindingTypeButton)
- *		 {
- *		   if (!addPassiveButtonGrab (s, &action->button))
- *			{
- *			  if (action->type & CompBindingTypeKey)
- *				removePassiveKeyGrab (s, &action->key);
- *
- *			  return FALSE;
- *			}
- *		 }
- *
- *	   if (action->edgeMask)
- *		 {
- *		  int i;
- *
- *		  for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *			if (action->edgeMask & (1 << i))
- *			  enableScreenEdge (s, i);
- *		 }
- *	   return TRUE;
- * } */
-
-/* void
- * removeScreenAction (CompScreen *s,
- *			CompAction *action)
- * {
- *	   if (action->type & CompBindingTypeKey)
- *		removePassiveKeyGrab (s, &action->key);
- *
- *	   if (action->type & CompBindingTypeButton)
- *		removePassiveButtonGrab (s, &action->button);
- *
- *	   if (action->edgeMask)
- *	   {
- *		int i;
- *
- *		for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *			if (action->edgeMask & (1 << i))
- *			disableScreenEdge (s, i);
- *	   }
- * } */
-
-/* void
- * updatePassiveGrabs (CompScreen *s)
- * {
- *	   updatePassiveKeyGrabs (s);
- * } */
-
 
 /* XXX check if this is set by e17 */
 Window
@@ -2719,67 +2269,6 @@ moveWindowToViewportPosition (CompWindow *w,
 	}
 }
 
-/* CompGroup *
- * addGroupToScreen (CompScreen *s,
- *		  Window	 id)
- * {
- *	   CompGroup *group;
- *
- *	   group = malloc (sizeof (CompGroup));
- *	   if (!group)
- *	return NULL;
- *
- *	   group->next	 = s->groups;
- *	   group->refCnt = 1;
- *	   group->id	 = id;
- *
- *	   s->groups = group;
- *
- *	   return group;
- * }
- *
- * void
- * removeGroupFromScreen (CompScreen *s,
- *			   CompGroup  *group)
- * {
- *	   group->refCnt--;
- *	   if (group->refCnt)
- *	return;
- *
- *	   if (group == s->groups)
- *	   {
- *	s->groups = group->next;
- *	   }
- *	   else
- *	   {
- *	CompGroup *g;
- *
- *	for (g = s->groups; g; g = g->next)
- *	{
- *		if (g->next == group)
- *		{
- *		g->next = group->next;
- *		break;
- *		}
- *	}
- *	   }
- *
- *	   free (group);
- * }
- *
- * CompGroup *
- * findGroupAtScreen (CompScreen *s,
- *		   Window	  id)
- * {
- *	   CompGroup *g;
- *
- *	   for (g = s->groups; g; g = g->next)
- *	if (g->id == id)
- *		return g;
- *
- *	   return NULL;
- * } */
-
 /* XXX use ECOMORPH_ATOM message  */
 void
 sendWindowActivationRequest (CompScreen *s,
@@ -2816,8 +2305,7 @@ screenTexEnvMode (CompScreen *s,
 }
 
 void
-screenLighting (CompScreen *s,
-				Bool	   lighting)
+screenLighting (CompScreen *s, Bool lighting)
 {
 	if (s->lighting != lighting)
 	{
@@ -2840,25 +2328,6 @@ screenLighting (CompScreen *s,
 		screenTexEnvMode (s, GL_REPLACE);
 	}
 }
-
-/* void
- * enableScreenEdge (CompScreen *s,
- *		  int		 edge)
- * {
- *	   s->screenEdge[edge].count++;
- *	   if (s->screenEdge[edge].count == 1)
- *	   XMapRaised (s->display->display, s->screenEdge[edge].id);
- * }
- *
- * void
- * disableScreenEdge (CompScreen *s,
- *		   int		  edge)
- * {
- *	   s->screenEdge[edge].count--;
- *	   if (s->screenEdge[edge].count == 0)
- *	   XUnmapWindow (s->display->display, s->screenEdge[edge].id);
- * } */
-
 
 Window
 getTopWindow (CompScreen *s)
@@ -2900,9 +2369,7 @@ finishScreenDrawing (CompScreen *s)
 }
 
 int
-outputDeviceForPoint (CompScreen *s,
-					  int	 x,
-					  int	 y)
+outputDeviceForPoint (CompScreen *s, int x, int y)
 {
 	int i, x1, y1, x2, y2;
 
@@ -2922,30 +2389,17 @@ outputDeviceForPoint (CompScreen *s,
 }
 
 void
-getCurrentOutputExtents (CompScreen *s,
-						 int		*x1,
-						 int		*y1,
-						 int		*x2,
-						 int		*y2)
+getCurrentOutputExtents (CompScreen *s, int *x1, int *y1, int *x2, int *y2)
 {
-	if (x1)
-		*x1 = s->outputDev[s->currentOutputDev].region.extents.x1;
-
-	if (y1)
-		*y1 = s->outputDev[s->currentOutputDev].region.extents.y1;
-
-	if (x2)
-		*x2 = s->outputDev[s->currentOutputDev].region.extents.x2;
-
-	if (y2)
-		*y2 = s->outputDev[s->currentOutputDev].region.extents.y2;
+	if (x1) *x1 = s->outputDev[s->currentOutputDev].region.extents.x1;
+	if (y1) *y1 = s->outputDev[s->currentOutputDev].region.extents.y1;
+	if (x2) *x2 = s->outputDev[s->currentOutputDev].region.extents.x2;
+	if (y2) *y2 = s->outputDev[s->currentOutputDev].region.extents.y2;
 }
 
 
 void
-getWorkareaForOutput (CompScreen *s,
-					  int	 output,
-					  XRectangle *area)
+getWorkareaForOutput (CompScreen *s, int output, XRectangle *area)
 {
 	*area = s->outputDev[output].workArea;
 }

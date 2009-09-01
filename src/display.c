@@ -1725,15 +1725,15 @@ addDisplay (char *name)
 		XGrabServer (dpy);
 
 		XSelectInput (dpy, XRootWindow (dpy, i),
-					  //  SubstructureRedirectMask |
+					  /* SubstructureRedirectMask | */
 					  SubstructureNotifyMask   |
 					  StructureNotifyMask	   |
 					  PropertyChangeMask	   |
-					  ExposureMask			   |
+					  ExposureMask
 					  /* TODO get theevents from e? */
-					  LeaveWindowMask		   |
-					  FocusChangeMask		   |
-					  EnterWindowMask
+					  /* LeaveWindowMask		   |
+					   * FocusChangeMask		   |
+					   * EnterWindowMask */
 					  /* KeyPressMask		   |
 					   * KeyReleaseMask		   |
 					   * ButtonPressMask		   |

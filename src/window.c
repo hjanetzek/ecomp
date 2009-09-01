@@ -1084,7 +1084,6 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->pendingUnmaps = 0;
 	w->pendingMaps	 = 0;
 
-	//	  w->startupId = NULL;
 	w->resName	 = NULL;
 	w->resClass	 = NULL;
 
@@ -1105,8 +1104,6 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	w->destroyRefCnt = 1;
 	w->unmapRefCnt	 = 1;
-
-	/* w->group = NULL; */
 
 	w->damageRects = 0;
 	w->sizeDamage  = 0;
@@ -1206,16 +1203,8 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	w->sizeHints.flags = 0;
 
-	//recalcNormalHints (w);
-
 	w->clientMapped = FALSE;
 	w->clientId		= None;
-	/*w->clientDamage = None;
-	  w->clientDamageRect.x = 0;
-	  w->clientDamageRect.y = 0;
-	  w->clientDamageRect.width  = 0xffffff;
-	  w->clientDamageRect.height = 0xffffff;
-	*/
 
 	w->serverX = w->attrib.x;
 	w->serverY = w->attrib.y;
@@ -1235,12 +1224,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 				  FocusChangeMask);
 
 	w->id = id;
-	/***
-		XGrabButton (screen->display->display, AnyButton,
-		AnyModifier, w->id, TRUE, ButtonPressMask |
-		ButtonReleaseMask | ButtonMotionMask,
-		GrabModeSync, GrabModeSync, None, None);
-	*/
+
 	w->inputHint = TRUE;
 	w->alpha	 = (w->attrib.depth == 32);
 	w->wmType	 = 0;
@@ -1248,7 +1232,6 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->actions	 = 0;
 	w->protocols = 0;
 	w->type		 = CompWindowTypeUnknownMask;
-
 
 	if (screen->display->shapeExtension)
 		XShapeSelectInput (screen->display->display, id, ShapeNotifyMask);
@@ -1318,6 +1301,9 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		printf("window managed: 0x%x : 0x%x\n", (unsigned int)w->id, clientId);
 		/* XXX remove the use of this. all windows are override
 		 * redirect. */
+
+		XSelectInput (screen->display->display, w->id, SubstructureNotifyMask);
+		
 		w->attrib.override_redirect = 0;
 		w->clientId = clientId;
 
@@ -1326,15 +1312,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		updateWindowClassHints (w);
 		if(w->resClass) printf ("- %s\n", w->resClass);
 
-		//w->state = getWmState
-		//updateNormalHints (w);
-		//updateWindowStruts (w);
-		//updateWmHints (w);
-		//updateTransientHint (w);
-		//getMwmHints (screen->display, w->id, &w->mwmFunc,
-
 		recalcWindowType (w);
-
 
 		updateWindowViewport(w, 1);
 
@@ -1363,6 +1341,8 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 			if (w->alive)
 				w->paint.saturation = w->saturation;
 		}
+
+		
 	}
 	else
 	{
@@ -1374,18 +1354,6 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	/* XXX: think this whole section over again */
 	if (w->attrib.map_state == IsViewable)
 	{
-		/*
-		  if (w->clientId)
-		  {
-		  if (getWmState (screen->display, w->clientId) == IconicState)
-		  {
-		  if (w->state & CompWindowStateShadedMask)
-		  w->shaded = TRUE;
-		  else
-		  w->minimized = TRUE;
-		  }
-		  }
-		*/
 		w->attrib.map_state = IsUnmapped;
 		w->pendingMaps++;
 
@@ -1411,15 +1379,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	(*w->screen->windowAddNotify) (w);
 
-	//recalcWindowActions (w);
 	updateWindowOpacity (w);
-
-	/* if (w->shaded)
-	   resizeWindow (w,
-	   w->attrib.x, w->attrib.y,
-	   w->attrib.width, ++w->attrib.height - 1,
-	   w->attrib.border_width);
-	*/
 }
 
 void
@@ -1663,24 +1623,21 @@ resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidt
 void
 configureWindow (CompWindow *w, XConfigureEvent *ce)
 {
-	C(("- configureWindow %d:%d %dx%d\n", ce->x, ce->y, ce->width, ce->height));
+	/* printf("- configureWindow %d:%d %dx%d\n", ce->x, ce->y, ce->width, ce->height); */
 
-	/*XXX remove this*/
-	/*  if (w->clientId)
-		{
-		w->attrib.override_redirect = FALSE;
-		}*/
-	if(!w->clientId) /* XXX */
+	if (!w->clientId)
+	{
 		w->attrib.override_redirect = ce->override_redirect;
+		w->serverX		   = ce->x;
+		w->serverY		   = ce->y;
+		w->serverWidth	   = ce->width;
+		w->serverHeight	   = ce->height;
+		w->serverBorderWidth = ce->border_width;
 
-	w->serverX		 = ce->x;
-	w->serverY		 = ce->y;
-	w->serverWidth	   = ce->width;
-	w->serverHeight	   = ce->height;
-	w->serverBorderWidth = ce->border_width;
-
-	resizeWindow (w, ce->x, ce->y, ce->width, ce->height,
-				  ce->border_width);
+		resizeWindow (w, ce->x, ce->y, ce->width, ce->height,
+					  ce->border_width);
+	}
+	
 	//if(w->grabbed)
 	//  (*w->screen->windowMoveNotify) (w, dx, dy, immediate);
 
@@ -1732,11 +1689,12 @@ moveWindow (CompWindow *w, int dx, int dy, Bool damage, Bool immediate)
 void
 syncWindowPosition (CompWindow *w)
 {
-	D(("0x%x : syncWindowPosition: %d:%d\n", (unsigned int) w->id, w->attrib.x,  w->attrib.y ));
-	w->serverX = w->attrib.x;
-	w->serverY = w->attrib.y;
+	/* printf("0x%x : syncWindowPosition: %d:%d\n", (unsigned int) w->id, w->attrib.x,  w->attrib.y); */
 
-	XMoveWindow (w->screen->display->display, w->id, w->attrib.x, w->attrib.y);
+	/* w->serverX = w->attrib.x;
+	 * w->serverY = w->attrib.y;
+	 * XMoveWindow (w->screen->display->display, w->id, w->attrib.x, w->attrib.y); */
+
 	/* we moved without resizing, so we have to send a configure notify */
 	// XXX TESTING sendConfigureNotify (w);
 }

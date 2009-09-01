@@ -117,13 +117,11 @@ moveInitiate (CompDisplay     *d,
     Window     xid;
      
     MOVE_DISPLAY (d);
-    //#ifdef KEYBINDING
     xid = getIntOptionNamed (option, nOption, "window", 0);
-    //#endif
+
     w = findWindowAtDisplay (d, xid);
-    if (w)// && (w->actions & CompWindowActionMoveMask))
+    if (w)
     {
-		XRectangle   workArea;
 		unsigned int mods;
 		int          x, y;
 
@@ -142,17 +140,6 @@ moveInitiate (CompDisplay     *d,
 		if (md->w)
 			return FALSE;
 	
-		if (w->type & (CompWindowTypeDesktopMask |
-					   CompWindowTypeDockMask    |
-					   CompWindowTypeFullscreenMask))
-			return FALSE;
-	
-		if (w->attrib.override_redirect)
-			return FALSE;
-	
-		//if (state & CompActionStateInitButton)
-		//    action->state |= CompActionStateTermButton;
-
 		if (md->region)
 		{
 			XDestroyRegion (md->region);
@@ -172,19 +159,8 @@ moveInitiate (CompDisplay     *d,
 
 		ms->origState = w->state;
 
-		getWorkareaForOutput (w->screen,
-							  outputDeviceForWindow (w),
-							  &workArea);
-
-		ms->snapBackY = w->serverY - workArea.y;
-		ms->snapOffY  = y - workArea.y;
-
 		if (!ms->grabIndex)
-			//#ifdef KEYBINDING	  
-			 ms->grabIndex = pushScreenGrab (w->screen, ms->moveCursor, "move");
-			//#else
-			//ms->grabIndex = 1;
-		//#endif
+			ms->grabIndex = pushScreenGrab (w->screen, ms->moveCursor, "move");
 	
 		if (ms->grabIndex)
 		{
@@ -193,16 +169,6 @@ moveInitiate (CompDisplay     *d,
 			(w->screen->windowGrabNotify) (w, x, y, mods,
 										   CompWindowGrabMoveMask |
 										   CompWindowGrabButtonMask);
-
-			if (state & CompActionStateInitKey)
-			{
-				int xRoot, yRoot;
-
-				xRoot = w->attrib.x + (w->width  / 2);
-				yRoot = w->attrib.y + (w->height / 2);
-
-				warpPointer (w->screen, xRoot - pointerX, yRoot - pointerY);
-			}
 
 			if (md->moveOpacity != OPAQUE)
 				addWindowDamage (w);
@@ -225,36 +191,19 @@ moveTerminate (CompDisplay     *d,
     {
 		MOVE_SCREEN (md->w->screen);
 
-		if (state & CompActionStateCancel)
-			moveWindow (md->w,
-						md->savedX - md->w->attrib.x,
-						md->savedY - md->w->attrib.y,
-						TRUE, FALSE);
-
-		syncWindowPosition (md->w);
-
-		/* update window attributes as window constraints may have
-		   changed - needed e.g. if a maximized window was moved
-		   to another output device */
-		updateWindowAttributes (md->w, CompStackingUpdateModeNone);
-
 		(md->w->screen->windowUngrabNotify) (md->w);
 
 		if (ms->grabIndex)
 		{
-			//#ifdef KEYBINDING
 			removeScreenGrab (md->w->screen, ms->grabIndex, NULL);
-			//#endif
 			ms->grabIndex = 0;
 		}
 
 		if (md->moveOpacity != OPAQUE)
 			addWindowDamage (md->w);
 
-		/* md->w = 0; */
+		md->w = 0;
     }
-
-    //    action->state &= ~(CompActionStateTermKey | CompActionStateTermButton);
 
     return FALSE;
 }
@@ -276,8 +225,8 @@ moveHandleEvent (CompDisplay *d,
 		{ 
 			CompWindow *w;
 	    
-			Window win = event->xclient.data.l[0];
-			unsigned int type = event->xclient.data.l[1];
+			Window win = event->xclient.window;
+			unsigned int type = event->xclient.data.l[0];
 			if (type != 4) break;
 	    
 			w = findWindowAtDisplay (d, win);

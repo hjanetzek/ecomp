@@ -29,6 +29,17 @@
 #define C(x)
 #define E(x)
 
+#define ECOMORPH_EVENT_MAPPED      0
+#define ECOMORPH_EVENT_STATE       1
+#define ECOMORPH_EVENT_DESK        2
+#define ECOMORPH_EVENT_RESTART     3
+#define ECOMORPH_EVENT_GRAB        4
+#define ECOMORPH_EVENT_MOVE        5
+#define ECOMORPH_EVENT_MOVE_RESIZE 6
+#define ECOMORPH_WINDOW_STATE_INVISIBLE 0
+#define ECOMORPH_WINDOW_STATE_VISIBLE 1
+
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -112,941 +123,6 @@ static Bool initialDamageTimeout(void *closure)
 #define REAL_MOD_MASK (ShiftMask | ControlMask | Mod1Mask | Mod2Mask |	\
 					   Mod3Mask | Mod4Mask | Mod5Mask | CompNoMask)
 
-/* static Bool
- * isCallBackBinding (CompOption	   *option,
- *		   CompBindingType type,
- *		   CompActionState state)
- * {
- *	   if (option->type != CompOptionTypeAction)
- *	return FALSE;
- *
- *	   if (!(option->value.action.type & type))
- *	return FALSE;
- *
- *	   if (!(option->value.action.state & state))
- *	return FALSE;
- *
- *	   return TRUE;
- * }
- *
- * static Bool
- * isInitiateBinding (CompOption	   *option,
- *		   CompBindingType type,
- *		   CompActionState state,
- *		   CompAction	   **action)
- * {
- *	   if (!isCallBackBinding (option, type, state))
- *	return FALSE;
- *
- *	   if (!option->value.action.initiate)
- *	return FALSE;
- *
- *	   *action = &option->value.action;
- *
- *	   return TRUE;
- * }
- *
- * static Bool
- * isTerminateBinding (CompOption		*option,
- *			CompBindingType type,
- *			CompActionState state,
- *			CompAction		**action)
- * {
- *	   if (!isCallBackBinding (option, type, state))
- *	return FALSE;
- *
- *	   if (!option->value.action.terminate)
- *	return FALSE;
- *
- *	   *action = &option->value.action;
- *
- *	   return TRUE;
- * }
- *
- * static Bool
- * triggerButtonPressBindings (CompDisplay *d,
- *				CompOption	*option,
- *				int		nOption,
- *				XEvent	*event,
- *				CompOption	*argument,
- *				int		nArgument)
- * {
- *	   CompActionState state = CompActionStateInitButton;
- *	   CompAction		*action;
- *	   unsigned int	   modMask = REAL_MOD_MASK & ~d->ignoredModMask;
- *	   unsigned int	   bindMods;
- *	   unsigned int	   edge = 0;
- *
- *	   if (edgeWindow)
- *	   {
- *	CompScreen	 *s;
- *	unsigned int i;
- *
- *	s = findScreenAtDisplay (d, event->xbutton.root);
- *	if (!s)
- *		return FALSE;
- *
- *	if (event->xbutton.window != edgeWindow)
- *	{
- *		if (!s->maxGrab || event->xbutton.window != s->root)
- *		return FALSE;
- *	}
- *
- *	/\* for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *	 *	{
- *	 *	  if (edgeWindow == s->screenEdge[i].id)
- *	 *		{
- *	 *		  edge = 1 << i;
- *	 *		  argument[1].value.i = d->activeWindow;
- *	 *		  break;
- *	 *		}
- *	 *	} *\/
- *	   }
- *	   while (nOption--)
- *	   {
- *	if (isInitiateBinding (option, CompBindingTypeButton, state, &action))
- *	{
- *		if (action->button.button == event->xbutton.button)
- *		{
- *		bindMods = virtualToRealModMask (d, action->button.modifiers);
- *
- *		if ((bindMods & modMask) == (event->xbutton.state & modMask))
- *			if ((*action->initiate) (d, action, state,
- *						 argument, nArgument))
- *			return TRUE;
- *		}
- *	}
- *
- *	if (edge)
- *	{
- *		if (isInitiateBinding (option, CompBindingTypeEdgeButton,
- *				   CompActionStateInitEdge, &action))
- *		{
- *		if (action->edgeMask & edge)
- *		{
- *			if (action->edgeButton == event->xbutton.button)
- *			if ((*action->initiate) (d, action,
- *						 CompActionStateInitEdge,
- *						 argument, nArgument))
- *				return TRUE;
- *		}
- *		}
- *	}
- *
- *	option++;
- *	   }
- *	   return FALSE;
- * }
- *
- * static Bool
- * triggerButtonReleaseBindings (CompDisplay *d,
- *				  CompOption  *option,
- *				  int	  nOption,
- *				  XEvent	  *event,
- *				  CompOption  *argument,
- *				  int	  nArgument)
- * {
- *	   CompActionState state = CompActionStateTermButton;
- *	   CompAction		*action;
- *
- *	   while (nOption--)
- *	   {
- *	if (isTerminateBinding (option, CompBindingTypeButton, state, &action))
- *	{
- *		if (action->button.button == event->xbutton.button)
- *		{
- *		if ((*action->terminate) (d, action, state,
- *					  argument, nArgument))
- *			return TRUE;
- *		}
- *	}
- *
- *	option++;
- *	   }
- *
- *	   return FALSE;
- * }
- *
- * static Bool
- * triggerKeyPressBindings (CompDisplay *d,
- *			 CompOption	 *option,
- *			 int		 nOption,
- *			 XEvent		 *event,
- *			 CompOption	 *argument,
- *			 int		 nArgument)
- * {
- *	   CompActionState state = 0;
- *	   CompAction		*action;
- *	   unsigned int	   modMask = REAL_MOD_MASK & ~d->ignoredModMask;
- *	   unsigned int	   bindMods;
- *
- *	   if (event->xkey.keycode == d->escapeKeyCode)
- *	state = CompActionStateCancel;
- *	   else if (event->xkey.keycode == d->returnKeyCode)
- *	state = CompActionStateCommit;
- *
- *	   if (state)
- *	   {
- *	CompOption *o = option;
- *	int	   n = nOption;
- *
- *	while (n--)
- *	{
- *		if (o->type == CompOptionTypeAction)
- *		{
- *		if (o->value.action.terminate)
- *			(*o->value.action.terminate) (d, &o->value.action,
- *						  state, NULL, 0);
- *		}
- *
- *		o++;
- *	}
- *
- *	if (state == CompActionStateCancel)
- *		return FALSE;
- *	   }
- *
- *	   state = CompActionStateInitKey;
- *	   while (nOption--)
- *	   {
- *	if (isInitiateBinding (option, CompBindingTypeKey, state, &action))
- *	{
- *		bindMods = virtualToRealModMask (d, action->key.modifiers);
- *
- *		if (action->key.keycode == event->xkey.keycode)
- *		{
- *		if ((bindMods & modMask) == (event->xkey.state & modMask))
- *			if ((*action->initiate) (d, action, state,
- *						 argument, nArgument))
- *			return TRUE;
- *		}
- *		else if (!d->xkbEvent && action->key.keycode == 0)
- *		{
- *		if (bindMods == (event->xkey.state & modMask))
- *			if ((*action->initiate) (d, action, state,
- *						 argument, nArgument))
- *			return TRUE;
- *		}
- *	}
- *
- *	option++;
- *	   }
- *
- *	   return FALSE;
- * }
- *
- * static Bool
- * triggerKeyReleaseBindings (CompDisplay *d,
- *			   CompOption  *option,
- *			   int		   nOption,
- *			   XEvent	   *event,
- *			   CompOption  *argument,
- *			   int		   nArgument)
- * {
- *	   if (!d->xkbEvent)
- *	   {
- *	CompActionState state = CompActionStateTermKey;
- *	CompAction	*action;
- *	unsigned int	modMask = REAL_MOD_MASK & ~d->ignoredModMask;
- *	unsigned int	bindMods;
- *	unsigned int	mods;
- *
- *	mods = keycodeToModifiers (d, event->xkey.keycode);
- *	if (mods == 0)
- *		return FALSE;
- *
- *	while (nOption--)
- *	{
- *		if (isTerminateBinding (option, CompBindingTypeKey, state, &action))
- *		{
- *		bindMods = virtualToRealModMask (d, action->key.modifiers);
- *
- *		if (!((mods & modMask & bindMods) | bindMods))
- *		{
- *			if ((*action->terminate) (d, action, state, argument, nArgument))
- *			return TRUE;
- *		}
- *		}
- *
- *		option++;
- *	}
- *	   }
- *
- *	   return FALSE;
- * }
- *
- * static Bool
- * triggerStateNotifyBindings (CompDisplay		*d,
- *				CompOption		*option,
- *				int			nOption,
- *				XkbStateNotifyEvent *event,
- *				CompOption		*argument,
- *				int			nArgument)
- * {
- *	   CompActionState state;
- *	   CompAction	   *action;
- *	   unsigned int	   modMask = REAL_MOD_MASK & ~d->ignoredModMask;
- *	   unsigned int	   bindMods;
- *
- *	   if (event->event_type == KeyPress)
- *	   {
- *	state = CompActionStateInitKey;
- *
- *	while (nOption--)
- *	{
- *		if (isInitiateBinding (option, CompBindingTypeKey, state, &action))
- *		{
- *		if (action->key.keycode == 0)
- *		{
- *			bindMods = virtualToRealModMask (d, action->key.modifiers);
- *
- *			if ((event->mods & modMask & bindMods) == bindMods)
- *			{
- *			if ((*action->initiate) (d, action, state,
- *						 argument, nArgument))
- *				return TRUE;
- *			}
- *		}
- *		}
- *
- *		option++;
- *	}
- *	   }
- *	   else
- *	   {
- *	state = CompActionStateTermKey;
- *
- *	while (nOption--)
- *	{
- *		if (isTerminateBinding (option, CompBindingTypeKey, state, &action))
- *		{
- *		bindMods = virtualToRealModMask (d, action->key.modifiers);
- *
- *		if ((event->mods & modMask & bindMods) | bindMods)
- *		{
- *			if ((*action->terminate) (d, action, state,
- *						  argument, nArgument))
- *			{
- *			return TRUE;
- *			}
- *
- *		}
- *		}
- *
- *		option++;
- *	}
- *	   }
- *
- *	   return FALSE;
- * }
- *
- * static Bool
- * isBellAction (CompOption		 *option,
- *		  CompActionState state,
- *		  CompAction	  **action)
- * {
- *	   if (option->type != CompOptionTypeAction)
- *	return FALSE;
- *
- *	   if (!option->value.action.bell)
- *	return FALSE;
- *
- *	   if (!(option->value.action.state & state))
- *	return FALSE;
- *
- *	   if (!option->value.action.initiate)
- *	return FALSE;
- *
- *	   *action = &option->value.action;
- *
- *	   return TRUE;
- * }
- *
- * static Bool
- * triggerBellNotifyBindings (CompDisplay *d,
- *			   CompOption  *option,
- *			   int		   nOption,
- *			   CompOption  *argument,
- *			   int		   nArgument)
- * {
- *	   CompActionState state = CompActionStateInitBell;
- *	   CompAction	   *action;
- *
- *	   while (nOption--)
- *	   {
- *	if (isBellAction (option, state, &action))
- *	{
- *		if ((*action->initiate) (d, action, state, argument, nArgument))
- *		return TRUE;
- *	}
- *
- *	option++;
- *	   }
- *
- *	   return FALSE;
- * }
- *
- * static Bool
- * isEdgeAction (CompOption		 *option,
- *		  CompActionState state,
- *		  unsigned int	  edge)
- * {
- *	   if (option->type != CompOptionTypeAction)
- *	return FALSE;
- *
- *	   if (!(option->value.action.edgeMask & edge))
- *	return FALSE;
- *
- *	   if (!(option->value.action.state & state))
- *	return FALSE;
- *
- *	   return TRUE;
- * }
- *
- * static Bool
- * isEdgeEnterAction (CompOption	  *option,
- *		   CompActionState state,
- *		   unsigned int	   edge,
- *		   CompAction	   **action)
- * {
- *	   if (!isEdgeAction (option, state, edge))
- *	return FALSE;
- *
- *	   if (option->value.action.type & CompBindingTypeEdgeButton)
- *	return FALSE;
- *
- *	   if (!option->value.action.initiate)
- *	return FALSE;
- *
- *	   *action = &option->value.action;
- *
- *	   return TRUE;
- * }
- *
- * static Bool
- * isEdgeLeaveAction (CompOption	  *option,
- *		   CompActionState state,
- *		   unsigned int	   edge,
- *		   CompAction	   **action)
- * {
- *	   if (!isEdgeAction (option, state, edge))
- *	return FALSE;
- *
- *	   if (!option->value.action.terminate)
- *	return FALSE;
- *
- *	   *action = &option->value.action;
- *
- *	   return TRUE;
- * }
- *
- * static Bool
- * triggerEdgeEnterBindings (CompDisplay	  *d,
- *			  CompOption	  *option,
- *			  int		  nOption,
- *			  CompActionState state,
- *			  unsigned int	  edge,
- *			  CompOption	  *argument,
- *			  int		  nArgument)
- * {
- *	   CompAction *action;
- *
- *	   while (nOption--)
- *	   {
- *	if (isEdgeEnterAction (option, state, edge, &action))
- *	{
- *		if ((*action->initiate) (d, action, state, argument, nArgument))
- *		return TRUE;
- *	}
- *
- *	option++;
- *	   }
- *
- *	   return FALSE;
- * }
- *
- * static Bool
- * triggerEdgeLeaveBindings (CompDisplay	  *d,
- *			  CompOption	  *option,
- *			  int		  nOption,
- *			  CompActionState state,
- *			  unsigned int	  edge,
- *			  CompOption	  *argument,
- *			  int		  nArgument)
- * {
- *	   CompAction *action;
- *
- *	   while (nOption--)
- *	   {
- *	if (isEdgeLeaveAction (option, state, edge, &action))
- *	{
- *		if ((*action->terminate) (d, action, state, argument, nArgument))
- *		return TRUE;
- *	}
- *
- *	option++;
- *	   }
- *
- *	   return FALSE;
- * }
- *
- * static Bool
- * handleActionEvent (CompDisplay *d,
- *		   XEvent	   *event)
- * {
- *	   CompOption *option;
- *	   int		   nOption;
- *	   CompPlugin *p;
- *	   CompOption o[8];
- *
- *	   o[0].type = CompOptionTypeInt;
- *	   o[0].name = "event_window";
- *
- *	   o[1].type = CompOptionTypeInt;
- *	   o[1].name = "window";
- *
- *	   o[2].type = CompOptionTypeInt;
- *	   o[2].name = "modifiers";
- *
- *	   o[3].type = CompOptionTypeInt;
- *	   o[3].name = "x";
- *
- *	   o[4].type = CompOptionTypeInt;
- *	   o[4].name = "y";
- *
- *	   o[5].type = CompOptionTypeInt;
- *	   o[5].name = "root";
- *
- *	   switch (event->type) {
- *	   case ButtonPress:
- *	o[0].value.i = event->xbutton.window;
- *	o[1].value.i = event->xbutton.window;
- *	o[2].value.i = event->xbutton.state;
- *	o[3].value.i = event->xbutton.x_root;
- *	o[4].value.i = event->xbutton.y_root;
- *	o[5].value.i = event->xbutton.root;
- *
- *	o[6].type	 = CompOptionTypeInt;
- *	o[6].name	 = "button";
- *	o[6].value.i = event->xbutton.button;
- *
- *	o[7].type	 = CompOptionTypeInt;
- *	o[7].name	 = "time";
- *	o[7].value.i = event->xbutton.time;
- *
- *	for (p = getPlugins (); p; p = p->next)
- *	{
- *		if (p->vTable->getDisplayOptions)
- *		{
- *		option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *		if (triggerButtonPressBindings (d, option, nOption, event,
- *						o, 8))
- *			return TRUE;
- *		}
- *	}
- *
- *	option = compGetDisplayOptions (d, &nOption);
- *	if (triggerButtonPressBindings (d, option, nOption, event, o, 8))
- *		return TRUE;
- *
- *	break;
- *	   case ButtonRelease:
- *	o[0].value.i = event->xbutton.window;
- *	o[1].value.i = event->xbutton.window;
- *	o[2].value.i = event->xbutton.state;
- *	o[3].value.i = event->xbutton.x_root;
- *	o[4].value.i = event->xbutton.y_root;
- *	o[5].value.i = event->xbutton.root;
- *
- *	o[6].type	 = CompOptionTypeInt;
- *	o[6].name	 = "button";
- *	o[6].value.i = event->xbutton.button;
- *
- *	o[7].type	 = CompOptionTypeInt;
- *	o[7].name	 = "time";
- *	o[7].value.i = event->xbutton.time;
- *
- *	for (p = getPlugins (); p; p = p->next)
- *	{
- *		if (p->vTable->getDisplayOptions)
- *		{
- *		option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *		if (triggerButtonReleaseBindings (d, option, nOption, event,
- *						  o, 8))
- *			return TRUE;
- *		}
- *	}
- *
- *	option = compGetDisplayOptions (d, &nOption);
- *	if (triggerButtonReleaseBindings (d, option, nOption, event, o, 8))
- *		return TRUE;
- *
- *	break;
- *	   case KeyPress:
- *	printf("KeyPress\n");
- *
- *	o[0].value.i = event->xkey.window;
- *	o[1].value.i = d->activeWindow;
- *	o[2].value.i = event->xkey.state;
- *	o[3].value.i = event->xkey.x_root;
- *	o[4].value.i = event->xkey.y_root;
- *	o[5].value.i = event->xkey.root;
- *
- *	o[6].type	 = CompOptionTypeInt;
- *	o[6].name	 = "keycode";
- *	o[6].value.i = event->xkey.keycode;
- *
- *	o[7].type	 = CompOptionTypeInt;
- *	o[7].name	 = "time";
- *	o[7].value.i = event->xkey.time;
- *
- *	for (p = getPlugins (); p; p = p->next)
- *	{
- *		if (p->vTable->getDisplayOptions)
- *		{
- *		option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *		if (triggerKeyPressBindings (d, option, nOption, event, o, 8))
- *			return TRUE;
- *		}
- *	}
- *
- *	option = compGetDisplayOptions (d, &nOption);
- *	if (triggerKeyPressBindings (d, option, nOption, event, o, 8))
- *		return TRUE;
- *
- *	break;
- *	   case KeyRelease:
- *	o[0].value.i = event->xkey.window;
- *	o[1].value.i = d->activeWindow;
- *	o[2].value.i = event->xkey.state;
- *	o[3].value.i = event->xkey.x_root;
- *	o[4].value.i = event->xkey.y_root;
- *	o[5].value.i = event->xkey.root;
- *
- *	o[6].type	 = CompOptionTypeInt;
- *	o[6].name	 = "keycode";
- *	o[6].value.i = event->xkey.keycode;
- *
- *	o[7].type	 = CompOptionTypeInt;
- *	o[7].name	 = "time";
- *	o[7].value.i = event->xkey.time;
- *
- *	for (p = getPlugins (); p; p = p->next)
- *	{
- *		if (p->vTable->getDisplayOptions)
- *		{
- *		option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *		if (triggerKeyReleaseBindings (d, option, nOption, event, o, 8))
- *			return TRUE;
- *		}
- *	}
- *
- *	option = compGetDisplayOptions (d, &nOption);
- *	if (triggerKeyReleaseBindings (d, option, nOption, event, o, 8))
- *		return TRUE;
- *
- *	break; */
-/*	case EnterNotify:
- *	  if (event->xcrossing.mode	  != NotifyGrab	  &&
- *		event->xcrossing.mode	!= NotifyUngrab &&
- *		event->xcrossing.detail != NotifyInferior)
- *		{
- *		CompScreen		*s;
- *		unsigned int	edge, i;
- *		CompActionState state;
- *
- *		s = findScreenAtDisplay (d, event->xcrossing.root);
- *		if (!s)
- *		  return FALSE;
- *
- *		if (edgeWindow && edgeWindow != event->xcrossing.window)
- *		  {
- *			state = CompActionStateTermEdge;
- *			edge  = 0;
- *
- *			for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *			  {
- *			if (edgeWindow == s->screenEdge[i].id)
- *			  {
- *				edge = 1 << i;
- *				break;
- *			  }
- *			  }
- *
- *			edgeWindow = None;
- *
- *			o[0].value.i = event->xcrossing.window;
- *			o[1].value.i = d->activeWindow;
- *			o[2].value.i = event->xcrossing.state;
- *			o[3].value.i = event->xcrossing.x_root;
- *			o[4].value.i = event->xcrossing.y_root;
- *			o[5].value.i = event->xcrossing.root;
- *
- *			o[6].type	 = CompOptionTypeInt;
- *			o[6].name	 = "time";
- *			o[6].value.i = event->xcrossing.time;
- *
- *			for (p = getPlugins (); p; p = p->next)
- *			  {
- *			if (p->vTable->getDisplayOptions)
- *			  {
- *				option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *				if (triggerEdgeLeaveBindings (d, option, nOption, state,
- *							  edge, o, 7))
- *				  return TRUE;
- *			  }
- *			  }
- *
- *			option = compGetDisplayOptions (d, &nOption);
- *			if (triggerEdgeLeaveBindings (d, option, nOption, state,
- *						  edge, o, 7))
- *			  return TRUE;
- *		  }
- *
- *		edge = 0;
- *
- *		for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *		  {
- *			if (event->xcrossing.window == s->screenEdge[i].id)
- *			  {
- *			edge = 1 << i;
- *			break;
- *			  }
- *		  }
- *
- *		if (edge)
- *		  {
- *			state = CompActionStateInitEdge;
- *
- *			edgeWindow = event->xcrossing.window;
- *
- *			o[0].value.i = event->xcrossing.window;
- *			o[1].value.i = d->activeWindow;
- *			o[2].value.i = event->xcrossing.state;
- *			o[3].value.i = event->xcrossing.x_root;
- *			o[4].value.i = event->xcrossing.y_root;
- *			o[5].value.i = event->xcrossing.root;
- *
- *			o[6].type	 = CompOptionTypeInt;
- *			o[6].name	 = "time";
- *			o[6].value.i = event->xcrossing.time;
- *
- *			for (p = getPlugins (); p; p = p->next)
- *			  {
- *			if (p->vTable->getDisplayOptions)
- *			  {
- *				option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *				if (triggerEdgeEnterBindings (d, option, nOption, state,
- *							  edge, o, 7))
- *				  return TRUE;
- *			  }
- *			  }
- *
- *			option = compGetDisplayOptions (d, &nOption);
- *			if (triggerEdgeEnterBindings (d, option, nOption, state,
- *						  edge, o, 7))
- *			  return TRUE;
- *		  }
- *		} break;
- *	   case ClientMessage:
- *	if (event->xclient.message_type == d->xdndEnterAtom)
- *	{
- *		xdndWindow = event->xclient.window;
- *	}
- *	else if (event->xclient.message_type == d->xdndLeaveAtom)
- *	{
- *		unsigned int	edge = 0;
- *		CompActionState state;
- *		Window		root = None;
- *
- *		if (!xdndWindow)
- *		{
- *		CompWindow *w;
- *
- *		w = findWindowAtDisplay (d, event->xclient.window);
- *		if (w)
- *		{
- *			CompScreen	 *s = w->screen;
- *			unsigned int i;
- *
- *			for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *			{
- *			if (event->xclient.window == s->screenEdge[i].id)
- *			{
- *				edge = 1 << i;
- *				root = s->root;
- *				break;
- *			}
- *			}
- *		}
- *		}
- *
- *		if (edge)
- *		{
- *		state = CompActionStateTermEdgeDnd;
- *
- *		o[0].value.i = event->xclient.window;
- *		o[1].value.i = d->activeWindow;
- *		o[2].value.i = 0; /\* fixme *\/
- *		o[3].value.i = 0; /\* fixme *\/
- *		o[4].value.i = 0; /\* fixme *\/
- *		o[5].value.i = root;
- *
- *		for (p = getPlugins (); p; p = p->next)
- *		{
- *			if (p->vTable->getDisplayOptions)
- *			{
- *			option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *			if (triggerEdgeLeaveBindings (d, option, nOption, state,
- *							  edge, o, 6))
- *				return TRUE;
- *			}
- *		}
- *
- *		option = compGetDisplayOptions (d, &nOption);
- *		if (triggerEdgeLeaveBindings (d, option, nOption, state,
- *						  edge, o, 6))
- *			return TRUE;
- *		}
- *	}
- *	else if (event->xclient.message_type == d->xdndPositionAtom)
- *	{
- *		unsigned int	edge = 0;
- *		CompActionState state;
- *		Window		root = None;
- *
- *		if (xdndWindow == event->xclient.window)
- *		{
- *		CompWindow *w;
- *
- *		w = findWindowAtDisplay (d, event->xclient.window);
- *		if (w)
- *		{
- *			CompScreen	 *s = w->screen;
- *			unsigned int i;
- *
- *			for (i = 0; i < SCREEN_EDGE_NUM; i++)
- *			{
- *			if (xdndWindow == s->screenEdge[i].id)
- *			{
- *				edge = 1 << i;
- *				root = s->root;
- *				break;
- *			}
- *			}
- *		}
- *		}
- *
- *		if (edge)
- *		{
- *		state = CompActionStateInitEdgeDnd;
- *
- *		o[0].value.i = event->xclient.window;
- *		o[1].value.i = d->activeWindow;
- *		o[2].value.i = 0; /\* fixme *\/
- *		o[3].value.i = event->xclient.data.l[2] >> 16;
- *		o[4].value.i = event->xclient.data.l[2] & 0xffff;
- *		o[5].value.i = root;
- *
- *		for (p = getPlugins (); p; p = p->next)
- *		{
- *			if (p->vTable->getDisplayOptions)
- *			{
- *			option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *			if (triggerEdgeEnterBindings (d, option, nOption, state,
- *							  edge, o, 6))
- *				return TRUE;
- *			}
- *		}
- *
- *		option = compGetDisplayOptions (d, &nOption);
- *		if (triggerEdgeEnterBindings (d, option, nOption, state,
- *						  edge, o, 6))
- *			return TRUE;
- *		}
- *
- *		xdndWindow = None;
- *	}
- *	break;
- *	   default:
- *	//	if (event->type == d->fixesEvent + XFixesCursorNotify)
- *	//	{
- *	//		/\*
- *	//		XFixesCursorNotifyEvent *ce = (XFixesCursorNotifyEvent *) event;
- *	//		CompCursor			*cursor;
- *	//
- *	//		cursor = findCursorAtDisplay (d);
- *	//		if (cursor)
- *	//		updateCursor (cursor, ce->x, ce->y, ce->cursor_serial);
- *	//		*\/
- *	//	}
- *	//	else
- *	if (event->type == d->xkbEvent)
- *	{
- *		XkbAnyEvent *xkbEvent = (XkbAnyEvent *) event;
- *
- *		if (xkbEvent->xkb_type == XkbStateNotify)
- *		{
- *		XkbStateNotifyEvent *stateEvent = (XkbStateNotifyEvent *) event;
- *
- *		option = compGetDisplayOptions (d, &nOption);
- *
- *		o[0].value.i = d->activeWindow;
- *		o[1].value.i = d->activeWindow;
- *		o[2].value.i = stateEvent->mods;
- *
- *		o[3].type	 = CompOptionTypeInt;
- *		o[3].name	 = "time";
- *		o[3].value.i = xkbEvent->time;
- *
- *		for (p = getPlugins (); p; p = p->next)
- *		{
- *			if (p->vTable->getDisplayOptions)
- *			{
- *			option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *			if (triggerStateNotifyBindings (d, option, nOption,
- *							stateEvent, o, 4))
- *				return TRUE;
- *			}
- *		}
- *
- *		option = compGetDisplayOptions (d, &nOption);
- *		if (triggerStateNotifyBindings (d, option, nOption, stateEvent,
- *						o, 4))
- *			return TRUE;
- *		}
- *		else if (xkbEvent->xkb_type == XkbBellNotify)
- *		{
- *		option = compGetDisplayOptions (d, &nOption);
- *
- *		o[0].value.i = d->activeWindow;
- *		o[1].value.i = d->activeWindow;
- *
- *		o[2].type	 = CompOptionTypeInt;
- *		o[2].name	 = "time";
- *		o[2].value.i = xkbEvent->time;
- *
- *		for (p = getPlugins (); p; p = p->next)
- *		{
- *			if (p->vTable->getDisplayOptions)
- *			{
- *			option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
- *			if (triggerBellNotifyBindings (d, option, nOption,
- *							   o, 3))
- *				return TRUE;
- *			}
- *		}
- *
- *		option = compGetDisplayOptions (d, &nOption);
- *		if (triggerBellNotifyBindings (d, option, nOption, o, 3))
- *			return TRUE;
- *		}
- *	}
- *	break;
- *	   }
- *
- *	   return FALSE;
- * } */
 
 void
 handleEcompEvent (CompDisplay *d,
@@ -1389,8 +465,8 @@ handleEvent (CompDisplay *d,
 	case ClientMessage:
 		if (event->xclient.message_type == d->eManagedAtom)
 		{
-			Window win = event->xclient.data.l[0];
-			unsigned int type = event->xclient.data.l[1];
+			Window win = event->xclient.window; //data.l[0];
+			unsigned int type = event->xclient.data.l[0];
 
 			//printf("got eManaged client massage, 0x%x 0x%x, 0x%x\n",
 			//	   (unsigned int) win, type,
@@ -1402,7 +478,8 @@ handleEvent (CompDisplay *d,
 			/* restart: 3 */
 			/* grab:	4 */
 			/* plugin:	5 */
-			if (type == 3) /* RESTART */
+			/* move_resize 6 */
+			if (type == ECOMORPH_EVENT_RESTART) /* RESTART */
 			{
 				unsigned int restart = event->xclient.data.l[2];
 				replaceCurrentWm = restart;
@@ -1414,7 +491,7 @@ handleEvent (CompDisplay *d,
 			w = findWindowAtDisplay (d, win);
 			if (w)
 			{
-				if(type == 0) /* FIRST DAMAGE (MAPPED) */
+				if(type == ECOMORPH_EVENT_MAPPED)
 				{
 					unsigned int mapped = event->xclient.data.l[2];
 					w->clientMapped = mapped;
@@ -1425,7 +502,7 @@ handleEvent (CompDisplay *d,
 					}
 					break;
 				}
-				else if(type == 1) /* STATE*/
+				else if(type == ECOMORPH_EVENT_STATE) 
 				{
 					//printf("set state\n");
 					unsigned int state = event->xclient.data.l[2];
@@ -1441,7 +518,7 @@ handleEvent (CompDisplay *d,
 					}
 					break;
 				}
-				else if(type == 2) /* DESK*/
+				else if(type == ECOMORPH_EVENT_DESK)
 				{
 					//printf("set desk\n");
 					s = w->screen;
@@ -1489,12 +566,48 @@ handleEvent (CompDisplay *d,
 
 					break;
 				}
+				else if(type == ECOMORPH_EVENT_MOVE)
+				{
+					/* printf("move_event %p %d %d %d %d\n", win,
+					 * 	   event->xclient.data.l[1],
+					 * 	   event->xclient.data.l[2],
+					 * 	   event->xclient.data.l[3],
+					 * 	   event->xclient.data.l[4]); */
+
+					w->serverX		   = event->xclient.data.l[1];
+					w->serverY		   = event->xclient.data.l[2];
+					w->serverWidth	   = event->xclient.data.l[3];
+					w->serverHeight	   = event->xclient.data.l[4];
+					w->serverBorderWidth = 0;
+
+					resizeWindow (w, w->serverX, w->serverY,
+								  w->serverWidth, w->serverHeight, 0);
+	
+
+				}
+				else if(type == ECOMORPH_EVENT_MOVE_RESIZE)
+				{
+					/* printf("resize_event %p %d %d %d %d\n", win,
+					 * 	   event->xclient.data.l[1],
+					 * 	   event->xclient.data.l[2],
+					 * 	   event->xclient.data.l[3],
+					 * 	   event->xclient.data.l[4]); */
+
+					w->serverX		   = event->xclient.data.l[1];
+					w->serverY		   = event->xclient.data.l[2];
+					w->serverWidth	   = event->xclient.data.l[3];
+					w->serverHeight	   = event->xclient.data.l[4];
+					w->serverBorderWidth = 0;
+
+					resizeWindow (w, w->serverX, w->serverY,
+								  w->serverWidth, w->serverHeight, 0);
+				}
 			}
 		}
 		/*TODO move to plugin */
 		else if (event->xclient.message_type == d->ecoPluginAtom)
 		{
-		    Window win = event->xclient.data.l[0];
+		    /* Window win = event->xclient.data.; */
 		    if(event->xclient.data.l[1] != ECO_PLUGIN_OPACITY) break;
 		    unsigned int option2 = event->xclient.data.l[4];
 		    w = findWindowAtDisplay(d, d->activeWindow);
@@ -1572,6 +685,9 @@ handleEvent (CompDisplay *d,
 
 				value.i = h;
 				s->setScreenOption(s,"hsize", &value);
+
+				printf("got desktop geometry %d %d\n", v, h);
+				
 			}
 		}
 		break;

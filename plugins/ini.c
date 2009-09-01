@@ -633,6 +633,8 @@ iniSaveOptions (CompDisplay *d,
 				int			screen,
 				char		*plugin)
 {
+	return 1;
+	
 	INI_DISPLAY(d);
 	if (id->locked) return TRUE;
 

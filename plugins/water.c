@@ -1485,6 +1485,62 @@ waterHandleEvent (CompDisplay *d,
     WATER_DISPLAY (d);
 
     switch (event->type) {
+	case ClientMessage:
+		if (event->xclient.message_type == d->ecoPluginAtom)
+		{
+			Window win = event->xclient.data.l[0];
+			if(event->xclient.data.l[1] != ECO_PLUGIN_WATER) break;
+
+			printf("bla\n");
+			
+			if ((s = findScreenAtDisplay (d, win)) && !s)
+			{
+				for (s = d->screens; s; s = s->next)
+					ecompActionTerminateNotify (s, 1);
+				break;
+			}
+			unsigned int action = event->xclient.data.l[2];
+			unsigned int option = event->xclient.data.l[3];
+			unsigned int option2 = event->xclient.data.l[4];
+
+			if (action == ECO_ACT_TERMINATE)
+			{
+				/* WATER_SCREEN(s); */
+	      
+				/* CompOption o[1];
+				 * 
+				 * o[0].type    = CompOptionTypeInt;
+				 * o[0].name    = "root";
+				 * o[0].value.i = s->root;
+				 * if(zs->panGrabIndex)
+				 * 	waterTerminate(d, NULL, 0, o, 1); */
+
+				waterTerminate(d, NULL, 0, NULL, 0);
+			}
+			else if (action == ECO_ACT_INITIATE &&
+					 option == 1)
+			{
+				CompOption o[1];
+				
+				o[0].type    = CompOptionTypeInt;
+				o[0].name    = "root";
+				o[0].value.i = s->root;
+				
+				waterToggleRain(d, NULL, 0, o, 1); 
+			}
+			else if (action == ECO_ACT_INITIATE &&
+					 option == 2)
+			{
+				CompOption o[1];
+				printf("tohhle wipe\n");
+				
+				o[0].type    = CompOptionTypeInt;
+				o[0].name    = "root";
+				o[0].value.i = s->root;
+				
+				waterToggleWiper(d, NULL, 0, o, 1); 
+			}
+		}
     case ButtonPress:
 	s = findScreenAtDisplay (d, event->xbutton.root);
 	if (s)

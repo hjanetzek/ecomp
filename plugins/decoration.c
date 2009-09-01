@@ -159,6 +159,60 @@ typedef struct _DecorWindow {
 
 #define NUM_OPTIONS(d) (sizeof ((d)->opt) / sizeof (CompOption))
 
+
+/* static int
+ * set_shadow_quads(decor_quad_t * q, gint width, gint height, window_settings * ws)
+ * {
+ *     gint n, nQuad = 0;
+ * 
+ *     /\* top quads *\/
+ *     n = decor_set_horz_quad_line(q,
+ * 								 ws->shadow_left_space, ws->shadow_left_corner_space,
+ * 								 ws->shadow_right_space, ws->shadow_right_corner_space,
+ * 								 -ws->shadow_top_space, 0, GRAVITY_NORTH, width,
+ * 								 (ws->shadow_left_corner_space - ws->shadow_right_corner_space) >> 1,
+ * 								 0, 0.0, 0.0);
+ * 
+ *     q += n;
+ *     nQuad += n;
+ * 
+ *     /\* left quads *\/
+ *     n = decor_set_vert_quad_row(q,
+ * 								0, ws->shadow_top_corner_space, 0, ws->shadow_bottom_corner_space,
+ * 								-ws->shadow_left_space, 0, GRAVITY_WEST,
+ * 								height - ws->shadow_top_space - ws->shadow_bottom_space,
+ * 								(ws->shadow_top_corner_space - ws->shadow_bottom_corner_space) >> 1,
+ * 								0, 0.0, ws->shadow_top_space, FALSE);
+ * 
+ *     q += n;
+ *     nQuad += n;
+ * 
+ *     /\* right quads *\/
+ *     n = decor_set_vert_quad_row(q,
+ * 								0, ws->shadow_top_corner_space, 0, ws->shadow_bottom_corner_space, 0,
+ * 								ws->shadow_right_space, GRAVITY_EAST,
+ * 								height - ws->shadow_top_space - ws->shadow_bottom_space,
+ * 								(ws->shadow_top_corner_space - ws->shadow_bottom_corner_space) >> 1,
+ * 								0, width - ws->shadow_right_space, ws->shadow_top_space, FALSE);
+ * 
+ *     q += n;
+ *     nQuad += n;
+ * 
+ *     /\* bottom quads *\/
+ *     n = decor_set_horz_quad_line(q,
+ * 								 ws->shadow_left_space, ws->shadow_left_corner_space,
+ * 								 ws->shadow_right_space, ws->shadow_right_corner_space, 0,
+ * 								 ws->shadow_bottom_space, GRAVITY_SOUTH, width,
+ * 								 (ws->shadow_left_corner_space - ws->shadow_right_corner_space) >> 1,
+ * 								 0, 0.0, ws->shadow_top_space + ws->shadow_top_corner_space +
+ * 								 ws->shadow_bottom_corner_space + 1.0);
+ * 
+ *     nQuad += n;
+ * 
+ *     return nQuad;
+ * } */
+
+
 static Bool
 decorDrawWindow (CompWindow	      *w,
 				 const CompTransform  *transform,
@@ -171,11 +225,7 @@ decorDrawWindow (CompWindow	      *w,
     DECOR_SCREEN (w->screen);
     DECOR_WINDOW (w);
 
-    UNWRAP (ds, w->screen, drawWindow);
-    status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
-    WRAP (ds, w->screen, drawWindow, decorDrawWindow);
-
-    if ((mask & PAINT_WINDOW_TRANSFORMED_MASK) ||
+	if ((mask & PAINT_WINDOW_TRANSFORMED_MASK) ||
 		!((w->state & (MAXIMIZE_STATE | CompWindowStateFullscreenMask)) ||
 		  (w->type & CompWindowTypeDesktopMask)))
 	{
@@ -216,6 +266,11 @@ decorDrawWindow (CompWindow	      *w,
 												 attrib, mask);
 		}
 	}
+
+    UNWRAP (ds, w->screen, drawWindow);
+    status = (*w->screen->drawWindow) (w, transform, attrib, region, mask);
+    WRAP (ds, w->screen, drawWindow, decorDrawWindow);
+
     
     return status;
 }
@@ -492,7 +547,7 @@ decorCreateDecoration (CompScreen *screen,
 
     decoration->output.left   = -left;
     decoration->output.right  = right - minWidth;
-    decoration->output.top    = -top;
+    decoration->output.top    = -top + 5;
     decoration->output.bottom = bottom - minHeight;
 
     decoration->input.left   = input.left;
