@@ -1002,46 +1002,49 @@ updateWindowViewport(CompWindow *w, int initial)
 
 		w->initialViewportX = dx;
 		w->initialViewportY = dy;
+
 		printf ("- viewport: %d:%d\n", dx, dy);
 
 		if (initial) return;
 
-		int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
-		int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
-
-		C(("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n",
-		   x,y,dx,dy, w->syncX, w->serverX, w->attrib.x));
-
-		if (x == w->attrib.x && y == w->attrib.y) return;
-
-		int immediate = 1;
-		int old_x = w->attrib.x;
-		int old_y = w->attrib.y;
-
-		/*if visible ?*/
-		addWindowDamage (w);
-
-		w->attrib.x = x;
-		w->attrib.y = y;
-
-		XOffsetRegion (w->region, x - old_x, y - old_y);
-
-		w->matrix = w->texture->matrix;
-		w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
-		w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
-
-		w->invisible = WINDOW_INVISIBLE (w); /* XXX what does this?*/
-
-		w->desktop = desk;
-
-		(*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
-
-		/*if visible ?*/
-		addWindowDamage (w);
-
-		syncWindowPosition (w);
+	/* 	int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
+	 * 	int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
+	 * 
+	 * 	C(("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n",
+	 * 	   x,y,dx,dy, w->syncX, w->serverX, w->attrib.x));
+	 * 
+	 * 	if (x == w->attrib.x && y == w->attrib.y) return;
+	 * 
+	 * 	int immediate = 1;
+	 * 	int old_x = w->attrib.x;
+	 * 	int old_y = w->attrib.y;
+	 * 
+	 * 	/\*if visible ?*\/
+	 * 	addWindowDamage (w);
+	 * 
+	 * 	w->attrib.x = x;
+	 * 	w->attrib.y = y;
+	 * 
+	 * 	XOffsetRegion (w->region, x - old_x, y - old_y);
+	 * 
+	 * 	w->matrix = w->texture->matrix;
+	 * 	w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
+	 * 	w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
+	 * 
+	 * 	w->invisible = WINDOW_INVISIBLE (w); /\* XXX what does this?*\/
+	 * 
+	 * 	w->desktop = desk;
+	 * 
+	 * 	(*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
+	 * 
+	 * 	/\*if visible ?*\/
+	 * 	addWindowDamage (w);
+	 * 
+	 * 	syncWindowPosition (w);
+	 * } */
 	}
 }
+
 
 
 void

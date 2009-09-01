@@ -118,24 +118,14 @@ static Bool initialDamageTimeout(void *closure)
 	return FALSE;
 }
 
-
-
-#define REAL_MOD_MASK (ShiftMask | ControlMask | Mod1Mask | Mod2Mask |	\
-					   Mod3Mask | Mod4Mask | Mod5Mask | CompNoMask)
-
-
 void
-handleEcompEvent (CompDisplay *d,
-				  char		  *pluginName,
-				  char		  *eventName,
-				  CompOption  *option,
-				  int		  nOption)
+handleEcompEvent (CompDisplay *d, char *pluginName, char *eventName, CompOption *option, int nOption)
 {
 }
+
 /*TODO move to plugin */
 static void
-changeWindowOpacity (CompWindow *w,
-		     int	direction)
+changeWindowOpacity (CompWindow *w, int	direction)
 {
     CompScreen *s = w->screen;
     int	       step, opacity;
@@ -167,8 +157,7 @@ changeWindowOpacity (CompWindow *w,
 }
 
 void
-handleEvent (CompDisplay *d,
-			 XEvent		 *event)
+handleEvent (CompDisplay *d, XEvent	*event)
 {
 	CompScreen *s;
 	CompWindow *w;
@@ -495,6 +484,8 @@ handleEvent (CompDisplay *d,
 				{
 					unsigned int mapped = event->xclient.data.l[2];
 					w->clientMapped = mapped;
+					/* printf("map_event %p %d\n", win, mapped); */
+
 					if(mapped)
 					{
 						handleWindowDamageRect (w, 0, 0,
@@ -520,7 +511,7 @@ handleEvent (CompDisplay *d,
 				}
 				else if(type == ECOMORPH_EVENT_DESK)
 				{
-					//printf("set desk\n");
+
 					s = w->screen;
 
 					int dx = event->xclient.data.l[2];
@@ -534,6 +525,8 @@ handleEvent (CompDisplay *d,
 					int x = MOD(w->attrib.x, s->width)	+ ((dx - s->x) * s->width);
 					int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
 
+					/* printf("desk_event %p %d %d\n", win, x, y); */
+					
 					//printf("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n",
 					//	 x,y,dx,dy, w->syncX, w->serverX, w->attrib.x);
 
