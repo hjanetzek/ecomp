@@ -199,49 +199,9 @@ expoFinishWindowMovement (CompWindow *w)
 
 	moveScreenViewport (s, s->x - es->selectedVX,
 						s->y - es->selectedVY, TRUE);
-	/*XXX temporary? */
+
 	sendScreenViewportMessage(s);
 
-	/* update saved window attributes in case we moved the
-	   window to a new viewport */
-	if (w->saveMask & CWX)
-	{
-		w->saveWc.x = w->saveWc.x % s->width;
-		if (w->saveWc.x < 0)
-			w->saveWc.x += s->width;
-	}
-	if (w->saveMask & CWY)
-	{
-		w->saveWc.y = w->saveWc.y % s->height;
-		if (w->saveWc.y < 0)
-			w->saveWc.y += s->height;
-	}
-
-	/* update window attibutes to make sure a
-	   moved maximized window is properly snapped
-	   to the work area */
-	//	   if (w->state & MAXIMIZE_STATE)
-	//	  {
-	//		printf("expoFinishWindowMovement: maximize state\n");
-	//
-	//		int lastOutput;
-	//	int centerX, centerY;
-	//
-	//	/* make sure we snap to the correct output */
-	//	lastOutput = s->currentOutputDev;
-	//	centerX = (WIN_X (w) + WIN_W (w) / 2) % s->width;
-	//	if (centerX < 0)
-	//		centerX += s->width;
-	//	centerY = (WIN_Y (w) + WIN_H (w) / 2) % s->height;
-	//	if (centerY < 0)
-	//		centerY += s->height;
-	//
-	//	s->currentOutputDev = outputDeviceForPoint (s, centerX, centerY);
-	//
-	//	updateWindowAttributes (w, CompStackingUpdateModeNone);
-	//
-	//	s->currentOutputDev = lastOutput;
-	//	  }
 	sendMoveResizeWindowMessage(es->dndWindow, 0, 0, 0, 0);
 }
 

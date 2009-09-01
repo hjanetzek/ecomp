@@ -847,30 +847,7 @@ paintScreen (CompScreen	  *s,
 		}
 	}
 }
-/*
-  static void
-  mapWindowIfHidden (CompWindow *w,
-  void		  *closure)
-  {
-  if (w->attrib.override_redirect || w->hidden)
-  return;
 
-  if (w->state & CompWindowStateHiddenMask)
-  XMapWindow (w->screen->display->display, w->id);
-  }
-
-  static void
-  restoreWindowGeometryIfSaved (CompWindow *w,
-  void		 *closure)
-  {
-  if (w->attrib.override_redirect)
-  return;
-
-  if (w->saveMask)
-  XConfigureWindow (w->screen->display->display, w->id, w->saveMask,
-  &w->saveWc);
-  }
-*/
 void
 eventLoop (void)
 {
@@ -902,8 +879,6 @@ eventLoop (void)
 		if (restartSignal || shutDown)
 		{
 			while (popPlugin ());
-			//forEachWindowOnDisplay (display, restoreWindowGeometryIfSaved, 0);
-			//forEachWindowOnDisplay (display, mapWindowIfHidden, 0);
 			XSync (display->display, False);
 			return;
 		}
@@ -911,40 +886,6 @@ eventLoop (void)
 		while (XPending (display->display))
 		{
 			XNextEvent (display->display, &event);
-
-			/* TODO handle dnd info from e17, used for scale plugin */
-
-			/* switch (event.type) {
-			 * case ButtonPress:
-			 * case ButtonRelease:
-			 *	pointerX = event.xbutton.x_root;
-			 *	pointerY = event.xbutton.y_root;
-			 *	break;
-			 * case KeyPress:
-			 * case KeyRelease:
-			 *	pointerX = event.xkey.x_root;
-			 *	pointerY = event.xkey.y_root;
-			 *	break;
-			 * case MotionNotify:
-			 *	pointerX = event.xmotion.x_root;
-			 *	pointerY = event.xmotion.y_root;
-			 *	break;
-			 * case EnterNotify:
-			 * case LeaveNotify:
-			 *	pointerX = event.xcrossing.x_root;
-			 *	pointerY = event.xcrossing.y_root;
-			 *	break;
-			 * case ClientMessage:
-			 *	if (event.xclient.message_type == display->xdndPositionAtom)
-			 *	{
-			 *		pointerX = event.xclient.data.l[2] >> 16;
-			 *		pointerY = event.xclient.data.l[2] & 0xffff;
-			 *	}
-			 * default:
-			 *	break;
-			 * }
-			 *
-			 * //sn_display_process_event (display->snDisplay, &event); */
 
 			inHandleEvent = TRUE;
 

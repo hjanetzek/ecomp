@@ -2102,18 +2102,6 @@ moveScreenViewport (CompScreen *s,
 	ty = MOD (ty, s->vsize);
 	ty -= s->y;
 
-	//if(sync) printf ("moveScreenViewport - current %d:%d, move %d:%d\n", s->x, s->y, tx, ty);
-	if (!tx && !ty) /*XXX remove sync when not needed*/
-	{
-		if (sync)
-			for (w = s->windows; w; w = w->next)
-			{
-				if (w->clientId)
-					syncWindowPosition (w);
-			}
-		return;
-	}
-
 	s->x += tx;
 	s->y += ty;
 
@@ -2130,9 +2118,6 @@ moveScreenViewport (CompScreen *s,
 
 		if (!w->placed) continue;
 		
-		/* if (w->type & (CompWindowTypeDesktopMask | CompWindowTypeDockMask))
-		 * 	continue; */
-
 		if (w->state & CompWindowStateStickyMask)
 			continue;
 
@@ -2152,9 +2137,6 @@ moveScreenViewport (CompScreen *s,
 				wx = tx;
 		}
 
-		if (w->saveMask & CWX)
-			w->saveWc.x += wx;
-
 		/* y */
 		if (s->vsize == 1)
 		{
@@ -2171,35 +2153,12 @@ moveScreenViewport (CompScreen *s,
 				wy = ty;
 		}
 
-		if (w->saveMask & CWY)
-			w->saveWc.y += wy;
-
 		/* move */
 		moveWindow (w, wx, wy, sync, TRUE);
 
 		if (sync)
 			syncWindowPosition (w);
 	}
-
-	/* if (sync)
-	 * {
-	 *	   sendScreenViewportMessage(s);
-	 *
-	 *	setCurrentActiveWindowHistory (s, s->x, s->y);
-	 *
-	 *	w = findWindowAtDisplay (s->display, s->display->activeWindow);
-	 *	  if (w)
-	 *	  {
-	 *	  int x, y;
-	 *
-	 *	  defaultViewportForWindow (w, &x, &y);
-	 *
-	 *	  // add window to current history if it's default viewport is
-	 *	  //   still the current one.
-	 *	  if (s->x == x && s->y == y)
-	 *	  addToCurrentActiveWindowHistory (s, w->id);
-	 *	  }
-	 * } */
 }
 
 /* TODO cant this be handled by e? */
@@ -2255,12 +2214,6 @@ moveWindowToViewportPosition (CompWindow *w,
 			else if (m + w->height + w->output.bottom > vHeight)
 				wy = ty - vHeight;
 		}
-
-		if (w->saveMask & CWX)
-			w->saveWc.x += wx;
-
-		if (w->saveMask & CWY)
-			w->saveWc.y += wy;
 
 		moveWindow (w, wx, wy, sync, TRUE);
 

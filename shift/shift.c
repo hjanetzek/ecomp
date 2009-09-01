@@ -1897,7 +1897,7 @@ shiftHandleEvent (CompDisplay *d,
 		if (event->xclient.message_type == d->ecoPluginAtom)
 		{
 			if(event->xclient.data.l[1] != ECO_PLUGIN_SHIFT) break;
-
+			
 			Window win = event->xclient.data.l[0];
 
 			if (!(s = findScreenAtDisplay (d, win)))
