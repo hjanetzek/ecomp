@@ -391,15 +391,9 @@ expoHandleEvent (CompDisplay *d,
 
 						break;
 					case Button3:
-					{
 						es->dndState = DnDStart;
 						es->moveToDesk = TRUE;
-					}
 					break;
-
-					case Button2:
-						es->doubleClick = TRUE;
-						break;
 
 					default:
 						es->anyClick = TRUE;
@@ -415,6 +409,11 @@ expoHandleEvent (CompDisplay *d,
 
 				es->moveToDesk = FALSE;
 
+				if ((ECO_GET_BUTTON(option)) == Button2)
+				{
+					es->doubleClick = TRUE;
+				}
+				
 				if (es->dndState == DnDDuring || es->dndState == DnDStart)
 				{
 					if (es->dndWindow)
