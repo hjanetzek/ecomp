@@ -603,65 +603,60 @@ static void
 wallHandleEvent (CompDisplay *d,
 		 XEvent      *event)
 {
-  WALL_DISPLAY (d);
+	WALL_DISPLAY (d);
 
-  switch (event->type)
+	switch (event->type)
     {
     case ClientMessage:
-      if (event->xclient.message_type == d->desktopViewportAtom)
-	{
-	  int        dx, dy, toX, toY;
-	  int amountX = 0, amountY = 0;
-	  CompScreen *s;
-	  Window win;
-	    
-	  if (event->xclient.data.l[0]) break;
+		if (event->xclient.message_type == d->desktopViewportAtom)
+		{
+			int        dx, dy, toX, toY;
+			int amountX = 0, amountY = 0;
+			CompScreen *s;
+			Window win;
 
-	  s = findScreenAtDisplay (d, event->xclient.window);
-	  if (!s)
-	    break;
+			if (event->xclient.data.l[0]) break;
 
-	  if (otherScreenGrabExist (s, "switcher", "scale", 0))
-	    break;
+			s = findScreenAtDisplay (d, event->xclient.window);
+			if (!s)
+				break;
 
-	  toX = event->xclient.data.l[1] / s->width;
-	  dx = toX - s->x;
+			if (otherScreenGrabExist (s, "switcher", "scale", "move", 0))
+				break;
 
-	  toY = event->xclient.data.l[2] / s->height;
-	  dy = toY - s->y;
+			toX = event->xclient.data.l[1] / s->width;
+			dx = toX - s->x;
 
-	  if (!dx && !dy)
-	    break;
+			toY = event->xclient.data.l[2] / s->height;
+			dy = toY - s->y;
 
-	  wallCheckAmount(s, dx, dy, &amountX, &amountY);
+			if (!dx && !dy)
+				break;
 
-	  win = event->xclient.data.l[3];		
-	  unsigned int moveType = event->xclient.data.l[4];
-	    
-	  if(moveType == 0)
-	    { 		
-	      wallMoveViewport (s, amountX, amountY, None);		
-	    }
-	  else if(moveType == 1) /* window grabbed by mouse */
-	    { 
-	    /*   w = findWindowAtScreen(s, win);
-	     *   if(w)
-		 * { 
-		 *   moveWindow(w, -dx * s->width, -dy * s->height, TRUE, TRUE);
-		 * } */
-	      wallMoveViewport (s, amountX, amountY, win);		
-	    }
-	  else if(moveType == 2) /* move with window to desk (keybinding) )*/
-	    { 
-	      wallMoveViewport (s, amountX, amountY, win);		
-	    }
-	}
-      break;
+			wallCheckAmount(s, dx, dy, &amountX, &amountY);
+
+			win = event->xclient.data.l[3];		
+			unsigned int moveType = event->xclient.data.l[4];
+
+			if(moveType == 0)
+			{
+				wallMoveViewport (s, amountX, amountY, None);		
+			}
+			else if(moveType == 1) /* window grabbed by mouse */
+			{ 
+				wallMoveViewport (s, amountX, amountY, win);		
+			}
+			else if(moveType == 2) /* move with window to desk (keybinding) )*/
+			{ 
+				wallMoveViewport (s, amountX, amountY, win);		
+			}
+		}
+		break;
     }
 
-  UNWRAP (wd, d, handleEvent);
-  (*d->handleEvent) (d, event);
-  WRAP (wd, d, handleEvent, wallHandleEvent);
+	UNWRAP (wd, d, handleEvent);
+	(*d->handleEvent) (d, event);
+	WRAP (wd, d, handleEvent, wallHandleEvent);
 }
 
 static inline void

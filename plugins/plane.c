@@ -91,7 +91,7 @@ planeHandleEvent (CompDisplay *d,
 	    if (!s)
 		break;
 
-	    if (otherScreenGrabExist (s, "plane", "switcher", "cube", 0))
+	    if (otherScreenGrabExist (s, "plane", "switcher", "move", 0))
 		break;
 
 	    dx = (event->xclient.data.l[1] / s->width) - s->x;

@@ -974,7 +974,7 @@ rotateHandleEvent (CompDisplay *d,
 
 		ROTATE_SCREEN (s);
 
-		if (otherScreenGrabExist (s, "rotate", "switcher", "cube", 0))
+		if (otherScreenGrabExist (s, "rotate", "switcher", "cube", "move", 0))
 		    break;
 
 		if (rs->moving)
