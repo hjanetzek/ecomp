@@ -281,9 +281,7 @@ changeWindowState (CompWindow *w, unsigned int newState)
 
 /* FIXME where is this used ? */
 void
-getAllowedActionsForWindow (CompWindow *w,
-							unsigned int *setActions,
-							unsigned int *clearActions)
+getAllowedActionsForWindow (CompWindow *w, unsigned int *setActions, unsigned int *clearActions)
 {
 	*setActions	 = 0;
 	*clearActions = 0;
@@ -1305,7 +1303,9 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		/* XXX remove the use of this. all windows are override
 		 * redirect. */
 
-		XSelectInput (screen->display->display, w->id, SubstructureNotifyMask);
+		XSelectInput (screen->display->display, w->id,
+					  SubstructureNotifyMask |
+					  PropertyChangeMask);
 		
 		w->attrib.override_redirect = 0;
 		w->clientId = clientId;

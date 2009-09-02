@@ -2,61 +2,6 @@
     <plugin name="scale">
 	<_short>Scale</_short>
 	<_long>Scale windows</_long>
-	<display>
-	    <option name="abi" type="int" read_only="true"/>
-	    <option name="index" type="int" read_only="true"/>
-	    <option name="relayout_slots" type="action" read_only="true"/>
-	    <option name="initiate" type="action">
-		<_short>Initiate Window Picker</_short>
-		<_long>Layout and start transforming windows</_long>
-		<allowed key="true" button="true" edge="true" edgednd="true"/>
-		<default>
-		    <key>&lt;Shift&gt;&lt;Alt&gt;Up</key>
-		    <edges top_right="true"/>
-		</default>
-		<allowed edgednd="true"/>
-	    </option>
-	    <option name="initiate_all" type="action">
-		<_short>Initiate Window Picker For All Windows</_short>
-		<_long>Layout and start transforming all windows</_long>
-		<allowed key="true" button="true" edge="true" edgednd="true"/>
-		<default>
-		</default>
-	    </option>
-	    <option name="next" type="action">
-	      <_short>Switch To Next Window</_short>
-		<_long>Layout and start transforming all windows</_long>
-		<allowed key="true" button="true"/>
-		<default>
-		</default>
-	    </option>
-	    <option name="prev" type="action">
-		<_short>Switch To Previous Window</_short>
-		<_long>Layout and start transforming all windows</_long>
-		<allowed key="true" button="true"/>
-		<default>
-		</default>
-	    </option>
-	    <option name="initiate_group" type="action">
-		<_short>Initiate Window Picker For Window Group</_short>
-		<_long>Layout and start transforming window group</_long>
-		<allowed key="true" button="true" edge="true" edgednd="true"/>
-		<default>
-		</default>
-	    </option>
-	    <option name="initiate_output" type="action">
-		<_short>Initiate Window Picker For Windows on Current Output</_short>
-		<_long>Layout and start transforming windows on current output</_long>
-		<allowed key="true" button="true" edge="true" edgednd="true"/>
-		<default>
-		</default>
-	    </option>
-	    <option name="show_desktop" type="bool">
-		<_short>Click Desktop to Show Desktop</_short>
-		<_long>Enter Show Desktop mode when Desktop is clicked during Scale</_long>
-		<default>true</default>
-	    </option>
-	</display>
 	<screen>
 	    <option name="spacing" type="int">
 		<_short>Spacing</_short>

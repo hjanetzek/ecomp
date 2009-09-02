@@ -1,4 +1,4 @@
-SUBDIRS = include src libdecoration bcop metadata plugins expo jpeg ring shift wall thumbnail text animation mblur cubereflex scaleaddon staticswitcher images po data
+SUBDIRS = include src libdecoration bcop metadata plugins expo jpeg ring shift wall thumbnail text animation mblur cubereflex scaleaddon images po data
 
 EXTRA_DIST =		    \
 	COPYING		    \

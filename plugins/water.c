@@ -1501,7 +1501,7 @@ waterHandleEvent (CompDisplay *d,
 			}
 			unsigned int action = event->xclient.data.l[2];
 			unsigned int option = event->xclient.data.l[3];
-			unsigned int option2 = event->xclient.data.l[4];
+			/* unsigned int option2 = event->xclient.data.l[4]; */
 
 			if (action == ECO_ACT_TERMINATE)
 			{

@@ -53,12 +53,10 @@ fxVacuumInitGrid(AnimScreen * as, AnimWindow *aw,
 
 void fxMagicLampInit(CompScreen * s, CompWindow * w)
 {
-    ANIM_SCREEN(s);
     ANIM_WINDOW(w);
 
     Model *model = aw->model;
 
-    int screenHeight = s->height;
     aw->minimizeToTop = (WIN_Y(w) + WIN_H(w) / 2) >
 	(aw->icon.y + aw->icon.height / 2);
     int maxWaves;
@@ -105,8 +103,6 @@ void fxMagicLampInit(CompScreen * s, CompWindow * w)
 	//int ampDirection = (RAND_FLOAT() < 0.5 ? 1 : -1);
 	int ampDirection = diff > 0 ? -1 : 1;
 	int i;
-	float minHalfWidth = 0.22f;
-	float maxHalfWidth = 0.38f;
 	
 	for (i = 0; i < model->magicLampWaveCount; i++)
 	{

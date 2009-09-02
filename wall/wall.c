@@ -614,7 +614,6 @@ wallHandleEvent (CompDisplay *d,
 	  int amountX = 0, amountY = 0;
 	  CompScreen *s;
 	  Window win;
-	  CompWindow *w;
 	    
 	  if (event->xclient.data.l[0]) break;
 

@@ -357,7 +357,26 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		w = findWindowAtDisplay (d, event->xproperty.window);
 		if (!w) break;
 
-		if (event->xproperty.atom == d->winTypeAtom)
+		if (event->xproperty.atom == d->winStateAtom)
+		{
+			printf("win state property\n");
+			
+
+			unsigned int state = getWindowState (d, w->id);
+			if(state & CompWindowStateHiddenMask)
+			{
+				//printf("set state - hidden\n");
+				w->clientMapped = 0;
+			}
+			if (state != w->state)
+			{
+				w->state = state;
+				(*d->matchPropertyChanged) (d, w);
+			}
+			
+		}
+		else
+			if (event->xproperty.atom == d->winTypeAtom)
 		{
 			unsigned int type;
 
@@ -493,22 +512,24 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					}
 					break;
 				}
-				else if(type == ECOMORPH_EVENT_STATE) 
-				{
-					//printf("set state\n");
-					unsigned int state = event->xclient.data.l[2];
-					if (w->state != state)
-					{
-						w->state = state;
-						if(state & CompWindowStateHiddenMask)
-						{
-							//printf("set state - hidden\n");
-							w->clientMapped = 0;
-						}
-						(*d->matchPropertyChanged) (d, w);
-					}
-					break;
-				}
+				/* else if(type == ECOMORPH_EVENT_STATE) 
+				 * {
+				 * 	printf("win state client message\n");
+				 * 	
+				 * 	//printf("set state\n");
+				 * 	unsigned int state = event->xclient.data.l[2];
+				 * 	if (w->state != state)
+				 * 	{
+				 * 		w->state = state;
+				 * 		if(state & CompWindowStateHiddenMask)
+				 * 		{
+				 * 			//printf("set state - hidden\n");
+				 * 			w->clientMapped = 0;
+				 * 		}
+				 * 		(*d->matchPropertyChanged) (d, w);
+				 * 	}
+				 * 	break;
+				 * } */
 				else if(type == ECOMORPH_EVENT_DESK)
 				{
 
