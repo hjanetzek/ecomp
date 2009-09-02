@@ -623,30 +623,37 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		{
 		    /* Window win = event->xclient.data.; */
 		    if(event->xclient.data.l[1] != ECO_PLUGIN_OPACITY) break;
-		    unsigned int option2 = event->xclient.data.l[4];
+			unsigned int option2 = event->xclient.data.l[4];
 		    w = findWindowAtDisplay(d, d->activeWindow);
 		    if (w)
 		    {
-		    if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
-			changeWindowOpacity (w, 1);
-		    else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
-			changeWindowOpacity (w, -1);
+				if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
+					changeWindowOpacity (w, 1);
+				else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
+					changeWindowOpacity (w, -1);
 		    }
 		}
 		
 		else if (event->xclient.message_type == d->winActiveAtom)
 		{
-			//printf("got winActive client massage\n");
-
+			/* printf("got winActive client massage\n"); */
 			w = findWindowAtDisplay (d, event->xclient.window);
 			if (w)
 			{
-				// use focus stealing prevention if request came from an
-				//	   application (which means data.l[0] is 1
-				if (event->xclient.data.l[0] != 1) //||
-					//	  allowWindowFocus (w, 0, event->xclient.data.l[1]))
+				if (event->xclient.data.l[0] == 0) //||
 				{
+					/* printf("activate window\n"); */
 					activateWindow (w);
+				}
+				else
+				{
+					/* printf("set window active %p %d\n",
+					   (void*) w->id, (int)event->xclient.data.l[0]); */
+					if (event->xclient.data.l[0] == 1) 
+						d->activeWindow = w->id;
+					else if ((event->xclient.data.l[0] == 2) &&
+							 (w->id == d->activeWindow))
+						d->activeWindow = None;
 				}
 			}
 		}
