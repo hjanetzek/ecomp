@@ -122,17 +122,17 @@ moveInitiate (CompDisplay     *d,
     w = findWindowAtDisplay (d, xid);
     if (w)
     {
-		unsigned int mods;
-		int          x, y;
+		/* unsigned int mods;
+		 * int          x, y; */
 
 		MOVE_SCREEN (w->screen);
 
-		mods = getIntOptionNamed (option, nOption, "modifiers", 0);
+		/* mods = getIntOptionNamed (option, nOption, "modifiers", 0); */
 
-		x = getIntOptionNamed (option, nOption, "x",
-							   w->attrib.x + (w->width / 2));
-		y = getIntOptionNamed (option, nOption, "y",
-							   w->attrib.y + (w->height / 2));
+		/* x = getIntOptionNamed (option, nOption, "x",
+		 * 					   w->attrib.x + (w->width / 2));
+		 * y = getIntOptionNamed (option, nOption, "y",
+		 * 					   w->attrib.y + (w->height / 2)); */
 
 		if (otherScreenGrabExist (w->screen, "move", 0))
 			return FALSE;
@@ -148,14 +148,14 @@ moveInitiate (CompDisplay     *d,
 
 		md->status = RectangleOut;
 
-		md->savedX = w->serverX;
-		md->savedY = w->serverY;
+		/* md->savedX = w->serverX;
+		 * md->savedY = w->serverY; */
 
 		md->x = 0;
 		md->y = 0;
 
-		lastPointerX = x;
-		lastPointerY = y;
+		/* lastPointerX = x;
+		 * lastPointerY = y; */
 
 		ms->origState = w->state;
 
@@ -166,9 +166,9 @@ moveInitiate (CompDisplay     *d,
 		{
 			md->w = w;
 	    
-			(w->screen->windowGrabNotify) (w, x, y, mods,
-										   CompWindowGrabMoveMask |
-										   CompWindowGrabButtonMask);
+			/* (w->screen->windowGrabNotify) (w, x, y, mods,
+			 * 							   CompWindowGrabMoveMask |
+			 * 							   CompWindowGrabButtonMask); */
 
 			if (md->moveOpacity != OPAQUE)
 				addWindowDamage (w);
@@ -191,7 +191,7 @@ moveTerminate (CompDisplay     *d,
     {
 		MOVE_SCREEN (md->w->screen);
 
-		(md->w->screen->windowUngrabNotify) (md->w);
+		/* (md->w->screen->windowUngrabNotify) (md->w); */
 
 		if (ms->grabIndex)
 		{
@@ -234,11 +234,13 @@ moveHandleEvent (CompDisplay *d,
 			{
 				unsigned int state = event->xclient.data.l[2];
 				s = w->screen;
-	
+
+				printf("move %p %d\n", (void *)w->id, state);
+				
 				if(state)
 				{ 
-					CompOption o[4];
-					int	       xRoot, yRoot;
+					CompOption o[1];
+					/* int	       xRoot, yRoot; */
 					CompAction *action = NULL;
 
 					o[0].type    = CompOptionTypeInt;
@@ -246,22 +248,22 @@ moveHandleEvent (CompDisplay *d,
 					o[0].value.i = w->id;
 
 
-					unsigned int mods;
-					Window	     root, child;
-					int	     i;
+					/* unsigned int mods;
+					 * Window	     root, child; */
+					/* int	     i; */
 
-					XQueryPointer (d->display, w->screen->root,
-								   &root, &child, &xRoot, &yRoot,
-								   &i, &i, &mods);
-
-					o[1].type	 = CompOptionTypeInt;
-					o[1].name	 = "modifiers";
-					o[1].value.i = mods;
+					/* XQueryPointer (d->display, w->screen->root,
+					 * 			   &root, &child, &xRoot, &yRoot,
+					 * 			   &i, &i, &mods);
+					 * 
+					 * o[1].type	 = CompOptionTypeInt;
+					 * o[1].name	 = "modifiers";
+					 * o[1].value.i = mods; */
 
 					moveInitiate (d,
 								  action,
 								  CompActionStateInitButton,
-								  o, 2);
+								  o, 1);
 					MOVE_SCREEN(s);
 					
 					ms->active = 1;

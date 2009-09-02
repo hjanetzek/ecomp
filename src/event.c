@@ -82,6 +82,8 @@ handleWindowDamageRect (CompWindow *w,
 		w->damaged = initial = TRUE;
 		w->invisible = WINDOW_INVISIBLE (w);
 		compAddTimeout(0, initialDamageTimeout, w);
+		if (w->mapNum)
+			updateWindowRegion (w);
 	}
 
 	region.extents.x1 = x;
@@ -507,29 +509,14 @@ handleEvent (CompDisplay *d, XEvent	*event)
 
 					if(mapped)
 					{
-						handleWindowDamageRect (w, 0, 0,
-												w->attrib.width, w->attrib.height);
+						resizeWindow (w, w->serverX, w->serverY,
+									  w->serverWidth, w->serverHeight, 0);
+
+						handleWindowDamageRect
+							(w, 0, 0, w->attrib.width, w->attrib.height);
 					}
 					break;
 				}
-				/* else if(type == ECOMORPH_EVENT_STATE) 
-				 * {
-				 * 	printf("win state client message\n");
-				 * 	
-				 * 	//printf("set state\n");
-				 * 	unsigned int state = event->xclient.data.l[2];
-				 * 	if (w->state != state)
-				 * 	{
-				 * 		w->state = state;
-				 * 		if(state & CompWindowStateHiddenMask)
-				 * 		{
-				 * 			//printf("set state - hidden\n");
-				 * 			w->clientMapped = 0;
-				 * 		}
-				 * 		(*d->matchPropertyChanged) (d, w);
-				 * 	}
-				 * 	break;
-				 * } */
 				else if(type == ECOMORPH_EVENT_DESK)
 				{
 
@@ -594,6 +581,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					w->serverHeight	   = event->xclient.data.l[4];
 					w->serverBorderWidth = 0;
 
+					if (w->clientMapped)
 					resizeWindow (w, w->serverX, w->serverY,
 								  w->serverWidth, w->serverHeight, 0);
 	
@@ -613,6 +601,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					w->serverHeight	   = event->xclient.data.l[4];
 					w->serverBorderWidth = 0;
 
+					if (w->clientMapped)
 					resizeWindow (w, w->serverX, w->serverY,
 								  w->serverWidth, w->serverHeight, 0);
 				}

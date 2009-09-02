@@ -1562,8 +1562,10 @@ resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidt
 		pw = width	+ borderWidth * 2;
 		ph = height + borderWidth * 2;
 
-		if (w->mapNum && w->redirected)
+		if ((!w->clientId || w->clientMapped) && w->mapNum && w->redirected)
 		{
+			/* printf("update pixmap\n"); */
+			
 			pixmap = XCompositeNameWindowPixmap (w->screen->display->display,
 												 w->id);
 			result = XGetGeometry (w->screen->display->display, pixmap, &root,
@@ -1583,7 +1585,8 @@ resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidt
 		}
 
 		addWindowDamage (w);
-
+		/* printf("update attributes\n"); */
+		
 		dx		= x - w->attrib.x;
 		dy		= y - w->attrib.y;
 		dwidth	= width - w->attrib.width;
