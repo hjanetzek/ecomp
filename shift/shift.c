@@ -1626,6 +1626,7 @@ shiftPreparePaintScreen (CompScreen *s,
 
 			for (w = s->windows; w; w = w->next)
 			{
+				if (w->attrib.class == InputOnly) continue;
 				SHIFT_WINDOW (w);
 
 				ss->moreAdjust |= adjustShiftWindowAttribs (w, chunk);
@@ -1674,6 +1675,7 @@ shiftDonePaintScreen (CompScreen *s)
 				shiftActivateEvent(s, FALSE);
 				for (w = s->windows; w; w = w->next)
 				{
+					if (w->attrib.class == InputOnly) continue;
 					SHIFT_WINDOW (w);
 					sw->active = FALSE;
 				}
@@ -1752,6 +1754,7 @@ shiftTerm (CompScreen *s, Bool cancel)
 
 				for (w2 = s->windows; w2; w2 = w2->next)
 				{
+					if (w2->attrib.class == InputOnly) continue;
 					SHIFT_WINDOW (w2);
 
 					moveScreenViewport (s, (s->x - x), (s->y - y), TRUE);

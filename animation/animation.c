@@ -1952,6 +1952,7 @@ restackInfoStillGood(CompScreen *s, RestackInfo *restackInfo)
     CompWindow *w;
     for (w = s->windows; w; w = w->next)
     {
+       if (w->attrib.class == InputOnly) continue;
 	if (restackInfo->wStart == w && isWinVisible(w))
 	    wStartGood = TRUE;
 	if (restackInfo->wEnd == w && isWinVisible(w))
@@ -1986,6 +1987,8 @@ static void animPreparePaintScreen(CompScreen * s, int msSinceLastPaint)
 	    // properly
 	    for (w = s->reverseWindows; w; w = w->prev)
 	    {
+	       if (w->attrib.class == InputOnly) continue;
+
 		ANIM_WINDOW(w);
 		if (aw->restackInfo)
 		{
@@ -2042,6 +2045,8 @@ static void animPreparePaintScreen(CompScreen * s, int msSinceLastPaint)
 	    {
 		for (w = s->reverseWindows; w; w = w->prev)
 		{
+		   if (w->attrib.class == InputOnly) continue;
+
 		    ANIM_WINDOW(w);
 
 		    if (!aw->isDodgeSubject)
@@ -2071,6 +2076,8 @@ static void animPreparePaintScreen(CompScreen * s, int msSinceLastPaint)
 
 	for (w = s->windows; w; w = w->next)
 	{
+	   if (w->attrib.class == InputOnly) continue;
+	     
 	    aw = GET_ANIM_WINDOW(w, as);
 
 	    if (aw->numPs)
@@ -2193,6 +2200,8 @@ static void animPreparePaintScreen(CompScreen * s, int msSinceLastPaint)
 
 	for (w = s->windows; w; w = w->next)
 	{
+	   if (w->attrib.class == InputOnly) continue;
+	   
 	    aw = GET_ANIM_WINDOW(w, as);
 	    if (aw && animEffectProperties[aw->curAnimEffect].
 		postPreparePaintScreenFunc)
@@ -3448,6 +3457,7 @@ static void animHandleEvent(CompDisplay * d, XEvent * event)
 		// Clear all configureNotified's
 		for (w2 = s->windows; w2; w2 = w2->next)
 		  {
+		     if (w2->attrib.class == InputOnly) continue;
 		    AnimWindow *aw2 = GET_ANIM_WINDOW(w2, as);
 		    aw2->configureNotified = FALSE;
 		  }
@@ -3986,6 +3996,7 @@ animPaintOutput(CompScreen * s,
 	CompWindow *w;
 	for (w = s->windows; w; w = w->next)
 	{
+	   if (w->attrib.class == InputOnly) continue;
 	    ANIM_WINDOW(w);
 	    if (aw->animRemainingTime > 0 &&
 		aw->polygonSet &&
@@ -4021,6 +4032,7 @@ animPaintOutput(CompScreen * s,
 	    // Mark all windows as "created"
 	    for (w = s->windows; w; w = w->next)
 	    {
+	       if (w->attrib.class == InputOnly) continue;
 		ANIM_WINDOW(w);
 		aw->created = TRUE;
 	    }

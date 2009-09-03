@@ -713,7 +713,9 @@ layoutThumbs(CompScreen *s)
 
    /* add windows scale list, top most window first */
    for (w = s->reverseWindows; w; w = w->prev)
-     {
+     {		 
+		 if (w->attrib.class == InputOnly) continue;
+
 	SCALE_WINDOW(w);
 
 	if (sw->slot)
@@ -869,6 +871,7 @@ scalePreparePaintScreen(CompScreen *s, int msSinceLastPaint)
 
 	for (w = s->windows; w; w = w->next)
 	  {
+		  if (w->attrib.class == InputOnly) continue;
 	     SCALE_WINDOW(w);
 
 	     if (!sw->adjust) continue;
@@ -928,6 +931,8 @@ scaleCheckForWindowAt(CompScreen *s, int x, int y)
 
    for (w = s->reverseWindows; w; w = w->prev)
      {
+		 if (w->attrib.class == InputOnly) continue;
+
 	SCALE_WINDOW(w);
 
 	if (!sw->slot) continue;
@@ -1037,6 +1042,7 @@ scaleTerminate2(CompDisplay *d, Window root, Bool sendToDesk, Bool Cancel)
 
 	for (w = s->windows; w; w = w->next)
 	  {
+		  if (w->attrib.class == InputOnly) continue;
 	     SCALE_WINDOW(w);
 
 	     if (sw->slot)
@@ -1089,6 +1095,7 @@ scaleTerminate2(CompDisplay *d, Window root, Bool sendToDesk, Bool Cancel)
 		       CompWindow *w2;
 		       for (w2 = s->windows; w2; w2 = w2->next)
 			 {
+				 if (w2->attrib.class == InputOnly) continue;
 			    SCALE_WINDOW(w2);
 			    sw->tx += (x - s->x) * s->width;
 			    sw->ty += (y - s->y) * s->height;
@@ -1204,6 +1211,7 @@ scaleMoveFocusWindow(CompScreen *s, int dx, int dy)
 
    for (w = s->windows; w; w = w->next)
      {
+		 if (w->attrib.class == InputOnly) continue;
 	slot = GET_SCALE_WINDOW(w, ss)->slot;
 	if (!slot)
 	  continue;
@@ -1242,6 +1250,7 @@ scaleMoveFocusWindow(CompScreen *s, int dx, int dy)
 
 	for (w = s->windows; w; w = w->next)
 	  {
+		  if (w->attrib.class == InputOnly) continue;
 	     slot = GET_SCALE_WINDOW(w, ss)->slot;
 	     if (!slot) continue;
 	     x = (slot->x1 + slot->x2) / 2;
@@ -1266,6 +1275,7 @@ scaleMoveFocusWindow(CompScreen *s, int dx, int dy)
 
 	     for (w = s->windows; w; w = w->next)
 	       {
+			   if (w->attrib.class == InputOnly) continue;
 		  slot = GET_SCALE_WINDOW(w, ss)->slot;
 		  if (!slot) continue;
 		  x = (slot->x1 + slot->x2) / 2;
@@ -1289,6 +1299,7 @@ scaleMoveFocusWindow(CompScreen *s, int dx, int dy)
 
 	for (w = s->windows; w; w = w->next)
 	  {
+		  if (w->attrib.class == InputOnly) continue;
 	     slot = GET_SCALE_WINDOW(w, ss)->slot;
 	     if (!slot) continue;
 	     x = (slot->x1 + slot->x2) / 2;
@@ -1313,6 +1324,7 @@ scaleMoveFocusWindow(CompScreen *s, int dx, int dy)
 
 	     for (w = s->windows; w; w = w->next)
 	       {
+			   if (w->attrib.class == InputOnly) continue;
 		  slot = GET_SCALE_WINDOW(w, ss)->slot;
 		  if (!slot) continue;
 		  x = (slot->x1 + slot->x2) / 2;
@@ -1338,6 +1350,7 @@ scaleMoveFocusWindow(CompScreen *s, int dx, int dy)
 
 	for (w = s->windows; w; w = w->next)
 	  {
+		  if (w->attrib.class == InputOnly) continue;
 	     if (!GET_SCALE_WINDOW(w, ss)->slot)
 	       continue;
 

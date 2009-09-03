@@ -1693,6 +1693,7 @@ wobblyPreparePaintScreen (CompScreen *s,
 	ws->wobblyWindows = 0;
 	for (w = s->windows; w; w = w->next)
 	{
+		if (w->attrib.class == InputOnly) continue;
 	    ww = GET_WOBBLY_WINDOW (w, ws);
 
 	    if (ww->wobbly)
@@ -2037,6 +2038,7 @@ wobblyEnableSnapping (CompDisplay     *d,
     {
 	for (w = s->windows; w; w = w->next)
 	{
+		if (w->attrib.class == InputOnly) continue;
 	    WOBBLY_WINDOW (w);
 
 	    if (ww->grabbed && ww->model)
@@ -2068,6 +2070,7 @@ wobblyDisableSnapping (CompDisplay     *d,
     {
 	for (w = s->windows; w; w = w->next)
 	{
+		if (w->attrib.class == InputOnly) continue;
 	    WOBBLY_WINDOW (w);
 
 	    if (ww->grabbed && ww->model)

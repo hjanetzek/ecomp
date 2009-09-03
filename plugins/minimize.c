@@ -355,6 +355,7 @@ minPreparePaintScreen (CompScreen *s,
 
 	    for (w = s->windows; w; w = w->next)
 	    {
+			if (w->attrib.class == InputOnly) continue;
 		MIN_WINDOW (w);
 
 		if (mw->adjust)
@@ -438,6 +439,7 @@ minPreparePaintScreen (CompScreen *s,
 	{
 	    for (w = s->windows; w; w = w->next)
 	    {
+			if (w->attrib.class == InputOnly) continue;
 		MIN_WINDOW (w);
 
 		if (mw->adjust)
@@ -474,6 +476,7 @@ minDonePaintScreen (CompScreen *s)
 
 	for (w = s->windows; w; w = w->next)
 	{
+		if (w->attrib.class == InputOnly) continue;
 	    MIN_WINDOW (w);
 
 	    if (mw->adjust)

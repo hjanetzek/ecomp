@@ -1059,6 +1059,8 @@ expoDonePaintScreen (CompScreen * s)
 
 		for (w = s->reverseWindows; w; w = w->prev)
 		{
+			if (w->attrib.class == InputOnly) continue;
+
 			Bool inWindow;
 			int xOffset, yOffset;
 

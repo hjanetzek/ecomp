@@ -174,9 +174,11 @@ fadePreparePaintScreen (CompScreen *s,
     if (steps < 12)
 	steps = 12;
 
-    for (w = s->windows; w; w = w->next)
+    for (w = s->windows; w; w = w->next){
+		if (w->attrib.class == InputOnly) continue;	
 	GET_FADE_WINDOW (w, fs)->steps = steps;
-
+	}
+	
     UNWRAP (fs, s, preparePaintScreen);
     (*s->preparePaintScreen) (s, msSinceLastPaint);
     WRAP (fs, s, preparePaintScreen, fadePreparePaintScreen);
@@ -342,6 +344,7 @@ fadeAddDisplayModal (CompDisplay *d,
 	{
 	    for (w = s->windows; w; w = w->next)
 	    {
+			if (w->attrib.class == InputOnly) continue;
 		FADE_WINDOW (w);
 
 		if (fw->dModal)
@@ -377,6 +380,7 @@ fadeRemoveDisplayModal (CompDisplay *d,
 	{
 	    for (w = s->windows; w; w = w->next)
 	    {
+			if (w->attrib.class == InputOnly) continue;
 		FADE_WINDOW (w);
 
 		if (fw->dModal)

@@ -402,6 +402,7 @@ clonePaintOutput (CompScreen		  *s,
 
 	for (w = s->windows; w; w = w->next)
 	{
+		if (w->attrib.class == InputOnly) continue;
 	    if (w->destroyed)
 		continue;
 

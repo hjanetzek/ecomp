@@ -980,7 +980,9 @@ videoHandleEvent (CompDisplay *d,
 		vs = GET_VIDEO_SCREEN (s, vd);
 
 		for (w = s->windows; w; w = w->next)
-		  {
+		{
+			if (w->attrib.class == InputOnly) continue;
+			  
 		    if (w->shaded || w->mapNum)
 		      {
 			vw = GET_VIDEO_WINDOW (w, vs);
@@ -1041,6 +1043,7 @@ videoHandleEvent (CompDisplay *d,
 
 			for (w = s->windows; w; w = w->next)
 			{
+				if (w->attrib.class == InputOnly) continue;
 			    if (w->shaded || w->mapNum)
 			    {
 				vw = GET_VIDEO_WINDOW (w, vs);

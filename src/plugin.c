@@ -259,7 +259,8 @@ initPluginForScreen (CompPlugin *p,
 
 	for (w = s->windows; w; w = w->next)
 	{
-	    if (!(*p->vTable->initWindow) (p, w))
+	   if (w->attrib.class != InputOnly)
+	     if (!(*p->vTable->initWindow) (p, w))
 	    {
 		compLogMessage (NULL, "core", CompLogLevelError,
 				"Plugin '%s':initWindow "
@@ -273,6 +274,7 @@ initPluginForScreen (CompPlugin *p,
 	if (p->vTable->finiWindow)
 	{
 	    for (w = s->windows; w != failedWindow; w = w->next)
+	      if (w->attrib.class != InputOnly)
 		(*p->vTable->finiWindow) (p, w);
 	}
     }
@@ -286,9 +288,10 @@ finiPluginForScreen (CompPlugin *p,
 {
     if (p->vTable->finiWindow)
     {
-	CompWindow *w = s->windows;
+	CompWindow *w;
 
 	for (w = s->windows; w; w = w->next)
+	  if (w->attrib.class != InputOnly)
 	    (*p->vTable->finiWindow) (p, w);
     }
 }
@@ -396,6 +399,8 @@ windowInitPlugins (CompWindow *w)
 {
     CompPlugin *p;
 
+    if (w->attrib.class == InputOnly) return;
+      
     for (p = plugins; p; p = p->next)
     {
 	if (p->vTable->initWindow)
@@ -408,6 +413,8 @@ windowFiniPlugins (CompWindow *w)
 {
     CompPlugin *p;
 
+    if (w->attrib.class == InputOnly) return;
+    
     for (p = plugins; p; p = p->next)
     {
 	if (p->vTable->finiWindow)

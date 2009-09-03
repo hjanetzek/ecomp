@@ -218,6 +218,7 @@ reflexScreenOptionChanged (CompScreen          *s,
 
     case ReflexScreenOptionMatch:
 	for (w = s->windows; w; w = w->next)
+		if (w->attrib.class != InputOnly)
 	    reflexUpdateWindowMatch (w);
 
 	damageScreen (s);
@@ -328,6 +329,7 @@ reflexMatchExpHandlerChanged (CompDisplay *d)
     for (s = d->screens; s; s = s->next)
     {
 	for (w = s->windows; w; w = w->next)
+		if (w->attrib.class != InputOnly)
 	    reflexUpdateWindowMatch (w);
     }
 }

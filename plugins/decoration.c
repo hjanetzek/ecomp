@@ -865,6 +865,7 @@ decorCheckForDmOnScreen(CompScreen *s, Bool updateWindows)
 
              for (w = s->windows; w; w = w->next)
                {
+				   if (w->attrib.class == InputOnly) continue;
                   DECOR_WINDOW(w);
                   if (!dw->decor) continue;
 
@@ -878,6 +879,7 @@ decorCheckForDmOnScreen(CompScreen *s, Bool updateWindows)
         if (updateWindows)
           {
              for (w = s->windows; w; w = w->next)
+				 if (w->attrib.class != InputOnly)
                decorWindowUpdate(w, TRUE);
           }
      }
@@ -929,6 +931,7 @@ decorHandleEvent(CompDisplay *d, XEvent *event)
 
 		      for (w = s->windows; w; w = w->next)
 			{
+				if (w->attrib.class == InputOnly) continue;
 			   if (/*w->shaded ||*/ w->mapNum)
 			     {
 				dw = GET_DECOR_WINDOW(w, ds);
@@ -1007,6 +1010,7 @@ decorHandleEvent(CompDisplay *d, XEvent *event)
 					 dd->decorAtom[i]);
 
 		 for (w = s->windows; w; w = w->next)
+			 if (w->attrib.class != InputOnly)
 		   decorWindowUpdate(w, TRUE);
 	      }
          }
@@ -1097,6 +1101,7 @@ decorSetDisplayOption(CompPlugin *plugin, CompDisplay *display,
 
             for (s = display->screens; s; s = s->next)
               for (w = s->windows; w; w = w->next)
+				  if (w->attrib.class != InputOnly)
                 decorWindowUpdate(w, TRUE);
          }
        break;

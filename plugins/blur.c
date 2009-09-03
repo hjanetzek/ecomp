@@ -758,6 +758,7 @@ blurPreparePaintScreen (CompScreen *s,
 
 	for (w = s->windows; w; w = w->next)
 	{
+		if (w->attrib.class == InputOnly) continue;
 	    BLUR_WINDOW (w);
 
 	    focusBlur = bw->focusBlur && focus;
@@ -817,6 +818,7 @@ blurPreparePaintScreen (CompScreen *s,
 
 	    for (w = s->windows; w; w = w->next)
 	    {
+			if (w->attrib.class == InputOnly) continue;
 		BLUR_WINDOW (w);
 
 		if (w->attrib.map_state != IsViewable || !w->damaged)
@@ -887,8 +889,12 @@ blurPaintOutput (CompScreen		 *s,
 	XSubtractRegion (&emptyRegion, &emptyRegion, bs->occlusion);
 
 	for (w = s->windows; w; w = w->next)
+	{
+		if (w->attrib.class == InputOnly) continue;	
 	    XSubtractRegion (&emptyRegion, &emptyRegion,
 			     GET_BLUR_WINDOW (w, bs)->clip);
+	}
+	
     }
 
     bs->output = output;
@@ -917,8 +923,12 @@ blurPaintTransformedOutput (CompScreen		    *s,
 	XSubtractRegion (&emptyRegion, &emptyRegion, bs->occlusion);
 
 	for (w = s->windows; w; w = w->next)
+	{
+		if (w->attrib.class == InputOnly) continue;	
 	    XSubtractRegion (&emptyRegion, &emptyRegion,
-			     GET_BLUR_WINDOW (w, bs)->clip);
+						 GET_BLUR_WINDOW (w, bs)->clip);
+	}
+	
     }
 
     UNWRAP (bs, s, paintTransformedOutput);
@@ -938,6 +948,7 @@ blurDonePaintScreen (CompScreen *s)
 
 	for (w = s->windows; w; w = w->next)
 	{
+		if (w->attrib.class == InputOnly) continue;
 	    BLUR_WINDOW (w);
 
 	    if (bw->blur > 0 && bw->blur < 0xffff)
@@ -2380,6 +2391,7 @@ blurMatchExpHandlerChanged (CompDisplay *d)
 	BLUR_SCREEN (s);
 
 	for (w = s->windows; w; w = w->next)
+		if (w->attrib.class != InputOnly)
 	    blurUpdateWindowMatch (bs, w);
     }
 }

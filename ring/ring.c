@@ -796,6 +796,7 @@ ringCreateWindowList (CompScreen *s)
 
     for (w = s->windows; w; w = w->next)
     {
+		if (w->attrib.class == InputOnly) continue;
 		if (isRingWin (w))
 		{
 			RING_WINDOW (w);
@@ -1059,6 +1060,7 @@ ringPreparePaintScreen (CompScreen *s,
 
 			for (w = s->windows; w; w = w->next)
 			{
+				if (w->attrib.class == InputOnly) continue;
 				RING_WINDOW (w);
 
 				if (rw->adjust)
@@ -1139,6 +1141,7 @@ ringTerm(CompScreen *s, int cancel)
 
 		for (w = s->windows; w; w = w->next)
 		{
+			if (w->attrib.class == InputOnly) continue;
 			RING_WINDOW (w);
     
 			if (rw->slot)

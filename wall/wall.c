@@ -1155,7 +1155,7 @@ wallPaintTransformedOutput (CompScreen              *s,
 	  py = ws->curPosY - (float)origy;
 
 	  for (w = s->windows; w; w = w->next)
-	    { 
+	    {
 	      if (w->clientId &&
 		  ((w->initialViewportX == ws->fromX &&
 		    w->initialViewportY == ws->fromY) ||
@@ -1177,7 +1177,7 @@ wallPaintTransformedOutput (CompScreen              *s,
 					region, output, mask);
 
 	  for (w = s->windows; w; w = w->next)
-	    {
+	    {			
 	      if (w->clientId &&
 		  ((w->initialViewportX == ws->fromX &&
 		    w->initialViewportY == ws->fromY) ||

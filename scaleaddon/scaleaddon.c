@@ -354,6 +354,8 @@ scaleaddonCheckForWindowAt (CompScreen * s, int x, int y)
 
     for (w = s->reverseWindows; w; w = w->prev)
     {
+		if (w->attrib.class == InputOnly) continue;
+
         SCALE_WINDOW(w);
 
         if (sw->slot)
