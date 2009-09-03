@@ -43,14 +43,10 @@
 
 #include <ecomp.h>
 
-//#define DEBUG 1
+/* #define DEBUG 1 */
 
-/* static unsigned int virtualModMask[] = {
- *	   CompAltMask, CompMetaMask, CompSuperMask, CompHyperMask,
- *	   CompModeSwitchMask, CompNumLockMask, CompScrollLockMask
- * }; */
-
-typedef struct _CompTimeout {
+typedef struct _CompTimeout
+{
 	struct _CompTimeout *next;
 	int time;
 	int left;
@@ -59,17 +55,18 @@ typedef struct _CompTimeout {
 	CompTimeoutHandle handle;
 } CompTimeout;
 
-static CompTimeout *timeouts = 0;
-static struct timeval lastTimeout;
-static CompTimeoutHandle lastTimeoutHandle = 1;
-
-typedef struct _CompWatchFd {
+typedef struct _CompWatchFd
+{
 	struct _CompWatchFd *next;
 	int fd;
 	CallBackProc callBack;
 	void *closure;
 	CompWatchFdHandle	handle;
 } CompWatchFd;
+
+static CompTimeout *timeouts = 0;
+static struct timeval lastTimeout;
+static CompTimeoutHandle lastTimeoutHandle = 1;
 
 static CompWatchFd *watchFds = 0;
 static CompWatchFdHandle lastWatchFdHandle = 1;
@@ -126,7 +123,6 @@ reallocDisplayPrivate (int	size,
 	return TRUE;
 }
 
-
 int
 allocateDisplayPrivateIndex (void)
 {
@@ -135,19 +131,16 @@ allocateDisplayPrivateIndex (void)
 								 reallocDisplayPrivate, 0);
 }
 
-
 void
 freeDisplayPrivateIndex (int index)
 {
 	freePrivateIndex (displayPrivateLen, displayPrivateIndices, index);
 }
 
-
 const CompMetadataOptionInfo coreDisplayOptionInfo[COMP_DISPLAY_OPTION_NUM] = {
 	{ "active_plugins", "list", "<type>string</type>", 0, 0 },
 	{ "texture_filter", "int", RESTOSTRING (0, 2), 0, 0 }
 };
-
 
 CompOption *
 compGetDisplayOptions (CompDisplay *display,
@@ -157,18 +150,14 @@ compGetDisplayOptions (CompDisplay *display,
 	return display->opt;
 }
 
-
 static Bool
-setDisplayOption (CompDisplay	  *display,
-				  char			  *name,
-				  CompOptionValue *value)
+setDisplayOption (CompDisplay *display, char *name, CompOptionValue *value)
 {
 	CompOption *o;
 	int		   index;
 
 	o = compFindOption (display->opt, NUM_OPTIONS (display), name, &index);
-	if (!o)
-		return FALSE;
+	if (!o) return FALSE;
 
 	switch (index) {
 	case COMP_DISPLAY_OPTION_ACTIVE_PLUGINS:
@@ -194,38 +183,18 @@ setDisplayOption (CompDisplay	  *display,
 			return TRUE;
 		}
 		break;
-		//	  case COMP_DISPLAY_OPTION_PING_DELAY:
-		//	if (compSetIntOption (o, value))
-		//	{
-		//		if (display->pingHandle)
-		//		compRemoveTimeout (display->pingHandle);
-		//
-		//		display->pingHandle =
-		//		compAddTimeout (o->value.i, pingTimeout, display);
-		//		return TRUE;
-		//	}
-		//	break;
-		//	  case COMP_DISPLAY_OPTION_AUDIBLE_BELL:
-		//	if (compSetBoolOption (o, value))
-		//	{
-		//		setAudibleBell (display, o->value.b);
-		//		return TRUE;
-		//	}
-		//	break;
-		//	  default:
-		//	if (compSetDisplayOption (display, o, value))
-		//		return TRUE;
-		//	break;
+	default:
+		if (compSetDisplayOption (display, o, value))
+			return TRUE;
+		break;
 	}
 
 	return FALSE;
 }
 
 static Bool
-setDisplayOptionForPlugin (CompDisplay	   *display,
-						   char			   *plugin,
-						   char			   *name,
-						   CompOptionValue *value)
+setDisplayOptionForPlugin (CompDisplay *display, char *plugin,
+						   char *name, CompOptionValue *value)
 {
 	CompPlugin *p;
 
@@ -357,9 +326,7 @@ addTimeout (CompTimeout *timeout)
 }
 
 CompTimeoutHandle
-compAddTimeout (int		 time,
-				CallBackProc callBack,
-				void		 *closure)
+compAddTimeout (int time, CallBackProc callBack, void *closure)
 {
 	CompTimeout *timeout;
 
@@ -413,10 +380,7 @@ compRemoveTimeout (CompTimeoutHandle handle)
 }
 
 CompWatchFdHandle
-compAddWatchFd (int		 fd,
-				short int	 events,
-				CallBackProc callBack,
-				void		 *closure)
+compAddWatchFd (int fd, short int events, CallBackProc callBack, void *closure)
 {
 	CompWatchFd *watchFd;
 
@@ -497,10 +461,7 @@ compWatchFdEvents (CompWatchFdHandle handle)
 	 (1000000 + (tv1)->tv_usec - (tv2)->tv_usec)) / 1000
 
 static int
-getTimeToNextRedraw (CompScreen		*s,
-					 struct timeval *tv,
-					 struct timeval *lastTv,
-					 Bool		idle)
+getTimeToNextRedraw (CompScreen	*s, struct timeval *tv, struct timeval *lastTv, Bool idle)
 {
 	int diff, next;
 
@@ -564,153 +525,6 @@ getTimeToNextRedraw (CompScreen		*s,
 
 	return s->redrawTime - diff;
 }
-
-/* static const int maskTable[] = {
- *	   ShiftMask, LockMask, ControlMask, Mod1Mask,
- *	   Mod2Mask, Mod3Mask, Mod4Mask, Mod5Mask
- * };
- * static const int maskTableSize = sizeof (maskTable) / sizeof (int);
- *
- * void
- * updateModifierMappings (CompDisplay *d)
- * {
- *	   unsigned int	   modMask[CompModNum];
- *	   int			i, minKeycode, maxKeycode, keysymsPerKeycode = 0;
- *	   KeySym*		   key;
- *
- *	   for (i = 0; i < CompModNum; i++)
- *	modMask[i] = 0;
- *
- *	   XDisplayKeycodes (d->display, &minKeycode, &maxKeycode);
- *	   key = XGetKeyboardMapping (d->display,
- *				   minKeycode, (maxKeycode - minKeycode + 1),
- *					   &keysymsPerKeycode);
- *
- *	   if (d->modMap)
- *	XFreeModifiermap (d->modMap);
- *
- *	   d->modMap = XGetModifierMapping (d->display);
- *	   if (d->modMap && d->modMap->max_keypermod > 0)
- *	   {
- *	KeySym keysym;
- *	int	   index, size, mask;
- *
- *	size = maskTableSize * d->modMap->max_keypermod;
- *
- *	for (i = 0; i < size; i++)
- *	{
- *		if (!d->modMap->modifiermap[i])
- *		continue;
- *
- *		index = 0;
- *		do
- *		{
- *		keysym = XKeycodeToKeysym (d->display,
- *					   d->modMap->modifiermap[i],
- *					   index++);
- *		} while (!keysym && index < keysymsPerKeycode);
- *
- *		if (keysym)
- *		{
- *		mask = maskTable[i / d->modMap->max_keypermod];
- *
- *		if (keysym == XK_Alt_L ||
- *			keysym == XK_Alt_R)
- *		{
- *			modMask[CompModAlt] |= mask;
- *		}
- *		else if (keysym == XK_Meta_L ||
- *			 keysym == XK_Meta_R)
- *		{
- *			modMask[CompModMeta] |= mask;
- *		}
- *		else if (keysym == XK_Super_L ||
- *			 keysym == XK_Super_R)
- *		{
- *			modMask[CompModSuper] |= mask;
- *		}
- *		else if (keysym == XK_Hyper_L ||
- *			 keysym == XK_Hyper_R)
- *		{
- *			modMask[CompModHyper] |= mask;
- *		}
- *		else if (keysym == XK_Mode_switch)
- *		{
- *			modMask[CompModModeSwitch] |= mask;
- *		}
- *		else if (keysym == XK_Scroll_Lock)
- *		{
- *			modMask[CompModScrollLock] |= mask;
- *		}
- *		else if (keysym == XK_Num_Lock)
- *		{
- *			modMask[CompModNumLock] |= mask;
- *		}
- *		}
- *	}
- *
- *	for (i = 0; i < CompModNum; i++)
- *	{
- *		if (!modMask[i])
- *		modMask[i] = CompNoMask;
- *	}
- *
- *	if (memcmp (modMask, d->modMask, sizeof (modMask)))
- *	{
- *		CompScreen *s;
- *
- *		memcpy (d->modMask, modMask, sizeof (modMask));
- *
- *		d->ignoredModMask = LockMask |
- *		(modMask[CompModNumLock]	& ~CompNoMask) |
- *		(modMask[CompModScrollLock] & ~CompNoMask);
- *
- *		for (s = d->screens; s; s = s->next)
- *		updatePassiveGrabs (s);
- *	}
- *	   }
- *
- *	   if (key)
- *	XFree (key);
- * }
- *
- * unsigned int
- * virtualToRealModMask (CompDisplay  *d,
- *			  unsigned int modMask)
- * {
- *	   int i;
- *
- *	   for (i = 0; i < CompModNum; i++)
- *	   {
- *	if (modMask & virtualModMask[i])
- *	{
- *		modMask &= ~virtualModMask[i];
- *		modMask |= d->modMask[i];
- *	}
- *	   }
- *
- *	   return modMask;
- * }
- *
- * unsigned int
- * keycodeToModifiers (CompDisplay *d,
- *			int			keycode)
- * {
- *	   unsigned int mods = 0;
- *	   int mod, k;
- *
- *	   for (mod = 0; mod < maskTableSize; mod++)
- *	   {
- *	for (k = 0; k < d->modMap->max_keypermod; k++)
- *	{
- *		if (d->modMap->modifiermap[mod * d->modMap->max_keypermod + k] ==
- *		keycode)
- *		mods |= maskTable[mod];
- *	}
- *	   }
- *
- *	   return mods;
- * } */
 
 static int
 doPoll (int timeout)
@@ -785,10 +599,7 @@ waitForVideoSync (CompScreen *s)
 
 
 void
-paintScreen (CompScreen	  *s,
-			 CompOutput	  *outputs,
-			 int		  numOutput,
-			 unsigned int mask)
+paintScreen (CompScreen *s, CompOutput *outputs, int numOutput, unsigned int mask)
 {
 	XRectangle r;
 	int		   i;
@@ -814,35 +625,26 @@ paintScreen (CompScreen	  *s,
 
 		if (mask & COMP_SCREEN_DAMAGE_ALL_MASK)
 		{
-			(*s->paintOutput) (s,
-							   &defaultScreenPaintAttrib,
-							   &identity,
-							   &outputs[i].region, &outputs[i],
-							   PAINT_SCREEN_REGION_MASK |
-							   PAINT_SCREEN_FULL_MASK);
+			(*s->paintOutput)
+				(s, &defaultScreenPaintAttrib, &identity,
+				 &outputs[i].region, &outputs[i],
+				 PAINT_SCREEN_REGION_MASK | PAINT_SCREEN_FULL_MASK);
 		}
 		else if (mask & COMP_SCREEN_DAMAGE_REGION_MASK)
 		{
-			XIntersectRegion (tmpRegion,
-							  &outputs[i].region,
-							  outputRegion);
+			XIntersectRegion (tmpRegion, &outputs[i].region, outputRegion);
 
-			if (!(*s->paintOutput) (s,
-									&defaultScreenPaintAttrib,
-									&identity,
-									outputRegion, &outputs[i],
-									PAINT_SCREEN_REGION_MASK))
+			if (!(*s->paintOutput)
+				(s, &defaultScreenPaintAttrib, &identity,
+				 outputRegion, &outputs[i],
+				 PAINT_SCREEN_REGION_MASK))
 			{
-				(*s->paintOutput) (s,
-								   &defaultScreenPaintAttrib,
-								   &identity,
-								   &outputs[i].region, &outputs[i],
-								   PAINT_SCREEN_FULL_MASK);
+				(*s->paintOutput)
+					(s, &defaultScreenPaintAttrib, &identity,
+					 &outputs[i].region, &outputs[i],
+					 PAINT_SCREEN_FULL_MASK);
 
-				XUnionRegion (tmpRegion,
-							  &outputs[i].region,
-							  tmpRegion);
-
+				XUnionRegion (tmpRegion, &outputs[i].region, tmpRegion);
 			}
 		}
 	}
@@ -960,15 +762,14 @@ eventLoop (void)
 
 					if (s->slowAnimations)
 					{
-						(*s->preparePaintScreen) (s,
-												  s->idle ? 2 : (timeDiff * 2) /
-												  s->redrawTime);
+						(*s->preparePaintScreen)
+							(s, s->idle ? 2 : (timeDiff * 2) / s->redrawTime);
 					}
 					else
-						(*s->preparePaintScreen) (s,
-												  s->idle ? s->redrawTime :
-												  timeDiff);
-
+					{
+						(*s->preparePaintScreen) (s, s->idle ? s->redrawTime : timeDiff);
+					}
+					
 					/* substract top most overlay window region */
 					if (s->overlayWindowCount)
 					{
@@ -1041,13 +842,11 @@ eventLoop (void)
 							{
 								y = s->height - pBox->y2;
 
-								(*s->copySubBuffer) (display->display,
-													 s->output,
-													 pBox->x1, y,
-													 pBox->x2 -
-													 pBox->x1,
-													 pBox->y2 -
-													 pBox->y1);
+								(*s->copySubBuffer)
+									(display->display, s->output,
+									 pBox->x1, y,
+									 pBox->x2 - pBox->x1,
+									 pBox->y2 - pBox->y1);
 
 								pBox++;
 							}
@@ -1061,10 +860,8 @@ eventLoop (void)
 							{
 								y = s->height - pBox->y2;
 
-								glBitmap (0, 0, 0, 0,
-										  pBox->x1 - s->rasterX,
-										  y - s->rasterY,
-										  NULL);
+								glBitmap (0, 0, 0, 0, pBox->x1 - s->rasterX,
+										  y - s->rasterY, NULL);
 
 								s->rasterX = pBox->x1;
 								s->rasterY = y;
@@ -1108,7 +905,7 @@ eventLoop (void)
 
 						s->pendingDestroys--;
 					}
-
+					
 					s->idle = FALSE;
 				}
 			}
@@ -1206,25 +1003,6 @@ compCheckForError (Display *dpy)
 	return e;
 }
 
-/* add actions that should be automatically added as no screens
- *	  existed when they were initialized.
- * #ifdef KEYBINDING
- * static void
- * addScreenActions (CompScreen *s)
- * {
- *	   int i;
- *
- *	   for (i = 0; i < COMP_DISPLAY_OPTION_NUM; i++)
- *	   {
- *	if (s->display->opt[i].type == CompOptionTypeAction)
- *	{
- *		if (s->display->opt[i].value.action.state & CompActionStateAutoGrab)
- *		addScreenAction (s, &s->display->opt[i].value.action);
- *	}
- *	   }
- * }
- * #endif */
-
 void
 addScreenToDisplay (CompDisplay *display,
 					CompScreen	*s)
@@ -1237,9 +1015,6 @@ addScreenToDisplay (CompDisplay *display,
 		prev->next = s;
 	else
 		display->screens = s;
-/* #ifdef KEYBOARD
- *	   addScreenActions (s);
- * #endif */
 }
 
 Bool
@@ -1247,12 +1022,8 @@ addDisplay (char *name)
 {
 	CompDisplay *d;
 	Display		*dpy;
-	// Window	focus;
-	//int		revertTo,
 	int	 i;
 	int		compositeMajor, compositeMinor;
-	int		fixesMinor;
-	/* int		xkbOpcode; */
 	int		firstScreen, lastScreen;
 
 	d = &compDisplay;
@@ -1270,13 +1041,6 @@ addDisplay (char *name)
 
 	d->screenPrivateIndices = 0;
 	d->screenPrivateLen		= 0;
-
-	/* d->modMap = 0; */
-
-	/* for (i = 0; i < CompModNum; i++)
-	 *	d->modMask[i] = CompNoMask; */
-
-	/* d->ignoredModMask = LockMask; */
 
 	d->plugin.list.type	  = CompOptionTypeString;
 	d->plugin.list.nValue = 0;
@@ -1302,11 +1066,9 @@ addDisplay (char *name)
 		return FALSE;
 	}
 
-	if (!compInitDisplayOptionsFromMetadata (d,
-											 &coreMetadata,
-											 coreDisplayOptionInfo,
-											 d->opt,
-											 COMP_DISPLAY_OPTION_NUM))
+	if (!compInitDisplayOptionsFromMetadata
+		(d, &coreMetadata, coreDisplayOptionInfo,
+		 d->opt, COMP_DISPLAY_OPTION_NUM))
 		return FALSE;
 
 	snprintf (d->displayString, 255, "DISPLAY=%s", DisplayString (dpy));
@@ -1316,10 +1078,6 @@ addDisplay (char *name)
 #endif
 
 	XSetErrorHandler (errorHandler);
-
-/* #ifdef KEYBINDING
- *	   updateModifierMappings (d);
- * #endif */
 
 	d->setDisplayOption		 = setDisplayOption;
 	d->setDisplayOptionForPlugin = setDisplayOptionForPlugin;
@@ -1419,36 +1177,6 @@ addDisplay (char *name)
 		XInternAtom (dpy, "_NET_WM_STATE_DEMANDS_ATTENTION", 0);
 	d->winStateDisplayModalAtom		=
 		XInternAtom (dpy, "_NET_WM_STATE_DISPLAY_MODAL", 0);
-
-	/*d->winActionMoveAtom	  = XInternAtom (dpy, "_NET_WM_ACTION_MOVE", 0);
-	  d->winActionResizeAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_RESIZE", 0);
-	  d->winActionStickAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_STICK", 0);
-	  d->winActionMinimizeAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_MINIMIZE", 0);
-	  d->winActionMaximizeHorzAtom	=
-	  XInternAtom (dpy, "_NET_WM_ACTION_MAXIMIZE_HORZ", 0);
-	  d->winActionMaximizeVertAtom	=
-	  XInternAtom (dpy, "_NET_WM_ACTION_MAXIMIZE_VERT", 0);
-	  d->winActionFullscreenAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_FULLSCREEN", 0);
-	  d->winActionCloseAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_CLOSE", 0);
-	  d->winActionShadeAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_SHADE", 0);
-	  d->winActionChangeDesktopAtom =
-	  XInternAtom (dpy, "_NET_WM_ACTION_CHANGE_DESKTOP", 0);
-	  d->winActionAboveAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_ABOVE", 0);
-	  d->winActionBelowAtom	  =
-	  XInternAtom (dpy, "_NET_WM_ACTION_BELOW", 0);
-
-	  d->wmAllowedActionsAtom = XInternAtom (dpy, "_NET_WM_ALLOWED_ACTIONS", 0);
-
-	  d->wmStrutAtom	  = XInternAtom (dpy, "_NET_WM_STRUT", 0);
-	  d->wmStrutPartialAtom = XInternAtom (dpy, "_NET_WM_STRUT_PARTIAL", 0);
-	*/
 	d->wmUserTimeAtom = XInternAtom (dpy, "_NET_WM_USER_TIME", 0);
 
 	d->wmIconAtom = XInternAtom (dpy,"_NET_WM_ICON", 0);
@@ -1457,7 +1185,6 @@ addDisplay (char *name)
 	d->clientListStackingAtom =
 		XInternAtom (dpy, "_NET_CLIENT_LIST_STACKING", 0);
 
-	//	d->frameExtentsAtom = XInternAtom (dpy, "_NET_FRAME_EXTENTS", 0);
 	d->frameWindowAtom	= XInternAtom (dpy, "_NET_FRAME_WINDOW", 0);
 
 	d->wmStateAtom	  = XInternAtom (dpy, "WM_STATE", 0);
@@ -1501,11 +1228,8 @@ addDisplay (char *name)
 	d->eManagedAtom = XInternAtom (dpy, "__ECOMORPH_WINDOW_MANAGED", 0);
 	d->ecoPluginAtom = XInternAtom (dpy, "__ECOMORPH_PLUGIN", 0);
 
-	if (!XQueryExtension (dpy,
-						  COMPOSITE_NAME,
-						  &d->compositeOpcode,
-						  &d->compositeEvent,
-						  &d->compositeError))
+	if (!XQueryExtension
+		(dpy, COMPOSITE_NAME, &d->compositeOpcode, &d->compositeEvent, &d->compositeError))
 	{
 		compLogMessage (d, "core", CompLogLevelFatal,
 						"No composite extension");
@@ -1534,53 +1258,14 @@ addDisplay (char *name)
 		return FALSE;
 	}
 
-	if (!XFixesQueryExtension (dpy, &d->fixesEvent, &d->fixesError))
-	{
-		compLogMessage (d, "core", CompLogLevelFatal,
-						"No fixes extension");
-		return FALSE;
-	}
+	d->randrExtension = XRRQueryExtension
+		(dpy, &d->randrEvent, &d->randrError);
 
-	XFixesQueryVersion (dpy, &d->fixesVersion, &fixesMinor);
-	/*
-	  if (d->fixesVersion < 5)
-	  {
-	  fprintf (stderr, "%s: Need fixes extension version 5 or later "
-	  "for client-side cursor\n", programName);
-	  }
-	*/
+	d->shapeExtension = XShapeQueryExtension
+		(dpy, &d->shapeEvent, &d->shapeError);
 
-	d->randrExtension = XRRQueryExtension (dpy,
-										   &d->randrEvent,
-										   &d->randrError);
-
-	d->shapeExtension = XShapeQueryExtension (dpy,
-											  &d->shapeEvent,
-											  &d->shapeError);
-
-	/* d->xkbExtension = XkbQueryExtension (dpy,
-	 *					 &xkbOpcode,
-	 *					 &d->xkbEvent,
-	 *					 &d->xkbError,
-	 *					 NULL, NULL);
-	 * if (d->xkbExtension)
-	 * {
-	 *	XkbSelectEvents (dpy,
-	 *			 XkbUseCoreKbd,
-	 *			 XkbBellNotifyMask | XkbStateNotifyMask,
-	 *			 XkbAllEventsMask);
-	 * }
-	 * else
-	 * {
-	 *	compLogMessage (d, "core", CompLogLevelFatal,
-	 *			"No XKB extension");
-	 *
-	 *	d->xkbEvent = d->xkbError = -1;
-	 * } */
-
-	d->xineramaExtension = XineramaQueryExtension (dpy,
-												   &d->xineramaEvent,
-												   &d->xineramaError);
+	d->xineramaExtension = XineramaQueryExtension
+		(dpy, &d->xineramaEvent, &d->xineramaError);
 
 	d->nScreenInfo = 0;
 	if (d->xineramaExtension)
@@ -1589,9 +1274,6 @@ addDisplay (char *name)
 		d->screenInfo  = NULL;
 
 	compDisplays = d;
-
-	/* d->escapeKeyCode = XKeysymToKeycode (dpy, XStringToKeysym ("Escape"));
-	 * d->returnKeyCode = XKeysymToKeycode (dpy, XStringToKeysym ("Return")); */
 
 	if (onlyCurrentScreen)
 	{
@@ -1612,9 +1294,6 @@ addDisplay (char *name)
 		XSetWindowAttributes attr;
 		Window			 currentWmSnOwner, currentCmSnOwner;
 		char			 buf[128];
-		/* Window			 rootDummy, childDummy;
-		 * unsigned int		 uDummy; */
-		/* int			 x, y, dummy; */
 
 		sprintf (buf, "WM_S%d", i);
 		wmSnAtom = XInternAtom (dpy, buf, 0);
@@ -1629,27 +1308,21 @@ addDisplay (char *name)
 		attr.override_redirect = TRUE;
 		attr.event_mask		   = PropertyChangeMask;
 
-		newCmSnOwner = newWmSnOwner =
-			XCreateWindow (dpy, XRootWindow (dpy, i),
-						   -100, -100, 1, 1, 0,
-						   CopyFromParent, CopyFromParent,
-						   CopyFromParent,
-						   CWOverrideRedirect | CWEventMask,
-						   &attr);
+		newCmSnOwner = newWmSnOwner = XCreateWindow
+			(dpy, XRootWindow (dpy, i), -100, -100, 1, 1, 0,
+			 CopyFromParent, CopyFromParent, CopyFromParent,
+			 CWOverrideRedirect | CWEventMask, &attr);
 
 
-		XCompositeRedirectSubwindows (dpy, XRootWindow (dpy, i),
-									  CompositeRedirectManual);
+		XCompositeRedirectSubwindows(dpy, XRootWindow (dpy, i), CompositeRedirectManual);
 
 		if (compCheckForError (dpy))
 		{
 			compLogMessage (d, "core", CompLogLevelError,
 							"Another composite manager is already "
 							"running on screen: %d", i);
-
 			continue;
 		}
-
 
 		XSetSelectionOwner (dpy, cmSnAtom, newCmSnOwner, wmSnTimestamp);
 
@@ -1659,27 +1332,16 @@ addDisplay (char *name)
 							"Could not acquire compositing manager "
 							"selection on screen %d display \"%s\"",
 							i, DisplayString (dpy));
-
 			continue;
 		}
 
 		XGrabServer (dpy);
 
 		XSelectInput (dpy, XRootWindow (dpy, i),
-					  /* SubstructureRedirectMask | */
-					  SubstructureNotifyMask   |
-					  StructureNotifyMask	   |
-					  PropertyChangeMask	   |
-					  ExposureMask
-					  /* TODO get theevents from e? */
-					  /* LeaveWindowMask		   |
-					   * FocusChangeMask		   |
-					   * EnterWindowMask */
-					  /* KeyPressMask		   |
-					   * KeyReleaseMask		   |
-					   * ButtonPressMask		   |
-					   * ButtonReleaseMask */
-			);
+					  SubstructureNotifyMask |
+					  StructureNotifyMask	 |
+					  PropertyChangeMask	 |
+					  ExposureMask);
 
 
 
@@ -1699,13 +1361,8 @@ addDisplay (char *name)
 							"Failed to manage screen: %d", i);
 		}
 
-		/* if (XQueryPointer (dpy, XRootWindow (dpy, i),
-		 *		   &rootDummy, &childDummy,
-		 *		   &x, &y, &dummy, &dummy, &uDummy)) */
-		{
-			lastPointerX = pointerX = 0;
-			lastPointerY = pointerY = 0;
-		}
+		lastPointerX = pointerX = 0;
+		lastPointerY = pointerY = 0;
 
 		XUngrabServer (dpy);
 	}
@@ -1717,7 +1374,6 @@ addDisplay (char *name)
 						XDisplayName (name));
 		return FALSE;
 	}
-
 
 	return TRUE;
 }
@@ -1742,12 +1398,10 @@ void
 focusDefaultWindow (CompDisplay *d)
 {
 	printf("focusDefaultWindow - remove this call\n");
-
 }
 
 CompScreen *
-findScreenAtDisplay (CompDisplay *d,
-					 Window		 root)
+findScreenAtDisplay (CompDisplay *d, Window root)
 {
 	CompScreen *s;
 
@@ -1761,9 +1415,7 @@ findScreenAtDisplay (CompDisplay *d,
 }
 
 void
-forEachWindowOnDisplay (CompDisplay	  *display,
-						ForEachWindowProc proc,
-						void		  *closure)
+forEachWindowOnDisplay (CompDisplay	*display, ForEachWindowProc proc, void *closure)
 {
 	CompScreen *s;
 
@@ -1772,8 +1424,7 @@ forEachWindowOnDisplay (CompDisplay	  *display,
 }
 
 CompWindow *
-findWindowAtDisplay (CompDisplay *d,
-					 Window		 id)
+findWindowAtDisplay (CompDisplay *d, Window id)
 {
 	CompScreen *s;
 	CompWindow *w;
@@ -1781,16 +1432,14 @@ findWindowAtDisplay (CompDisplay *d,
 	for (s = d->screens; s; s = s->next)
 	{
 		w = findWindowAtScreen (s, id);
-		if (w)
-			return w;
+		if (w) return w;
 	}
 
 	return 0;
 }
 
 CompWindow *
-findTopLevelWindowAtDisplay (CompDisplay *d,
-							 Window		 id)
+findTopLevelWindowAtDisplay (CompDisplay *d, Window id)
 {
 	CompScreen *s;
 	CompWindow *w;
@@ -1798,8 +1447,7 @@ findTopLevelWindowAtDisplay (CompDisplay *d,
 	for (s = d->screens; s; s = s->next)
 	{
 		w = findTopLevelWindowAtScreen (s, id);
-		if (w)
-			return w;
+		if (w) return w;
 	}
 
 	return 0;
@@ -1807,9 +1455,7 @@ findTopLevelWindowAtDisplay (CompDisplay *d,
 
 /*XXX hm this could conlfict with e17 */
 void
-warpPointer (CompScreen *s,
-			 int	 dx,
-			 int	 dy)
+warpPointer (CompScreen *s, int dx, int dy)
 {
 	CompDisplay *display = s->display;
 	XEvent		event;
@@ -1847,63 +1493,24 @@ warpPointer (CompScreen *s,
 	}
 }
 
-
-/* Bool
- * setDisplayAction (CompDisplay	 *display,
- *		  CompOption	  *o,
- *		  CompOptionValue *value)
- * {
- *	   CompScreen *s;
- *
- *	   for (s = display->screens; s; s = s->next)
- *	if (!addScreenAction (s, &value->action))
- *		break;
- *
- *	   if (s)
- *	   {
- *	CompScreen *failed = s;
- *
- *	for (s = display->screens; s && s != failed; s = s->next)
- *		removeScreenAction (s, &value->action);
- *
- *	return FALSE;
- *	   }
- *	   else
- *	   {
- *	for (s = display->screens; s; s = s->next)
- *		removeScreenAction (s, &o->value.action);
- *	   }
- *
- *	   if (compSetActionOption (o, value))
- *	return TRUE;
- *
- *	   return FALSE;
- * } */
-
 void
-clearTargetOutput (CompDisplay	*display,
-				   unsigned int mask)
+clearTargetOutput (CompDisplay *display, unsigned int mask)
 {
 	if (targetScreen)
-		clearScreenOutput (targetScreen,
-						   targetOutput,
-						   mask);
+		clearScreenOutput(targetScreen, targetOutput, mask);
 }
 
 #define HOME_IMAGEDIR ".ecomp/images"
 
 Bool
-readImageFromFile (CompDisplay *display,
-				   const char  *name,
-				   int		   *width,
-				   int		   *height,
-				   void		   **data)
+readImageFromFile (CompDisplay *display, const char *name,
+				   int *width, int *height, void **data)
 {
 	Bool status;
 	int	 stride;
 
-	status = (*display->fileToImage) (display, NULL, name, width, height,
-									  &stride, data);
+	status = (*display->fileToImage)
+		(display, NULL, name, width, height, &stride, data);
 	if (!status)
 	{
 		char *home;
@@ -1917,9 +1524,8 @@ readImageFromFile (CompDisplay *display,
 			if (path)
 			{
 				sprintf (path, "%s/%s", home, HOME_IMAGEDIR);
-				status = (*display->fileToImage) (display, path, name,
-												  width, height, &stride,
-												  data);
+				status = (*display->fileToImage)
+					(display, path, name, width, height, &stride, data);
 
 				free (path);
 
@@ -1928,57 +1534,38 @@ readImageFromFile (CompDisplay *display,
 			}
 		}
 
-		status = (*display->fileToImage) (display, IMAGEDIR, name,
-										  width, height, &stride, data);
+		status = (*display->fileToImage)
+			(display, IMAGEDIR, name, width, height, &stride, data);
 	}
 
 	return status;
 }
 
 Bool
-writeImageToFile (CompDisplay *display,
-				  const char  *path,
-				  const char  *name,
-				  const char  *format,
-				  int		  width,
-				  int		  height,
-				  void		  *data)
+writeImageToFile (CompDisplay *display, const char *path, const char *name,
+				  const char *format, int width, int height, void *data)
 {
-	return (*display->imageToFile) (display, path, name, format, width, height,
-									width * 4, data);
+	return (*display->imageToFile)
+		(display, path, name, format, width, height, width * 4, data);
 }
 
 Bool
-fileToImage (CompDisplay *display,
-			 const char	 *path,
-			 const char	 *name,
-			 int	 *width,
-			 int	 *height,
-			 int	 *stride,
-			 void	 **data)
+fileToImage (CompDisplay *display, const char *path, const char *name,
+			 int *width, int *height, int *stride, void **data)
 {
 	return FALSE;
 }
 
 Bool
-imageToFile (CompDisplay *display,
-			 const char	 *path,
-			 const char	 *name,
-			 const char	 *format,
-			 int	 width,
-			 int	 height,
-			 int	 stride,
-			 void	 *data)
+imageToFile (CompDisplay *display, const char *path, const char *name,
+			 const char *format, int width, int height, int stride, void *data)
 {
 	return FALSE;
 }
 
 CompFileWatchHandle
-addFileWatch (CompDisplay		*display,
-			  const char		*path,
-			  int			mask,
-			  FileWatchCallBackProc callBack,
-			  void			*closure)
+addFileWatch (CompDisplay *display, const char *path, int mask,
+			  FileWatchCallBackProc callBack, void *closure)
 {
 	CompFileWatch *fileWatch;
 
@@ -2004,8 +1591,7 @@ addFileWatch (CompDisplay		*display,
 }
 
 void
-removeFileWatch (CompDisplay		 *display,
-				 CompFileWatchHandle handle)
+removeFileWatch (CompDisplay *display, CompFileWatchHandle handle)
 {
 	CompFileWatch *p = 0, *w;
 
@@ -2034,14 +1620,12 @@ removeFileWatch (CompDisplay		 *display,
 }
 
 void
-fileWatchAdded (CompDisplay	  *display,
-				CompFileWatch *fileWatch)
+fileWatchAdded (CompDisplay *display, CompFileWatch *fileWatch)
 {
 }
 
 void
-fileWatchRemoved (CompDisplay	*display,
-				  CompFileWatch *fileWatch)
+fileWatchRemoved (CompDisplay *display, CompFileWatch *fileWatch)
 {
 }
 

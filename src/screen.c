@@ -2036,29 +2036,27 @@ otherScreenGrabExist (CompScreen *s, ...)
 }
 
 /* XXX check if this is set by e17 */
-Window
-getActiveWindow (CompDisplay *display,
-				 Window		 root)
-{
-	Atom	  actual;
-	int		  result, format;
-	unsigned long n, left;
-	unsigned char *data;
-	Window	  w = None;
-
-	result = XGetWindowProperty (display->display, root,
-								 display->winActiveAtom, 0L, 1L, FALSE,
-								 XA_WINDOW, &actual, &format,
-								 &n, &left, &data);
-
-	if (result == Success && n && data)
-	{
-		memcpy (&w, data, sizeof (Window));
-		XFree (data);
-	}
-
-	return w;
-}
+/* Window */
+/* getActiveWindow (CompDisplay *display, Window root)
+ * {
+ * 	Atom	  actual;
+ * 	int		  result, format;
+ * 	unsigned long n, left;
+ * 	unsigned char *data;
+ * 	Window	  w = None;
+ * 	printf("getActiveWindow\n");
+ * 	result = XGetWindowProperty
+ * 		(display->display, root, display->winActiveAtom, 0L, 1L, FALSE,
+ * 		 XA_WINDOW, &actual, &format, &n, &left, &data);
+ * 
+ * 	if (result == Success && n && data)
+ * 	{
+ * 		memcpy (&w, data, sizeof (Window));
+ * 		XFree (data);
+ * 	}
+ * 
+ * 	return w;
+ * } */
 
 /* XXX use ECOMORPH_ATOM message  */
 void

@@ -827,7 +827,7 @@ zoomHandleMotionEvent (CompScreen *s,
 	else
 	    scale = 1.0f;
 
-	printf("%d:%d:%f\n",zs->x1, zs->x2, oWidth);
+	/* printf("%d:%d:%f\n",zs->x1, zs->x2, oWidth); */
 	
 	if (zs->panGrabIndex)
 	{
@@ -931,7 +931,6 @@ zoomHandleEvent (CompDisplay *d,
 
 	  if (action == ECO_ACT_TERMINATE)
 	    {
-	      printf("zoom terminate\n");
 	      ZOOM_SCREEN(s);
 	      
 	      CompOption o[1];
@@ -950,7 +949,6 @@ zoomHandleEvent (CompDisplay *d,
 	      ZOOM_SCREEN(s);
 	      if (zs->grabIndex)
 		{
-		  printf("zoom initiate\n");
 		  CompOption o[1];
 	      
 		  o[0].type    = CompOptionTypeInt;
@@ -963,12 +961,10 @@ zoomHandleEvent (CompDisplay *d,
 		    }
 		  else if (option2 == ECO_ACT_OPT_CYCLE_NEXT)
 		    {
-		      printf("zoom in\n");
 		      zoomIn(d, NULL, 0, o, 1);
 		    }
 		  else if (option2 == ECO_ACT_OPT_CYCLE_PREV)
 		    {
-		      printf("zoom out\n");
 		      zoomOut(d, NULL, 0, o, 1);
 		    }
 		}
@@ -982,7 +978,6 @@ zoomHandleEvent (CompDisplay *d,
 		  pointerX = option;
 		  pointerY = option2;
 		  
-		  printf("zoom initiate\n");
 		  CompOption o[1];
 
 		  o[0].type    = CompOptionTypeInt;
@@ -995,7 +990,6 @@ zoomHandleEvent (CompDisplay *d,
 	      else
 		{
 		  
-		  printf("mouse move\n");
 		  CompOption o[1];
 
 		  o[0].type    = CompOptionTypeInt;

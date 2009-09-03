@@ -60,7 +60,7 @@ textGetUtf8Property (CompDisplay *d,
     char          *val;
     int           result;
     char          *retval;
-
+	
     result = XGetWindowProperty (d->display, id, atom, 0L, 65536, False,
 				 d->utf8StringAtom, &type, &format, &nitems,
 				 &bytesAfter, (unsigned char **)&val);

@@ -941,8 +941,7 @@ static int animGetWindowState(CompWindow * w)
     unsigned long n, left;
     unsigned char *data;
 
-    if(w->
-clientId)
+    if(w->clientId)
       result = XGetWindowProperty(w->screen->display->display, w->clientId,
 				  w->screen->display->wmStateAtom, 0L,
 				  1L, FALSE,
@@ -3283,7 +3282,10 @@ static void animHandleEvent(CompDisplay * d, XEvent * event)
       break;
     case MapNotify:
       w = findWindowAtDisplay(d, event->xmap.window);
-      if (w)
+      if (!w || w->attrib.class == InputOnly)
+	break;
+
+      if (w && w->attrib.class != InputOnly)
 	{
 	  ANIM_WINDOW(w);
 
@@ -3300,49 +3302,46 @@ static void animHandleEvent(CompDisplay * d, XEvent * event)
       break;
     case DestroyNotify:
       w = findWindowAtDisplay(d, event->xunmap.window);
-      if (w)
-	{
-	  ANIM_WINDOW(w);
-	  aw->destroyCnt++;
-	  w->destroyRefCnt++;
-	  addWindowDamage(w);
-	}
+      if (!w || w->attrib.class == InputOnly) break;
+      ANIM_WINDOW(w);
+      aw->destroyCnt++;
+      w->destroyRefCnt++;
+      addWindowDamage(w);
       break;
     case UnmapNotify:
       w = findWindowAtDisplay(d, event->xunmap.window);
-      if (w)
-	{
-	  if ((getWmState(d, w->clientId) == IconicState) &&
-	      (onCurrentDesktop(w)) &&
-	      (!w->invisible))
-	    {
-	      // Normal -> Iconic
-	      animEventUnmap(d, w, WindowEventMinimize);
-	    }
-	  
-	  else				
-	    {
-	      // X -> Withdrawn
-	      
-	      ANIM_WINDOW(w);
+      if (!w || w->attrib.class == InputOnly) break;
 
-	      // don't animate windows that don't have certain properties
-	      // like the fullscreen darkening layer of gksudo
-	      // or the darkening layer of x-session-manager
-	      if (/*!(w->resName || windowHasUserTime (w)) ||*/
-		  (aw->wmName && strcasecmp (aw->wmName, "x-session-manager") == 0))
-		break;
+      if (w->clientId && (getWmState(d, w->clientId) == IconicState) &&
+	  (onCurrentDesktop(w)) &&
+	  (!w->invisible))
+	{
+	   // Normal -> Iconic
+	   animEventUnmap(d, w, WindowEventMinimize);
+	}
+	  
+      else				
+	{
+	   // X -> Withdrawn
 	      
-	      animEventUnmap(d, w, WindowEventClose);
-	    }
+	   ANIM_WINDOW(w);
+
+	   // don't animate windows that don't have certain properties
+	   // like the fullscreen darkening layer of gksudo
+	   // or the darkening layer of x-session-manager
+	   if (/*!(w->resName || windowHasUserTime (w)) ||*/
+	       (aw->wmName && strcasecmp (aw->wmName, "x-session-manager") == 0))
+	     break;
+	      
+	   animEventUnmap(d, w, WindowEventClose);
 	}
       break;
     case ConfigureNotify:
       {
 	XConfigureEvent *ce = &event->xconfigure;
 	w = findWindowAtDisplay (d, ce->window);
-	if (!w)
-	  break;
+	if (!w || w->attrib.class == InputOnly) break;
+
 	if (w->prev)
 	  {
 	    if (ce->above && ce->above == w->prev->id)
@@ -3525,17 +3524,16 @@ static void animHandleEvent(CompDisplay * d, XEvent * event)
 	{
 	  ad->activeWindow = d->activeWindow;
 	  w = findWindowAtDisplay(d, d->activeWindow);
+	  if (!w || w->attrib.class == InputOnly) break;
 
-	  if (w)
-	    {
-	      int duration = 200;
-	      AnimEffect chosenEffect =
-		getMatchingAnimSelection (w, WindowEventFocus, &duration);
+	  int duration = 200;
+	  AnimEffect chosenEffect =
+	    getMatchingAnimSelection (w, WindowEventFocus, &duration);
 
-	      if (!(chosenEffect == AnimEffectFocusFade ||
-		    chosenEffect == AnimEffectDodge))
-		initiateFocusAnimation(w);
-	    }
+	  if (!(chosenEffect == AnimEffectFocusFade ||
+		chosenEffect == AnimEffectDodge))
+	    initiateFocusAnimation(w);
+
 	}
       break;
     default:

@@ -155,10 +155,10 @@ getWmState (CompDisplay *display, Window id)
 	unsigned char *data;
 	unsigned long state = NormalState;
 
-	result = XGetWindowProperty (display->display, id,
-								 display->wmStateAtom, 0L, 2L, FALSE,
-								 display->wmStateAtom, &actual, &format,
-								 &n, &left, &data);
+	/* printf("getWmState\n"); */
+	result = XGetWindowProperty
+		(display->display, id, display->wmStateAtom, 0L, 2L, FALSE,
+		 display->wmStateAtom, &actual, &format, &n, &left, &data);
 
 	if (result == Success && n && data)
 	{
@@ -244,9 +244,11 @@ getWindowState (CompDisplay *display, Window id)
 	unsigned char *data;
 	unsigned int state = 0;
 
-	result = XGetWindowProperty (display->display, id, display->winStateAtom,
-								 0L, 1024L, FALSE, XA_ATOM, &actual, &format,
-								 &n, &left, &data);
+	/* printf("getWindowState\n"); */
+	
+	result = XGetWindowProperty
+		(display->display, id, display->winStateAtom, 0L, 1024L,
+		 FALSE, XA_ATOM, &actual, &format, &n, &left, &data);
 
 	if (result == Success && n && data)
 	{
@@ -339,9 +341,11 @@ getWindowType (CompDisplay *display, Window id)
 	unsigned long n, left;
 	unsigned char *data;
 
-	result = XGetWindowProperty (display->display, id, display->winTypeAtom,
-								 0L, 1L, FALSE, XA_ATOM, &actual, &format,
-								 &n, &left, &data);
+	/* printf("getWindowType\n"); */
+	
+	result = XGetWindowProperty
+		(display->display, id, display->winTypeAtom, 0L, 1L,
+		 FALSE, XA_ATOM, &actual, &format, &n, &left, &data);
 
 	if (result == Success && n && data)
 	{
@@ -446,9 +450,12 @@ getMwmHints (CompDisplay *display,
 	*func  = MwmFuncAll;
 	*decor = MwmDecorAll;
 
-	result = XGetWindowProperty (display->display, id, display->mwmHintsAtom,
-								 0L, 20L, FALSE, display->mwmHintsAtom,
-								 &actual, &format, &n, &left, &data);
+	/* printf("getMwmHints\n"); */
+	
+	result = XGetWindowProperty
+		(display->display, id, display->mwmHintsAtom,
+		 0L, 20L, FALSE, display->mwmHintsAtom,
+		 &actual, &format, &n, &left, &data);
 
 	if (result == Success && n && data)
 	{
@@ -479,9 +486,11 @@ getWindowProp (CompDisplay *display,
 	unsigned long n, left;
 	unsigned char *data;
 
-	result = XGetWindowProperty (display->display, id, property,
-								 0L, 1L, FALSE, XA_CARDINAL, &actual, &format,
-								 &n, &left, &data);
+	/* printf("getWindowProp\n"); */
+	
+	result = XGetWindowProperty
+		(display->display, id, property, 0L, 1L, FALSE,
+		 XA_CARDINAL, &actual, &format, &n, &left, &data);
 
 	if (result == Success && n && data)
 	{
@@ -521,9 +530,11 @@ readWindowProp32 (CompDisplay *display,
 	unsigned long n, left;
 	unsigned char *data;
 
-	result = XGetWindowProperty (display->display, id, property,
-								 0L, 1L, FALSE, XA_CARDINAL, &actual, &format,
-								 &n, &left, &data);
+	/* printf("readWindowProp32\n"); */
+	
+	result = XGetWindowProperty
+		(display->display, id, property, 0L, 1L, FALSE,
+		 XA_CARDINAL, &actual, &format, &n, &left, &data);
 
 	if (result == Success && n && data)
 	{
@@ -645,10 +656,8 @@ bindWindow (CompWindow *w)
 		/* We have to grab the server here to make sure that window
 		   is mapped when getting the window pixmap */
 		XGrabServer (w->screen->display->display);
-		XGetWindowAttributes (w->screen->display->display,
-							  //(w->clientId ? w->clientId : w->id),//
-							  w->id,
-							  &attr);
+		XGetWindowAttributes (w->screen->display->display, w->id, &attr);
+
 		if (attr.map_state != IsViewable)
 		{
 			XUngrabServer (w->screen->display->display);
@@ -657,9 +666,7 @@ bindWindow (CompWindow *w)
 			return FALSE;
 		}
 
-		w->pixmap = XCompositeNameWindowPixmap (w->screen->display->display,
-												//(w->clientId ? w->clientId : w->id));
-												w->id);
+		w->pixmap = XCompositeNameWindowPixmap (w->screen->display->display, w->id);
 
 		XUngrabServer (w->screen->display->display);
 	}
@@ -983,6 +990,8 @@ updateWindowViewport(CompWindow *w, int initial)
 	unsigned long n, left;
 	unsigned char *data;
 
+	/* printf("updateWindowViewport\n"); */
+	
 	result = XGetWindowProperty (d->display, w->id,
 								 d->winDesktopAtom,
 								 0L, 1L, FALSE, XA_CARDINAL, &actual, &format,
@@ -1001,7 +1010,7 @@ updateWindowViewport(CompWindow *w, int initial)
 		w->initialViewportX = dx;
 		w->initialViewportY = dy;
 
-		printf ("- viewport: %d:%d\n", dx, dy);
+		/* printf ("- viewport: %d:%d\n", dx, dy); */
 
 		if (initial) return;
 
@@ -1189,10 +1198,11 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	   require us to stack other windows relative to it. Setting some default
 	   values if this is the case. */
 	if (!XGetWindowAttributes (screen->display->display, id, &w->attrib))
+		/* || (w->attrib.class == InputOnly)) */
 	{
-		//freeWindow (w);
-		//return;
-		setDefaultWindowAttributes (&w->attrib);
+		freeWindow (w);
+		return;
+		/* setDefaultWindowAttributes (&w->attrib); */
 	}
 
 	w->serverWidth	 = w->attrib.width;
@@ -1282,8 +1292,10 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		unsigned long		bytes_after, num_ret;
 		int					format_ret;
 
-		XGetWindowProperty(screen->display->display,
-						   w->id, screen->display->eManagedAtom,
+		/* printf("get client window prop\n"); */
+		
+		XGetWindowProperty(screen->display->display, w->id,
+						   screen->display->eManagedAtom,
 						   0, 0x7fffffff, False,
 						   XA_CARDINAL, &type_ret, &format_ret,
 						   &num_ret, &bytes_after, &prop_ret);
@@ -1299,7 +1311,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	if(clientId)
 	{
-		printf("window managed: 0x%x : 0x%x\n", (unsigned int)w->id, clientId);
+		/* printf("window managed: 0x%x : 0x%x\n", (unsigned int)w->id, clientId); */
 		/* XXX remove the use of this. all windows are override
 		 * redirect. */
 
@@ -1313,7 +1325,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		w->wmType = getWindowType (screen->display, w->clientId);
 		w->state = getWindowState (screen->display, w->clientId);
 		updateWindowClassHints (w);
-		if(w->resClass) printf ("- %s\n", w->resClass);
+		/* if(w->resClass) printf ("- %s\n", w->resClass); */
 
 		recalcWindowType (w);
 
@@ -1366,7 +1378,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	}
 	else if (w->clientId)
 	{
-		if (getWmState (screen->display, w->clientId) == IconicState)
+		if (getWmState (screen->display, w->id) == IconicState)
 		{
 			if (w->state & CompWindowStateHiddenMask)
 			{
@@ -1968,7 +1980,7 @@ updateWindowAttributes (CompWindow *w, CompStackingUpdateMode stackingMode)
 void
 activateWindow (CompWindow *w)
 {
-	printf("activateWindow %s\n", w->resClass);
+	/* printf("activateWindow %s\n", w->resClass); */
 
 	raiseWindow(w);
 
@@ -2127,12 +2139,13 @@ getWindowIcon (CompWindow *w, int width, int height)
 		unsigned long n, left;
 		unsigned char *data;
 
-		result = XGetWindowProperty (w->screen->display->display, w->id,
-									 w->screen->display->wmIconAtom,
-									 0L, 65536L,
-									 FALSE, XA_CARDINAL,
-									 &actual, &format, &n,
-									 &left, &data);
+		/* printf("getWindowIcon\n"); */
+		
+		result = XGetWindowProperty
+			(w->screen->display->display, w->id,
+			 w->screen->display->wmIconAtom,
+			 0L, 65536L, FALSE, XA_CARDINAL,
+			 &actual, &format, &n, &left, &data);
 
 		if (result == Success && n && data)
 		{

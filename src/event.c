@@ -482,13 +482,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			//	   (unsigned int) win, type,
 			//	   (unsigned int) event->xclient.data.l[2]);
 
-			/* mapped:	0 */
-			/* state:	1 */
-			/* desktop: 2 */
-			/* restart: 3 */
-			/* grab:	4 */
-			/* plugin:	5 */
-			/* move_resize 6 */
 			if (type == ECOMORPH_EVENT_RESTART) /* RESTART */
 			{
 				unsigned int restart = event->xclient.data.l[2];
