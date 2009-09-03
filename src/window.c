@@ -990,12 +990,9 @@ updateWindowViewport(CompWindow *w, int initial)
 	unsigned long n, left;
 	unsigned char *data;
 
-	/* printf("updateWindowViewport\n"); */
-	
-	result = XGetWindowProperty (d->display, w->id,
-								 d->winDesktopAtom,
-								 0L, 1L, FALSE, XA_CARDINAL, &actual, &format,
-								 &n, &left, &data);
+	result = XGetWindowProperty
+		(d->display, w->id, d->winDesktopAtom, 0L, 1L, FALSE,
+		 XA_CARDINAL, &actual, &format, &n, &left, &data);
 
 	if (result == Success && n == 1 && data)
 	{
@@ -1009,46 +1006,6 @@ updateWindowViewport(CompWindow *w, int initial)
 
 		w->initialViewportX = dx;
 		w->initialViewportY = dy;
-
-		/* printf ("- viewport: %d:%d\n", dx, dy); */
-
-		if (initial) return;
-
-	/* 	int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
-	 * 	int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
-	 * 
-	 * 	C(("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n",
-	 * 	   x,y,dx,dy, w->syncX, w->serverX, w->attrib.x));
-	 * 
-	 * 	if (x == w->attrib.x && y == w->attrib.y) return;
-	 * 
-	 * 	int immediate = 1;
-	 * 	int old_x = w->attrib.x;
-	 * 	int old_y = w->attrib.y;
-	 * 
-	 * 	/\*if visible ?*\/
-	 * 	addWindowDamage (w);
-	 * 
-	 * 	w->attrib.x = x;
-	 * 	w->attrib.y = y;
-	 * 
-	 * 	XOffsetRegion (w->region, x - old_x, y - old_y);
-	 * 
-	 * 	w->matrix = w->texture->matrix;
-	 * 	w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
-	 * 	w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
-	 * 
-	 * 	w->invisible = WINDOW_INVISIBLE (w); /\* XXX what does this?*\/
-	 * 
-	 * 	w->desktop = desk;
-	 * 
-	 * 	(*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
-	 * 
-	 * 	/\*if visible ?*\/
-	 * 	addWindowDamage (w);
-	 * 
-	 * 	syncWindowPosition (w);
-	 * } */
 	}
 }
 
@@ -1276,8 +1233,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	{
 		w->damage = None;
 		w->attrib.map_state = IsUnmapped;
-		/* XXX does the compositor need to know if input only
-		   windows? - maybe to move them on viewport changes  */
+		return;
 	}
 
 	w->invisible = TRUE;
@@ -1361,7 +1317,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	}
 	else
 	{
-		w->wmType	   = getWindowType (screen->display, w->id);
+		w->wmType = getWindowType (screen->display, w->id);
 		updateWindowClassHints (w);
 		recalcWindowType (w);
 	}
