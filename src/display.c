@@ -1414,14 +1414,14 @@ findScreenAtDisplay (CompDisplay *d, Window root)
 	return 0;
 }
 
-void
-forEachWindowOnDisplay (CompDisplay	*display, ForEachWindowProc proc, void *closure)
-{
-	CompScreen *s;
-
-	for (s = display->screens; s; s = s->next)
-		forEachWindowOnScreen (s, proc, closure);
-}
+/* void
+ * forEachWindowOnDisplay (CompDisplay	*display, ForEachWindowProc proc, void *closure)
+ * {
+ * 	CompScreen *s;
+ * 
+ * 	for (s = display->screens; s; s = s->next)
+ * 		forEachWindowOnScreen (s, proc, closure);
+ * } */
 
 CompWindow *
 findWindowAtDisplay (CompDisplay *d, Window id)

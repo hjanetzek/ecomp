@@ -572,7 +572,8 @@ blurSetScreenOption (CompPlugin      *plugin,
 	    CompWindow *w;
 
 	    for (w = screen->windows; w; w = w->next)
-		blurUpdateWindowMatch (bs, w);
+			if (w->attrib.class != InputOnly)
+				blurUpdateWindowMatch (bs, w);
 
 	    bs->moreBlur = TRUE;
 	    damageScreen (screen);

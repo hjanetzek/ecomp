@@ -446,6 +446,7 @@ setScreenOption (CompScreen		 *screen,
 				matchUpdate (screen->display, &o->value.list.value[i].match);
 
 			for (w = screen->windows; w; w = w->next)
+				if (w->attrib.class != InputOnly)
 				updateWindowOpacity (w);
 
 			return TRUE;
@@ -457,6 +458,7 @@ setScreenOption (CompScreen		 *screen,
 			CompWindow *w;
 
 			for (w = screen->windows; w; w = w->next)
+				if (w->attrib.class != InputOnly)
 				updateWindowOpacity (w);
 
 			return TRUE;
@@ -1805,14 +1807,14 @@ damagePendingOnScreen (CompScreen *s)
 	s->damageMask |= COMP_SCREEN_DAMAGE_PENDING_MASK;
 }
 
-void
-forEachWindowOnScreen (CompScreen *screen, ForEachWindowProc proc, void *closure)
-{
-	CompWindow *w;
-
-	for (w = screen->windows; w; w = w->next)
-		(*proc) (w, closure);
-}
+/* void
+ * forEachWindowOnScreen (CompScreen *screen, ForEachWindowProc proc, void *closure)
+ * {
+ * 	CompWindow *w;
+ * 
+ * 	for (w = screen->windows; w; w = w->next)
+ * 		(*proc) (w, closure);
+ * } */
 
 CompWindow *
 findWindowAtScreen (CompScreen *s, Window id)

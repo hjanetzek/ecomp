@@ -3921,6 +3921,8 @@ animWindowMoveNotify(CompWindow * w, int dx, int dy, Bool immediate)
 		    Bool animStillInProgress = FALSE;
 		    for (w2 = w->screen->windows; w2; w2 = w2->next)
 		    {
+		       if (w2->attrib.class == InputOnly) continue;
+
 			AnimWindow *aw2;
 
 			aw2 = GET_ANIM_WINDOW(w2, as);

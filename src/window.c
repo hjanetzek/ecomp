@@ -1231,6 +1231,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	}
 	else
 	{
+		w->invisible = TRUE;
 		w->damage = None;
 		w->attrib.map_state = IsUnmapped;
 		return;
@@ -1515,7 +1516,9 @@ Bool
 resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidth)
 {
 	D(("0x%x : resizeWindow: %d:%d %dx%d\n", (unsigned int)w->id, x,y,width,height));
-
+	if (w->attrib.class == InputOnly)
+		return TRUE;
+	
 	if (w->attrib.width		   != width	 ||
 		w->attrib.height	   != height ||
 		w->attrib.border_width != borderWidth)
