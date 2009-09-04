@@ -420,8 +420,12 @@ iniGetOptList(Option *listOpt, CompListValue *list, CompOptionType type)
 			/* printf("%f ", opt->doubleValue); */
 			break;
 		case CompOptionTypeMatch:
+			if (opt->stringValue)
+			{
 			matchInit (&list->value[i].match);
 			matchAddFromString (&list->value[i].match, opt->stringValue);
+			}
+			
 			/* printf("%s ", opt->stringValue); */
 			break;
 		default:
@@ -510,9 +514,12 @@ iniLoadGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 			break;
 		case CompOptionTypeMatch:
 			/* printf("load: %s: %s\n", optionName, opt->stringValue); */
+			if (optionValue){				
 			hasValue = TRUE;
 			matchInit (&value.match);
 			matchAddFromString (&value.match, optionValue);
+			}
+			
 			break;
 		default:
 			break;
