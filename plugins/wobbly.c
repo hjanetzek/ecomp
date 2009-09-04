@@ -1748,7 +1748,7 @@ wobblyPreparePaintScreen (CompScreen *s,
 					     w->attrib.y,
 					     TRUE, TRUE);
 
-				 //sendMoveResizeWindowMessage(w);
+				 sendMoveResizeWindowMessage(w);
 				
 				 //syncWindowPosition (w);
 			      }
@@ -2620,7 +2620,7 @@ wobblyWindowUngrabNotify (CompWindow *w)
 	ws->grabMask   = 0;
 	ws->grabWindow = NULL;
      }
-
+   
    if (ww->grabbed)
      {
 	if (ww->model)

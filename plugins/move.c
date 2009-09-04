@@ -187,7 +187,7 @@ moveTerminate (CompDisplay     *d,
     {
 		MOVE_SCREEN (md->w->screen);
 
-		/* (md->w->screen->windowUngrabNotify) (md->w); */
+		(md->w->screen->windowUngrabNotify) (md->w);
 
 		if (ms->grabIndex)
 		{
