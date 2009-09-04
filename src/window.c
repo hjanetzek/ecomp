@@ -1634,58 +1634,42 @@ void
 configureWindow (CompWindow *w, XConfigureEvent *ce)
 {
 	CompScreen *s = w->screen;
-	
-	if (!w->clientId)
-	{
-		w->attrib.override_redirect = TRUE;
-		w->serverX		     = ce->x;
-		w->serverY		     = ce->y;
-		w->serverWidth	     = ce->width;
-		w->serverHeight	     = ce->height;
-		w->serverBorderWidth = ce->border_width;
 
-		resizeWindow (w, ce->x, ce->y, ce->width, ce->height, ce->border_width);
+	int x = ce->x;
+	int y = ce->y;
+	
+	if (w->clientId)		
+	{
+		/* ignore deskwitch window movements */
+		if (replaceCurrentWm ||
+			((MOD(ce->x - w->attrib.x, s->width) == 0) &&
+			 (MOD(ce->y - w->attrib.y, s->height) == 0)))
+		{
+			x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
+			y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
+		}
+		else
+		{
+			x = ce->x + ((w->initialViewportX - s->x) * s->width);
+			y = ce->y + ((w->initialViewportY - s->y) * s->height);
+		}
 	}
 	else
 	{
-		int x,y;
-
-		/* ignore deskwitch window movements */
-		/* if ((MOD(ce->x - w->attrib.x, s->width) == 0) &&
-		 * 	(MOD(ce->y - w->attrib.y, s->height) == 0))
-		 * {
-		 * 	x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
-		 * 	y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
-		 * }
-		 * else
-		 * {
-		 * 	x = ce->x + ((w->initialViewportX - s->x) * s->width);
-		 * 	y = ce->y + ((w->initialViewportY - s->y) * s->height);
-		 * } */
-
-		x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
-		y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
-
+		// check if still needed
 		w->attrib.override_redirect = FALSE;
-		w->serverX		     = x;
-		w->serverY		     = y;
-		w->serverWidth	     = ce->width;
-		w->serverHeight	     = ce->height;
-		w->serverBorderWidth = ce->border_width;
-
-		/* printf("- configureWindow %p - %d:%d \t%d:%d \t%dx%d\n",
-		 * 	   w->id, ce->x, ce->y, x, y, ce->width, ce->height); */
-		
-		resizeWindow (w, x, y, ce->width, ce->height, ce->border_width);
 	}
 	
-	//if(w->grabbed)
-	//  (*w->screen->windowMoveNotify) (w, dx, dy, immediate);
-
+	w->serverX		     = x;
+	w->serverY		     = y;
+	w->serverWidth	     = ce->width;
+	w->serverHeight	     = ce->height;
+	w->serverBorderWidth = ce->border_width;
+		
+	resizeWindow (w, x, y, ce->width, ce->height, ce->border_width);
+	
 	if (restackWindow (w, ce->above))
-	{
 		addWindowDamage (w);
-	}
 }
 
 

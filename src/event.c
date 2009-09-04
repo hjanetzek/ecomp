@@ -259,6 +259,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 
 	case ConfigureNotify:
 		C(("0x%x : ConfigureNotify event ", (unsigned int)event->xconfigure.window));
+
 		w = findWindowAtDisplay (d, event->xconfigure.window);
 		if (w)
 		{
