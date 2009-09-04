@@ -1676,8 +1676,7 @@ sendMoveResizeWindowMessage (CompWindow *w)
    }
 
    XSendEvent (w->screen->display->display,
-	       w->screen->root,
-	       FALSE,
+	       w->screen->root, FALSE,
 	       SubstructureRedirectMask | SubstructureNotifyMask,
 	       &xev);
 }
@@ -1749,7 +1748,7 @@ wobblyPreparePaintScreen (CompScreen *s,
 					     w->attrib.y,
 					     TRUE, TRUE);
 
-				 sendMoveResizeWindowMessage(w);
+				 //sendMoveResizeWindowMessage(w);
 				
 				 //syncWindowPosition (w);
 			      }
@@ -2206,50 +2205,50 @@ wobblyHandleEvent (CompDisplay *d,
    (*d->handleEvent) (d, event);
    WRAP (wd, d, handleEvent, wobblyHandleEvent);
 
-   /* switch (event->type) {
-      case MotionNotify:
-      s = findScreenAtDisplay (d, event->xmotion.root);
-      if (s)
-      {
-      WOBBLY_SCREEN (s);
-
-      if (ws->grabWindow &&
-      ws->moveWindow &&
-      ws->opt[WOBBLY_SCREEN_OPTION_MAXIMIZE_EFFECT].value.b)
-      {
-      WOBBLY_WINDOW (ws->grabWindow);
-
-      if (ww->state & MAXIMIZE_STATE)
-      {
-      if (ww->model && ww->grabbed)
-      {
-      int dx, dy;
-
-      if (ww->state & CompWindowStateMaximizedHorzMask)
-      dx = pointerX - lastPointerX;
-      else
-      dx = 0;
-
-      if (ww->state & CompWindowStateMaximizedVertMask)
-      dy = pointerY - lastPointerY;
-      else
-      dy = 0;
-
-      ww->model->anchorObject->position.x += dx;
-      ww->model->anchorObject->position.y += dy;
-
-      ww->wobbly |= WobblyInitial;
-      ws->wobblyWindows |= ww->wobbly;
-
-      damagePendingOnScreen (s);
-      }
-      }
-      }
-      }
-      default:
-      break;
-      }
-   */
+    /* switch (event->type) { */
+    /*  case MotionNotify:
+     * 	s = findScreenAtDisplay (d, event->xmotion.root);
+     * 	if (s)
+     * 	  {
+     * 	     WOBBLY_SCREEN (s);
+     * 
+     * 	     if (ws->grabWindow &&
+     * 		 ws->moveWindow &&
+     * 		 ws->opt[WOBBLY_SCREEN_OPTION_MAXIMIZE_EFFECT].value.b)
+     * 	       {
+     * 		  WOBBLY_WINDOW (ws->grabWindow);
+     * 
+     * 		  if (ww->state & MAXIMIZE_STATE)
+     * 		    {
+     * 		       if (ww->model && ww->grabbed)
+     * 			 {
+     * 			    int dx, dy;
+     * 
+     * 			    if (ww->state & CompWindowStateMaximizedHorzMask)
+     * 			      dx = pointerX - lastPointerX;
+     * 			    else
+     * 			      dx = 0;
+     * 
+     * 			    if (ww->state & CompWindowStateMaximizedVertMask)
+     * 			      dy = pointerY - lastPointerY;
+     * 			    else
+     * 			      dy = 0;
+     * 
+     * 			    ww->model->anchorObject->position.x += dx;
+     * 			    ww->model->anchorObject->position.y += dy;
+     * 
+     * 			    ww->wobbly |= WobblyInitial;
+     * 			    ws->wobblyWindows |= ww->wobbly;
+     * 
+     * 			    damagePendingOnScreen (s);
+     * 			 }
+     * 		    }
+     * 	       }
+     * 	  }
+     *  default:
+     * 	break;
+     * } */
+   
 
    if (d->activeWindow != activeWindow)
      {
@@ -2516,7 +2515,7 @@ wobblyWindowGrabNotify (CompWindow   *w,
    int mIndex;
 
    WOBBLY_SCREEN (w->screen);
-
+   
    mIndex = WOBBLY_SCREEN_OPTION_MOVE_WINDOW_MATCH;
 
    if (!ws->grabWindow)

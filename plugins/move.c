@@ -115,6 +115,9 @@ moveInitiate (CompDisplay     *d,
 {
     CompWindow *w;
     Window     xid;
+	int		 i, x, y;
+	unsigned int ui;
+	unsigned int mods = 0;		
      
     MOVE_DISPLAY (d);
     xid = getIntOptionNamed (option, nOption, "window", 0);
@@ -122,18 +125,11 @@ moveInitiate (CompDisplay     *d,
     w = findWindowAtDisplay (d, xid);
     if (w)
     {
-		/* unsigned int mods;
-		 * int          x, y; */
-
 		MOVE_SCREEN (w->screen);
 
-		/* mods = getIntOptionNamed (option, nOption, "modifiers", 0); */
-
-		/* x = getIntOptionNamed (option, nOption, "x",
-		 * 					   w->attrib.x + (w->width / 2));
-		 * y = getIntOptionNamed (option, nOption, "y",
-		 * 					   w->attrib.y + (w->height / 2)); */
-
+		XQueryPointer (d->display, w->screen->root,
+					   &xid, &xid, &x, &y, &i, &i, &ui);
+		
 		if (otherScreenGrabExist (w->screen, "move", 0))
 			return FALSE;
 	
@@ -148,14 +144,14 @@ moveInitiate (CompDisplay     *d,
 
 		md->status = RectangleOut;
 
-		/* md->savedX = w->serverX;
-		 * md->savedY = w->serverY; */
+		md->savedX = w->serverX;
+		md->savedY = w->serverY;
 
 		md->x = 0;
 		md->y = 0;
 
-		/* lastPointerX = x;
-		 * lastPointerY = y; */
+		lastPointerX = x;
+		lastPointerY = y;
 
 		ms->origState = w->state;
 
@@ -165,10 +161,10 @@ moveInitiate (CompDisplay     *d,
 		if (ms->grabIndex)
 		{
 			md->w = w;
-	    
-			/* (w->screen->windowGrabNotify) (w, x, y, mods,
-			 * 							   CompWindowGrabMoveMask |
-			 * 							   CompWindowGrabButtonMask); */
+			
+			(w->screen->windowGrabNotify) (w, x, y, mods,
+										   CompWindowGrabMoveMask |
+										   CompWindowGrabButtonMask);
 
 			if (md->moveOpacity != OPAQUE)
 				addWindowDamage (w);
