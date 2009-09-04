@@ -484,8 +484,10 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			//	   (unsigned int) event->xclient.data.l[2]);
 
 			if (type == ECOMORPH_EVENT_RESTART) /* RESTART */
-			{
+			{				
 				unsigned int restart = event->xclient.data.l[2];
+				printf("event restart %d\n", restart);
+				
 				replaceCurrentWm = restart;
 				if(replaceCurrentWm)
 					compAddTimeout(10000, restartWmTimeout, NULL);

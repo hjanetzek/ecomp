@@ -1651,18 +1651,21 @@ configureWindow (CompWindow *w, XConfigureEvent *ce)
 		int x,y;
 
 		/* ignore deskwitch window movements */
-		if ((MOD(ce->x - w->attrib.x, s->width) == 0) &&
-			(MOD(ce->y - w->attrib.y, s->height) == 0))
-		{
-			x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
-			y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
-		}
-		else
-		{
-			x = ce->x + ((w->initialViewportX - s->x) * s->width);
-			y = ce->y + ((w->initialViewportY - s->y) * s->height);
-		}
-		
+		/* if ((MOD(ce->x - w->attrib.x, s->width) == 0) &&
+		 * 	(MOD(ce->y - w->attrib.y, s->height) == 0))
+		 * {
+		 * 	x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
+		 * 	y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
+		 * }
+		 * else
+		 * {
+		 * 	x = ce->x + ((w->initialViewportX - s->x) * s->width);
+		 * 	y = ce->y + ((w->initialViewportY - s->y) * s->height);
+		 * } */
+
+		x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
+		y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
+
 		w->attrib.override_redirect = FALSE;
 		w->serverX		     = x;
 		w->serverY		     = y;
