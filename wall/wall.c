@@ -539,7 +539,6 @@ wallMoveViewport (CompScreen *s,
 		ws->fromX = s->x;
 		ws->fromY = s->y;
 	
-	
 		if (!ws->moving)
 		{
 			ws->curPosX = s->x;

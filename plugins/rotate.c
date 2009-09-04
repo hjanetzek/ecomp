@@ -996,8 +996,6 @@ rotateHandleEvent (CompDisplay *d,
 		toY = event->xclient.data.l[2] / s->height;
 		dy = toY - s->y;
 
-
-
 		if (dy)
 		  { 
 		    printf ("switch viewPort vertically %d:%d - %d:%d\n",

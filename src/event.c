@@ -29,13 +29,14 @@
 #define C(x)
 #define E(x)
 
-#define ECOMORPH_EVENT_MAPPED      0
-#define ECOMORPH_EVENT_STATE       1
-#define ECOMORPH_EVENT_DESK        2
-#define ECOMORPH_EVENT_RESTART     3
-#define ECOMORPH_EVENT_GRAB        4
-#define ECOMORPH_EVENT_MOVE        5
-#define ECOMORPH_EVENT_MOVE_RESIZE 6
+#define ECOMORPH_EVENT_MAPPED       0
+#define ECOMORPH_EVENT_STATE        1
+#define ECOMORPH_EVENT_DESK         2
+#define ECOMORPH_EVENT_RESTART      3
+#define ECOMORPH_EVENT_GRAB         4
+#define ECOMORPH_EVENT_MOVE         5
+#define ECOMORPH_EVENT_MOVE_RESIZE  6
+#define ECOMORPH_EVENT_FOCUS        7
 #define ECOMORPH_WINDOW_STATE_INVISIBLE 0
 #define ECOMORPH_WINDOW_STATE_VISIBLE 1
 
@@ -512,7 +513,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 				}
 				else if(type == ECOMORPH_EVENT_DESK)
 				{
-
 					s = w->screen;
 
 					int dx = event->xclient.data.l[2];
@@ -526,7 +526,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					int x = MOD(w->attrib.x, s->width)	+ ((dx - s->x) * s->width);
 					int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
 
-					/* printf("desk_event %p %d %d\n", win, x, y); */
+					printf("desk_event %p %d %d\n", win, x, y);
 					
 					//printf("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n",
 					//	 x,y,dx,dy, w->syncX, w->serverX, w->attrib.x);
@@ -560,44 +560,55 @@ handleEvent (CompDisplay *d, XEvent	*event)
 
 					break;
 				}
-				else if(type == ECOMORPH_EVENT_MOVE)
+				else if (type == ECOMORPH_EVENT_FOCUS)
 				{
-					/* printf("move_event %p %d %d %d %d\n", win,
-					 * 	   event->xclient.data.l[1],
-					 * 	   event->xclient.data.l[2],
-					 * 	   event->xclient.data.l[3],
-					 * 	   event->xclient.data.l[4]); */
-
-					w->serverX		   = event->xclient.data.l[1];
-					w->serverY		   = event->xclient.data.l[2];
-					w->serverWidth	   = event->xclient.data.l[3];
-					w->serverHeight	   = event->xclient.data.l[4];
-					w->serverBorderWidth = 0;
-
-					if (w->clientMapped)
-					resizeWindow (w, w->serverX, w->serverY,
-								  w->serverWidth, w->serverHeight, 0);
-	
-
+					int focus = event->xclient.data.l[2];
+					
+					if (focus)
+						d->activeWindow = w->id;
+					else if (w->id == d->activeWindow)
+						d->activeWindow = None;					
 				}
-				else if(type == ECOMORPH_EVENT_MOVE_RESIZE)
-				{
-					/* printf("resize_event %p %d %d %d %d\n", win,
-					 * 	   event->xclient.data.l[1],
-					 * 	   event->xclient.data.l[2],
-					 * 	   event->xclient.data.l[3],
-					 * 	   event->xclient.data.l[4]); */
+				
 
-					w->serverX		   = event->xclient.data.l[1];
-					w->serverY		   = event->xclient.data.l[2];
-					w->serverWidth	   = event->xclient.data.l[3];
-					w->serverHeight	   = event->xclient.data.l[4];
-					w->serverBorderWidth = 0;
-
-					if (w->clientMapped)
-					resizeWindow (w, w->serverX, w->serverY,
-								  w->serverWidth, w->serverHeight, 0);
-				}
+                 /* else if(type == ECOMORPH_EVENT_MOVE)
+				 * {
+				 * 	/\* printf("move_event %p %d %d %d %d\n", win,
+				 * 	 * 	   event->xclient.data.l[1],
+				 * 	 * 	   event->xclient.data.l[2],
+				 * 	 * 	   event->xclient.data.l[3],
+				 * 	 * 	   event->xclient.data.l[4]); *\/
+				 * 
+				 * 	w->serverX		   = event->xclient.data.l[1];
+				 * 	w->serverY		   = event->xclient.data.l[2];
+				 * 	w->serverWidth	   = event->xclient.data.l[3];
+				 * 	w->serverHeight	   = event->xclient.data.l[4];
+				 * 	w->serverBorderWidth = 0;
+				 * 
+				 * 	if (w->clientMapped)
+				 * 	resizeWindow (w, w->serverX, w->serverY,
+				 * 				  w->serverWidth, w->serverHeight, 0);
+				 * 
+				 * 
+				 * }
+				 * else if(type == ECOMORPH_EVENT_MOVE_RESIZE)
+				 * {
+				 * 	/\* printf("resize_event %p %d %d %d %d\n", win,
+				 * 	 * 	   event->xclient.data.l[1],
+				 * 	 * 	   event->xclient.data.l[2],
+				 * 	 * 	   event->xclient.data.l[3],
+				 * 	 * 	   event->xclient.data.l[4]); *\/
+				 * 
+				 * 	w->serverX		   = event->xclient.data.l[1];
+				 * 	w->serverY		   = event->xclient.data.l[2];
+				 * 	w->serverWidth	   = event->xclient.data.l[3];
+				 * 	w->serverHeight	   = event->xclient.data.l[4];
+				 * 	w->serverBorderWidth = 0;
+				 * 
+				 * 	if (w->clientMapped)
+				 * 	resizeWindow (w, w->serverX, w->serverY,
+				 * 				  w->serverWidth, w->serverHeight, 0);
+				 * } */
 			}
 		}
 		/*TODO move to plugin */
@@ -627,16 +638,16 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					/* printf("activate window\n"); */
 					activateWindow (w);
 				}
-				else
-				{
-					/* printf("set window active %p %d\n",
-					   (void*) w->id, (int)event->xclient.data.l[0]); */
-					if (event->xclient.data.l[0] == 1) 
-						d->activeWindow = w->id;
-					else if ((event->xclient.data.l[0] == 2) &&
-							 (w->id == d->activeWindow))
-						d->activeWindow = None;
-				}
+				/* else
+				 * {
+				 * 	/\* printf("set window active %p %d\n",
+				 * 	   (void*) w->id, (int)event->xclient.data.l[0]); *\/
+				 * 	if (event->xclient.data.l[0] == 1) 
+				 * 		d->activeWindow = w->id;
+				 * 	else if ((event->xclient.data.l[0] == 2) &&
+				 * 			 (w->id == d->activeWindow))
+				 * 		d->activeWindow = None;
+				 * } */
 			}
 		}
 		else if (event->xclient.message_type == d->winOpacityAtom)
@@ -699,32 +710,32 @@ handleEvent (CompDisplay *d, XEvent	*event)
 	case CirculateRequest:
 		break;
 
-	case FocusIn:
-		//printf("focus in event \n");
-
-		if (event->xfocus.mode != NotifyGrab)
-		{
-			w = findTopLevelWindowAtDisplay (d, event->xfocus.window);
-			if (w && w->clientId)
-			{
-				//printf("focus in event 2 - 0x%x\n", w->clientId);
-				/* unsigned int state = w->state; */
-
-				if (w->id != d->activeWindow)
-				{
-					//printf("focus in event - %s\n", w->resName);
-					d->activeWindow = w->id;
-					w->activeNum = w->screen->activeNum++;
-
-					addToCurrentActiveWindowHistory (w->screen, w->id);
-				}
-
-				/* state &= ~CompWindowStateDemandsAttentionMask;
-				   if (w->state != state)
-				   changeWindowState (w, state); */
-			}
-		}
-		break;
+	/* case FocusIn:
+	 * 	//printf("focus in event \n");
+	 * 
+	 * 	if (event->xfocus.mode != NotifyGrab)
+	 * 	{
+	 * 		w = findTopLevelWindowAtDisplay (d, event->xfocus.window);
+	 * 		if (w && w->clientId)
+	 * 		{
+	 * 			//printf("focus in event 2 - 0x%x\n", w->clientId);
+	 * 			/\* unsigned int state = w->state; *\/
+	 * 
+	 * 			if (w->id != d->activeWindow)
+	 * 			{
+	 * 				//printf("focus in event - %s\n", w->resName);
+	 * 				d->activeWindow = w->id;
+	 * 				w->activeNum = w->screen->activeNum++;
+	 * 
+	 * 				addToCurrentActiveWindowHistory (w->screen, w->id);
+	 * 			}
+	 * 
+	 * 			/\* state &= ~CompWindowStateDemandsAttentionMask;
+	 * 			   if (w->state != state)
+	 * 			   changeWindowState (w, state); *\/
+	 * 		}
+	 * 	}
+	 * 	break; */
 
 	default:
 		if (event->type == d->damageEvent + XDamageNotify)

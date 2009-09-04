@@ -1006,6 +1006,17 @@ updateWindowViewport(CompWindow *w, int initial)
 
 		w->initialViewportX = dx;
 		w->initialViewportY = dy;
+
+		int x = MOD(w->attrib.x, s->width)  + ((w->initialViewportX - s->x) * s->width);
+		int y = MOD(w->attrib.y, s->height) + ((w->initialViewportY - s->y) * s->height);
+
+		w->attrib.override_redirect = FALSE;
+		w->serverX		     = x;
+		w->serverY		     = y;
+		w->attrib.x		     = x;
+		w->attrib.y		     = y;
+		printf("updateWindowViewport %d:%d - %d:%d\n", dx, dy, x, y);
+		
 	}
 }
 
@@ -1208,28 +1219,29 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	EMPTY_REGION (w->region);
 
-	if (w->attrib.class != InputOnly)
-	{
-		REGION rect;
-
-		rect.rects = &rect.extents;
-		rect.numRects = rect.size = 1;
-
-		rect.extents.x1 = w->attrib.x;
-		rect.extents.y1 = w->attrib.y;
-		rect.extents.x2 = w->attrib.x + w->width;
-		rect.extents.y2 = w->attrib.y + w->height;
-
-		XUnionRegion (&rect, w->region, w->region);
-
-		w->damage = XDamageCreate (screen->display->display, id,
-								   XDamageReportRawRectangles);
-
-		/* need to check for DisplayModal state on all windows */
-		//w->state = getWindowState (screen->display, w->id);
-		//updateWindowClassHints (w);
-	}
-	else
+	/* if (w->attrib.class != InputOnly)
+	 * {
+	 * 	REGION rect;
+	 * 
+	 * 	rect.rects = &rect.extents;
+	 * 	rect.numRects = rect.size = 1;
+	 * 
+	 * 	rect.extents.x1 = w->attrib.x;
+	 * 	rect.extents.y1 = w->attrib.y;
+	 * 	rect.extents.x2 = w->attrib.x + w->width;
+	 * 	rect.extents.y2 = w->attrib.y + w->height;
+	 * 
+	 * 	XUnionRegion (&rect, w->region, w->region);
+	 * 
+	 * 	w->damage = XDamageCreate (screen->display->display, id,
+	 * 							   XDamageReportRawRectangles);
+	 * 
+	 * 	/\* need to check for DisplayModal state on all windows *\/
+	 * 	//w->state = getWindowState (screen->display, w->id);
+	 * 	//updateWindowClassHints (w);
+	 * }
+	 * else */
+	if (w->attrib.class == InputOnly)	
 	{
 		w->invisible = TRUE;
 		w->damage = None;
@@ -1268,7 +1280,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	if(clientId)
 	{
-		/* printf("window managed: 0x%x : 0x%x\n", (unsigned int)w->id, clientId); */
+		printf("window managed: 0x%x : 0x%x\n", (unsigned int)w->id, clientId);
 		/* XXX remove the use of this. all windows are override
 		 * redirect. */
 
@@ -1276,28 +1288,26 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 					  SubstructureNotifyMask |
 					  PropertyChangeMask);
 		
-		w->attrib.override_redirect = 0;
+		w->attrib.override_redirect = FALSE;
 		w->clientId = clientId;
 
 		w->wmType = getWindowType (screen->display, w->clientId);
 		w->state = getWindowState (screen->display, w->clientId);
 		updateWindowClassHints (w);
-		/* if(w->resClass) printf ("- %s\n", w->resClass); */
+		if(w->resClass) printf ("- %s\n", w->resClass);
 
 		recalcWindowType (w);
 
 		updateWindowViewport(w, 1);
 
-		w->opacityPropSet = readWindowProp32 (screen->display, w->id,
-											  screen->display->winOpacityAtom,
-											  &w->opacity);
+		w->opacityPropSet = readWindowProp32
+			(screen->display, w->id, screen->display->winOpacityAtom, &w->opacity);
+
+		w->brightness = getWindowProp32
+			(screen->display, w->id, screen->display->winBrightnessAtom, BRIGHT);
 
 		w->clientMapped = (w->attrib.map_state == IsViewable) ? 1 : 0;
-
-		w->brightness = getWindowProp32 (screen->display, w->id,
-										 screen->display->winBrightnessAtom,
-										 BRIGHT);
-
+		
 		if (w->alive)
 		{
 			w->paint.opacity	   = w->opacity;
@@ -1319,10 +1329,33 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	else
 	{
 		w->wmType = getWindowType (screen->display, w->id);
-		updateWindowClassHints (w);
+		updateWindowClassHints (w); /* XXX required ?*/
 		recalcWindowType (w);
 	}
 
+
+	{
+		REGION rect;
+
+		rect.rects = &rect.extents;
+		rect.numRects = rect.size = 1;
+
+		rect.extents.x1 = w->attrib.x;
+		rect.extents.y1 = w->attrib.y;
+		rect.extents.x2 = w->attrib.x + w->width;
+		rect.extents.y2 = w->attrib.y + w->height;
+
+		XUnionRegion (&rect, w->region, w->region);
+
+		w->damage = XDamageCreate (screen->display->display, id,
+								   XDamageReportRawRectangles);
+
+		/* need to check for DisplayModal state on all windows */
+		//w->state = getWindowState (screen->display, w->id);
+		//updateWindowClassHints (w);
+	}
+
+	
 	/* XXX: think this whole section over again */
 	if (w->attrib.map_state == IsViewable)
 	{
@@ -1563,8 +1596,8 @@ resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidt
 		dwidth	= width - w->attrib.width;
 		dheight = height - w->attrib.height;
 
-		w->attrib.x		   = x;
-		w->attrib.y		   = y;
+		w->attrib.x		       = x;
+		w->attrib.y		       = y;
 		w->attrib.width		   = width;
 		w->attrib.height	   = height;
 		w->attrib.border_width = borderWidth;
@@ -1600,19 +1633,35 @@ resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidt
 void
 configureWindow (CompWindow *w, XConfigureEvent *ce)
 {
-	/* printf("- configureWindow %d:%d %dx%d\n", ce->x, ce->y, ce->width, ce->height); */
-
+	CompScreen *s = w->screen;
+	
 	if (!w->clientId)
 	{
-		w->attrib.override_redirect = ce->override_redirect;
-		w->serverX		   = ce->x;
-		w->serverY		   = ce->y;
-		w->serverWidth	   = ce->width;
-		w->serverHeight	   = ce->height;
+		w->attrib.override_redirect = TRUE;
+		w->serverX		     = ce->x;
+		w->serverY		     = ce->y;
+		w->serverWidth	     = ce->width;
+		w->serverHeight	     = ce->height;
 		w->serverBorderWidth = ce->border_width;
 
-		resizeWindow (w, ce->x, ce->y, ce->width, ce->height,
-					  ce->border_width);
+		resizeWindow (w, ce->x, ce->y, ce->width, ce->height, ce->border_width);
+	}
+	else
+	{
+		int x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
+		int y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
+
+		w->attrib.override_redirect = FALSE;
+		w->serverX		     = x;
+		w->serverY		     = y;
+		w->serverWidth	     = ce->width;
+		w->serverHeight	     = ce->height;
+		w->serverBorderWidth = ce->border_width;
+
+		/* printf("- configureWindow %p - %d:%d \t%d:%d \t%dx%d\n",
+		 * 	   w->id, ce->x, ce->y, x, y, ce->width, ce->height); */
+		
+		resizeWindow (w, x, y, ce->width, ce->height, ce->border_width);
 	}
 	
 	//if(w->grabbed)
