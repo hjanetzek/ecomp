@@ -1641,8 +1641,10 @@ configureWindow (CompWindow *w, XConfigureEvent *ce)
 	if (w->clientId)		
 	{
 		/* ignore deskwitch window movements */
-		if (((MOD(ce->x - w->attrib.x, s->width) == 0) &&
-			 (MOD(ce->y - w->attrib.y, s->height) == 0)))
+		if ((ce->width == w->attrib.width) &&
+			(ce->height == w->attrib.height) &&
+			(MOD(ce->x - w->attrib.x, s->width) == 0) &&
+			(MOD(ce->y - w->attrib.y, s->height) == 0))
 		{
 			if (restackWindow (w, ce->above))
 				addWindowDamage (w);
