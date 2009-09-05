@@ -344,8 +344,6 @@ thumbUpdateThumbnail (CompScreen *s)
     ts->thumb.offset  = off;
     ts->thumb.opacity = 0.0;
 
-    printf("thumbUpdateThumbnail %d:%d, off:%d\n", ts->thumb.x, ts->thumb.y, off);
- 
     damageThumbRegion (s, &ts->thumb);
 }
 

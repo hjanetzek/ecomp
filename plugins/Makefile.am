@@ -1,5 +1,3 @@
-libfade_la_LDFLAGS = -module -avoid-version -no-undefined
-libfade_la_SOURCES = fade.c
 
 libcube_la_LDFLAGS = -module -avoid-version -no-undefined
 libcube_la_SOURCES = cube.c
@@ -90,7 +88,6 @@ INCLUDES =					\
 moduledir = $(plugindir)
 
 module_LTLIBRARIES =		\
-	libfade.la		\
 	$(libdbus_module)	\
 	libdecoration.la	\
 	libscale.la             \

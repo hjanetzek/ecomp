@@ -1957,12 +1957,8 @@ cubeSetGlobalScreenOption (CompScreen      *s,
     status = (*s->setScreenOption) (s, name, value);
     WRAP (cs, s, setScreenOption, cubeSetGlobalScreenOption);
 
-	printf("set screen option %s\n", name);
-	
     if (/*status && */strcmp (name, "hsize") == 0)
     {
-		printf("-> %d\n", s->hsize);
-		
 		cubeUpdateGeometry (s, s->hsize, cs->invert);
 		cubeUnloadBackgrounds (s);
     }

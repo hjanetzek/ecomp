@@ -360,13 +360,9 @@ handleEvent (CompDisplay *d, XEvent	*event)
 
 		if (event->xproperty.atom == d->winStateAtom)
 		{
-			printf("win state property\n");
-			
-
 			unsigned int state = getWindowState (d, w->id);
 			if(state & CompWindowStateHiddenMask)
 			{
-				//printf("set state - hidden\n");
 				w->clientMapped = 0;
 			}
 			if (state != w->state)
@@ -526,7 +522,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					int x = MOD(w->attrib.x, s->width)	+ ((dx - s->x) * s->width);
 					int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
 
-					printf("desk_event %p %d %d\n", win, x, y);
+					/* printf("desk_event %p %d %d\n", win, x, y); */
 										
 					if (x == w->attrib.x && y == w->attrib.y) break;
 
@@ -566,46 +562,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					else if (w->id == d->activeWindow)
 						d->activeWindow = None;					
 				}
-				
-
-                 /* else if(type == ECOMORPH_EVENT_MOVE)
-				 * {
-				 * 	/\* printf("move_event %p %d %d %d %d\n", win,
-				 * 	 * 	   event->xclient.data.l[1],
-				 * 	 * 	   event->xclient.data.l[2],
-				 * 	 * 	   event->xclient.data.l[3],
-				 * 	 * 	   event->xclient.data.l[4]); *\/
-				 * 
-				 * 	w->serverX		   = event->xclient.data.l[1];
-				 * 	w->serverY		   = event->xclient.data.l[2];
-				 * 	w->serverWidth	   = event->xclient.data.l[3];
-				 * 	w->serverHeight	   = event->xclient.data.l[4];
-				 * 	w->serverBorderWidth = 0;
-				 * 
-				 * 	if (w->clientMapped)
-				 * 	resizeWindow (w, w->serverX, w->serverY,
-				 * 				  w->serverWidth, w->serverHeight, 0);
-				 * 
-				 * 
-				 * }
-				 * else if(type == ECOMORPH_EVENT_MOVE_RESIZE)
-				 * {
-				 * 	/\* printf("resize_event %p %d %d %d %d\n", win,
-				 * 	 * 	   event->xclient.data.l[1],
-				 * 	 * 	   event->xclient.data.l[2],
-				 * 	 * 	   event->xclient.data.l[3],
-				 * 	 * 	   event->xclient.data.l[4]); *\/
-				 * 
-				 * 	w->serverX		   = event->xclient.data.l[1];
-				 * 	w->serverY		   = event->xclient.data.l[2];
-				 * 	w->serverWidth	   = event->xclient.data.l[3];
-				 * 	w->serverHeight	   = event->xclient.data.l[4];
-				 * 	w->serverBorderWidth = 0;
-				 * 
-				 * 	if (w->clientMapped)
-				 * 	resizeWindow (w, w->serverX, w->serverY,
-				 * 				  w->serverWidth, w->serverHeight, 0);
-				 * } */
 			}
 		}
 		/*TODO move to plugin */
@@ -635,16 +591,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					/* printf("activate window\n"); */
 					activateWindow (w);
 				}
-				/* else
-				 * {
-				 * 	/\* printf("set window active %p %d\n",
-				 * 	   (void*) w->id, (int)event->xclient.data.l[0]); *\/
-				 * 	if (event->xclient.data.l[0] == 1) 
-				 * 		d->activeWindow = w->id;
-				 * 	else if ((event->xclient.data.l[0] == 2) &&
-				 * 			 (w->id == d->activeWindow))
-				 * 		d->activeWindow = None;
-				 * } */
 			}
 		}
 		else if (event->xclient.message_type == d->winOpacityAtom)
@@ -706,33 +652,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 	case ConfigureRequest:
 	case CirculateRequest:
 		break;
-
-	/* case FocusIn:
-	 * 	//printf("focus in event \n");
-	 * 
-	 * 	if (event->xfocus.mode != NotifyGrab)
-	 * 	{
-	 * 		w = findTopLevelWindowAtDisplay (d, event->xfocus.window);
-	 * 		if (w && w->clientId)
-	 * 		{
-	 * 			//printf("focus in event 2 - 0x%x\n", w->clientId);
-	 * 			/\* unsigned int state = w->state; *\/
-	 * 
-	 * 			if (w->id != d->activeWindow)
-	 * 			{
-	 * 				//printf("focus in event - %s\n", w->resName);
-	 * 				d->activeWindow = w->id;
-	 * 				w->activeNum = w->screen->activeNum++;
-	 * 
-	 * 				addToCurrentActiveWindowHistory (w->screen, w->id);
-	 * 			}
-	 * 
-	 * 			/\* state &= ~CompWindowStateDemandsAttentionMask;
-	 * 			   if (w->state != state)
-	 * 			   changeWindowState (w, state); *\/
-	 * 		}
-	 * 	}
-	 * 	break; */
 
 	default:
 		if (event->type == d->damageEvent + XDamageNotify)

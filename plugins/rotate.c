@@ -744,80 +744,69 @@ rotateWithWindow (CompDisplay     *d,
 		  CompOption      *option,
 		  int		  nOption)
 {
-  CompScreen *s;
-  Window     xid;
-  printf ("rotateWithWindow 1\n");
-  //ROTATE_DISPLAY (d);
+	CompScreen *s;
+	Window     xid;
 
-  xid = getIntOptionNamed (option, nOption, "root", 0);
+	xid = getIntOptionNamed (option, nOption, "root", 0);
 
-  s = findScreenAtDisplay (d, xid);
-  if (s)
+	s = findScreenAtDisplay (d, xid);
+	if (s)
     {
-      //Bool raise = rd->opt[ROTATE_DISPLAY_OPTION_RAISE_ON_ROTATE].value.b;
-      int  direction;
+		int  direction;
 
-      ROTATE_SCREEN (s);
+		ROTATE_SCREEN (s);
 
-      if (s->hsize < 2)
-	return FALSE;
+		if (s->hsize < 2)
+			return FALSE;
 
-      direction = getIntOptionNamed (option, nOption, "direction", 0);
-      if (!direction)
-	return FALSE;
+		direction = getIntOptionNamed (option, nOption, "direction", 0);
+		if (!direction)
+			return FALSE;
 
-      xid = getIntOptionNamed (option, nOption, "window", 0);
+		xid = getIntOptionNamed (option, nOption, "window", 0);
 
-      if (rs->moveWindow != xid)
-	{
-	  printf ("rotateWithWindow 2\n");
-	  
-	  CompWindow *w;
-
-	  rotateReleaseMoveWindow (s);
-
-	  if (!rs->grabIndex && !rs->moving)
-	    {
-	      w = findWindowAtScreen (s, xid);
-	      if (w)
+		if (rs->moveWindow != xid)
 		{
-		  printf ("rotateWithWindow 3\n");
-		  if (!(w->state & CompWindowStateStickyMask))
-		    {
-		      printf ("rotateWithWindow 4\n");
-		      rs->moveWindow  = w->id;
-		      rs->moveWindowX = w->attrib.x;
+			CompWindow *w;
 
-		      /*if (raise)
-		      //raiseWindow (w);*/
-		    }
+			rotateReleaseMoveWindow (s);
+
+			if (!rs->grabIndex && !rs->moving)
+			{
+				w = findWindowAtScreen (s, xid);
+				if (w)
+				{
+					if (!(w->state & CompWindowStateStickyMask))
+					{
+						rs->moveWindow  = w->id;
+						rs->moveWindowX = w->attrib.x;
+					}
+				}
+			}
 		}
-	    }
-	}
 
-	  printf ("rotateWithWindow 5\n");
-	  CompOption o[4];
+		CompOption o[4];
 
-	  o[0].type    = CompOptionTypeInt;
-	  o[0].name    = "x";
-	  o[0].value.i = getIntOptionNamed (option, nOption, "x", 0);
+		o[0].type    = CompOptionTypeInt;
+		o[0].name    = "x";
+		o[0].value.i = getIntOptionNamed (option, nOption, "x", 0);
 
-	  o[1].type    = CompOptionTypeInt;
-	  o[1].name    = "y";
-	  o[1].value.i = getIntOptionNamed (option, nOption, "y", 0);
+		o[1].type    = CompOptionTypeInt;
+		o[1].name    = "y";
+		o[1].value.i = getIntOptionNamed (option, nOption, "y", 0);
 
-	  o[2].type	 = CompOptionTypeInt;
-	  o[2].name	 = "root";
-	  o[2].value.i = s->root;
+		o[2].type	 = CompOptionTypeInt;
+		o[2].name	 = "root";
+		o[2].value.i = s->root;
 
-	  o[3].type	 = CompOptionTypeInt;
-	  o[3].name	 = "direction";
-	  o[3].value.i = getIntOptionNamed (option, nOption, "direction", 0);
+		o[3].type	 = CompOptionTypeInt;
+		o[3].name	 = "direction";
+		o[3].value.i = getIntOptionNamed (option, nOption, "direction", 0);
 		    
-	  rotate (d, NULL, 0, o, 4);
+		rotate (d, NULL, 0, o, 4);
     }
 
-  return FALSE;
+	return FALSE;
 }
 
 
@@ -964,8 +953,6 @@ rotateHandleEvent (CompDisplay *d,
 	  /* ingnore messages sent to e */
 	  if (event->xclient.data.l[0]) break;
 
-	  printf ("rotate got desktopViewportAtom\n");
-
 	  event->xclient.data.l[3] = 1;
 	    s = findScreenAtDisplay (d, event->xclient.window);
 	    if (s)
@@ -998,8 +985,6 @@ rotateHandleEvent (CompDisplay *d,
 
 		if (dy)
 		  { 
-		    printf ("switch viewPort vertically %d:%d - %d:%d\n",
-			    toX, toY, dx, dy);
 		    rs->moveTo = 0.0;
 		    
 		    moveScreenViewport (s, -dx, -dy, TRUE);
@@ -1015,11 +1000,6 @@ rotateHandleEvent (CompDisplay *d,
 		    XQueryPointer (d->display, s->root,
 				   &win, &win, &x, &y, &i, &i, &ui);
 
-		    //if ((toX == 0) && (cx == s->hsize - 1)) dx = 1;
-		    //if ((toX == s->hsize - 1) && (cx == 0)) dx = -1;
-		    
-		    printf ("switch viewPort horizontally sx:%d, hs:%d, tx:%d, dx:%d\n",
-			    s->x, s->hsize, toX, dx);
 		    if (dx > (s->hsize + 1) / 2)
 			dx -= s->hsize;
 		    else if (dx < -(s->hsize + 1) / 2)

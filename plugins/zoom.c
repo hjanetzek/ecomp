@@ -827,8 +827,6 @@ zoomHandleMotionEvent (CompScreen *s,
 	else
 	    scale = 1.0f;
 
-	/* printf("%d:%d:%f\n",zs->x1, zs->x2, oWidth); */
-	
 	if (zs->panGrabIndex)
 	{
 	    float dx, dy;

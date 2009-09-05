@@ -967,7 +967,6 @@ static Bool
 scaleaddonLayoutSlotsAndAssignWindows (CompScreen *s)
 {
     Bool status;
-    //    printf("scaleaddonLayoutSlotsAndAssignWindows(CompScreen* s);\n");
     
     ADDON_SCREEN (s);
     SCALE_SCREEN (s);
@@ -975,13 +974,11 @@ scaleaddonLayoutSlotsAndAssignWindows (CompScreen *s)
     switch (scaleaddonGetLayoutMode (s))
     {
     case LayoutModeOrganicExperimental:
-      //printf("1\n");
       
 	status = layoutOrganicThumbs (s);
 	break;
     case LayoutModeNormal:
     default:
-      // printf("2\n");
       
 	UNWRAP (as, ss, layoutSlotsAndAssignWindows);
 	status = (*ss->layoutSlotsAndAssignWindows) (s);

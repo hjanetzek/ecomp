@@ -405,19 +405,15 @@ iniGetOptList(Option *listOpt, CompListValue *list, CompOptionType type)
 		{
 		case CompOptionTypeString:
 			list->value[i].s = strdup (opt->stringValue);
-			/* printf("%s ", opt->stringValue); */
 			break;
 		case CompOptionTypeBool:
 			list->value[i].b = (Bool) opt->intValue;
-			/* printf("%d ", opt->intValue); */
 			break;
 		case CompOptionTypeInt:
 			list->value[i].i = opt->intValue;
-			/* printf("%d ", opt->intValue); */
 			break;
 		case CompOptionTypeFloat:
 			list->value[i].f = (float) opt->doubleValue;
-			/* printf("%f ", opt->doubleValue); */
 			break;
 		case CompOptionTypeMatch:
 			if (opt->stringValue)
@@ -425,14 +421,12 @@ iniGetOptList(Option *listOpt, CompListValue *list, CompOptionType type)
 			matchInit (&list->value[i].match);
 			matchAddFromString (&list->value[i].match, opt->stringValue);
 			}
-			
-			/* printf("%s ", opt->stringValue); */
 			break;
 		default:
 			break;
 		}
 	}
-	/* printf("\n"); */
+
 	return TRUE;
 }
 
@@ -485,35 +479,29 @@ iniLoadGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 		switch (o->type)
 		{
 		case CompOptionTypeBool:
-			/* printf("load: %s: %d\n", optionName, opt->intValue); */
 			hasValue = TRUE;
 			value.b = (Bool) opt->intValue;
 			break;
 		case CompOptionTypeInt:
-			/* printf("load: %s: %d\n", optionName, opt->intValue); */
 			hasValue = TRUE;
 			value.i = opt->intValue;
 			break;
 		case CompOptionTypeFloat:
-			/* printf("load: %s: %f\n", optionName, opt->doubleValue); */
 			hasValue = TRUE;
 			value.f = (float) opt->doubleValue;
 			break;
 		case CompOptionTypeString:
-			/* printf("load: %s: %s\n", optionName, opt->stringValue); */
 			hasValue = TRUE;
 			value.s = strdup (opt->stringValue);
 			break;
 		case CompOptionTypeColor:
-			/* printf("load: %s: %s\n", optionName, opt->stringValue); */
 			hasValue = stringToColor (optionValue, value.c);
 			break;
 		case CompOptionTypeList:
-			/* printf("load list: %s\n", optionName); */
 			hasValue = iniGetOptList(opt, &value.list, value.list.type);
 			break;
 		case CompOptionTypeMatch:
-			/* printf("load: %s: %s\n", optionName, opt->stringValue); */
+
 			if (optionValue){				
 			hasValue = TRUE;
 			matchInit (&value.match);
@@ -771,8 +759,6 @@ iniSaveOptions (CompDisplay *d,
 					free (opt->stringValue);
 
 				opt->stringValue = strVal;
-
-				/* printf("add option %s: %s\n", option->name, opt->stringValue); */
 			}
 			break;
 		case CompOptionTypeList:
@@ -793,8 +779,6 @@ iniSaveOptions (CompDisplay *d,
 					opt->type = CompOptionTypeList;
 					options->data = eet_eina_hash_add(options->data, option->name, opt);
 				}
-
-				/* printf("add option %s:\n", option->name); */
 
 				Option *item;
 				CompListValue *list = &option->value.list;
@@ -919,8 +903,6 @@ iniLoadOptions (CompDisplay *d, int screen, char *plugin)
 
 	INI_DISPLAY (d);
 
-	/* printf("iniLoadOptions\n"); */
-
 	filename = directory = NULL;
 
 	if (!iniGetFilename (d, screen, plugin, &filename))
@@ -1000,8 +982,6 @@ iniFileModified (const char *name,
 
 	if (id->locked) return;
 
-	/* printf("iniFileModified\n");   */
-
 	filename = directory = NULL;
 
 	if (!iniGetHomeDir (&directory))
@@ -1022,7 +1002,6 @@ iniFileModified (const char *name,
 	}
 	
 	printf("open read %s\n", fullPath);
-
 
 	optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 

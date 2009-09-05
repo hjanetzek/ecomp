@@ -21,7 +21,6 @@ ecomorph_SOURCES =   \
 	paint.c	   \
 	option.c   \
 	plugin.c   \
-	session.c  \
 	fragment.c \
 	matrix.c   \
 	cursor.c   \

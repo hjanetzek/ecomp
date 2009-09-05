@@ -231,8 +231,6 @@ moveHandleEvent (CompDisplay *d,
 				unsigned int state = event->xclient.data.l[2];
 				s = w->screen;
 
-				printf("move %p %d\n", (void *)w->id, state);
-				
 				if(state)
 				{ 
 					CompOption o[1];
@@ -242,19 +240,6 @@ moveHandleEvent (CompDisplay *d,
 					o[0].type    = CompOptionTypeInt;
 					o[0].name    = "window";
 					o[0].value.i = w->id;
-
-
-					/* unsigned int mods;
-					 * Window	     root, child; */
-					/* int	     i; */
-
-					/* XQueryPointer (d->display, w->screen->root,
-					 * 			   &root, &child, &xRoot, &yRoot,
-					 * 			   &i, &i, &mods);
-					 * 
-					 * o[1].type	 = CompOptionTypeInt;
-					 * o[1].name	 = "modifiers";
-					 * o[1].value.i = mods; */
 
 					moveInitiate (d,
 								  action,

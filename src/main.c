@@ -417,16 +417,10 @@ main (int argc, char **argv)
 
     compAddMetadataFromFile (&coreMetadata, "core");
 
-    //if (!disableSm)
-    //	initSession (clientId);
-
     if (!addDisplay (displayName))
 	return 1;
 
     eventLoop ();
-
-    if (!disableSm)
-	closeSession ();
 
     xmlCleanupParser ();
 

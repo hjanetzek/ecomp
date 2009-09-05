@@ -1491,8 +1491,6 @@ waterHandleEvent (CompDisplay *d,
 			Window win = event->xclient.data.l[0];
 			if(event->xclient.data.l[1] != ECO_PLUGIN_WATER) break;
 
-			printf("bla\n");
-			
 			if ((s = findScreenAtDisplay (d, win)) && !s)
 			{
 				for (s = d->screens; s; s = s->next)
@@ -1532,7 +1530,6 @@ waterHandleEvent (CompDisplay *d,
 					 option == 2)
 			{
 				CompOption o[1];
-				printf("tohhle wipe\n");
 				
 				o[0].type    = CompOptionTypeInt;
 				o[0].name    = "root";

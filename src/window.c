@@ -155,7 +155,6 @@ getWmState (CompDisplay *display, Window id)
 	unsigned char *data;
 	unsigned long state = NormalState;
 
-	/* printf("getWmState\n"); */
 	result = XGetWindowProperty
 		(display->display, id, display->wmStateAtom, 0L, 2L, FALSE,
 		 display->wmStateAtom, &actual, &format, &n, &left, &data);
@@ -244,8 +243,6 @@ getWindowState (CompDisplay *display, Window id)
 	unsigned char *data;
 	unsigned int state = 0;
 
-	/* printf("getWindowState\n"); */
-	
 	result = XGetWindowProperty
 		(display->display, id, display->winStateAtom, 0L, 1024L,
 		 FALSE, XA_ATOM, &actual, &format, &n, &left, &data);
@@ -341,8 +338,6 @@ getWindowType (CompDisplay *display, Window id)
 	unsigned long n, left;
 	unsigned char *data;
 
-	/* printf("getWindowType\n"); */
-	
 	result = XGetWindowProperty
 		(display->display, id, display->winTypeAtom, 0L, 1L,
 		 FALSE, XA_ATOM, &actual, &format, &n, &left, &data);
@@ -450,8 +445,6 @@ getMwmHints (CompDisplay *display,
 	*func  = MwmFuncAll;
 	*decor = MwmDecorAll;
 
-	/* printf("getMwmHints\n"); */
-	
 	result = XGetWindowProperty
 		(display->display, id, display->mwmHintsAtom,
 		 0L, 20L, FALSE, display->mwmHintsAtom,
@@ -486,8 +479,6 @@ getWindowProp (CompDisplay *display,
 	unsigned long n, left;
 	unsigned char *data;
 
-	/* printf("getWindowProp\n"); */
-	
 	result = XGetWindowProperty
 		(display->display, id, property, 0L, 1L, FALSE,
 		 XA_CARDINAL, &actual, &format, &n, &left, &data);
@@ -530,8 +521,6 @@ readWindowProp32 (CompDisplay *display,
 	unsigned long n, left;
 	unsigned char *data;
 
-	/* printf("readWindowProp32\n"); */
-	
 	result = XGetWindowProperty
 		(display->display, id, property, 0L, 1L, FALSE,
 		 XA_CARDINAL, &actual, &format, &n, &left, &data);
@@ -1014,8 +1003,6 @@ updateWindowViewport(CompWindow *w, int initial)
 		w->serverY		     = y;
 		w->attrib.x		     = x;
 		w->attrib.y		     = y;
-		printf("updateWindowViewport %d:%d - %d:%d\n", dx, dy, x, y);
-		
 	}
 }
 
@@ -1433,14 +1420,14 @@ mapWindow (CompWindow *w)
 	if (w->type & CompWindowTypeDesktopMask)
 		w->screen->desktopWindowCount++;
 
-	if (!w->attrib.override_redirect)
-	{
-		if (!w->height)
-			resizeWindow (w,
-						  w->attrib.x, w->attrib.y,
-						  w->attrib.width, ++w->attrib.height - 1,
-						  w->attrib.border_width);
-	}
+	/* if (!w->attrib.override_redirect)
+	 * {
+	 * 	if (!w->height)
+	 * 		resizeWindow (w,
+	 * 					  w->attrib.x, w->attrib.y,
+	 * 					  w->attrib.width, ++w->attrib.height - 1,
+	 * 					  w->attrib.border_width);
+	 * } */
 }
 
 void
@@ -1935,8 +1922,6 @@ updateWindowAttributes (CompWindow *w, CompStackingUpdateMode stackingMode)
 void
 activateWindow (CompWindow *w)
 {
-	/* printf("activateWindow %s\n", w->resClass); */
-
 	raiseWindow(w);
 
 	moveInputFocusToWindow (w);
@@ -2094,8 +2079,6 @@ getWindowIcon (CompWindow *w, int width, int height)
 		unsigned long n, left;
 		unsigned char *data;
 
-		/* printf("getWindowIcon\n"); */
-		
 		result = XGetWindowProperty
 			(w->screen->display->display, w->id,
 			 w->screen->display->wmIconAtom,

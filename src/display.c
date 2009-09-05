@@ -1397,7 +1397,7 @@ addDisplay (char *name)
 void
 focusDefaultWindow (CompDisplay *d)
 {
-	printf("focusDefaultWindow - remove this call\n");
+	/* printf("focusDefaultWindow - remove this call\n"); */
 }
 
 CompScreen *

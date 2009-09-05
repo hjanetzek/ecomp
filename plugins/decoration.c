@@ -481,10 +481,10 @@ decorCreateDecoration(CompScreen *screen, Window id, Atom decorAtom)
 
    XFree(data);
 
-   printf("got:\ndec ext %d %d %d %d\nmax ext %d %d %d %d\n%d %d -> %d\n",
-	  input.left, input.right, input.top, input.bottom,
-	  maxInput.left, maxInput.right, maxInput.top, maxInput.bottom,
-	  minWidth, minHeight, nQuad);
+   /* printf("got:\ndec ext %d %d %d %d\nmax ext %d %d %d %d\n%d %d -> %d\n", */
+	  /* input.left, input.right, input.top, input.bottom,
+	   * maxInput.left, maxInput.right, maxInput.top, maxInput.bottom,
+	   * minWidth, minHeight, nQuad); */
 
 
    
@@ -523,12 +523,12 @@ decorCreateDecoration(CompScreen *screen, Window id, Atom decorAtom)
      {
         computeQuadBox(quad, minWidth, minHeight, &x1, &y1, &x2, &y2, NULL, NULL);
 
-	printf("computQuadBox %d \t%d:%d\t%d:%d\n",
-	       quad->p1.gravity, quad->p1.x, quad->p1.y,
-	       x1, x2);
-	printf("computQuadBox %d \t%d:%d\t%d:%d\n\n",
-	       quad->p2.gravity, quad->p2.x, quad->p2.y,
-	       x1, x2);
+	/* printf("computQuadBox %d \t%d:%d\t%d:%d\n",
+	 *        quad->p1.gravity, quad->p1.x, quad->p1.y,
+	 *        x1, x2);
+	 * printf("computQuadBox %d \t%d:%d\t%d:%d\n\n",
+	 *        quad->p2.gravity, quad->p2.x, quad->p2.y,
+	 *        x1, x2); */
 
         if (x1 < left)   left = x1;
         if (y1 < top)    top = y1;
@@ -966,7 +966,7 @@ decorHandleEvent(CompDisplay *d, XEvent *event)
     case PropertyNotify:
        if (event->xproperty.atom == dd->winDecorAtom)
          {
-            printf("winDecorAtom 0x%x\n", (unsigned int) event->xproperty.window);
+            /* printf("winDecorAtom 0x%x\n", (unsigned int) event->xproperty.window); */
           
             w = findWindowAtDisplay(d, event->xproperty.window);
             if (w)
