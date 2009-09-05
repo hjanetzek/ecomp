@@ -1,5 +1,5 @@
 /*
- * Animation plugin for ecomp/beryl
+ * Animation plugin for compiz/beryl
  *
  * animation.c
  *
@@ -112,24 +112,26 @@ void fxMagicLampInit(CompScreen * s, CompWindow * w)
 	      // rand() / RAND_MAX +
 	  (double)diff / 2.0; //ampDirection * (waveAmpMin);
 
-	  model->magicLampWaves[i].halfWidth = 0.5f;
+	  model->magicLampWaves[i].halfWidth = 0.0f;
 	  
 		/* RAND_FLOAT() * (maxHalfWidth -
 		 * 		minHalfWidth) + minHalfWidth; */
 
 	    // avoid offset at top and bottom part by added waves
-	    float availPos = 1 - 2 * model->magicLampWaves[i].halfWidth;
-	    float posInAvailSegment = 0;
+	    /* float availPos = 1 - 2 * model->magicLampWaves[i].halfWidth; */
 
-	    if (i > 0)
-		posInAvailSegment =
-		    (availPos /
-		     model->magicLampWaveCount) * rand() / RAND_MAX;
+	    model->magicLampWaves[i].pos = model->magicLampWaves[i].halfWidth;
 
-	    model->magicLampWaves[i].pos =
-		(posInAvailSegment +
-		 i * availPos / model->magicLampWaveCount +
-		 model->magicLampWaves[i].halfWidth);
+		
+	    /* model->magicLampWaves[i].pos =
+		 * 	(i * availPos / model->magicLampWaveCount + model->magicLampWaves[i].halfWidth); */
+
+		/* float posInAvailSegment = 0; */
+		/* if (i > 0)
+		 * posInAvailSegment = (availPos / model->magicLampWaveCount) * rand() / RAND_MAX; */
+
+	    /* model->magicLampWaves[i].pos =
+		 * 	(posInAvailSegment + i * availPos / model->magicLampWaveCount + model->magicLampWaves[i].halfWidth); */
 
 	    // switch wave direction
 	    ampDirection *= -1;
@@ -186,14 +188,14 @@ fxMagicLampModelStepObject(CompWindow * w,
 	    winVisibleCloseEndY = iconCloseEndY;
     }
 
-    float preShapePhaseEnd = 0.22f;
-    float stretchPhaseEnd =
-	preShapePhaseEnd + (1 - preShapePhaseEnd) *
-	(iconCloseEndY -
-	 winVisibleCloseEndY) / ((iconCloseEndY - winFarEndY) +
-				 (iconCloseEndY - winVisibleCloseEndY));
-    if (stretchPhaseEnd < preShapePhaseEnd + 0.1)
-	stretchPhaseEnd = preShapePhaseEnd + 0.1;
+    float preShapePhaseEnd = 0.12f;
+    float stretchPhaseEnd = preShapePhaseEnd +
+		(1 - preShapePhaseEnd) * (iconCloseEndY - winVisibleCloseEndY) /
+		((iconCloseEndY - winFarEndY) +
+		 (iconCloseEndY - winVisibleCloseEndY));
+	
+    if (stretchPhaseEnd < preShapePhaseEnd + 0.3)
+	stretchPhaseEnd = preShapePhaseEnd + 0.3;
 
     float origx = w->attrib.x + (WIN_W(w) * object->gridPosition.x -
 				 w->output.left) * model->scale.x;

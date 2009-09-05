@@ -730,7 +730,7 @@ decorWindowUpdate(CompWindow *w, Bool allowDecoration)
     case CompWindowTypeModalDialogMask:
     case CompWindowTypeUtilMask:
     case CompWindowTypeNormalMask:
-       if (w->mwmDecor & (MwmDecorAll | MwmDecorTitle))
+       /* if (w->mwmDecor & (MwmDecorAll | MwmDecorTitle)) */
          decorate = TRUE;
     default:
        break;
@@ -1372,10 +1372,7 @@ decorInitWindow(CompPlugin *p, CompWindow *w)
 
    w->privates[ds->windowPrivateIndex].ptr = dw;
 
-   if (!w->attrib.override_redirect)
-     decorWindowUpdateDecoration(w);
-
-   if (w->added && (/*w->shaded ||*/ w->attrib.map_state == IsViewable))
+   if (w->added && w->attrib.map_state == IsViewable)
      decorWindowUpdate(w, TRUE);
 
    return TRUE;

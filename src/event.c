@@ -133,10 +133,7 @@ changeWindowOpacity (CompWindow *w, int	direction)
     CompScreen *s = w->screen;
     int	       step, opacity;
 
-    if (w->attrib.override_redirect)
-	return;
-
-    if (w->type & CompWindowTypeDesktopMask)
+    if (!w->clientId)
 	return;
 
     step = (0xff * s->opt[COMP_SCREEN_OPTION_OPACITY_STEP].value.i) / 100;
@@ -456,11 +453,11 @@ handleEvent (CompDisplay *d, XEvent	*event)
 				}
 			}
 		}
-		else if (event->xproperty.atom == d->mwmHintsAtom)
-		{
-			/*XXX remove?*/
-			getMwmHints (d, w->id, &w->mwmFunc, &w->mwmDecor);
-		}
+		/* else if (event->xproperty.atom == d->mwmHintsAtom)
+		 * {
+		 * 	/\*XXX remove?*\/
+		 * 	getMwmHints (d, w->id, &w->mwmFunc, &w->mwmDecor);
+		 * } */
 		else if (event->xproperty.atom == d->wmIconAtom) // TODO
 		{
 			freeWindowIcons (w);

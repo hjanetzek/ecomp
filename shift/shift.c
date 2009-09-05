@@ -1696,7 +1696,7 @@ shiftDonePaintScreen (CompScreen *s)
 static Bool
 canStackRelativeTo (CompWindow *w)
 {
-    if (w->attrib.override_redirect)
+    if (!w->clientId)
         return FALSE;
 
     if (!w->shaded && !w->pendingMaps)

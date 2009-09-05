@@ -951,33 +951,33 @@ updateWindowRegion (CompWindow *w)
 		XFree (shapeRects);
 }
 
-static void
-setDefaultWindowAttributes (XWindowAttributes *wa)
-{
-	wa->x			  = 0;
-	wa->y			  = 0;
-	wa->width			  = 1;
-	wa->height			  = 1;
-	wa->border_width		  = 0;
-	wa->depth			  = 0;
-	wa->visual			  = NULL;
-	wa->root			  = None;
-	wa->class			  = InputOnly;
-	wa->bit_gravity		  = NorthWestGravity;
-	wa->win_gravity		  = NorthWestGravity;
-	wa->backing_store		  = NotUseful;
-	wa->backing_planes		  = 0;
-	wa->backing_pixel		  = 0;
-	wa->save_under		  = FALSE;
-	wa->colormap		  = None;
-	wa->map_installed		  = FALSE;
-	wa->map_state		  = IsUnviewable;
-	wa->all_event_masks		  = 0;
-	wa->your_event_mask		  = 0;
-	wa->do_not_propagate_mask = 0;
-	wa->override_redirect	  = TRUE;
-	wa->screen			  = NULL;
-}
+/* static void
+ * setDefaultWindowAttributes (XWindowAttributes *wa)
+ * {
+ * 	wa->x			  = 0;
+ * 	wa->y			  = 0;
+ * 	wa->width			  = 1;
+ * 	wa->height			  = 1;
+ * 	wa->border_width		  = 0;
+ * 	wa->depth			  = 0;
+ * 	wa->visual			  = NULL;
+ * 	wa->root			  = None;
+ * 	wa->class			  = InputOnly;
+ * 	wa->bit_gravity		  = NorthWestGravity;
+ * 	wa->win_gravity		  = NorthWestGravity;
+ * 	wa->backing_store		  = NotUseful;
+ * 	wa->backing_planes		  = 0;
+ * 	wa->backing_pixel		  = 0;
+ * 	wa->save_under		  = FALSE;
+ * 	wa->colormap		  = None;
+ * 	wa->map_installed		  = FALSE;
+ * 	wa->map_state		  = IsUnviewable;
+ * 	wa->all_event_masks		  = 0;
+ * 	wa->your_event_mask		  = 0;
+ * 	wa->do_not_propagate_mask = 0;
+ * 	wa->override_redirect	  = TRUE;
+ * 	wa->screen			  = NULL;
+ * } */
 
 void
 updateWindowViewport(CompWindow *w, int initial)
@@ -1010,7 +1010,6 @@ updateWindowViewport(CompWindow *w, int initial)
 		int x = MOD(w->attrib.x, s->width)  + ((w->initialViewportX - s->x) * s->width);
 		int y = MOD(w->attrib.y, s->height) + ((w->initialViewportY - s->y) * s->height);
 
-		w->attrib.override_redirect = FALSE;
 		w->serverX		     = x;
 		w->serverY		     = y;
 		w->attrib.x		     = x;
@@ -1027,10 +1026,10 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 {
 	B(("0x%x :addWindow\n", (unsigned int) id));
 	CompWindow *w;
-
+	CompDisplay *d = screen->display;
+	
 	w = (CompWindow *) malloc (sizeof (CompWindow));
-	if (!w)
-		return;
+	if (!w) return;
 
 	w->next = NULL;
 	w->prev = NULL;
@@ -1121,18 +1120,10 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->paint.yTranslate	= 0.0f;
 
 	w->opacityFactor = 0xff;
-
 	w->opacityPropSet = FALSE;
 
 	w->lastPaint = w->paint;
-
 	w->alive = TRUE;
-
-	w->mwmDecor = MwmDecorAll;
-	w->mwmFunc	= MwmFuncAll;
-
-	w->closeRequests		= 0;
-	w->lastCloseRequestTime = 0;
 
 	if (screen->windowPrivateLen)
 	{
@@ -1165,7 +1156,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	   window to the window list as we might get configure requests which
 	   require us to stack other windows relative to it. Setting some default
 	   values if this is the case. */
-	if (!XGetWindowAttributes (screen->display->display, id, &w->attrib))
+	if (!XGetWindowAttributes (d->display, id, &w->attrib))
 		/* || (w->attrib.class == InputOnly)) */
 	{
 		freeWindow (w);
@@ -1197,14 +1188,12 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	w->saveMask = 0;
 
-	XSelectInput (screen->display->display, id,
-				  PropertyChangeMask |
-				  EnterWindowMask	 |
-				  FocusChangeMask);
+	XSelectInput (d->display, id, PropertyChangeMask);
+		/* |EnterWindowMask	 |
+		 * FocusChangeMask); */
 
 	w->id = id;
 
-	w->inputHint = TRUE;
 	w->alpha	 = (w->attrib.depth == 32);
 	w->wmType	 = 0;
 	w->state	 = 0;
@@ -1212,35 +1201,13 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->protocols = 0;
 	w->type		 = CompWindowTypeUnknownMask;
 
-	if (screen->display->shapeExtension)
-		XShapeSelectInput (screen->display->display, id, ShapeNotifyMask);
+	if (d->shapeExtension)
+		XShapeSelectInput (d->display, id, ShapeNotifyMask);
 
 	insertWindowIntoScreen (screen, w, aboveId);
 
 	EMPTY_REGION (w->region);
 
-	/* if (w->attrib.class != InputOnly)
-	 * {
-	 * 	REGION rect;
-	 * 
-	 * 	rect.rects = &rect.extents;
-	 * 	rect.numRects = rect.size = 1;
-	 * 
-	 * 	rect.extents.x1 = w->attrib.x;
-	 * 	rect.extents.y1 = w->attrib.y;
-	 * 	rect.extents.x2 = w->attrib.x + w->width;
-	 * 	rect.extents.y2 = w->attrib.y + w->height;
-	 * 
-	 * 	XUnionRegion (&rect, w->region, w->region);
-	 * 
-	 * 	w->damage = XDamageCreate (screen->display->display, id,
-	 * 							   XDamageReportRawRectangles);
-	 * 
-	 * 	/\* need to check for DisplayModal state on all windows *\/
-	 * 	//w->state = getWindowState (screen->display, w->id);
-	 * 	//updateWindowClassHints (w);
-	 * }
-	 * else */
 	if (w->attrib.class == InputOnly)	
 	{
 		w->invisible = TRUE;
@@ -1253,7 +1220,6 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 	/* check if this is an enlightenment frame window */
 	unsigned int clientId = 0;
-	//if (w->wmType != screen->display->winTypeDesktopAtom)
 	{
 		/* TODO use windowProperty32 instead! */
 		unsigned char	   *prop_ret = NULL;
@@ -1261,10 +1227,8 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		unsigned long		bytes_after, num_ret;
 		int					format_ret;
 
-		/* printf("get client window prop\n"); */
-		
-		XGetWindowProperty(screen->display->display, w->id,
-						   screen->display->eManagedAtom,
+		XGetWindowProperty(d->display, w->id,
+						   d->eManagedAtom,
 						   0, 0x7fffffff, False,
 						   XA_CARDINAL, &type_ret, &format_ret,
 						   &num_ret, &bytes_after, &prop_ret);
@@ -1277,22 +1241,19 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 			XFree(prop_ret);
 	}
 
-
 	if(clientId)
 	{
 		printf("window managed: 0x%x : 0x%x\n", (unsigned int)w->id, clientId);
-		/* XXX remove the use of this. all windows are override
-		 * redirect. */
 
-		XSelectInput (screen->display->display, w->id,
+		XSelectInput (d->display, w->id,
 					  SubstructureNotifyMask |
 					  PropertyChangeMask);
 		
 		w->attrib.override_redirect = FALSE;
 		w->clientId = clientId;
 
-		w->wmType = getWindowType (screen->display, w->clientId);
-		w->state = getWindowState (screen->display, w->clientId);
+		w->wmType = getWindowType (d, w->clientId);
+		w->state = getWindowState (d, w->clientId);
 		updateWindowClassHints (w);
 		if(w->resClass) printf ("- %s\n", w->resClass);
 
@@ -1301,10 +1262,9 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		updateWindowViewport(w, 1);
 
 		w->opacityPropSet = readWindowProp32
-			(screen->display, w->id, screen->display->winOpacityAtom, &w->opacity);
+			(d, w->id, d->winOpacityAtom, &w->opacity);
 
-		w->brightness = getWindowProp32
-			(screen->display, w->id, screen->display->winBrightnessAtom, BRIGHT);
+		w->brightness = getWindowProp32(d, w->id, d->winBrightnessAtom, BRIGHT);
 
 		w->clientMapped = (w->attrib.map_state == IsViewable) ? 1 : 0;
 		
@@ -1316,10 +1276,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 		if (screen->canDoSaturated)
 		{
-			w->saturation =
-				getWindowProp32 (screen->display, w->id,
-								 screen->display->winSaturationAtom,
-								 COLOR);
+			w->saturation = getWindowProp32 (d, w->id, d->winSaturationAtom, COLOR);
 			if (w->alive)
 				w->paint.saturation = w->saturation;
 		}
@@ -1328,7 +1285,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	}
 	else
 	{
-		w->wmType = getWindowType (screen->display, w->id);
+		w->wmType = getWindowType (d, w->id);
 		updateWindowClassHints (w); /* XXX required ?*/
 		recalcWindowType (w);
 	}
@@ -1347,7 +1304,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 
 		XUnionRegion (&rect, w->region, w->region);
 
-		w->damage = XDamageCreate (screen->display->display, id,
+		w->damage = XDamageCreate (d->display, id,
 								   XDamageReportRawRectangles);
 
 		/* need to check for DisplayModal state on all windows */
@@ -1368,7 +1325,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	}
 	else if (w->clientId)
 	{
-		if (getWmState (screen->display, w->id) == IconicState)
+		if (getWmState (d, w->id) == IconicState)
 		{
 			if (w->state & CompWindowStateHiddenMask)
 			{
@@ -1469,8 +1426,6 @@ mapWindow (CompWindow *w)
 	w->alive = TRUE;
 	w->bindFailed = FALSE;
 
-	//w->lastPong = w->screen->display->lastPing;
-
 	D(("0x%x : mapWindow\n", (unsigned int) w->id));
 	updateWindowRegion (w);
 	//updateWindowSize (w);
@@ -1516,12 +1471,6 @@ unmapWindow (CompWindow *w)
 
 	releaseWindow (w);
 
-	/* if (w->shaded && w->height)
-	   resizeWindow (w,
-	   w->attrib.x, w->attrib.y,
-	   w->attrib.width, ++w->attrib.height - 1,
-	   w->attrib.border_width);
-	*/
 	if (!w->redirected)
 		redirectWindow (w);
 }
@@ -1567,9 +1516,7 @@ resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidt
 		ph = height + borderWidth * 2;
 
 		if ((!w->clientId || w->clientMapped) && w->mapNum && w->redirected)
-		{
-			/* printf("update pixmap\n"); */
-			
+		{			
 			pixmap = XCompositeNameWindowPixmap (w->screen->display->display,
 												 w->id);
 			result = XGetGeometry (w->screen->display->display, pixmap, &root,
@@ -1589,7 +1536,6 @@ resizeWindow (CompWindow *w, int x, int y, int width, int height, int borderWidt
 		}
 
 		addWindowDamage (w);
-		/* printf("update attributes\n"); */
 		
 		dx		= x - w->attrib.x;
 		dy		= y - w->attrib.y;

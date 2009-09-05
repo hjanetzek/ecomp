@@ -9,7 +9,7 @@ m4_define(ecomp_version_micro, 2)
 
 AC_INIT([ecomp],
 	[ecomp_version_major().ecomp_version_minor().ecomp_version_micro()],
-	[davidr@novell.com])
+	[hannes.janetzek@gmail.com])
 
 ECOMP_VERSION_MAJOR=ecomp_version_major()
 ECOMP_VERSION_MINOR=ecomp_version_minor()
@@ -172,49 +172,8 @@ fi
 
 PKG_CHECK_MODULES(LIBPNG, libpng)
 
-dnl AC_ARG_ENABLE(glib,
-dnl   [  --disable-glib          Disable glib plugin],
-dnl   [use_glib=$enableval], [use_glib=yes])
-
-dnl if test "x$use_glib" = "xyes"; then
-dnl   PKG_CHECK_MODULES(GLIB, glib-2.0)
-dnl fi
-
-dnl AM_CONDITIONAL(USE_GLIB, test "x$use_glib" = "xyes")
-dnl if test "$use_glib" = yes; then
-dnl   AC_DEFINE(USE_GLIB, 1, [Build glib plugin])
-dnl fi
-
-dnl AC_ARG_ENABLE(gconf,
-dnl   [  --disable-gconf         Disable gconf plugin],
-dnl   [use_gconf=$enableval], [use_gconf=yes])
-
-dnl if test "x$use_gconf" = "xyes"; then
-dnl   PKG_CHECK_MODULES(GCONF, gconf-2.0)
-
-dnl   AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-dnl   if test x"$GCONFTOOL" = xno; then
-dnl     AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
-dnl   fi
-dnl fi
-
-dnl AM_GCONF_SOURCE_2
-
-dnl AM_CONDITIONAL(USE_GCONF, test "x$use_gconf" = "xyes")
-dnl if test "$use_gconf" = yes; then
-dnl   AC_DEFINE(USE_GCONF, 1, [Build gconf plugin])
-dnl fi
-
 stylesheetdir=$datadir/ecomp
 AC_SUBST(stylesheetdir)
-
-dnl AC_ARG_ENABLE(place,
-dnl   [  --disable-place         Disable window placement plugin],
-dnl   [use_place=$enableval], [use_place=yes])
-
-dnl if test "x$use_place" = "xyes"; then
-dnl   PKG_CHECK_MODULES(PLACE, glib-2.0, [use_place=yes], [use_place=no])
-dnl fi
 
 AM_CONDITIONAL(PLACE_PLUGIN, test "x$use_place" = "xyes")
 if test "$use_place" = yes; then
@@ -233,18 +192,6 @@ AM_CONDITIONAL(DBUS_PLUGIN, test "x$use_dbus" = "xyes")
 if test "$use_dbus" = yes; then
   AC_DEFINE(USE_DBUS, 1, [Build dbus plugin])
 fi
-
-dnl AC_ARG_ENABLE(dbus-glib,
-dnl   [  --disable-dbus-glib     Disable dbus-glib support],
-dnl   [use_dbus_glib=$enableval], [use_dbus_glib=yes])
-
-dnl if test "x$use_dbus_glib" = "xyes"; then
-dnl   PKG_CHECK_MODULES(DBUS_GLIB, dbus-glib-1, [use_dbus_glib=yes], [use_dbus_glib=no])
-dnl fi
-
-dnl if test "$use_dbus" = yes; then
-dnl   AC_DEFINE(USE_DBUS_GLIB, 1, [Build dbus glib support])
-dnl fi
 
 AC_ARG_ENABLE(inotify,
   [  --disable-inotify       Disable inotify plugin],
@@ -298,23 +245,6 @@ if test "$use_librsvg" = yes; then
   AC_DEFINE(USE_LIBRSVG, 1, [librsvg for SVG support])
 fi
 
-dnl AC_ARG_ENABLE(gtk,
-dnl   [  --disable-gtk           Disable gtk window decorator],
-dnl   [use_gtk=$enableval], [use_gtk=yes])
-
-dnl AC_ARG_ENABLE(metacity,
-dnl   [  --disable-metacity      Disable metacity theme support],
-dnl   [use_metacity=$enableval], [use_metacity=yes])
-
-dnl AC_ARG_ENABLE(gnome,
-dnl   [  --disable-gnome         Disable gnome settings module],
-dnl   [use_gnome=$enableval], [use_gnome=yes])
-
-
-#AC_SUBST(windowsettingsdatadir)
-#AC_SUBST(windowsettingslibdir)
-#AC_SUBST(keybindingsdir)
-
 PKG_CHECK_MODULES(CAIRO, cairo-xlib-xrender cairo >= 1.0, [have_cairo=yes], [have_cairo=no])
 PKG_CHECK_MODULES(PANGO, cairo-xlib-xrender pangocairo cairo >= 1.0, [have_pango=yes], [have_pango=no])
 
@@ -327,13 +257,6 @@ AM_CONDITIONAL(WALL_PLUGIN, test "x$have_cairo" = "xyes")
 if test "x$have_cairo" = "xyes"; then
   AC_DEFINE(USE_WALL, 1, [Build wall plugin])
 fi
-
-# PKG_CHECK_MODULES(GROUP, compiz-text cairo >= 1.0, [use_group=yes], [use_group=no])
-# AM_CONDITIONAL(GROUP_PLUGIN, test "x$use_group" = "xyes")
-# if test "$use_group" = yes; then
-#  AC_DEFINE(USE_GROUP, 1, [Build group plugin])
-# fi
-
 
 AC_ARG_ENABLE(jpeg,
   [  --disable-jpeg      Disable jpeg plugin],
@@ -357,19 +280,6 @@ fi
 PKG_CHECK_MODULES(LIBXSLT, libxslt)
 xsltdir=$datadir/bcop
 AC_SUBST(xsltdir)
-
-
-dnl PKG_CHECK_MODULES(BCOP, bcop >= 0.5.2, [bcop_found=yes])
-dnl if test "$bcop_found" = yes; then
-dnl   if test -z "$PKG_CONFIG"; then
-dnl       AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
-dnl   fi  
-dnl   if test "$PKG_CONFIG" != "no" ; then
-dnl       BCOP_BIN=`$PKG_CONFIG --variable=bin bcop`
-dnl       AC_SUBST(BCOP_BIN)
-dnl   fi
-dnl fi
-## hmmm 
 
 BCOP_BIN=../bcop/src/bcop.in
 AC_SUBST(BCOP_BIN)
@@ -398,7 +308,6 @@ animation/Makefile
 mblur/Makefile
 cubereflex/Makefile
 scaleaddon/Makefile
-staticswitcher/Makefile
 images/Makefile
 metadata/Makefile
 bcop/bcop.pc
@@ -409,13 +318,8 @@ po/Makefile.in
 data/Makefile
 ])
 
-#scalefilter/Makefile
-
 echo ""
 echo "the following optional plugins will be compiled:"
 echo "  dbus:     $use_dbus"
-#echo "  svg:      $use_librsvg"
-#echo "  inotify:  $use_inotify"
-#echo "  fuse:     $use_fuse"
 echo ""
 echo ""
