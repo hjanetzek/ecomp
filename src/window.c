@@ -1641,12 +1641,10 @@ configureWindow (CompWindow *w, XConfigureEvent *ce)
 	if (w->clientId)		
 	{
 		/* ignore deskwitch window movements */
-		if (replaceCurrentWm ||
-			((MOD(ce->x - w->attrib.x, s->width) == 0) &&
+		if (((MOD(ce->x - w->attrib.x, s->width) == 0) &&
 			 (MOD(ce->y - w->attrib.y, s->height) == 0)))
-		{
-			x = MOD(ce->x, s->width)  + ((w->initialViewportX - s->x) * s->width);
-			y = MOD(ce->y, s->height) + ((w->initialViewportY - s->y) * s->height);
+		{						
+			return;
 		}
 		else
 		{
@@ -1716,9 +1714,9 @@ syncWindowPosition (CompWindow *w)
 {
 	/* printf("0x%x : syncWindowPosition: %d:%d\n", (unsigned int) w->id, w->attrib.x,  w->attrib.y); */
 
-	/* w->serverX = w->attrib.x;
-	 * w->serverY = w->attrib.y;
-	 * XMoveWindow (w->screen->display->display, w->id, w->attrib.x, w->attrib.y); */
+	w->serverX = w->attrib.x;
+	w->serverY = w->attrib.y;
+	/* XMoveWindow (w->screen->display->display, w->id, w->attrib.x, w->attrib.y); */
 
 	/* we moved without resizing, so we have to send a configure notify */
 	// XXX TESTING sendConfigureNotify (w);

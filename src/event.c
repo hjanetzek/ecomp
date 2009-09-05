@@ -530,10 +530,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
 
 					printf("desk_event %p %d %d\n", win, x, y);
-					
-					//printf("xy:%d:%d, dxy%d:%d, sy:%d, svr:%d, att:%d\n",
-					//	 x,y,dx,dy, w->syncX, w->serverX, w->attrib.x);
-
+										
 					if (x == w->attrib.x && y == w->attrib.y) break;
 
 					int immediate = 1;
