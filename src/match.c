@@ -592,21 +592,25 @@ matchEvalOps (CompDisplay *display,
 	      CompWindow  *window)
 {
     Bool value, result = FALSE;
-
     while (nOp--)
     {
 	/* fast evaluation */
 	if (op->any.flags & MATCH_OP_AND_MASK)
 	{
 	    /* result will never be true */
-	    if (!result)
-		return FALSE;
+	   if (!result)
+	     {
+			 return FALSE;
+	     }
+	   
 	}
 	else
 	{
 	    /* result will always be true */
 	    if (result)
-		return TRUE;
+	      {
+			  return TRUE;
+	      }
 	}
 
 	switch (op->type) {
@@ -614,7 +618,6 @@ matchEvalOps (CompDisplay *display,
 	    value = matchEvalOps (display, op->group.op, op->group.nOp, window);
 	    break;
 	case CompMatchOpTypeExp:
-	  
 	default:
 	    value = (*op->exp.e.eval) (display, window, op->exp.e.priv);
 	    break;
@@ -638,18 +641,20 @@ Bool
 matchEval (CompMatch  *match,
 	   CompWindow *window)
 {
+   int blub = 0;
+   
     if (match->display)
-	return matchEvalOps (match->display, match->op, match->nOp, window);
+	blub = matchEvalOps (match->display, match->op, match->nOp, window);
 
-    return FALSE;
+    return blub;
 }
 
 static Bool
 matchEvalTypeExp (CompDisplay *display,
 		  CompWindow  *window,
 		  CompPrivate private)
-{
-   return (private.uval & window->type);
+{   
+   return !!(private.uval & window->type);
    /* return (private.uval & window->wmTpe); */
 }
 

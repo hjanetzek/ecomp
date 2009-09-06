@@ -53,7 +53,7 @@ typedef struct _Vector
 #define DECOR_SHADOW 0
 #define DECOR_RAISED 1
 #define DECOR_MENU 2
-#define DECOR_NUM 1
+#define DECOR_NUM 3
 
 typedef struct _DecorTexture
 {
@@ -538,39 +538,36 @@ decorWindowUpdate(CompWindow *w, Bool allowDecoration)
    old = (wd) ? wd->decor : NULL;
 
    switch(w->type) {
-    case CompWindowTypeDialogMask:
-    case CompWindowTypeModalDialogMask:
-    case CompWindowTypeUtilMask:
-    case CompWindowTypeNormalMask:
-    case CompWindowTypeUnknownMask:
-    case CompWindowTypeMenuMask:
-    case CompWindowTypeDropdownMenuMask:
-    case CompWindowTypePopupMenuMask:
-    case CompWindowTypeDockMask:
-       decorate = TRUE;
-    default:
+    case CompWindowTypeFullscreenMask:
+    case CompWindowTypeDesktopMask:
+       decorate = FALSE;
        break;
+    default:
+       decorate = TRUE;
    }
    
-   if (w->region->numRects > 1)
+   if (w->region->numRects > 1 || (w->alpha && !w->clientId))
      decorate = FALSE;
-  
+
    if (decorate)
      {
-	int matched = 1;
+   	match = &dd->opt[DECOR_DISPLAY_OPTION_MENU_MATCH].value.match;
+	/* FUCK! YOU! */
+	if (match) match->display = w->screen->display;
+	
+	if (matchEval(match, w))
+   	  decor = ds->decor[DECOR_MENU];
+     }
 
+   if (decorate && !decor)
+     {
    	match = &dd->opt[DECOR_DISPLAY_OPTION_SHADOW_MATCH].value.match;
-	if (match && !matchEval(match, w))
-	  {
-	     matched = 0;
-	     decorate = FALSE;
-	  }
+   	if (matchEval(match, w))
+   	  decor = ds->decor[DECOR_SHADOW];
      }
-
-   if (decorate)
-     {
-	decor = ds->decor[DECOR_SHADOW];
-     }
+   
+   if (!decor)
+     decorate = FALSE;
    
    if (decor == old)
      return FALSE;
@@ -728,7 +725,8 @@ decorSetDisplayOption(CompPlugin *plugin, CompDisplay *display,
    int index;
    CompScreen *s;
    CompWindow *w;
-
+   int i = -1;
+   
    DECOR_DISPLAY(display);
 
    o = compFindOption(dd->opt, NUM_OPTIONS(dd), name, &index);
@@ -752,31 +750,49 @@ decorSetDisplayOption(CompPlugin *plugin, CompDisplay *display,
    case DECOR_DISPLAY_OPTION_SHADOW_OFFSET_X:
    case DECOR_DISPLAY_OPTION_SHADOW_COLOR:
       if (!compSetOption(o, value)) break;
-
+      i = DECOR_SHADOW;
       for (s = display->screens; s; s = s->next)
 	{
 	   DECOR_SCREEN(s);
-	   int i;
 	   
-	   for (i = 0; i < DECOR_NUM; i++)
-	     {
-		if (ds->decor[i])
-		  decorReleaseDecoration(s, ds->decor[i]);
+	   if (ds->decor[i])
+	     decorReleaseDecoration(s, ds->decor[i]);
 
-		ds->decor[i] = decorCreateShadow(s, DECOR_SHADOW);
+	   ds->decor[i] = decorCreateShadow(s, i);
 
-		for (w = s->windows; w; w = w->next)
-		  if (w->attrib.class != InputOnly)
-		    decorWindowUpdate(w, TRUE);
-	     }
+	   for (w = s->windows; w; w = w->next)
+	     if (w->attrib.class != InputOnly)
+	       decorWindowUpdate(w, TRUE);
 	}
-      
+      break;
+    case DECOR_DISPLAY_OPTION_MENU_SHADOW_RADIUS:
+    case DECOR_DISPLAY_OPTION_MENU_SHADOW_OPACITY:
+    case DECOR_DISPLAY_OPTION_MENU_SHADOW_OFFSET_Y:
+    case DECOR_DISPLAY_OPTION_MENU_SHADOW_OFFSET_X:
+       if (!compSetOption(o, value)) break;
+       i = DECOR_MENU;
+       for (s = display->screens; s; s = s->next)
+	 {
+	    DECOR_SCREEN(s);
+	   
+	    if (ds->decor[i])
+	      decorReleaseDecoration(s, ds->decor[i]);
+
+	    ds->decor[i] = decorCreateShadow(s, i);
+
+	    for (w = s->windows; w; w = w->next)
+	      if (w->attrib.class != InputOnly)
+		decorWindowUpdate(w, TRUE);
+	 }
+
+       break;
     default:
        if (compSetOption(o, value))
          return TRUE;
        break;
    }
 
+   
    return FALSE;
 }
 
@@ -885,7 +901,7 @@ static const CompMetadataOptionInfo decorDisplayOptionInfo[] = {
 	{ "active_shadow_x_offset", "int", "<min>-16</min><max>16</max>", 0, 0 },
 	{ "active_shadow_y_offset", "int", "<min>-16</min><max>16</max>", 0, 0 },
 	{ "mipmap", "bool", 0, 0, 0 },
-	{ "menu_match", "match", 0, 0, 0 },
+	{ "menu_shadow_match", "match", 0, 0, 0 },
 	{ "shadow_match", "match", 0, 0, 0 }
 };
 
@@ -915,17 +931,6 @@ decorInitDisplay(CompPlugin *p, CompDisplay *d)
      }
 
    dd->textures = 0;
-
-   /* dd->supportingDmCheckAtom =
-    *   XInternAtom(d->display, DECOR_SUPPORTING_DM_CHECK_ATOM_NAME, 0);
-    * dd->winDecorAtom =
-    *   XInternAtom(d->display, DECOR_WINDOW_ATOM_NAME, 0); */
-   /* dd->decorAtom[DECOR_BARE] =
-    *   XInternAtom(d->display, DECOR_BARE_ATOM_NAME, 0); */
-   /* dd->decorAtom[DECOR_NORMAL] =
-    *   XInternAtom(d->display, DECOR_NORMAL_ATOM_NAME, 0);
-    * dd->decorAtom[DECOR_ACTIVE] =
-    *   XInternAtom(d->display, DECOR_ACTIVE_ATOM_NAME, 0); */
 
    WRAP(dd, d, handleEvent, decorHandleEvent);
    WRAP(dd, d, matchPropertyChanged, decorMatchPropertyChanged);
@@ -992,30 +997,54 @@ decorCreateShadow(CompScreen *s, int shadowType)
       return NULL;
       break;
    }
-   
-   if ((rad = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_RADIUS].value.f))
-     {	
-	opt.shadow_radius   = rad;
-	opt.shadow_opacity  = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_OPACITY].value.f;
-	opt.shadow_color[0] = 0;
-	opt.shadow_color[1] = 0;
-	opt.shadow_color[2] = 0;
-	opt.shadow_offset_x = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_OFFSET_X].value.i;
-	opt.shadow_offset_y = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_OFFSET_Y].value.i;
 
-	printf("use custom shadow %f,%f, %d, %d\n", opt.shadow_radius, opt.shadow_opacity,
-	       opt.shadow_offset_x, opt.shadow_offset_y);
-     }
-   else
+   opt.shadow_radius = 0;
+   
+   if (shadowType == DECOR_SHADOW)
      {
-	printf("use default shadow\n");
-	opt.shadow_radius   = 20;
-	opt.shadow_opacity  = 0.45f;
-	opt.shadow_color[0] = 0;
-	opt.shadow_color[1] = 0;
-	opt.shadow_color[2] = 0;
-	opt.shadow_offset_x = 0;
-	opt.shadow_offset_y = 8;
+	
+	if ((rad = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_RADIUS].value.f))
+	  {	
+	     opt.shadow_radius   = rad;
+	     opt.shadow_opacity  = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_OPACITY].value.f;
+	     opt.shadow_color[0] = 0;
+	     opt.shadow_color[1] = 0;
+	     opt.shadow_color[2] = 0;
+	     opt.shadow_offset_x = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_OFFSET_X].value.i;
+	     opt.shadow_offset_y = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_OFFSET_Y].value.i;
+
+	     printf("use custom shadow %f,%f, %d, %d\n", opt.shadow_radius, opt.shadow_opacity,
+		    opt.shadow_offset_x, opt.shadow_offset_y);
+	  }
+     }
+   else if (shadowType == DECOR_MENU)
+     {
+	
+	if ((rad = dd->opt[DECOR_DISPLAY_OPTION_MENU_SHADOW_RADIUS].value.f))
+	  {	
+	     opt.shadow_radius   = rad;
+	     opt.shadow_opacity  = dd->opt[DECOR_DISPLAY_OPTION_MENU_SHADOW_OPACITY].value.f;
+	     opt.shadow_color[0] = 0;
+	     opt.shadow_color[1] = 0;
+	     opt.shadow_color[2] = 0;
+	     opt.shadow_offset_x = dd->opt[DECOR_DISPLAY_OPTION_MENU_SHADOW_OFFSET_X].value.i;
+	     opt.shadow_offset_y = dd->opt[DECOR_DISPLAY_OPTION_MENU_SHADOW_OFFSET_Y].value.i;
+
+	     printf("use custom shadow %f,%f, %d, %d\n", opt.shadow_radius, opt.shadow_opacity,
+		    opt.shadow_offset_x, opt.shadow_offset_y);
+	  }
+     }
+   
+   if (!opt.shadow_radius)
+     {
+   	printf("use default shadow\n");
+   	opt.shadow_radius   = 20;
+   	opt.shadow_opacity  = 0.45f;
+   	opt.shadow_color[0] = 0;
+   	opt.shadow_color[1] = 0;
+   	opt.shadow_color[2] = 0;
+   	opt.shadow_offset_x = 0;
+   	opt.shadow_offset_y = 8;
      }
    
    /* ds->shadow[shadowType] = decor_shadow_create */
@@ -1142,12 +1171,8 @@ decorInitScreen(CompPlugin *p, CompScreen *s)
 
 
    ds->decor[DECOR_SHADOW] = decorCreateShadow(s, DECOR_SHADOW);
-   
-   //nQuad, quads, no_border_shadow->pixmap);
-   
-   
-   /* decorCheckForDmOnScreen(s, FALSE); */
-
+   ds->decor[DECOR_MENU] = decorCreateShadow(s, DECOR_MENU);
+ 
    return TRUE;
 }
 
