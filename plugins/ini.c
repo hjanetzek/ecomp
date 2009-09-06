@@ -1043,7 +1043,7 @@ iniFileModified (const char *name,
 		while (*end++ != '-') len++;
 	  
 		snprintf(plugin, len, "%s", list[i]);
-		printf("plug: %s - %d\n", plugin, screen);
+		/* printf("plug: %s - %d\n", plugin, screen); */
     
 		if(!strcmp("core", plugin))
 			iniLoadOptionsFromFile (d, options, NULL, screen);

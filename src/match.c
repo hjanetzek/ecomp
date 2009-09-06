@@ -283,12 +283,18 @@ matchAddExp (CompMatch  *match,
 	     const char *str)
 {
     CompMatchOp *op;
-    char	*value;
-
-    value = strdup (str);
+    char	*value, *p;
+    
+    value = calloc(strlen(str) + 1, sizeof(char));
     if (!value)
 	return FALSE;
 
+    p = value;
+    
+    for (;*str != '\0';str++)
+      if (*str != ' ')
+	*p++ = *str;
+        
     op = matchAddOp (match, CompMatchOpTypeExp, flags);
     if (!op)
     {
@@ -382,7 +388,7 @@ matchAddFromString (CompMatch  *match,
     char *value;
     int	 j, i = 0;
     int	 flags = 0;
-
+    
     while (str[i] != '\0')
     {
 	while (str[i] == ' ')
@@ -429,7 +435,6 @@ matchAddFromString (CompMatch  *match,
 
 		strncpy (value, &str[i], length);
 		value[length] = '\0';
-
 		matchInit (&group);
 		matchAddFromString (&group, value);
 		matchAddGroup (match, flags, &group);
@@ -644,7 +649,8 @@ matchEvalTypeExp (CompDisplay *display,
 		  CompWindow  *window,
 		  CompPrivate private)
 {
-    return (private.uval & window->type);
+   return (private.uval & window->type);
+   /* return (private.uval & window->wmTpe); */
 }
 
 static Bool

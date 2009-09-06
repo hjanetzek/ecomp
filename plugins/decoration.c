@@ -50,7 +50,9 @@ typedef struct _Vector
   int y0;
 } Vector;
 
-#define DECOR_BARE 0
+#define DECOR_SHADOW 0
+#define DECOR_RAISED 1
+#define DECOR_MENU 2
 #define DECOR_NUM 1
 
 typedef struct _DecorTexture
@@ -116,9 +118,9 @@ typedef struct _DecorDisplay
   HandleEventProc handleEvent;
   MatchPropertyChangedProc matchPropertyChanged;
   DecorTexture *textures;
-  Atom supportingDmCheckAtom;
-  Atom winDecorAtom;
-  Atom decorAtom[DECOR_NUM];
+  /* Atom supportingDmCheckAtom; */
+  /* Atom winDecorAtom;
+   * Atom decorAtom[DECOR_NUM]; */
 
   CompOption opt[DECOR_DISPLAY_OPTION_NUM];
 } DecorDisplay;
@@ -174,25 +176,10 @@ typedef struct _DecorWindow
 static Decoration *decorCreateShadow(CompScreen *screen, int shadowType);
 
 
-/* static decor_context_t shadow_context = {
- * 	{ 0, 0, 0, 0 },
- *       0, 0, 0, 0,
- *       0, 0, 0, 0,
- * };
- * 
- * static decor_context_t menu_shadow_context = {
- * 	{ 0, 0, 0, 0 },
- *       0, 0, 0, 0,
- *       0, 0, 0, 0,
- * };
- * 
- * static decor_context_t active_shadow_context = {
- * 	{ 0, 0, 0, 0 },
- * 	0, 0, 0, 0,
- * 	0, 0, 0, 0,
- * }; */
+static decor_quad_t quads_shadow[N_QUADS_MAX];
+static decor_quad_t quads_menu[N_QUADS_MAX];
+static decor_quad_t quads_raised[N_QUADS_MAX];
 
-static decor_quad_t quads[N_QUADS_MAX];
 
 static Bool
 decorDrawWindow(CompWindow *w, const CompTransform *transform,
@@ -233,13 +220,13 @@ decorDrawWindow(CompWindow *w, const CompTransform *transform,
                       box.extents.y1 < box.extents.y2)
                     {
                        (*w->screen->addWindowGeometry)
-						   (w, &wd->quad[i].matrix, 1, &box, region);
+			 (w, &wd->quad[i].matrix, 1, &box, region);
                     }
                }
 
              if (w->vCount)
-				 (*w->screen->drawWindowTexture)
-				   (w, &wd->decor->texture->texture, attrib, mask);
+	       (*w->screen->drawWindowTexture)
+		 (w, &wd->decor->texture->texture, attrib, mask);
           }
      }
 
@@ -404,17 +391,11 @@ computeQuadBox(decor_quad_t *q, int width, int height,
 static void
 decorReleaseDecoration(CompScreen *screen, Decoration *decoration)
 {
-   printf("decorReleaseDecoration %d\n", decoration->refCount);
-   /* DECOR_SCREEN(screen); */
-   
    decoration->refCount--;
    if (decoration->refCount)
      return;
 
    decorReleaseTexture(screen, decoration->texture);
-
-   /* free(decoration->quad); */
-   /* decor_shadow_destroy (screen->display->display, ds->shadow[decoration->type]); */
 
    free(decoration);
 }
@@ -547,9 +528,9 @@ decorWindowUpdate(CompWindow *w, Bool allowDecoration)
    WindowDecoration *wd;
    Decoration *old, *decor = NULL;
    Bool decorate = FALSE;
-   //CompMatch *match;
+   CompMatch *match;
 
-   //DECOR_DISPLAY(w->screen->display);
+   DECOR_DISPLAY(w->screen->display);
    DECOR_SCREEN(w->screen);
    DECOR_WINDOW(w);
 
@@ -561,59 +542,36 @@ decorWindowUpdate(CompWindow *w, Bool allowDecoration)
     case CompWindowTypeModalDialogMask:
     case CompWindowTypeUtilMask:
     case CompWindowTypeNormalMask:
-       /* if (w->mwmDecor & (MwmDecorAll | MwmDecorTitle)) */
-         decorate = TRUE;
+    case CompWindowTypeUnknownMask:
+    case CompWindowTypeMenuMask:
+    case CompWindowTypeDropdownMenuMask:
+    case CompWindowTypePopupMenuMask:
+    case CompWindowTypeDockMask:
+       decorate = TRUE;
     default:
        break;
    }
-    
-   if (w->region->numRects == 1 && (!w->alpha || w->clientId))
-     decor = ds->decor[DECOR_BARE];
+   
+   if (w->region->numRects > 1)
+     decorate = FALSE;
+  
+   if (decorate)
+     {
+	int matched = 1;
 
-   /* if (decorate)
-    *   {
-    * 	match = &dd->opt[DECOR_DISPLAY_OPTION_DECOR_MATCH].value.match;
-    * 	if (!matchEval(match, w))
-    * 	  decorate = FALSE;
-    *   }
-    * 
-    * if (decorate)
-    *   {
-    * 	if (dw->decor && decorCheckSize(w, dw->decor))
-    * 	  {
-    * 	     decor = dw->decor;
-    * 	  }
-    * 	else
-    * 	  {
-    * 	     if (w->id == w->screen->display->activeWindow)
-    * 	       decor = ds->decor[DECOR_ACTIVE];
-    * 	     else
-    * 	       decor = ds->decor[DECOR_NORMAL];
-    * 	  }
-    *   }
-    * else
-    *   {
-    * 	match = &dd->opt[DECOR_DISPLAY_OPTION_SHADOW_MATCH].value.match;
-    * 	if (matchEval(match, w))
-    * 	  {
-    * 	     if (w->region->numRects == 1 && !w->alpha)
-    * 	       decor = ds->decor[DECOR_BARE];
-    * 
-    * 	     // no decoration on windows with below state 
-    * 	     if (w->state & CompWindowStateBelowMask)
-    * 	       decor = NULL;
-    * 
-    * 	     if (decor)
-    * 	       {
-    * 		  if (!decorCheckSize(w, decor))
-    * 		    decor = NULL;
-    * 	       }
-    * 	  }
-    *   } */
+   	match = &dd->opt[DECOR_DISPLAY_OPTION_SHADOW_MATCH].value.match;
+	if (match && !matchEval(match, w))
+	  {
+	     matched = 0;
+	     decorate = FALSE;
+	  }
+     }
 
-   /* if (!ds->dmWin || !allowDecoration)
-    *   decor = NULL; */
-
+   if (decorate)
+     {
+	decor = ds->decor[DECOR_SHADOW];
+     }
+   
    if (decor == old)
      return FALSE;
 
@@ -645,79 +603,58 @@ decorWindowUpdate(CompWindow *w, Bool allowDecoration)
 static void
 decorHandleEvent(CompDisplay *d, XEvent *event)
 {
-   Window activeWindow = d->activeWindow;
    CompWindow *w;
 
    DECOR_DISPLAY(d);
 
-   switch(event->type) {
-    /* case DestroyNotify:
-     *    w = findWindowAtDisplay(d, event->xdestroywindow.window);
-     *    if (w)
-     *      {
-     *         DECOR_SCREEN(w->screen);
-	 * 
-     *         if (w->id == ds->dmWin)
-     *           decorCheckForDmOnScreen(w->screen, TRUE);
-     *      }
-     *    break; */
-    case MapRequest:
-       w = findWindowAtDisplay(d, event->xmaprequest.window);
-       if (w)
-         decorWindowUpdate(w, TRUE);
-       break;
-    default:
-       if (event->type == d->damageEvent + XDamageNotify)
-         {
-	    XDamageNotifyEvent *de = (XDamageNotifyEvent *) event;
-	    DecorTexture *t;
-	    DecorWindow *dw;
-	    DecorScreen *ds;
-	    CompScreen *s;
+   switch(event->type) 
+     {
+      case MapRequest:
+	 w = findWindowAtDisplay(d, event->xmaprequest.window);
+	 if (w)
+	   decorWindowUpdate(w, TRUE);
+	 break;
+      default:
+	 if (event->type == d->damageEvent + XDamageNotify)
+	   {
+	      XDamageNotifyEvent *de = (XDamageNotifyEvent *) event;
+	      DecorTexture *t;
+	      DecorWindow *dw;
+	      DecorScreen *ds;
+	      CompScreen *s;
 
-	    for (t = dd->textures; t; t = t->next)
-	      {
-                 if (t->pixmap != de->drawable)
-		   continue;
+	      for (t = dd->textures; t; t = t->next)
+		{
+		   if (t->pixmap != de->drawable)
+		     continue;
 		 
-		 t->texture.oldMipmaps = TRUE;
+		   t->texture.oldMipmaps = TRUE;
 
-		 for (s = d->screens; s; s = s->next)
-		   {
-		      ds = GET_DECOR_SCREEN(s, dd);
+		   for (s = d->screens; s; s = s->next)
+		     {
+			ds = GET_DECOR_SCREEN(s, dd);
 
-		      for (w = s->windows; w; w = w->next)
-			{
-			   if (w->attrib.class == InputOnly) continue;
-			   if (/*w->shaded ||*/ w->mapNum)
-			     {
-				dw = GET_DECOR_WINDOW(w, ds);
+			for (w = s->windows; w; w = w->next)
+			  {
+			     if (w->attrib.class == InputOnly) continue;
+			     if (/*w->shaded ||*/ w->mapNum)
+			       {
+				  dw = GET_DECOR_WINDOW(w, ds);
 
-				if (dw->wd && dw->wd->decor->texture == t)
-				  damageWindowOutputExtents(w);
-			     }
-			}
-		   }
-		 return;
-	      }
-         }
-       break;
-   }
+				  if (dw->wd && dw->wd->decor->texture == t)
+				    damageWindowOutputExtents(w);
+			       }
+			  }
+		     }
+		   return;
+		}
+	   }
+	 break;
+     }
 
    UNWRAP(dd, d, handleEvent);
    (*d->handleEvent) (d, event);
    WRAP(dd, d, handleEvent, decorHandleEvent);
-
-   if (d->activeWindow != activeWindow)
-     {
-        w = findWindowAtDisplay(d, activeWindow);
-        if (w)
-          decorWindowUpdate(w, TRUE);
-
-        w = findWindowAtDisplay(d, d->activeWindow);
-        if (w)
-          decorWindowUpdate(w, TRUE);
-     }
 
    switch(event->type) {
     default:
@@ -826,7 +763,7 @@ decorSetDisplayOption(CompPlugin *plugin, CompDisplay *display,
 		if (ds->decor[i])
 		  decorReleaseDecoration(s, ds->decor[i]);
 
-		ds->decor[i] = decorCreateShadow(s, DECOR_BARE);
+		ds->decor[i] = decorCreateShadow(s, DECOR_SHADOW);
 
 		for (w = s->windows; w; w = w->next)
 		  if (w->attrib.class != InputOnly)
@@ -880,7 +817,7 @@ decorResizeUpdateTimeout(void *closure)
 
    DECOR_WINDOW(w);
 
-   decorWindowUpdate(w, TRUE);
+   /* decorWindowUpdate(w, TRUE); */
 
    dw->resizeUpdateHandle = 0;
 
@@ -979,12 +916,12 @@ decorInitDisplay(CompPlugin *p, CompDisplay *d)
 
    dd->textures = 0;
 
-   dd->supportingDmCheckAtom =
-     XInternAtom(d->display, DECOR_SUPPORTING_DM_CHECK_ATOM_NAME, 0);
-   dd->winDecorAtom =
-     XInternAtom(d->display, DECOR_WINDOW_ATOM_NAME, 0);
-   dd->decorAtom[DECOR_BARE] =
-     XInternAtom(d->display, DECOR_BARE_ATOM_NAME, 0);
+   /* dd->supportingDmCheckAtom =
+    *   XInternAtom(d->display, DECOR_SUPPORTING_DM_CHECK_ATOM_NAME, 0);
+    * dd->winDecorAtom =
+    *   XInternAtom(d->display, DECOR_WINDOW_ATOM_NAME, 0); */
+   /* dd->decorAtom[DECOR_BARE] =
+    *   XInternAtom(d->display, DECOR_BARE_ATOM_NAME, 0); */
    /* dd->decorAtom[DECOR_NORMAL] =
     *   XInternAtom(d->display, DECOR_NORMAL_ATOM_NAME, 0);
     * dd->decorAtom[DECOR_ACTIVE] =
@@ -1014,10 +951,10 @@ decorFiniDisplay(CompPlugin *p, CompDisplay *d)
 }
 
 static Decoration *
-decorCreateShadow(CompScreen *screen, int shadowType)
+decorCreateShadow(CompScreen *s, int shadowType)
 {
-   DECOR_SCREEN(screen);
-   DECOR_DISPLAY(screen->display);
+   /* DECOR_SCREEN(s); */
+   DECOR_DISPLAY(s->display);
 
    Decoration *decoration;
    decor_extents_t input;
@@ -1031,16 +968,30 @@ decorCreateShadow(CompScreen *screen, int shadowType)
    int radius = 5;
    int space = (radius + 1) / 2;
    decor_quad_t *quad;
-   
+   decor_shadow_t *shadow;   
    decor_layout_t layout;
-
+   float rad;
+   
    decor_context_t shadow_context = {
      { 0, 0, 0, 0 },
        0, 0, 0, 0,
        0, 0, 0, 0,
    };
 
-   float rad;
+   switch(shadowType) {
+    case DECOR_SHADOW:
+       quad = quads_shadow;
+        break;
+    case DECOR_RAISED:
+       quad = quads_raised;
+       break;
+    case DECOR_MENU:
+       quad = quads_menu;
+       break;
+   default:
+      return NULL;
+      break;
+   }
    
    if ((rad = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_RADIUS].value.f))
      {	
@@ -1067,9 +1018,10 @@ decorCreateShadow(CompScreen *screen, int shadowType)
 	opt.shadow_offset_y = 8;
      }
    
-   ds->shadow[shadowType] = decor_shadow_create
-     (screen->display->display,
-      XScreenOfDisplay(screen->display->display, screen->screenNum),
+   /* ds->shadow[shadowType] = decor_shadow_create */
+   shadow = decor_shadow_create
+     (s->display->display,
+      XScreenOfDisplay(s->display->display, s->screenNum),
       1, 1,
       space, space, space, space,
       0, 0, 0, 0,
@@ -1079,7 +1031,8 @@ decorCreateShadow(CompScreen *screen, int shadowType)
 
    decor_get_default_layout (&shadow_context, 1, 1, &layout);
 
-   nQuad = decor_set_lSrStSbS_window_quads (quads, &shadow_context,
+
+   nQuad = decor_set_lSrStSbS_window_quads (quad, &shadow_context,
 					    &layout);
    input.bottom = 0;
    input.top = 0;
@@ -1102,16 +1055,20 @@ decorCreateShadow(CompScreen *screen, int shadowType)
         return NULL;
      }
 
-   decoration->texture = decorGetTexture(screen, ds->shadow[shadowType]->pixmap);
+   /* decoration->texture = decorGetTexture(screen, ds->shadow[shadowType]->pixmap); */
+   decoration->texture = decorGetTexture(s, shadow->pixmap);
    if (!decoration->texture)
      {
+	decor_shadow_destroy(s->display->display, shadow); 
         free(decoration);
         return NULL;
      }
 
+   decor_shadow_destroy(s->display->display, shadow);
+   
    decoration->minWidth  = minWidth;
    decoration->minHeight = minHeight;
-   decoration->quad      = quads;
+   decoration->quad      = quad;
    decoration->nQuad     = nQuad;
 
    left   = 0;
@@ -1119,7 +1076,7 @@ decorCreateShadow(CompScreen *screen, int shadowType)
    top    = 0;
    bottom = minHeight;
 
-   quad = quads;
+   /* quad = quads; */
    
    while(nQuad--)
      {
@@ -1184,7 +1141,8 @@ decorInitScreen(CompPlugin *p, CompScreen *s)
    s->privates[dd->screenPrivateIndex].ptr = ds;
 
 
-   ds->decor[DECOR_BARE] = decorCreateShadow(s, DECOR_BARE);
+   ds->decor[DECOR_SHADOW] = decorCreateShadow(s, DECOR_SHADOW);
+   
    //nQuad, quads, no_border_shadow->pixmap);
    
    
@@ -1619,3 +1577,62 @@ getCompPluginInfo(void)
  *       }
  *      }
  *    break; */
+
+/* case DestroyNotify:
+ *    w = findWindowAtDisplay(d, event->xdestroywindow.window);
+ *    if (w)
+ *      {
+ *         DECOR_SCREEN(w->screen);
+ * 
+ *         if (w->id == ds->dmWin)
+ *           decorCheckForDmOnScreen(w->screen, TRUE);
+ *      }
+ *    break; */
+
+/* if (decorate)
+ *   {
+ * 	if (dw->decor && decorCheckSize(w, dw->decor))
+ * 	  {
+ * 	     decor = dw->decor;
+ * 	  }
+ * 	else
+ * 	  {
+ * 	     if (w->id == w->screen->display->activeWindow)
+ * 	       decor = ds->decor[DECOR_ACTIVE];
+ * 	     else
+ * 	       decor = ds->decor[DECOR_NORMAL];
+ * 	  }
+ *   }
+ * else
+ *   {
+ * 	match = &dd->opt[DECOR_DISPLAY_OPTION_SHADOW_MATCH].value.match;
+ * 	if (matchEval(match, w))
+ * 	  {
+ * 	     if (w->region->numRects == 1 && !w->alpha)
+ * 	       decor = ds->decor[DECOR_BARE];
+ * 
+ * 	     // no decoration on windows with below state 
+ * 	     if (w->state & CompWindowStateBelowMask)
+ * 	       decor = NULL;
+ * 
+ * 	     if (decor)
+ * 	       {
+ * 		  if (!decorCheckSize(w, decor))
+ * 		    decor = NULL;
+ * 	       }
+ * 	  }
+ *   } */
+
+/* if (!ds->dmWin || !allowDecoration)
+ *   decor = NULL; */
+
+/* if (d->activeWindow != activeWindow)
+ *   {
+ *      w = findWindowAtDisplay(d, activeWindow);
+ *      if (w)
+ *        decorWindowUpdate(w, TRUE);
+ * 
+ *      w = findWindowAtDisplay(d, d->activeWindow);
+ *      if (w)
+ *        decorWindowUpdate(w, TRUE);
+ *   } */

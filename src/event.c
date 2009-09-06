@@ -372,8 +372,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			}
 			
 		}
-		else
-			if (event->xproperty.atom == d->winTypeAtom)
+		else if (event->xproperty.atom == d->winTypeAtom)
 		{
 			unsigned int type;
 
@@ -389,8 +388,11 @@ handleEvent (CompDisplay *d, XEvent	*event)
 						w->screen->desktopWindowCount++;
 				}
 
-				w->wmType = type;
-
+				if (w->clientId && type == CompWindowTypeUnknownMask)
+					w->wmType = CompWindowTypeNormalMask;
+				else
+					w->wmType = type;
+				
 				recalcWindowType (w);
 
 				if (w->type & CompWindowTypeDesktopMask)

@@ -289,21 +289,21 @@ getAllowedActionsForWindow (CompWindow *w, unsigned int *setActions, unsigned in
 unsigned int
 windowTypeFromString (const char *str)
 {
-	if (strcasecmp (str, "desktop") == 0)
+	if (strcasecmp (str, "desktop") == 0) // 0
 		return CompWindowTypeDesktopMask;
-	else if (strcasecmp (str, "dock") == 0)
+	else if (strcasecmp (str, "dock") == 0) // 2
 		return CompWindowTypeDockMask;
-	else if (strcasecmp (str, "toolbar") == 0)
+	else if (strcasecmp (str, "toolbar") == 0) // 4
 		return CompWindowTypeToolbarMask;
-	else if (strcasecmp (str, "menu") == 0)
+	else if (strcasecmp (str, "menu") == 0) // 8
 		return CompWindowTypeMenuMask;
-	else if (strcasecmp (str, "utility") == 0)
+	else if (strcasecmp (str, "utility") == 0) // 16
 		return CompWindowTypeUtilMask;
-	else if (strcasecmp (str, "splash") == 0)
+	else if (strcasecmp (str, "splash") == 0) // 32
 		return CompWindowTypeSplashMask;
-	else if (strcasecmp (str, "dialog") == 0)
+	else if (strcasecmp (str, "dialog") == 0) // 64
 		return CompWindowTypeDialogMask;
-	else if (strcasecmp (str, "normal") == 0)
+	else if (strcasecmp (str, "normal") == 0) //128
 		return CompWindowTypeNormalMask;
 	else if (strcasecmp (str, "dropdownmenu") == 0)
 		return CompWindowTypeDropdownMenuMask;
@@ -429,6 +429,7 @@ recalcWindowType (CompWindow *w)
 		type = CompWindowTypeFullscreenMask;
 
 	w->type = type;
+	/* w->wmType = type; */
 }
 
 void
@@ -1240,6 +1241,8 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		w->clientId = clientId;
 
 		w->wmType = getWindowType (d, w->clientId);
+		if (w->wmType == CompWindowTypeUnknownMask)
+			w->wmType = CompWindowTypeNormalMask;
 		w->state = getWindowState (d, w->clientId);
 		updateWindowClassHints (w);
 		if(w->resClass) printf ("- %s\n", w->resClass);
@@ -1419,15 +1422,6 @@ mapWindow (CompWindow *w)
 
 	if (w->type & CompWindowTypeDesktopMask)
 		w->screen->desktopWindowCount++;
-
-	/* if (!w->attrib.override_redirect)
-	 * {
-	 * 	if (!w->height)
-	 * 		resizeWindow (w,
-	 * 					  w->attrib.x, w->attrib.y,
-	 * 					  w->attrib.width, ++w->attrib.height - 1,
-	 * 					  w->attrib.border_width);
-	 * } */
 }
 
 void
