@@ -196,9 +196,10 @@ moveTerminate (CompDisplay     *d,
 		}
 
 		if (md->moveOpacity != OPAQUE)
+			/* let the window fade in */
 			addWindowDamage (md->w);
-
-		md->w = 0;
+		else
+			md->w = 0;
     }
 
     return FALSE;
@@ -279,31 +280,6 @@ moveHandleEvent (CompDisplay *d,
     WRAP (md, d, handleEvent, moveHandleEvent);
 }
 
-/* #define sigmoid(x) (1.0f / (1.0f + exp (-5.5f * 2 * ((x) - 0.5))))
- * #define sigmoidProgress(x) ((sigmoid (x) - sigmoid (0)) /	\
- * 							(sigmoid (1) - sigmoid (0)))
- * 
- * float sigmoidAnimProgress(AnimWindow * aw)
- * {
- *     float forwardProgress =
- * 		1 - aw->animRemainingTime / (aw->animTotalTime - aw->timestep);
- *     forwardProgress = MIN(forwardProgress, 1);
- *     forwardProgress = MAX(forwardProgress, 0);
- * 
- *     // Apply sigmoid and normalize
- *     forwardProgress =
- * 		(sigmoid(forwardProgress) - sigmoid(0)) /
- * 		(sigmoid(1) - sigmoid(0));
- * 
- *     if (aw->curWindowEvent == WindowEventOpen ||
- * 		aw->curWindowEvent == WindowEventUnminimize ||
- * 		aw->curWindowEvent == WindowEventUnshade ||
- * 		aw->curWindowEvent == WindowEventFocus)
- * 		forwardProgress = 1 - forwardProgress;
- * 
- *     return forwardProgress;
- * } */
-
 static void
 movePreparePaintScreen (CompScreen *s,
 						int		   _ms)
@@ -327,11 +303,8 @@ movePreparePaintScreen (CompScreen *s,
 
 
 static Bool
-movePaintWindow (CompWindow		 *w,
-				 const WindowPaintAttrib *attrib,
-				 const CompTransform	 *transform,
-				 Region			 region,
-				 unsigned int		 mask)
+movePaintWindow (CompWindow *w, const WindowPaintAttrib *attrib,
+				 const CompTransform *transform, Region region, unsigned int mask)
 {
     WindowPaintAttrib sAttrib;
     CompScreen	      *s = w->screen;
@@ -349,12 +322,10 @@ movePaintWindow (CompWindow		 *w,
 		{
 			sAttrib = *attrib;
 			attrib  = &sAttrib;
-
-			sAttrib.opacity = (sAttrib.opacity +
-							   ((int)(sAttrib.opacity *
-									  md->moveOpacity * ms->progress))) >> 16;
+			sAttrib.opacity = (sAttrib.opacity + ((int)(sAttrib.opacity *
+							 	md->moveOpacity * ms->progress))) >> 16;
 		}
-		if (!ms->grabIndex && ms->progress == 0.0){
+		if (ms->progress == 0.0){
 			ms->active = 0;
 			md->w = 0;
 		}
@@ -368,9 +339,7 @@ movePaintWindow (CompWindow		 *w,
 }
 
 static CompOption *
-moveGetDisplayOptions (CompPlugin  *plugin,
-					   CompDisplay *display,
-					   int	   *count)
+moveGetDisplayOptions (CompPlugin  *plugin, CompDisplay *display, int *count)
 {
     MOVE_DISPLAY (display);
 
