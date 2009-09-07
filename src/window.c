@@ -1068,8 +1068,8 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->desktop = screen->currentDesktop;
 
 	/* XXX rename to viewportX/Y */
-	w->initialViewportX = 0;
-	w->initialViewportY = 0;
+	w->initialViewportX = screen->x;
+	w->initialViewportY = screen->y;
 
 	/* w->initialTimestamp	   = 0;
 	 * w->initialTimestampSet = FALSE; */
