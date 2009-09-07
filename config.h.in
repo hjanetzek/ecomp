@@ -94,26 +94,14 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* Build annotate plugin */
-#undef USE_ANNOTATE
-
 /* Build dbus plugin */
 #undef USE_DBUS
-
-/* Build fuse plugin */
-#undef USE_FUSE
 
 /* Build inotify plugin */
 #undef USE_INOTIFY
 
 /* Build jpeg plugin */
 #undef USE_JPEG
-
-/* librsvg for SVG support */
-#undef USE_LIBRSVG
-
-/* Build placement plugin */
-#undef USE_PLACE
 
 /* Build text plugin */
 #undef USE_TEXT

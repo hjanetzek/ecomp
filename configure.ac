@@ -126,7 +126,6 @@ ECOMP_REQUIRES="xcomposite \
 		 xrandr	    \
 		 xinerama   \
 		 ice	    \
-		 sm	    \
 		 libxml-2.0 \
 		 libxslt \
 		 pango \
@@ -170,15 +169,15 @@ if test -z "$XSLTPROC"; then
   AC_MSG_ERROR([Couldn't find xsltproc])
 fi
 
-PKG_CHECK_MODULES(LIBPNG, libpng)
+dnl PKG_CHECK_MODULES(LIBPNG, libpng)
 
 stylesheetdir=$datadir/ecomp
 AC_SUBST(stylesheetdir)
 
-AM_CONDITIONAL(PLACE_PLUGIN, test "x$use_place" = "xyes")
-if test "$use_place" = yes; then
-  AC_DEFINE(USE_PLACE, 1, [Build placement plugin])
-fi
+dnl AM_CONDITIONAL(PLACE_PLUGIN, test "x$use_place" = "xyes")
+dnl if test "$use_place" = yes; then
+dnl   AC_DEFINE(USE_PLACE, 1, [Build placement plugin])
+dnl fi
 
 AC_ARG_ENABLE(dbus,
   [  --disable-dbus          Disable dbus plugin],
@@ -206,44 +205,44 @@ if test "$use_inotify" = yes; then
   AC_DEFINE(USE_INOTIFY, 1, [Build inotify plugin])
 fi
 
-AC_ARG_ENABLE(fuse,
-  [  --disable-fuse          Disable fuse plugin],
-  [use_fuse=$enableval], [use_fuse=yes])
+dnl AC_ARG_ENABLE(fuse,
+dnl   [  --disable-fuse          Disable fuse plugin],
+dnl   [use_fuse=$enableval], [use_fuse=yes])
 
-if test "x$use_fuse" = "xyes"; then
-  PKG_CHECK_MODULES(FUSE, fuse, [use_fuse=yes], [use_fuse=no])
-fi
+dnl if test "x$use_fuse" = "xyes"; then
+dnl   PKG_CHECK_MODULES(FUSE, fuse, [use_fuse=yes], [use_fuse=no])
+dnl fi
 
-AM_CONDITIONAL(FUSE_PLUGIN, test "x$use_fuse" = "xyes")
-if test "$use_fuse" = yes; then
-  AC_DEFINE(USE_FUSE, 1, [Build fuse plugin])
-fi
+dnl AM_CONDITIONAL(FUSE_PLUGIN, test "x$use_fuse" = "xyes")
+dnl if test "$use_fuse" = yes; then
+dnl   AC_DEFINE(USE_FUSE, 1, [Build fuse plugin])
+dnl fi
 
-AC_ARG_ENABLE(annotate,
-  [  --disable-annotate      Disable annotate plugin],
-  [use_annotate=$enableval], [use_annotate=yes])
+dnl AC_ARG_ENABLE(annotate,
+dnl   [  --disable-annotate      Disable annotate plugin],
+dnl   [use_annotate=$enableval], [use_annotate=yes])
 
-if test "x$use_annotate" = "xyes"; then
-  PKG_CHECK_MODULES(ANNOTATE, cairo-xlib-xrender, [use_annotate=yes], [use_annotate=no])
-fi
+dnl if test "x$use_annotate" = "xyes"; then
+dnl   PKG_CHECK_MODULES(ANNOTATE, cairo-xlib-xrender, [use_annotate=yes], [use_annotate=no])
+dnl fi
 
-AM_CONDITIONAL(ANNOTATE_PLUGIN, test "x$use_annotate" = "xyes")
-if test "$use_annotate" = yes; then
-  AC_DEFINE(USE_ANNOTATE, 1, [Build annotate plugin])
-fi
+dnl AM_CONDITIONAL(ANNOTATE_PLUGIN, test "x$use_annotate" = "xyes")
+dnl if test "$use_annotate" = yes; then
+dnl   AC_DEFINE(USE_ANNOTATE, 1, [Build annotate plugin])
+dnl fi
 
-AC_ARG_ENABLE(librsvg,
-  [  --disable-librsvg       Disable svg support],
-  [use_librsvg=$enableval], [use_librsvg=yes])
+dnl AC_ARG_ENABLE(librsvg,
+dnl   [  --disable-librsvg       Disable svg support],
+dnl   [use_librsvg=$enableval], [use_librsvg=yes])
 
-if test "x$use_librsvg" = "xyes"; then
-  PKG_CHECK_MODULES(LIBRSVG, [cairo >= 1.0 librsvg-2.0 >= 2.14.0], [use_librsvg=yes], [use_librsvg=no])
-fi
+dnl if test "x$use_librsvg" = "xyes"; then
+dnl   PKG_CHECK_MODULES(LIBRSVG, [cairo >= 1.0 librsvg-2.0 >= 2.14.0], [use_librsvg=yes], [use_librsvg=no])
+dnl fi
 
-AM_CONDITIONAL(USE_LIBRSVG, test "x$use_librsvg" = "xyes")
-if test "$use_librsvg" = yes; then
-  AC_DEFINE(USE_LIBRSVG, 1, [librsvg for SVG support])
-fi
+dnl AM_CONDITIONAL(USE_LIBRSVG, test "x$use_librsvg" = "xyes")
+dnl if test "$use_librsvg" = yes; then
+dnl   AC_DEFINE(USE_LIBRSVG, 1, [librsvg for SVG support])
+dnl fi
 
 PKG_CHECK_MODULES(CAIRO, cairo-xlib-xrender cairo >= 1.0, [have_cairo=yes], [have_cairo=no])
 PKG_CHECK_MODULES(PANGO, cairo-xlib-xrender pangocairo cairo >= 1.0, [have_pango=yes], [have_pango=no])
@@ -286,6 +285,9 @@ AC_SUBST(BCOP_BIN)
 
 intltoolize --force || die "intltoolize failed"
 
+dnl libdecoration/Makefile
+dnl libdecoration/libdecoration.pc
+
 
 AC_OUTPUT([
 ecomp.pc
@@ -293,8 +295,6 @@ ecomp-cube.pc
 ecomp-scale.pc
 Makefile
 src/Makefile
-libdecoration/Makefile
-libdecoration/libdecoration.pc
 include/Makefile
 plugins/Makefile
 text/Makefile

@@ -256,7 +256,7 @@ main (int argc, char **argv)
     char      *displayName = 0;
     char      *plugin[256];
     int	      i, nPlugin = 0;
-    Bool      disableSm = FALSE;
+    /* Bool      disableSm = FALSE; */
     char      *refreshRateArg = NULL;
 
     programName = argv[0];

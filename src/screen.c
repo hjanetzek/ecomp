@@ -501,7 +501,7 @@ const CompMetadataOptionInfo coreScreenOptionInfo[COMP_SCREEN_OPTION_NUM] = {
 	{ "number_of_desktops", "int", "<min>1</min>", 0, 0 },
 	{ "detect_outputs", "bool", 0, 0, 0 },
 	{ "outputs", "list", "<type>string</type>", 0, 0 },
-	{ "focus_prevention_match", "match", 0, 0, 0 },
+	/* { "focus_prevention_match", "match", 0, 0, 0 }, */
 	{ "opacity_matches", "list", "<type>match</type>", 0, 0 },
 	{ "opacity_values", "list", "<type>int</type>", 0, 0 }
 };
@@ -989,91 +989,91 @@ makeOutputWindow (CompScreen *s)
 	showOutputWindow (s);
 }
 
-static void
-enterShowDesktopMode (CompScreen *s)
-{
-	/* CompDisplay	 *d = s->display;
-	 *	  CompWindow	*w;
-	 *	  unsigned long data = 1;
-	 *	  int		  count = 0;
-	 *	  CompOption	*st = &d->opt[COMP_DISPLAY_OPTION_HIDE_SKIP_TASKBAR_WINDOWS];
-	 *
-	 *	  s->showingDesktopMask = ~(CompWindowTypeDesktopMask |
-	 *	  CompWindowTypeDockMask);
-	 *
-	 *	  for (w = s->windows; w; w = w->next)
-	 *	  {
-	 *	  if ((s->showingDesktopMask & w->type) &&
-	 *	  (!(w->state & CompWindowStateSkipTaskbarMask) || st->value.b))
-	 *	  {
-	 *	  if (!w->inShowDesktopMode && (*s->focusWindow) (w))
-	 *	  {
-	 *	  w->inShowDesktopMode = TRUE;
-	 *	  hideWindow (w);
-	 *	  }
-	 *	  }
-	 *
-	 *	  if (w->inShowDesktopMode)
-	 *	  count++;
-	 *	  }
-	 *
-	 *	  if (!count)
-	 *	  {
-	 *	  s->showingDesktopMask = 0;
-	 *	  data = 0;
-	 *	  }
-	 *
-	 *	  XChangeProperty (s->display->display, s->root,
-	 *	  s->display->showingDesktopAtom,
-	 *	  XA_CARDINAL, 32, PropModeReplace,
-	 *	  (unsigned char *) &data, 1); */
-}
+/* static void
+ * enterShowDesktopMode (CompScreen *s)
+ * {
+ * 	CompDisplay	 *d = s->display;
+ * 	CompWindow	*w;
+ * 	unsigned long data = 1;
+ * 	int		  count = 0;
+ * 	CompOption	*st = &d->opt[COMP_DISPLAY_OPTION_HIDE_SKIP_TASKBAR_WINDOWS];
+ * 	
+ * 	s->showingDesktopMask = ~(CompWindowTypeDesktopMask |
+ * 							  CompWindowTypeDockMask);
+ * 	
+ * 	for (w = s->windows; w; w = w->next)
+ * 	{
+ * 		if ((s->showingDesktopMask & w->type) &&
+ * 			(!(w->state & CompWindowStateSkipTaskbarMask) || st->value.b))
+ * 		{
+ * 			if (!w->inShowDesktopMode && (*s->focusWindow) (w))
+ * 			{
+ * 				w->inShowDesktopMode = TRUE;
+ * 				hideWindow (w);
+ * 			}
+ * 		}
+ * 	
+ * 		if (w->inShowDesktopMode)
+ * 			count++;
+ * 	}
+ * 	
+ * 	if (!count)
+ * 	{
+ * 		s->showingDesktopMask = 0;
+ * 		data = 0;
+ * 	}
+ * 	
+ * 	XChangeProperty (s->display->display, s->root,
+ * 					 s->display->showingDesktopAtom,
+ * 					 XA_CARDINAL, 32, PropModeReplace,
+ * 					 (unsigned char *) &data, 1);
+ * } */
 
-static void
-leaveShowDesktopMode (CompScreen *s,
-					  CompWindow *window)
-{
-	/* CompWindow	 *w;
-	 * unsigned long data = 0;
-	 *
-	 * if (window)
-	 * {
-	 *	if (!window->inShowDesktopMode)
-	 *		return;
-	 *
-	 *	window->inShowDesktopMode = FALSE;
-	 *	showWindow (window);
-	 *
-	 *	\* return if some other window is still in show desktop mode *\/
-	 *	for (w = s->windows; w; w = w->next)
-	 *		if (w->inShowDesktopMode)
-	 *		return;
-	 *
-	 *	s->showingDesktopMask = 0;
-	 * }
-	 * else
-	 * {
-	 *	s->showingDesktopMask = 0;
-	 *
-	 *	for (w = s->windows; w; w = w->next)
-	 *	{
-	 *		if (!w->inShowDesktopMode)
-	 *		continue;
-	 *
-	 *		w->inShowDesktopMode = FALSE;
-	 *		showWindow (w);
-	 *	}
-	 *
-	 *	/\* focus default window - most likely this will be the window
-	 *	   which had focus before entering showdesktop mode *\/
-	 *	//focusDefaultWindow (s->display);
-	 * }
-	 *
-	 * XChangeProperty (s->display->display, s->root,
-	 *			 s->display->showingDesktopAtom,
-	 *			 XA_CARDINAL, 32, PropModeReplace,
-	 *			 (unsigned char *) &data, 1); */
-}
+/* static void
+ * leaveShowDesktopMode (CompScreen *s,
+ * 					  CompWindow *window)
+ * {
+ * 	CompWindow	 *w;
+ * 	unsigned long data = 0;
+ * 	
+ * 	if (window)
+ * 	{
+ * 		if (!window->inShowDesktopMode)
+ * 			return;
+ * 	
+ * 		window->inShowDesktopMode = FALSE;
+ * 		showWindow (window);
+ * 	
+ * 		\* return if some other window is still in show desktop mode *\/
+ * 							  for (w = s->windows; w; w = w->next)
+ * 								  if (w->inShowDesktopMode)
+ * 									  return;
+ * 	
+ * 		s->showingDesktopMask = 0;
+ * 	}
+ * 	else
+ * 	{
+ * 		s->showingDesktopMask = 0;
+ * 	
+ * 		for (w = s->windows; w; w = w->next)
+ * 		{
+ * 			if (!w->inShowDesktopMode)
+ * 				continue;
+ * 	
+ * 			w->inShowDesktopMode = FALSE;
+ * 			showWindow (w);
+ * 		}
+ * 	
+ * 		/\* focus default window - most likely this will be the window
+ * 		   which had focus before entering showdesktop mode *\/
+ * 		//focusDefaultWindow (s->display);
+ * 	}
+ * 	
+ * 	XChangeProperty (s->display->display, s->root,
+ * 					 s->display->showingDesktopAtom,
+ * 					 XA_CARDINAL, 32, PropModeReplace,
+ * 					 (unsigned char *) &data, 1);
+ * } */
 
 static CompWindow *
 walkFirst (CompScreen *s)
@@ -1252,7 +1252,7 @@ addScreen (CompDisplay *display,
 	s->desktopHintData = NULL;
 	s->desktopHintSize = 0;
 
-	s->cursors = NULL;
+	/* s->cursors = NULL; */
 
 	s->clearBuffers = TRUE;
 
@@ -1277,7 +1277,7 @@ addScreen (CompDisplay *display,
 	s->drawWindowTexture	  = drawWindowTexture;
 	s->damageWindowRect		  = damageWindowRect;
 	s->getOutputExtentsForWindow  = getOutputExtentsForWindow;
-	s->getAllowedActionsForWindow = getAllowedActionsForWindow;
+	/* s->getAllowedActionsForWindow = getAllowedActionsForWindow; */
 	s->focusWindow		  = focusWindow;
 	s->placeWindow				  = placeWindow;
 
@@ -1290,8 +1290,8 @@ addScreen (CompDisplay *display,
 	s->windowGrabNotify	  = windowGrabNotify;
 	s->windowUngrabNotify = windowUngrabNotify;
 
-	s->enterShowDesktopMode = enterShowDesktopMode;
-	s->leaveShowDesktopMode = leaveShowDesktopMode;
+	/* s->enterShowDesktopMode = enterShowDesktopMode;
+	 * s->leaveShowDesktopMode = leaveShowDesktopMode; */
 
 	s->windowStateChangeNotify = windowStateChangeNotify;
 
@@ -1344,15 +1344,15 @@ addScreen (CompDisplay *display,
 		return FALSE;
 	}
 
-	s->invisibleCursor = XCreatePixmapCursor (dpy, bitmap, bitmap,
-											  &black, &black, 0, 0);
-	if (!s->invisibleCursor)
-	{
-		compLogMessage (display, "core", CompLogLevelFatal,
-						"Couldn't create invisible cursor");
-		XFree (visinfo);
-		return FALSE;
-	}
+	/* s->invisibleCursor = XCreatePixmapCursor (dpy, bitmap, bitmap,
+	 * 										  &black, &black, 0, 0);
+	 * if (!s->invisibleCursor)
+	 * {
+	 * 	compLogMessage (display, "core", CompLogLevelFatal,
+	 * 					"Couldn't create invisible cursor");
+	 * 	XFree (visinfo);
+	 * 	return FALSE;
+	 * } */
 
 	XFreePixmap (dpy, bitmap);
 	XFreeColors (dpy, s->colormap, &black.pixel, 1, 0);
@@ -2502,24 +2502,24 @@ updateDefaultIcon (CompScreen *screen)
 	return TRUE;
 }
 
-CompCursor *
-findCursorAtScreen (CompScreen *screen)
-{
-	return screen->cursors;
-}
-
-CompCursorImage *
-findCursorImageAtScreen (CompScreen	   *screen,
-						 unsigned long serial)
-{
-	CompCursorImage *image;
-
-	for (image = screen->cursorImages; image; image = image->next)
-		if (image->serial == serial)
-			return image;
-
-	return NULL;
-}
+/* CompCursor *
+ * findCursorAtScreen (CompScreen *screen)
+ * {
+ * 	return screen->cursors;
+ * }
+ * 
+ * CompCursorImage *
+ * findCursorImageAtScreen (CompScreen	   *screen,
+ * 						 unsigned long serial)
+ * {
+ * 	CompCursorImage *image;
+ * 
+ * 	for (image = screen->cursorImages; image; image = image->next)
+ * 		if (image->serial == serial)
+ * 			return image;
+ * 
+ * 	return NULL;
+ * } */
 
 void
 setCurrentActiveWindowHistory (CompScreen *s,

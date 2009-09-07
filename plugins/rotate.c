@@ -574,7 +574,7 @@ rotateInitiate2(CompScreen *s, int x, int y, int manual)
 
   if (!rs->grabIndex)
     {
-      rs->grabIndex = pushScreenGrab (s, s->invisibleCursor, "rotate");
+      rs->grabIndex = pushScreenGrab (s, 0 /* s->invisibleCursor */, "rotate");
 	  
       if (rs->grabIndex)
 	{

@@ -1,7 +1,7 @@
 PFLAGS=-module -avoid-version -no-undefined -lGLU 
 
 libanimation_la_LDFLAGS = $(PFLAGS)
-libanimation_la_LIBADD = @ECOMP_LIBS@ @CAIRO_LIBS@ @LIBRSVG_LIBS@
+libanimation_la_LIBADD = @ECOMP_LIBS@ @CAIRO_LIBS@
 libanimation_la_SOURCES = animation.c \
 			  animation-internal.h \
 			  animation_tex.h \
@@ -33,11 +33,12 @@ INCLUDES =                              \
 	-I$(top_srcdir)/include             \
 	@ECOMP_CFLAGS@                     \
 	@CAIRO_CFLAGS@	                    \
-	@LIBRSVG_CFLAGS@                    \
 	-DDATADIR='"$(compdatadir)"'        \
 	-DLIBDIR='"$(libdir)"'              \
 	-DLOCALEDIR="\"@datadir@/locale\""  \
 	-DIMAGEDIR='"$(imagedir)"'          
+
+# @LIBRSVG_CFLAGS@                   
 
 moduledir = $(plugindir)
 

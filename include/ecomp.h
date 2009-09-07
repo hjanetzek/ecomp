@@ -121,7 +121,7 @@ typedef struct _CompProgram	  CompProgram;
 typedef struct _CompFunction	  CompFunction;
 typedef struct _CompFunctionData  CompFunctionData;
 typedef struct _FragmentAttrib    FragmentAttrib;
-typedef struct _CompCursor	  CompCursor;
+/* typedef struct _CompCursor	  CompCursor; */
 typedef struct _CompMatch	  CompMatch;
 typedef struct _CompMetadata      CompMetadata;
 typedef struct _CompOutput        CompOutput;
@@ -1153,8 +1153,8 @@ imageToFile (CompDisplay *display,
 	     int	 stride,
 	     void	 *data);
 
-CompCursor *
-findCursorAtDisplay (CompDisplay *display);
+/* CompCursor *
+ * findCursorAtDisplay (CompDisplay *display); */
 
 
 /* event.c */
@@ -1361,10 +1361,10 @@ typedef void (*DrawWindowTextureProc) (CompWindow	    *w,
 
 typedef void (*DrawWindowGeometryProc) (CompWindow *window);
 
-typedef void (*PaintCursorProc) (CompCursor	     *cursor,
-				 const CompTransform *transform,
-				 Region		     region,
-				 unsigned int	     mask);
+/* typedef void (*PaintCursorProc) (CompCursor	     *cursor,
+ * 				 const CompTransform *transform,
+ * 				 Region		     region,
+ * 				 unsigned int	     mask); */
 
 #define PAINT_BACKGROUND_ON_TRANSFORMED_SCREEN_MASK (1 << 0)
 
@@ -1455,16 +1455,16 @@ paintWindow (CompWindow		     *w,
 	     Region		     region,
 	     unsigned int	     mask);
 
-void
-paintCursor (CompCursor		 *cursor,
-	     const CompTransform *transform,
-	     Region		 region,
-	     unsigned int	 mask);
-
-void
-paintBackground (CompScreen   *screen,
-		 Region	      region,
-		 unsigned int mask);
+/* void
+ * paintCursor (CompCursor		 *cursor,
+ * 	     const CompTransform *transform,
+ * 	     Region		 region,
+ * 	     unsigned int	 mask);
+ * 
+ * void
+ * paintBackground (CompScreen   *screen,
+ * 		 Region	      region,
+ * 		 unsigned int mask); */
 
 
 /* texture.c */
@@ -1578,10 +1578,10 @@ disableTexture (CompScreen  *screen,
 #define COMP_SCREEN_OPTION_NUMBER_OF_DESKTOPS	  7
 #define COMP_SCREEN_OPTION_DETECT_OUTPUTS	  8
 #define COMP_SCREEN_OPTION_OUTPUTS		  9
-#define COMP_SCREEN_OPTION_FOCUS_PREVENTION_MATCH 10
-#define COMP_SCREEN_OPTION_OPACITY_MATCHES	  11
-#define COMP_SCREEN_OPTION_OPACITY_VALUES	  12
-#define COMP_SCREEN_OPTION_NUM		          13
+/* #define COMP_SCREEN_OPTION_FOCUS_PREVENTION_MATCH 10 */
+#define COMP_SCREEN_OPTION_OPACITY_MATCHES	  10
+#define COMP_SCREEN_OPTION_OPACITY_VALUES	  11
+#define COMP_SCREEN_OPTION_NUM		          12
 
 #ifndef GLX_EXT_texture_from_pixmap
 #define GLX_BIND_TO_TEXTURE_RGB_EXT        0x20D0
@@ -1706,10 +1706,10 @@ typedef Bool (*InitPluginForScreenProc) (CompPlugin *plugin,
 typedef void (*FiniPluginForScreenProc) (CompPlugin *plugin,
 					 CompScreen *screen);
 
-typedef void (*EnterShowDesktopModeProc) (CompScreen *screen);
-
-typedef void (*LeaveShowDesktopModeProc) (CompScreen *screen,
-					  CompWindow *window);
+/* typedef void (*EnterShowDesktopModeProc) (CompScreen *screen);
+ * 
+ * typedef void (*LeaveShowDesktopModeProc) (CompScreen *screen,
+ * 					  CompWindow *window); */
 
 typedef Bool (*DamageWindowRectProc) (CompWindow *w,
 				      Bool       initial,
@@ -1718,9 +1718,9 @@ typedef Bool (*DamageWindowRectProc) (CompWindow *w,
 typedef Bool (*DamageWindowRegionProc) (CompWindow *w,
 					Region     region);
 
-typedef Bool (*DamageCursorRectProc) (CompCursor *c,
-				      Bool       initial,
-				      BoxPtr     rect);
+/* typedef Bool (*DamageCursorRectProc) (CompCursor *c,
+ * 				      Bool       initial,
+ * 				      BoxPtr     rect); */
 
 
 typedef void (*GetOutputExtentsForWindowProc) (CompWindow	 *w,
@@ -1849,29 +1849,29 @@ struct _CompOutput {
     XRectangle workArea;
 };
 
-typedef struct _CompCursorImage {
-    struct _CompCursorImage *next;
-
-    unsigned long serial;
-    Pixmap	  pixmap;
-    CompTexture   texture;
-    int		  xhot;
-    int	          yhot;
-    int		  width;
-    int	          height;
-} CompCursorImage;
-
-struct _CompCursor {
-    struct _CompCursor *next;
-
-    CompScreen	    *screen;
-    CompCursorImage *image;
-
-    int	x;
-    int	y;
-
-    CompMatrix matrix;
-};
+/* typedef struct _CompCursorImage {
+ *     struct _CompCursorImage *next;
+ * 
+ *     unsigned long serial;
+ *     Pixmap	  pixmap;
+ *     CompTexture   texture;
+ *     int		  xhot;
+ *     int	          yhot;
+ *     int		  width;
+ *     int	          height;
+ * } CompCursorImage;
+ * 
+ * struct _CompCursor {
+ *     struct _CompCursor *next;
+ * 
+ *     CompScreen	    *screen;
+ *     CompCursorImage *image;
+ * 
+ *     int	x;
+ *     int	y;
+ * 
+ *     CompMatrix matrix;
+ * }; */
 
 #define ACTIVE_WINDOW_HISTORY_SIZE 64
 #define ACTIVE_WINDOW_HISTORY_NUM  32
@@ -1920,7 +1920,7 @@ struct _CompScreen {
     int		      fbo;
     int		      fragmentProgram;
     int		      maxTextureUnits;
-    Cursor	      invisibleCursor;
+    /* Cursor	      invisibleCursor; */
     XRectangle        *exposeRects;
     int		      sizeExpose;
     int		      nExpose;
@@ -2010,8 +2010,8 @@ struct _CompScreen {
     unsigned long *desktopHintData;
     int           desktopHintSize;
 
-    CompCursor      *cursors;
-    CompCursorImage *cursorImages;
+    /* CompCursor      *cursors;
+     * CompCursorImage *cursorImages; */
 
     GLXGetProcAddressProc    getProcAddress;
     GLXBindTexImageProc      bindTexImage;
@@ -2068,8 +2068,8 @@ struct _CompScreen {
     FocusWindowProc		   focusWindow;
     PlaceWindowProc                placeWindow;
 
-    PaintCursorProc      paintCursor;
-    DamageCursorRectProc damageCursorRect;
+    /* PaintCursorProc      paintCursor;
+     * DamageCursorRectProc damageCursorRect; */
 
     WindowAddNotifyProc    windowAddNotify;
     WindowResizeNotifyProc windowResizeNotify;
@@ -2077,8 +2077,8 @@ struct _CompScreen {
     WindowGrabNotifyProc   windowGrabNotify;
     WindowUngrabNotifyProc windowUngrabNotify;
 
-    EnterShowDesktopModeProc enterShowDesktopMode;
-    LeaveShowDesktopModeProc leaveShowDesktopMode;
+    /* EnterShowDesktopModeProc enterShowDesktopMode;
+     * LeaveShowDesktopModeProc leaveShowDesktopMode; */
 
     WindowStateChangeNotifyProc windowStateChangeNotify;
 
@@ -2329,12 +2329,12 @@ outputDeviceForGeometry (CompScreen *s,
 Bool
 updateDefaultIcon (CompScreen *screen);
 
-CompCursor *
-findCursorAtScreen (CompScreen *screen);
-
-CompCursorImage *
-findCursorImageAtScreen (CompScreen    *screen,
-			 unsigned long serial);
+/* CompCursor *
+ * findCursorAtScreen (CompScreen *screen);
+ * 
+ * CompCursorImage *
+ * findCursorImageAtScreen (CompScreen    *screen,
+ * 			 unsigned long serial); */
 
 void
 setCurrentActiveWindowHistory (CompScreen *s,
@@ -3124,26 +3124,26 @@ matrixTranslate (CompTransform *transform,
 
 /* cursor.c */
 
-void
-addCursor (CompScreen *s);
-
-Bool
-damageCursorRect (CompCursor *c,
-		  Bool       initial,
-		  BoxPtr     rect);
-
-void
-addCursorDamageRect (CompCursor *c,
-		     BoxPtr     rect);
-
-void
-addCursorDamage (CompCursor *c);
-
-void
-updateCursor (CompCursor    *c,
-	      int	    x,
-	      int	    y,
-	      unsigned long serial);
+/* void
+ * addCursor (CompScreen *s);
+ * 
+ * Bool
+ * damageCursorRect (CompCursor *c,
+ * 		  Bool       initial,
+ * 		  BoxPtr     rect);
+ * 
+ * void
+ * addCursorDamageRect (CompCursor *c,
+ * 		     BoxPtr     rect);
+ * 
+ * void
+ * addCursorDamage (CompCursor *c);
+ * 
+ * void
+ * updateCursor (CompCursor    *c,
+ * 	      int	    x,
+ * 	      int	    y,
+ * 	      unsigned long serial); */
 
 
 /* match.c */

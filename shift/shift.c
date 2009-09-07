@@ -1951,7 +1951,7 @@ shiftHandleEvent (CompDisplay *d,
 					}
 					
 					if (!ss->grabIndex)
-						ss->grabIndex = pushScreenGrab (s, s->invisibleCursor, "shift");
+						ss->grabIndex = pushScreenGrab (s, 0/* s->invisibleCursor */, "shift");
 					if (ss->grabIndex)
 					{
 						ss->state = ShiftStateOut;

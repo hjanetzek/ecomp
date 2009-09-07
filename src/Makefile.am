@@ -23,6 +23,5 @@ ecomorph_SOURCES =   \
 	plugin.c   \
 	fragment.c \
 	matrix.c   \
-	cursor.c   \
 	match.c    \
 	metadata.c

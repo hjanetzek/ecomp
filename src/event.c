@@ -675,31 +675,31 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			{
 				w->texture->oldMipmaps = TRUE;
 
-				if (w->syncWait)
-				{
-					if (w->nDamage == w->sizeDamage)
-					{
-						if (w->damageRects)
-						{
-							w->damageRects = realloc (w->damageRects,
-													  (w->sizeDamage + 1) *
-													  sizeof (XRectangle));
-							w->sizeDamage += 1;
-						}
-						else
-						{
-							w->damageRects = malloc (sizeof (XRectangle));
-							w->sizeDamage  = 1;
-						}
-					}
-
-					w->damageRects[w->nDamage].x	  = de->area.x;
-					w->damageRects[w->nDamage].y	  = de->area.y;
-					w->damageRects[w->nDamage].width  = de->area.width;
-					w->damageRects[w->nDamage].height = de->area.height;
-					w->nDamage++;
-				}
-				else
+				/* if (w->syncWait)
+				 * {
+				 * 	if (w->nDamage == w->sizeDamage)
+				 * 	{
+				 * 		if (w->damageRects)
+				 * 		{
+				 * 			w->damageRects = realloc (w->damageRects,
+				 * 									  (w->sizeDamage + 1) *
+				 * 									  sizeof (XRectangle));
+				 * 			w->sizeDamage += 1;
+				 * 		}
+				 * 		else
+				 * 		{
+				 * 			w->damageRects = malloc (sizeof (XRectangle));
+				 * 			w->sizeDamage  = 1;
+				 * 		}
+				 * 	}
+				 * 
+				 * 	w->damageRects[w->nDamage].x	  = de->area.x;
+				 * 	w->damageRects[w->nDamage].y	  = de->area.y;
+				 * 	w->damageRects[w->nDamage].width  = de->area.width;
+				 * 	w->damageRects[w->nDamage].height = de->area.height;
+				 * 	w->nDamage++;
+				 * }
+				 * else */
 				{
 					handleWindowDamageRect (w,
 											de->area.x,

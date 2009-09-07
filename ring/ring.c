@@ -1210,10 +1210,10 @@ ringInitiate2(CompScreen *s, int type)
 
 		if (!rs->grabIndex)
 		{
-			if (ringGetSelectWithMouse (s))
-				rs->grabIndex = pushScreenGrab (s, rs->cursor, "ring");
-			else
-				rs->grabIndex = pushScreenGrab (s, s->invisibleCursor, "ring");
+			/* if (ringGetSelectWithMouse (s))
+			 * 	rs->grabIndex = pushScreenGrab (s, 0, /\* rs->cursor *\/, "ring");
+			 * else */
+			rs->grabIndex = pushScreenGrab (s, 0 /* s->invisibleCursor */, "ring");
 		}
 
 		if (rs->grabIndex)
@@ -1271,10 +1271,10 @@ ringInitiate (CompScreen      *s,
 
     if (!rs->grabIndex)
     {
-		if (ringGetSelectWithMouse (s))
-      	    rs->grabIndex = pushScreenGrab (s, rs->cursor, "ring");
-      	else
-      	    rs->grabIndex = pushScreenGrab (s, s->invisibleCursor, "ring");
+		/* if (ringGetSelectWithMouse (s))
+      	 *     rs->grabIndex = pushScreenGrab (s, 0/\* rs->cursor *\/, "ring");
+      	 * else */
+		rs->grabIndex = pushScreenGrab (s, 0 /* s->invisibleCursor */, "ring");
     }
 
     if (rs->grabIndex)

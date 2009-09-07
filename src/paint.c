@@ -158,7 +158,7 @@ paintOutputRegion (CompScreen	       *screen,
 {
     static Region tmpRegion = NULL;
     CompWindow    *w;
-    CompCursor	  *c;
+    /* CompCursor	  *c; */
     int		  count, windowMask, backgroundMask;
     CompWindow	  *fullscreenWindow = NULL;
     CompWalker    walk;
@@ -248,8 +248,8 @@ paintOutputRegion (CompScreen	       *screen,
 	(*walk.fini) (screen, &walk);
 
     /* paint cursors */
-    for (c = screen->cursors; c; c = c->next)
-      (*screen->paintCursor) (c, transform, tmpRegion, 0);
+    /* for (c = screen->cursors; c; c = c->next)
+     *   (*screen->paintCursor) (c, transform, tmpRegion, 0); */
 }
 
 

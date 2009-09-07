@@ -652,7 +652,7 @@ switchInitiate (CompScreen *s,
     }
 
 	if (!ss->grabIndex)
-		ss->grabIndex = pushScreenGrab (s, s->invisibleCursor, "switcher");
+		ss->grabIndex = pushScreenGrab (s, 0/* s->invisibleCursor */, "switcher");
 
 	if (ss->grabIndex)
     {

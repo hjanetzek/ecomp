@@ -1818,7 +1818,7 @@ cubeUnfold (CompDisplay     *d,
 			return FALSE;
 
 		if (!cs->grabIndex)
-			cs->grabIndex = pushScreenGrab (s, s->invisibleCursor, "cube");
+			cs->grabIndex = pushScreenGrab (s, 0 /* s->invisibleCursor */, "cube");
 
 		if (cs->grabIndex)
 		{

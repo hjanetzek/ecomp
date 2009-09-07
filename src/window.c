@@ -44,16 +44,16 @@
 
 #include <ecomp.h>
 
-#define MwmHintsFunctions	(1L << 0)
-#define MwmHintsDecorations (1L << 1)
-
-#define PropMotifWmHintElements 3
-
-typedef struct {
-	unsigned long flags;
-	unsigned long functions;
-	unsigned long decorations;
-} MwmHints;
+/* #define MwmHintsFunctions	(1L << 0)
+ * #define MwmHintsDecorations (1L << 1)
+ * 
+ * #define PropMotifWmHintElements 3
+ * 
+ * typedef struct {
+ * 	unsigned long flags;
+ * 	unsigned long functions;
+ * 	unsigned long decorations;
+ * } MwmHints; */
 
 static int
 reallocWindowPrivates (int	size, void *closure)
@@ -102,47 +102,75 @@ updateWindowClassHints (CompWindow *w)
 	else
 		status = XGetClassHint (w->screen->display->display, w->id, &classHint);
 
-	if (status)
-	{
+    if (w->resName)
+    {
+		free (w->resName);
+		w->resName = NULL;
+    }
+
+    if (w->resClass)
+    {
+		free (w->resClass);
+		w->resClass = NULL;
+    }
+
+    status = XGetClassHint (w->screen->display->display, w->id, &classHint);
+    if (status)
+    {
 		if (classHint.res_name)
 		{
-			if (w->resName && strcmp(w->resName, classHint.res_name))
-			{
-				free (w->resName);
-				w->resName = strdup (classHint.res_name);
-			}
-			else if (!w->resName)
-				w->resName = strdup (classHint.res_name);
-
+			w->resName = strdup (classHint.res_name);
 			XFree (classHint.res_name);
 		}
 
 		if (classHint.res_class)
 		{
-			if (w->resClass && strcmp(w->resClass, classHint.res_class))
-			{
-				free (w->resClass);
-				w->resClass = strdup (classHint.res_class);
-			}
-			else if(!w->resClass)
-				w->resClass = strdup (classHint.res_class);
-
+			w->resClass = strdup (classHint.res_class);
 			XFree (classHint.res_class);
 		}
-	}
-	else
-	{
-		if (w->resName)
-		{
-			free(w->resName);
-			w->resName = NULL;
-		}
-		if (w->resClass)
-		{
-			free(w->resClass);
-			w->resClass = NULL;
-		}
-	}
+    }
+	
+	/* if (status)
+	 * {
+	 * 	if (classHint.res_name)
+	 * 	{
+	 * 		if (w->resName && strcmp(w->resName, classHint.res_name))
+	 * 		{
+	 * 			free (w->resName);
+	 * 			w->resName = strdup (classHint.res_name);
+	 * 		}
+	 * 		else if (!w->resName)
+	 * 			w->resName = strdup (classHint.res_name);
+	 * 
+	 * 		XFree (classHint.res_name);
+	 * 	}
+	 * 
+	 * 	if (classHint.res_class)
+	 * 	{
+	 * 		if (w->resClass && strcmp(w->resClass, classHint.res_class))
+	 * 		{
+	 * 			free (w->resClass);
+	 * 			w->resClass = strdup (classHint.res_class);
+	 * 		}
+	 * 		else if(!w->resClass)
+	 * 			w->resClass = strdup (classHint.res_class);
+	 * 
+	 * 		XFree (classHint.res_class);
+	 * 	}
+	 * }
+	 * else
+	 * {
+	 * 	if (w->resName)
+	 * 	{
+	 * 		free(w->resName);
+	 * 		w->resName = NULL;
+	 * 	}
+	 * 	if (w->resClass)
+	 * 	{
+	 * 		free(w->resClass);
+	 * 		w->resClass = NULL;
+	 * 	}
+	 * } */
 }
 
 
@@ -279,12 +307,12 @@ changeWindowState (CompWindow *w, unsigned int newState)
 
 
 /* FIXME where is this used ? */
-void
-getAllowedActionsForWindow (CompWindow *w, unsigned int *setActions, unsigned int *clearActions)
-{
-	*setActions	 = 0;
-	*clearActions = 0;
-}
+/* void
+ * getAllowedActionsForWindow (CompWindow *w, unsigned int *setActions, unsigned int *clearActions)
+ * {
+ * 	*setActions	 = 0;
+ * 	*clearActions = 0;
+ * } */
 
 unsigned int
 windowTypeFromString (const char *str)
@@ -432,41 +460,41 @@ recalcWindowType (CompWindow *w)
 	/* w->wmType = type; */
 }
 
-void
-getMwmHints (CompDisplay *display,
-			 Window	id,
-			 unsigned int *func,
-			 unsigned int *decor)
-{
-	Atom actual;
-	int result, format;
-	unsigned long n, left;
-	unsigned char *data;
-
-	*func  = MwmFuncAll;
-	*decor = MwmDecorAll;
-
-	result = XGetWindowProperty
-		(display->display, id, display->mwmHintsAtom,
-		 0L, 20L, FALSE, display->mwmHintsAtom,
-		 &actual, &format, &n, &left, &data);
-
-	if (result == Success && n && data)
-	{
-		MwmHints *mwmHints = (MwmHints *) data;
-
-		if (n >= PropMotifWmHintElements)
-		{
-			if (mwmHints->flags & MwmHintsDecorations)
-				*decor = mwmHints->decorations;
-
-			if (mwmHints->flags & MwmHintsFunctions)
-				*func = mwmHints->functions;
-		}
-
-		XFree (data);
-	}
-}
+/* void
+ * getMwmHints (CompDisplay *display,
+ * 			 Window	id,
+ * 			 unsigned int *func,
+ * 			 unsigned int *decor)
+ * {
+ * 	Atom actual;
+ * 	int result, format;
+ * 	unsigned long n, left;
+ * 	unsigned char *data;
+ * 
+ * 	*func  = MwmFuncAll;
+ * 	*decor = MwmDecorAll;
+ * 
+ * 	result = XGetWindowProperty
+ * 		(display->display, id, display->mwmHintsAtom,
+ * 		 0L, 20L, FALSE, display->mwmHintsAtom,
+ * 		 &actual, &format, &n, &left, &data);
+ * 
+ * 	if (result == Success && n && data)
+ * 	{
+ * 		MwmHints *mwmHints = (MwmHints *) data;
+ * 
+ * 		if (n >= PropMotifWmHintElements)
+ * 		{
+ * 			if (mwmHints->flags & MwmHintsDecorations)
+ * 				*decor = mwmHints->decorations;
+ * 
+ * 			if (mwmHints->flags & MwmHintsFunctions)
+ * 				*func = mwmHints->functions;
+ * 		}
+ * 
+ * 		XFree (data);
+ * 	}
+ * } */
 
 
 unsigned int
@@ -1040,11 +1068,11 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->desktop = screen->currentDesktop;
 
 	/* XXX rename to viewportX/Y */
-	w->initialViewportX = screen->x;
-	w->initialViewportY = screen->y;
+	w->initialViewportX = 0;
+	w->initialViewportY = 0;
 
-	w->initialTimestamp	   = 0;
-	w->initialTimestampSet = FALSE;
+	/* w->initialTimestamp	   = 0;
+	 * w->initialTimestampSet = FALSE; */
 
 	w->pendingUnmaps = 0;
 	w->pendingMaps	 = 0;
@@ -1167,12 +1195,12 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->serverX = w->attrib.x;
 	w->serverY = w->attrib.y;
 
-	w->syncWait		   = FALSE;
-	w->syncX		   = w->attrib.x;
-	w->syncY		   = w->attrib.y;
-	w->syncWidth	   = w->attrib.width;
-	w->syncHeight	   = w->attrib.height;
-	w->syncBorderWidth = w->attrib.border_width;
+	/* w->syncWait		   = FALSE;
+	 * w->syncX		   = w->attrib.x;
+	 * w->syncY		   = w->attrib.y;
+	 * w->syncWidth	   = w->attrib.width;
+	 * w->syncHeight	   = w->attrib.height;
+	 * w->syncBorderWidth = w->attrib.border_width; */
 
 	w->saveMask = 0;
 
@@ -1185,8 +1213,8 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 	w->alpha	 = (w->attrib.depth == 32);
 	w->wmType	 = 0;
 	w->state	 = 0;
-	w->actions	 = 0;
-	w->protocols = 0;
+	/* w->actions	 = 0; */
+	/* w->protocols = 0; */
 	w->type		 = CompWindowTypeUnknownMask;
 
 	if (d->shapeExtension)
@@ -1746,26 +1774,26 @@ moveInputFocusToWindow (CompWindow *w)
   XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
   }
 */
-void
-configureXWindow (CompWindow *w, unsigned int valueMask, XWindowChanges *xwc)
-{
-	D(("configureXWindow, %d:%d %dx%d\n", xwc->x, xwc->y, xwc->width, xwc->height));
-
-	if (valueMask & CWX)
-		w->serverX = xwc->x;
-
-	if (valueMask & CWY)
-		w->serverY = xwc->y;
-
-	if (valueMask & CWWidth)
-		w->serverWidth = xwc->width;
-
-	if (valueMask & CWHeight)
-		w->serverHeight	= xwc->height;
-
-	if (valueMask & CWBorderWidth)
-		w->serverBorderWidth = xwc->border_width;
-}
+/* void
+ * configureXWindow (CompWindow *w, unsigned int valueMask, XWindowChanges *xwc)
+ * {
+ * 	D(("configureXWindow, %d:%d %dx%d\n", xwc->x, xwc->y, xwc->width, xwc->height));
+ * 
+ * 	if (valueMask & CWX)
+ * 		w->serverX = xwc->x;
+ * 
+ * 	if (valueMask & CWY)
+ * 		w->serverY = xwc->y;
+ * 
+ * 	if (valueMask & CWWidth)
+ * 		w->serverWidth = xwc->width;
+ * 
+ * 	if (valueMask & CWHeight)
+ * 		w->serverHeight	= xwc->height;
+ * 
+ * 	if (valueMask & CWBorderWidth)
+ * 		w->serverBorderWidth = xwc->border_width;
+ * } */
 
 
 void
@@ -1916,7 +1944,7 @@ updateWindowAttributes (CompWindow *w, CompStackingUpdateMode stackingMode)
 void
 activateWindow (CompWindow *w)
 {
-	raiseWindow(w);
+	/* raiseWindow(w); */
 
 	moveInputFocusToWindow (w);
 }
@@ -1987,11 +2015,11 @@ showWindow (CompWindow *w)
 	{
 		w->shaded = TRUE;
 
-		if (w->height)
-			resizeWindow (w, w->attrib.x, w->attrib.y,
-						  w->attrib.width, ++w->attrib.height - 1,
-						  w->attrib.border_width);
-
+		/* if (w->height)
+		 * 	resizeWindow (w, w->attrib.x, w->attrib.y,
+		 * 				  w->attrib.width, ++w->attrib.height - 1,
+		 * 				  w->attrib.border_width); */
+		
 		addWindowDamage (w);
 
 		return;
@@ -2252,28 +2280,28 @@ onCurrentDesktop (CompWindow *w)
    than zero if 'w1' is found, respectively, to activated longer time
    ago than, to be activated at the same time, or be activated more
    recently than 'w2'. */
-int
-compareWindowActiveness (CompWindow *w1, CompWindow *w2)
-{
-	CompScreen			*s = w1->screen;
-	CompActiveWindowHistory *history = &s->history[s->currentHistory];
-	int				i;
-
-	/* check current window history first */
-	for (i = 0; i < ACTIVE_WINDOW_HISTORY_SIZE; i++)
-	{
-		if (history->id[i] == w1->id)
-			return 1;
-
-		if (history->id[i] == w2->id)
-			return -1;
-
-		if (!history->id[i])
-			break;
-	}
-
-	return w1->activeNum - w2->activeNum;
-}
+/* int
+ * compareWindowActiveness (CompWindow *w1, CompWindow *w2)
+ * {
+ * 	CompScreen			*s = w1->screen;
+ * 	CompActiveWindowHistory *history = &s->history[s->currentHistory];
+ * 	int				i;
+ * 
+ * 	/\* check current window history first *\/
+ * 	for (i = 0; i < ACTIVE_WINDOW_HISTORY_SIZE; i++)
+ * 	{
+ * 		if (history->id[i] == w1->id)
+ * 			return 1;
+ * 
+ * 		if (history->id[i] == w2->id)
+ * 			return -1;
+ * 
+ * 		if (!history->id[i])
+ * 			break;
+ * 	}
+ * 
+ * 	return w1->activeNum - w2->activeNum;
+ * } */
 
 void
 windowAddNotify (CompWindow *w)
