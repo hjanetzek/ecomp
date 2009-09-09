@@ -129,48 +129,6 @@ updateWindowClassHints (CompWindow *w)
 			XFree (classHint.res_class);
 		}
     }
-	
-	/* if (status)
-	 * {
-	 * 	if (classHint.res_name)
-	 * 	{
-	 * 		if (w->resName && strcmp(w->resName, classHint.res_name))
-	 * 		{
-	 * 			free (w->resName);
-	 * 			w->resName = strdup (classHint.res_name);
-	 * 		}
-	 * 		else if (!w->resName)
-	 * 			w->resName = strdup (classHint.res_name);
-	 * 
-	 * 		XFree (classHint.res_name);
-	 * 	}
-	 * 
-	 * 	if (classHint.res_class)
-	 * 	{
-	 * 		if (w->resClass && strcmp(w->resClass, classHint.res_class))
-	 * 		{
-	 * 			free (w->resClass);
-	 * 			w->resClass = strdup (classHint.res_class);
-	 * 		}
-	 * 		else if(!w->resClass)
-	 * 			w->resClass = strdup (classHint.res_class);
-	 * 
-	 * 		XFree (classHint.res_class);
-	 * 	}
-	 * }
-	 * else
-	 * {
-	 * 	if (w->resName)
-	 * 	{
-	 * 		free(w->resName);
-	 * 		w->resName = NULL;
-	 * 	}
-	 * 	if (w->resClass)
-	 * 	{
-	 * 		free(w->resClass);
-	 * 		w->resClass = NULL;
-	 * 	}
-	 * } */
 }
 
 
@@ -668,7 +626,7 @@ bindWindow (CompWindow *w)
 		XWindowAttributes attr;
 
 		/* don't try to bind window again if it failed previously */
-		if (w->bindFailed)
+		if (w->bindFailed > 10)
 			return FALSE;
 
 		/* We have to grab the server here to make sure that window
@@ -680,7 +638,7 @@ bindWindow (CompWindow *w)
 		{
 			XUngrabServer (w->screen->display->display);
 			finiTexture (w->screen, w->texture);
-			w->bindFailed = TRUE;
+			w->bindFailed++;// = TRUE;
 			return FALSE;
 		}
 
@@ -1288,7 +1246,7 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 		
 		if (w->alive)
 		{
-			w->paint.opacity	   = w->opacity;
+			w->paint.opacity    = w->opacity;
 			w->paint.brightness = w->brightness;
 		}
 
@@ -1297,17 +1255,14 @@ addWindow (CompScreen *screen, Window id, Window aboveId)
 			w->saturation = getWindowProp32 (d, w->id, d->winSaturationAtom, COLOR);
 			if (w->alive)
 				w->paint.saturation = w->saturation;
-		}
-
-		
+		}	
 	}
 	else
 	{
 		w->wmType = getWindowType (d, w->id);
-		updateWindowClassHints (w); /* XXX required ?*/
+		updateWindowClassHints (w);
 		recalcWindowType (w);
 	}
-
 
 	{
 		REGION rect;
