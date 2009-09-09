@@ -661,7 +661,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					lastDamagedWindow = w;
 			}
 
-			if (w && (!w->clientId || w->clientMapped))
+			if (w)// && (!w->clientId || w->clientMapped))
 			{
 				w->texture->oldMipmaps = TRUE;
 
