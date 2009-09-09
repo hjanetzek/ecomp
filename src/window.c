@@ -626,7 +626,7 @@ bindWindow (CompWindow *w)
 		XWindowAttributes attr;
 
 		/* don't try to bind window again if it failed previously */
-		if (w->bindFailed > 10)
+		if (w->bindFailed)
 			return FALSE;
 
 		/* We have to grab the server here to make sure that window
@@ -638,7 +638,7 @@ bindWindow (CompWindow *w)
 		{
 			XUngrabServer (w->screen->display->display);
 			finiTexture (w->screen, w->texture);
-			w->bindFailed++;// = TRUE;
+			w->bindFailed = TRUE;
 			return FALSE;
 		}
 
