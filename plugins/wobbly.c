@@ -1657,27 +1657,18 @@ sendMoveResizeWindowMessage (CompWindow *w)
    xev.xclient.display = w->screen->display->display;
    xev.xclient.format	= 32;
 
-   xev.xclient.message_type = w->screen->display->moveResizeWindowAtom;
-   xev.xclient.window		 = w->id;
+   xev.xclient.message_type = w->screen->display->eManagedAtom;
+   xev.xclient.window = w->id;
 
-   xev.xclient.data.l[0] = 2;
+   xev.xclient.data.l[0] = ECOMORPH_ECOMP_WINDOW_MOVE;
    xev.xclient.data.l[1] = w->attrib.x + (w->screen->x * w->screen->width);
    xev.xclient.data.l[2] = w->attrib.y + (w->screen->y * w->screen->height);
-
-   /* if(width || height)
-    * {
-    * 	xev.xclient.data.l[3] = w->attrib.width;
-    * 	xev.xclient.data.l[4] = w->attrib.height;
-    * }
-    * else */
-   {
-      xev.xclient.data.l[3] = 0;
-      xev.xclient.data.l[4] = 0;
-   }
-
+   xev.xclient.data.l[3] = 0;
+   xev.xclient.data.l[4] = 0;
+   
    XSendEvent (w->screen->display->display,
 	       w->screen->root, FALSE,
-	       SubstructureRedirectMask | SubstructureNotifyMask,
+	       SubstructureRedirectMask,
 	       &xev);
 }
 

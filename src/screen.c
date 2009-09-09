@@ -58,12 +58,12 @@ ecompActionTerminateNotify (CompScreen *s, int plugin)
 {
 	XEvent ev;
 
-	ev.type			= ClientMessage;
+	ev.type			        = ClientMessage;
 	ev.xclient.window		= s->root;
-	ev.xclient.display = s->display->display;
+	ev.xclient.display      = s->display->display;
 	ev.xclient.message_type = s->display->eManagedAtom;
 	ev.xclient.format		= 32;
-	ev.xclient.data.l[0]	= 2;
+	ev.xclient.data.l[0]	= ECOMORPH_ECOMP_PLUGIN_END;
 	ev.xclient.data.l[1]	= plugin;
 	ev.xclient.data.l[2]	= 0;
 	ev.xclient.data.l[3]	= 0;

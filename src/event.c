@@ -29,16 +29,6 @@
 #define C(x)
 #define E(x)
 
-#define ECOMORPH_EVENT_MAPPED       0
-#define ECOMORPH_EVENT_STATE        1
-#define ECOMORPH_EVENT_DESK         2
-#define ECOMORPH_EVENT_RESTART      3
-#define ECOMORPH_EVENT_GRAB         4
-#define ECOMORPH_EVENT_MOVE         5
-#define ECOMORPH_EVENT_MOVE_RESIZE  6
-#define ECOMORPH_EVENT_FOCUS        7
-#define ECOMORPH_WINDOW_STATE_INVISIBLE 0
-#define ECOMORPH_WINDOW_STATE_VISIBLE 1
 
 
 #include <stdlib.h>
