@@ -114,7 +114,6 @@ updateWindowClassHints (CompWindow *w)
 		w->resClass = NULL;
     }
 
-    status = XGetClassHint (w->screen->display->display, w->id, &classHint);
     if (status)
     {
 		if (classHint.res_name)
