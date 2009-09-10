@@ -243,7 +243,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			}
 		}
 		break;
-
 	case ConfigureNotify:
 		C(("0x%x : ConfigureNotify event ", (unsigned int)event->xconfigure.window));
 
@@ -259,7 +258,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 				configureScreen (s, &event->xconfigure);
 		}
 		break;
-
 	case CreateNotify:
 		C(("0x%x : CreateNotify event\n", (unsigned int)event->xcreatewindow.window));
 		s = findScreenAtDisplay (d, event->xcreatewindow.parent);
@@ -273,7 +271,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 				addWindow (s, event->xcreatewindow.window, getTopWindow (s));
 		}
 		break;
-
 	case DestroyNotify:
 		D(("0x%x : DestroyNotify event\n", (unsigned int)event->xdestroywindow.window));
 		w = findWindowAtDisplay (d, event->xdestroywindow.window);
@@ -282,7 +279,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			destroyWindow (w);
 		}
 		break;
-
 	case MapNotify:
 		w = findWindowAtDisplay (d, event->xmap.window);
 		if (w)
@@ -291,7 +287,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			mapWindow (w);
 		}
 		break;
-
 	case UnmapNotify:
 		w = findWindowAtDisplay (d, event->xunmap.window);
 		if (w)
@@ -317,7 +312,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			unmapWindow (w);
 		}
 		break;
-
 	case ReparentNotify:
 		C(("0x%x : ReparentNotify\n", (unsigned int)event->xreparent.window));
 		w = findWindowAtDisplay (d, event->xreparent.window);
@@ -336,8 +330,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		break;
 
 	case CirculateNotify:
-		D(("circulate notify event\n"));
-		/* TODO check what this event is for */
 		w = findWindowAtDisplay (d, event->xcirculate.window);
 		if (w)
 			circulateWindow (w, &event->xcirculate);
@@ -441,12 +433,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 				}
 			}
 		}
-		/* else if (event->xproperty.atom == d->mwmHintsAtom)
-		 * {
-		 * 	/\*XXX remove?*\/
-		 * 	getMwmHints (d, w->id, &w->mwmFunc, &w->mwmDecor);
-		 * } */
-		else if (event->xproperty.atom == d->wmIconAtom) // TODO
+		else if (event->xproperty.atom == d->wmIconAtom)
 		{
 			freeWindowIcons (w);
 		}
@@ -455,10 +442,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			updateWindowClassHints (w);
 		}
 		break;
-
-	case MotionNotify:
-		break;
-
 	case ClientMessage:
 		if (event->xclient.message_type == d->eManagedAtom)
 		{
@@ -509,40 +492,41 @@ handleEvent (CompDisplay *d, XEvent	*event)
 					w->initialViewportX = dx;
 					w->initialViewportY = dy;
 
-					if(event->xclient.data.l[4]) break; /* window is grabbed and moved */
-
+					/* window is grabbed and moved */
+					if(event->xclient.data.l[4]) break; 
+					
 					int x = MOD(w->attrib.x, s->width)	+ ((dx - s->x) * s->width);
 					int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
-
-					/* printf("desk_event %p %d %d\n", win, x, y); */
-										
+					
+					//	printf("desk_event %p %d:%d  %d:%d  %d:%d\n", win, x, y, dx, dy, (dx - s->x), (dy - s->y));
+					
 					if (x == w->attrib.x && y == w->attrib.y) break;
-
+					
 					int immediate = 1;
 					int old_x = w->attrib.x;
 					int old_y = w->attrib.y;
-
+					
 					/*if visible ?*/
 					addWindowDamage (w);
-
+					
 					w->attrib.x = x;
 					w->attrib.y = y;
-
+					
 					XOffsetRegion (w->region, x - old_x, y - old_y);
-
+					
 					w->matrix = w->texture->matrix;
 					w->matrix.x0 -= (w->attrib.x * w->matrix.xx);
 					w->matrix.y0 -= (w->attrib.y * w->matrix.yy);
-
-					w->invisible = WINDOW_INVISIBLE (w); /* XXX what does this?*/
-
+					
+					w->invisible = WINDOW_INVISIBLE (w);
+					
 					(*s->windowMoveNotify) (w, x - old_x, y - old_y, immediate);
-
+					
 					/*if visible ?*/
 					addWindowDamage (w);
-
+					
 					syncWindowPosition (w);
-
+					
 					break;
 				}
 				else if (type == ECOMORPH_EVENT_FOCUS)
@@ -640,11 +624,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
 			}
 		}
 		break;
-	case MappingNotify:
-	case ConfigureRequest:
-	case CirculateRequest:
-		break;
-
 	default:
 		if (event->type == d->damageEvent + XDamageNotify)
 		{

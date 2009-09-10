@@ -983,8 +983,8 @@ updateWindowViewport(CompWindow *w, int initial)
 		w->initialViewportX = dx;
 		w->initialViewportY = dy;
 
-		int x = MOD(w->attrib.x, s->width)  + ((w->initialViewportX - s->x) * s->width);
-		int y = MOD(w->attrib.y, s->height) + ((w->initialViewportY - s->y) * s->height);
+		int x = MOD(w->attrib.x, s->width)  + ((dx - s->x) * s->width);
+		int y = MOD(w->attrib.y, s->height) + ((dy - s->y) * s->height);
 
 		w->serverX		     = x;
 		w->serverY		     = y;
@@ -1547,6 +1547,7 @@ configureWindow (CompWindow *w, XConfigureEvent *ce)
 
 	int x = ce->x;
 	int y = ce->y;
+	int dx, dy;
 	
 	if (w->clientId)		
 	{
@@ -1562,8 +1563,12 @@ configureWindow (CompWindow *w, XConfigureEvent *ce)
 		}
 		else
 		{
-			x = ce->x + ((w->initialViewportX - s->x) * s->width);
-			y = ce->y + ((w->initialViewportY - s->y) * s->height);
+			dx = w->initialViewportX;
+			dy = w->initialViewportY;
+			/* //printf("configure %p %d:%d  %d:%d  %d:%d\n", w->id, x, y, dx, dy, (dx - s->x), (dy - s->y)); */
+				
+			x = ce->x; /* + ((dx - s->x) * s->width); */
+			y = ce->y; /* + ((dy - s->y) * s->height); */
 		}
 	}
 	else
