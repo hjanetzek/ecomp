@@ -36,13 +36,14 @@
 extern "C" {
 #endif
 
-#define DECOR_SUPPORTING_DM_CHECK_ATOM_NAME "_COMPIZ_SUPPORTING_DM_CHECK"
-#define DECOR_BARE_ATOM_NAME                "_COMPIZ_WINDOW_DECOR_BARE"
-#define DECOR_NORMAL_ATOM_NAME              "_COMPIZ_WINDOW_DECOR_NORMAL"
-#define DECOR_ACTIVE_ATOM_NAME              "_COMPIZ_WINDOW_DECOR_ACTIVE"
-#define DECOR_WINDOW_ATOM_NAME              "_COMPIZ_WINDOW_DECOR"
-#define DECOR_BLUR_ATOM_NAME                "_COMPIZ_WM_WINDOW_BLUR_DECOR"
-#define DECOR_SWITCH_WINDOW_ATOM_NAME       "_COMPIZ_SWITCH_SELECT_WINDOW"
+#define DECOR_SUPPORTING_DM_CHECK_ATOM_NAME     "_COMPIZ_SUPPORTING_DM_CHECK"
+#define DECOR_BARE_ATOM_NAME                    "_COMPIZ_WINDOW_DECOR_BARE"
+#define DECOR_NORMAL_ATOM_NAME                  "_COMPIZ_WINDOW_DECOR_NORMAL"
+#define DECOR_ACTIVE_ATOM_NAME                  "_COMPIZ_WINDOW_DECOR_ACTIVE"
+#define DECOR_WINDOW_ATOM_NAME                  "_COMPIZ_WINDOW_DECOR"
+#define DECOR_BLUR_ATOM_NAME                    "_COMPIZ_WM_WINDOW_BLUR_DECOR"
+#define DECOR_SWITCH_WINDOW_ATOM_NAME           "_COMPIZ_SWITCH_SELECT_WINDOW"
+#define DECOR_SWITCH_FOREGROUND_COLOR_ATOM_NAME "_COMPIZ_SWITCH_FOREGROUND_COLOR"
 
 #define GRAVITY_WEST  (1 << 0)
 #define GRAVITY_EAST  (1 << 1)
@@ -69,6 +70,11 @@ extern "C" {
 #define PAD_BOTTOM (1 << 1)
 #define PAD_LEFT   (1 << 2)
 #define PAD_RIGHT  (1 << 3)
+
+#define BORDER_TOP    0
+#define BORDER_BOTTOM 1
+#define BORDER_LEFT   2
+#define BORDER_RIGHT  3
 
 typedef struct _decor_point {
     int x;
@@ -345,52 +351,18 @@ decor_blend_transform_picture (Display	       *xdisplay,
 			       int	       shade_alpha);
 
 void
-decor_blend_top_border_picture (Display	        *xdisplay,
-				decor_context_t *context,
-				Picture	        src,
-				int	        xSrc,
-				int	        ySrc,
-				Picture	        dst,
-				decor_layout_t  *layout,
-				Region	        region,
-				unsigned short  alpha,
-				int	        shade_alpha);
-
-void
-decor_blend_bottom_border_picture (Display	   *xdisplay,
-				   decor_context_t *context,
-				   Picture	   src,
-				   int	           xSrc,
-				   int	           ySrc,
-				   Picture	   dst,
-				   decor_layout_t  *layout,
-				   Region	   region,
-				   unsigned short  alpha,
-				   int	           shade_alpha);
-
-void
-decor_blend_left_border_picture (Display	 *xdisplay,
-				 decor_context_t *context,
-				 Picture	 src,
-				 int	         xSrc,
-				 int	         ySrc,
-				 Picture	 dst,
-				 decor_layout_t  *layout,
-				 Region		 region,
-				 unsigned short  alpha,
-				 int	         shade_alpha);
-
-void
-decor_blend_right_border_picture (Display	  *xdisplay,
-				  decor_context_t *context,
-				  Picture	  src,
-				  int	          xSrc,
-				  int	          ySrc,
-				  Picture	  dst,
-				  decor_layout_t  *layout,
-				  Region	  region,
-				  unsigned short  alpha,
-				  int	          shade_alpha);
+decor_blend_border_picture (Display	    *xdisplay,
+			    decor_context_t *context,
+			    Picture	    src,
+			    int	            xSrc,
+			    int	            ySrc,
+			    Picture	    dst,
+			    decor_layout_t  *layout,
+			    unsigned int    border,
+			    Region	    region,
+			    unsigned short  alpha,
+			    int	            shade_alpha,
+			    int             ignore_src_alpha);
 
 #define DECOR_ACQUIRE_STATUS_SUCCESS	      0
 #define DECOR_ACQUIRE_STATUS_FAILED	      1

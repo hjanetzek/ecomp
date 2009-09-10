@@ -75,6 +75,7 @@ typedef struct _Decoration
   int minHeight;
   decor_quad_t *quad;
   int nQuad;
+  decor_shadow_t *shadow;
 } Decoration;
 
 typedef struct _ScaledQuad
@@ -130,7 +131,6 @@ typedef struct _DecorScreen
   int windowPrivateIndex;
 
   Decoration *decor[DECOR_NUM];
-  decor_shadow_t *shadow[DECOR_NUM];
   
   DrawWindowProc drawWindow;
   DamageWindowRectProc damageWindowRect;
@@ -179,7 +179,6 @@ static Decoration *decorCreateShadow(CompScreen *screen, int shadowType);
 static decor_quad_t quads_shadow[N_QUADS_MAX];
 static decor_quad_t quads_menu[N_QUADS_MAX];
 static decor_quad_t quads_raised[N_QUADS_MAX];
-
 
 static Bool
 decorDrawWindow(CompWindow *w, const CompTransform *transform,
@@ -397,6 +396,7 @@ decorReleaseDecoration(CompScreen *screen, Decoration *decoration)
 
    decorReleaseTexture(screen, decoration->texture);
 
+   decor_shadow_destroy(screen->display->display, decoration->shadow);
    free(decoration);
 }
 
@@ -970,12 +970,10 @@ decorCreateShadow(CompScreen *s, int shadowType)
    int x1, y1, x2, y2;
    decor_shadow_options_t opt;
    int	nQuad;
-   int radius = 5;
-   int space = (radius + 1) / 2;
    decor_quad_t *quad;
-   decor_shadow_t *shadow;   
    decor_layout_t layout;
    float rad;
+   decor_shadow_t *shadow;
    
    decor_context_t shadow_context = {
      { 0, 0, 0, 0 },
@@ -1002,7 +1000,6 @@ decorCreateShadow(CompScreen *s, int shadowType)
    
    if (shadowType == DECOR_SHADOW)
      {
-	
 	if ((rad = dd->opt[DECOR_DISPLAY_OPTION_SHADOW_RADIUS].value.f))
 	  {	
 	     opt.shadow_radius   = rad;
@@ -1019,7 +1016,6 @@ decorCreateShadow(CompScreen *s, int shadowType)
      }
    else if (shadowType == DECOR_MENU)
      {
-	
 	if ((rad = dd->opt[DECOR_DISPLAY_OPTION_MENU_SHADOW_RADIUS].value.f))
 	  {	
 	     opt.shadow_radius   = rad;
@@ -1052,7 +1048,7 @@ decorCreateShadow(CompScreen *s, int shadowType)
      (s->display->display,
       XScreenOfDisplay(s->display->display, s->screenNum),
       1, 1,
-      space, space, space, space,
+      0, 0, 0, 0,
       0, 0, 0, 0,
       &opt, &shadow_context,
       decor_draw_simple,
@@ -1061,8 +1057,8 @@ decorCreateShadow(CompScreen *s, int shadowType)
    decor_get_default_layout (&shadow_context, 1, 1, &layout);
 
 
-   nQuad = decor_set_lSrStSbS_window_quads (quad, &shadow_context,
-					    &layout);
+   nQuad = decor_set_lSrStSbS_window_quads (quad, &shadow_context, &layout);
+
    input.bottom = 0;
    input.top = 0;
    input.left = 0;
@@ -1093,7 +1089,7 @@ decorCreateShadow(CompScreen *s, int shadowType)
         return NULL;
      }
 
-   decor_shadow_destroy(s->display->display, shadow);
+   decoration->shadow = shadow;
    
    decoration->minWidth  = minWidth;
    decoration->minHeight = minHeight;
