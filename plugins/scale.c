@@ -954,34 +954,6 @@ scaleCheckForWindowAt(CompScreen *s, int x, int y)
    return 0;
 }
 
-/* XXX move this to window - duplicate sendMoveResizeWindowMessage in expo */
-static void
-sendWindowToDeskMessage(CompWindow *w, int x, int y)
-{
-   XEvent xev;
-
-   xev.xclient.type    = ClientMessage;
-   xev.xclient.display = w->screen->display->display;
-   xev.xclient.format  = 32;
-
-   xev.xclient.message_type = w->screen->display->moveResizeWindowAtom;
-   xev.xclient.window	     = w->id;
-
-   xev.xclient.data.l[0] = 2;
-   xev.xclient.data.l[1] =
-     (MOD(w->attrib.x, w->screen->width) + (x * w->screen->width));
-   xev.xclient.data.l[2] =
-     (MOD(w->attrib.y, w->screen->height) + (y * w->screen->height));
-   xev.xclient.data.l[3] = 0;
-   xev.xclient.data.l[4] = 0;
-
-   XSendEvent(w->screen->display->display,
-	      w->screen->root, FALSE,
-	      SubstructureNotifyMask,
-	      &xev);
-}
-
-
 static Bool
 scaleTerminateTimeout(void *closure)
 {
@@ -1069,26 +1041,28 @@ scaleTerminate2(CompDisplay *d, Window root, Bool sendToDesk, Bool Cancel)
 	w = findWindowAtScreen(s, sd->lastActiveWindow);
 	if (w)
 	  {
-	     //defaultViewportForWindow(w, &x, &y);
 	     int x = w->initialViewportX;
 	     int y = w->initialViewportY;
 
 	     if (x != s->x || y != s->y)
 	       {
-		  //if (nOption == 2)
-		  //  toDesk = getIntOptionNamed(option, nOption, "todesk", 1);
-		  /* XXX this disabled the animation after
-		     scale... some people might like
-		     it. better add an option for this */
 		  if (sendToDesk)
 		    {
 		       SCALE_WINDOW(w);
 		       sw->tx += (x - s->x) * s->width;
 		       sw->ty += (y - s->y) * s->height;
-		       moveWindow(w,(s->x - x) * s->width,
-				  (s->y - y) * s->height, TRUE,TRUE);
+
+		       moveWindow(w,
+						  (s->x - x) * s->width,
+						  (s->y - y) * s->height,
+						  TRUE,TRUE);
+
 		       syncWindowPosition(w);
-		       sendWindowToDeskMessage(w, s->x, s->y);
+
+			   ecompMessage(s, w, ECOMORPH_ECOMP_WINDOW_MOVE,
+							w->attrib.x + (s->x * s->width),
+							w->attrib.y + (s->y * s->height),
+							0, 0);
 		    }
 		  else
 		    {

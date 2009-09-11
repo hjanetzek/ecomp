@@ -148,45 +148,6 @@ expoMoveFocusViewport (CompScreen *s,
 	damageScreen (s);
 }
 
-
-
-/* XXX move this to window - duplicates scale */
-static void
-sendMoveResizeWindowMessage (CompWindow *w, int x, int y, int width, int height)
-{
-	XEvent xev;
-
-	xev.xclient.type	= ClientMessage;
-	xev.xclient.display = w->screen->display->display;
-	xev.xclient.format	= 32;
-
-	xev.xclient.message_type = w->screen->display->moveResizeWindowAtom;
-	xev.xclient.window		 = w->id;
-
-	xev.xclient.data.l[0] = 2;
-	xev.xclient.data.l[1] = w->attrib.x + (w->screen->x * w->screen->width);
-	xev.xclient.data.l[2] = w->attrib.y + (w->screen->y * w->screen->height);
-
-	if(width || height)
-	{
-		xev.xclient.data.l[3] = w->attrib.width;
-		xev.xclient.data.l[4] = w->attrib.height;
-	}
-	else
-	{
-		xev.xclient.data.l[3] = 0;
-		xev.xclient.data.l[4] = 0;
-	}
-
-	XSendEvent (w->screen->display->display,
-				w->screen->root,
-				FALSE,
-				SubstructureRedirectMask | SubstructureNotifyMask,
-				&xev);
-}
-
-
-
 static void
 expoFinishWindowMovement (CompWindow *w)
 {
@@ -202,14 +163,17 @@ expoFinishWindowMovement (CompWindow *w)
 
 	sendScreenViewportMessage(s);
 
-	sendMoveResizeWindowMessage(es->dndWindow, 0, 0, 0, 0);
+	ecompMessage(s, w, ECOMORPH_ECOMP_WINDOW_MOVE,
+				 w->attrib.x + (s->x * s->width),
+				 w->attrib.y + (s->y * s->height),
+				 0, 0);
 }
 
 static Bool
 termExpo(CompDisplay *d, int cancel)
 {
 	CompScreen *s;
-
+	
 	for (s = d->screens; s; s = s->next)
 	{
 		EXPO_SCREEN (s);
@@ -1105,7 +1069,7 @@ expoDonePaintScreen (CompScreen * s)
 		if (w)
 		{
 			raiseWindow (es->dndWindow);
-			moveInputFocusToWindow (es->dndWindow);
+			activateWindow(es->dndWindow); 
 		}
 		else
 		{

@@ -68,8 +68,13 @@
 #define ECOMORPH_EVENT_MOVE         5
 #define ECOMORPH_EVENT_MOVE_RESIZE  6
 #define ECOMORPH_EVENT_FOCUS        7
-#define ECOMORPH_ECOMP_WINDOW_MOVE  100
-#define ECOMORPH_ECOMP_PLUGIN_END   200
+
+#define ECOMORPH_ECOMP_WINDOW_MOVE      100
+#define ECOMORPH_ECOMP_WINDOW_ACTIVATE  101
+#define ECOMORPH_ECOMP_WINDOW_STACKING  102
+#define ECOMORPH_ECOMP_VIEWPORT         200
+#define ECOMORPH_ECOMP_PLUGIN_END       210
+
 #define ECOMORPH_WINDOW_STATE_INVISIBLE 0
 #define ECOMORPH_WINDOW_STATE_VISIBLE 1
 
@@ -144,6 +149,8 @@ typedef struct _CompWalker        CompWalker;
 
 
 void ecompActionTerminateNotify (CompScreen *s, int plugin);
+void ecompMessage(CompScreen *s, CompWindow *w, long type, long l1, long l2, long l3, long l4);
+	
 
 
   /* virtual modifiers */

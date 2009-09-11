@@ -1693,25 +1693,25 @@ windowStateChangeNotify (CompWindow *w, unsigned int lastState)
 {
 }
 
-void
-moveInputFocusToWindow (CompWindow *w)
-{
-	CompScreen *s = w->screen;
-	CompDisplay *d = s->display;
-	XEvent ev;
-
-	ev.type = ClientMessage;
-	ev.xclient.window = w->id;
-	ev.xclient.message_type = d->winActiveAtom;
-	ev.xclient.format = 32;
-	ev.xclient.data.l[0] = 2;
-	ev.xclient.data.l[1] = 0; //getCurrentTimeFromDisplay (d);
-	ev.xclient.data.l[2] = 0;
-	ev.xclient.data.l[3] = 0;
-	ev.xclient.data.l[4] = 0;
-
-	XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
-}
+/* void
+ * moveInputFocusToWindow (CompWindow *w)
+ * {
+ * 	CompScreen *s = w->screen;
+ * 	CompDisplay *d = s->display;
+ * 	XEvent ev;
+ * 
+ * 	ev.type = ClientMessage;
+ * 	ev.xclient.window = w->id;
+ * 	ev.xclient.message_type = d->winActiveAtom;
+ * 	ev.xclient.format = 32;
+ * 	ev.xclient.data.l[0] = 2;
+ * 	ev.xclient.data.l[1] = 0; //getCurrentTimeFromDisplay (d);
+ * 	ev.xclient.data.l[2] = 0;
+ * 	ev.xclient.data.l[3] = 0;
+ * 	ev.xclient.data.l[4] = 0;
+ * 
+ * 	XSendEvent (d->display, w->id, FALSE, NoEventMask, &ev);
+ * } */
 /* TODO */
 /*void
   uniconfiyWindow (CompWindow *w)
@@ -1759,46 +1759,16 @@ void
 raiseWindow (CompWindow *w)
 {
 	D(("0x%x : raiseWindow\n", (unsigned int)w->id));
-	XEvent ev;
-
-	ev.type = ClientMessage;
-	ev.xclient.window = w->id;
-	ev.xclient.message_type = w->screen->display->restackWindowAtom;
-	ev.xclient.format = 32;
-	ev.xclient.data.l[0] = 2;
-	ev.xclient.data.l[1] = 0;
-	ev.xclient.data.l[2] = Above;
-	ev.xclient.data.l[3] = 1;
-	ev.xclient.data.l[4] = 0;
-
-	XSendEvent (w->screen->display->display,
-				w->screen->root,
-				FALSE,
-				SubstructureRedirectMask | StructureNotifyMask,
-				&ev);
+	
+	ecompMessage(w->screen, w, ECOMORPH_ECOMP_WINDOW_STACKING, Above, 0, 0, 0);
 }
 
 void
 lowerWindow (CompWindow *w)
 {
 	D(("0x%x : lowerWindow\n", (unsigned int)w->id));
-	XEvent ev;
 
-	ev.type = ClientMessage;
-	ev.xclient.window	  = w->id;
-	ev.xclient.message_type = w->screen->display->restackWindowAtom;
-	ev.xclient.format	  = 32;
-	ev.xclient.data.l[0]	  = 2;
-	ev.xclient.data.l[1]	  = 0;
-	ev.xclient.data.l[2]	  = Below;
-	ev.xclient.data.l[3]	  = 1;
-	ev.xclient.data.l[4]	  = 0;
-
-	XSendEvent (w->screen->display->display,
-				w->screen->root,
-				FALSE,
-				SubstructureRedirectMask | StructureNotifyMask,
-				&ev);
+	ecompMessage(w->screen, w, ECOMORPH_ECOMP_WINDOW_STACKING, Below, 0, 0, 0);
 }
 
 void
@@ -1806,23 +1776,7 @@ restackWindowAbove (CompWindow *w, CompWindow *sibling)
 {
 	D(("0x%x : restackWindowAbove: 0x%x\n", (unsigned int)w->id, (unsigned int) sibling->id));
 
-	XEvent ev;
-
-	ev.type		  = ClientMessage;
-	ev.xclient.window	  = w->id;
-	ev.xclient.message_type = w->screen->display->restackWindowAtom;
-	ev.xclient.format	  = 32;
-	ev.xclient.data.l[0]	  = 2;
-	ev.xclient.data.l[1]	  = sibling->id;
-	ev.xclient.data.l[2]	  = Above;
-	ev.xclient.data.l[3]	  = 1;
-	ev.xclient.data.l[4]	  = 0;
-
-	XSendEvent (w->screen->display->display,
-				w->screen->root,
-				FALSE,
-				SubstructureRedirectMask | StructureNotifyMask,
-				&ev);
+	ecompMessage(w->screen, w, ECOMORPH_ECOMP_WINDOW_STACKING, Above, sibling->id, 0, 0);
 }
 
 
@@ -1830,44 +1784,17 @@ void
 restackWindowBelow (CompWindow *w, CompWindow *sibling)
 {
 	D(("0x%x : restackWindowBelow: 0x%x\n", (unsigned int)w->id, (unsigned int) sibling->id));
-	XEvent ev;
 
-	ev.type		  = ClientMessage;
-	ev.xclient.window	  = w->id;
-	ev.xclient.message_type = w->screen->display->restackWindowAtom;
-	ev.xclient.format	  = 32;
-	ev.xclient.data.l[0]	  = 2;
-	ev.xclient.data.l[1]	  = sibling->id;
-	ev.xclient.data.l[2]	  = Below;
-	ev.xclient.data.l[3]	  = 1;
-	ev.xclient.data.l[4]	  = 0;
-
-	XSendEvent (w->screen->display->display,
-				w->screen->root,
-				FALSE,
-				SubstructureRedirectMask | StructureNotifyMask,
-				&ev);
+	ecompMessage(w->screen, w, ECOMORPH_ECOMP_WINDOW_STACKING, Below, sibling->id, 0, 0);
 }
 
 
 void
-updateWindowAttributes (CompWindow *w, CompStackingUpdateMode stackingMode)
+activateWindow (CompWindow *w)
 {
-	D(("0x%x : updateWindowAttributes\n", (unsigned int) w->id));
+	D(("0x%x : activateWindow\n", (unsigned int)w->id));
 
-	if (!w->clientId)
-		return;
-
-	if (w->state & CompWindowStateShadedMask)
-	{
-		hideWindow (w);
-	}
-
-	/* XXX huh?! test this */
-	/*else if (w->shaded)
-	  {
-	  showWindow (w);
-	  }*/
+	ecompMessage(w->screen, w, ECOMORPH_ECOMP_WINDOW_ACTIVATE, 0, 0, 0, 0);
 }
 
 
@@ -1900,13 +1827,22 @@ updateWindowAttributes (CompWindow *w, CompStackingUpdateMode stackingMode)
  *		&xev);
  * } */
 
-void
-activateWindow (CompWindow *w)
-{
-	/* raiseWindow(w); */
 
-	moveInputFocusToWindow (w);
+void
+updateWindowAttributes (CompWindow *w, CompStackingUpdateMode stackingMode)
+{
+	D(("0x%x : updateWindowAttributes\n", (unsigned int) w->id));
+
+	if (!w->clientId)
+		return;
+
+	if (w->state & CompWindowStateShadedMask)
+	{
+		hideWindow (w);
+	}
 }
+
+
 
 
 void

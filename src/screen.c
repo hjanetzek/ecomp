@@ -54,23 +54,36 @@
 #define NUM_OPTIONS(s) (sizeof ((s)->opt) / sizeof (CompOption))
 
 void
-ecompActionTerminateNotify (CompScreen *s, int plugin)
+ecompMessage(CompScreen *s, CompWindow *w, long type, long l1, long l2, long l3, long l4)
 {
 	XEvent ev;
-	ev.type			        = ClientMessage;
-	ev.xclient.window		= s->root;
-	ev.xclient.display      = s->display->display;
+	
+	ev.type = ClientMessage;
+	ev.xclient.window = w ? w->id : s->root;
 	ev.xclient.message_type = s->display->eManagedAtom;
-	ev.xclient.format		= 32;
-	ev.xclient.data.l[0]	= 2;
-	ev.xclient.data.l[1]	= ECOMORPH_ECOMP_PLUGIN_END;
-	ev.xclient.data.l[2]	= plugin;
-	ev.xclient.data.l[3]	= 0;
-	ev.xclient.data.l[4]	= 0;
+	ev.xclient.format = 32;
+	ev.xclient.data.l[0] = type;
+	ev.xclient.data.l[1] = l1;
+	ev.xclient.data.l[2] = l2;
+	ev.xclient.data.l[3] = l3;
+	ev.xclient.data.l[4] = l4;
 
-	XSendEvent (s->display->display, s->root, FALSE,
-				SubstructureRedirectMask | SubstructureNotifyMask,
-				&ev);
+	XSendEvent (s->display->display,
+				s->root, FALSE,
+				SubstructureNotifyMask, &ev);
+}
+
+void
+ecompActionTerminateNotify (CompScreen *s, int plugin)
+{
+	ecompMessage(s, NULL, ECOMORPH_ECOMP_PLUGIN_END, 0, 0, 0, 0);
+}
+
+/* XXX use ECOMORPH_ATOM message  */
+void
+sendScreenViewportMessage(CompScreen *s)
+{
+	ecompMessage(s, NULL, ECOMORPH_ECOMP_VIEWPORT, s->x, s->y, 0, 0); 
 }
 
 
@@ -2035,29 +2048,6 @@ otherScreenGrabExist (CompScreen *s, ...)
 
 	return FALSE;
 }
-
-
-/* XXX use ECOMORPH_ATOM message  */
-void
-sendScreenViewportMessage(CompScreen *s)
-{
-	CompDisplay *d = s->display;
-	XEvent ev;
-
-	ev.type			= ClientMessage;
-	ev.xclient.window		= s->root;
-	ev.xclient.message_type = d->desktopViewportAtom;
-	ev.xclient.format		= 32;
-	ev.xclient.data.l[0]	= 2; /* from ecomp to wm */
-	ev.xclient.data.l[1]	= s->x;
-	ev.xclient.data.l[2]	= s->y;
-	ev.xclient.data.l[3]	= 0;
-	ev.xclient.data.l[4]	= 0;
-
-	XSendEvent (d->display, s->root, FALSE,
-				SubstructureRedirectMask | StructureNotifyMask, &ev);
-}
-
 
 void
 moveScreenViewport (CompScreen *s,
