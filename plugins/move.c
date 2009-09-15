@@ -33,32 +33,21 @@
 
 static CompMetadata moveMetadata;
 
-struct _MoveKeys {
-    char *name;
-    int  dx;
-    int  dy;
-} mKeys[] = {
-    { "Left",  -1,  0 },
-    { "Right",  1,  0 },
-    { "Up",     0, -1 },
-    { "Down",   0,  1 }
-};
-
-#define NUM_KEYS (sizeof (mKeys) / sizeof (mKeys[0]))
-
-#define KEY_MOVE_INC 24
-
-#define SNAP_BACK 20
-#define SNAP_OFF  100
+/* #define NUM_KEYS (sizeof (mKeys) / sizeof (mKeys[0]))
+ * 
+ * #define KEY_MOVE_INC 24
+ * 
+ * #define SNAP_BACK 20
+ * #define SNAP_OFF  100 */
 
 static int displayPrivateIndex;
 
 #define MOVE_DISPLAY_OPTION_INITIATE	      0
-#define MOVE_DISPLAY_OPTION_OPACITY	      1
+#define MOVE_DISPLAY_OPTION_OPACITY	          1
 #define MOVE_DISPLAY_OPTION_CONSTRAIN_Y	      2
 #define MOVE_DISPLAY_OPTION_SNAPOFF_MAXIMIZED 3
 #define MOVE_DISPLAY_OPTION_LAZY_POSITIONING  4
-#define MOVE_DISPLAY_OPTION_NUM		      5
+#define MOVE_DISPLAY_OPTION_NUM		          5
 
 typedef struct _MoveDisplay {
     int		    screenPrivateIndex;
@@ -67,13 +56,6 @@ typedef struct _MoveDisplay {
     CompOption opt[MOVE_DISPLAY_OPTION_NUM];
 
     CompWindow *w;
-    int	       savedX;
-    int	       savedY;
-    int	       x;
-    int	       y;
-    Region     region;
-    int        status;
-    KeyCode    key[NUM_KEYS];
 
     GLushort moveOpacity;
 } MoveDisplay;
@@ -83,13 +65,9 @@ typedef struct _MoveScreen {
 	PreparePaintScreenProc preparePaintScreen;
     int grabIndex;
 
-    Cursor moveCursor;
-
     unsigned int origState;
 	double progress;
 	int active;
-    int	snapOffY;
-    int	snapBackY;
 } MoveScreen;
 
 #define GET_MOVE_DISPLAY(d)										\
@@ -118,58 +96,43 @@ moveInitiate (CompDisplay     *d,
 	int		 i, x, y;
 	unsigned int ui;
 	unsigned int mods = 0;		
-     
+
     MOVE_DISPLAY (d);
     xid = getIntOptionNamed (option, nOption, "window", 0);
 
     w = findWindowAtDisplay (d, xid);
-    if (w)
-    {
-		MOVE_SCREEN (w->screen);
+    if (!w) return FALSE;
 
-		XQueryPointer (d->display, w->screen->root,
-					   &xid, &xid, &x, &y, &i, &i, &ui);
-		
-		if (otherScreenGrabExist (w->screen, "move", 0))
-			return FALSE;
+	if (otherScreenGrabExist (w->screen, "move", 0))
+		return FALSE;
+
+	MOVE_SCREEN (w->screen);
+
+	XQueryPointer (d->display, w->screen->root,
+				   &xid, &xid, &x, &y, &i, &i, &ui);
+
+	if (md->w)
+		return FALSE;
 	
-		if (md->w)
-			return FALSE;
+	lastPointerX = x;
+	lastPointerY = y;
+
+	ms->origState = w->state;
+
+	if (!ms->grabIndex)
+		ms->grabIndex = pushScreenGrab (w->screen, 0, "move");
 	
-		if (md->region)
-		{
-			XDestroyRegion (md->region);
-			md->region = NULL;
-		}
-
-		md->status = RectangleOut;
-
-		md->savedX = w->serverX;
-		md->savedY = w->serverY;
-
-		md->x = 0;
-		md->y = 0;
-
-		lastPointerX = x;
-		lastPointerY = y;
-
-		ms->origState = w->state;
-
-		if (!ms->grabIndex)
-			ms->grabIndex = pushScreenGrab (w->screen, ms->moveCursor, "move");
-	
-		if (ms->grabIndex)
-		{
-			md->w = w;
+	if (ms->grabIndex)
+	{
+		md->w = w;
 			
-			(w->screen->windowGrabNotify) (w, x, y, mods,
-										   CompWindowGrabMoveMask |
-										   CompWindowGrabButtonMask);
+		(w->screen->windowGrabNotify) (w, x, y, mods,
+									   CompWindowGrabMoveMask |
+									   CompWindowGrabButtonMask);
 
-			if (md->moveOpacity != OPAQUE)
-				addWindowDamage (w);
-		}
-    }
+		if (md->moveOpacity != OPAQUE)
+			addWindowDamage (w);
+	}
 
     return FALSE;
 }
@@ -235,26 +198,20 @@ moveHandleEvent (CompDisplay *d,
 				if(state)
 				{ 
 					CompOption o[1];
-					/* int	       xRoot, yRoot; */
 					CompAction *action = NULL;
 
 					o[0].type    = CompOptionTypeInt;
 					o[0].name    = "window";
 					o[0].value.i = w->id;
 
-					moveInitiate (d,
-								  action,
-								  CompActionStateInitButton,
-								  o, 1);
+					moveInitiate (d, action, CompActionStateInitButton, o, 1);
 					MOVE_SCREEN(s);
 					
 					ms->active = 1;
 				}
 				else
 				{ 
-					moveTerminate (d,
-								   NULL,
-								   0, NULL, 0);  
+					moveTerminate (d, NULL, 0, NULL, 0);  
 				}
 			}
 		}
@@ -262,15 +219,11 @@ moveHandleEvent (CompDisplay *d,
 		break;
 	case DestroyNotify:
 		if (md->w && md->w->id == event->xdestroywindow.window)
-			moveTerminate (d,
-						   &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action,
-						   0, NULL, 0);
+			moveTerminate (d, NULL, 0, NULL, 0);  
 		break;
 	case UnmapNotify:
 		if (md->w && md->w->id == event->xunmap.window)
-			moveTerminate (d,
-						   &md->opt[MOVE_DISPLAY_OPTION_INITIATE].value.action,
-						   0, NULL, 0);
+			moveTerminate (d, NULL, 0, NULL, 0);  
 	default:
 		break;
 	}
@@ -390,17 +343,14 @@ moveInitDisplay (CompPlugin  *p,
 				 CompDisplay *d)
 {
     MoveDisplay *md;
-    int	        i;
 
     md = malloc (sizeof (MoveDisplay));
-    if (!md)
-		return FALSE;
+    if (!md) return FALSE;
 
-    if (!compInitDisplayOptionsFromMetadata (d,
-											 &moveMetadata,
-											 moveDisplayOptionInfo,
-											 md->opt,
-											 MOVE_DISPLAY_OPTION_NUM))
+	md->w = 0;
+	
+    if (!compInitDisplayOptionsFromMetadata
+		(d, &moveMetadata, moveDisplayOptionInfo, md->opt, MOVE_DISPLAY_OPTION_NUM))
     {
 		free (md);
 		return FALSE;
@@ -414,16 +364,7 @@ moveInitDisplay (CompPlugin  *p,
 		return FALSE;
     }
 
-    md->moveOpacity =
-		(md->opt[MOVE_DISPLAY_OPTION_OPACITY].value.i * OPAQUE) / 100;
-
-    md->w      = 0;
-    md->region = NULL;
-    md->status = RectangleOut;
-
-    for (i = 0; i < NUM_KEYS; i++)
-		md->key[i] = XKeysymToKeycode (d->display,
-									   XStringToKeysym (mKeys[i].name));
+    md->moveOpacity = (md->opt[MOVE_DISPLAY_OPTION_OPACITY].value.i * OPAQUE) / 100;
 
     WRAP (md, d, handleEvent, moveHandleEvent);
 
@@ -463,8 +404,6 @@ moveInitScreen (CompPlugin *p,
 	ms->active = 0;
 	ms->progress = 0.0;
 	
-    ms->moveCursor = XCreateFontCursor (s->display->display, XC_fleur);
-
     WRAP (ms, s, paintWindow, movePaintWindow);
     WRAP (ms, s, preparePaintScreen, movePreparePaintScreen);
 
@@ -482,20 +421,15 @@ moveFiniScreen (CompPlugin *p,
     UNWRAP (ms, s, paintWindow);
     UNWRAP (ms, s, preparePaintScreen);
 
-    if (ms->moveCursor)
-		XFreeCursor (s->display->display, ms->moveCursor);
-
     free (ms);
 }
 
 static Bool
 moveInit (CompPlugin *p)
 {
-    if (!compInitPluginMetadataFromInfo (&moveMetadata,
-										 p->vTable->name,
-										 moveDisplayOptionInfo,
-										 MOVE_DISPLAY_OPTION_NUM,
-										 0, 0))
+    if (!compInitPluginMetadataFromInfo
+		(&moveMetadata, p->vTable->name, moveDisplayOptionInfo,
+		 MOVE_DISPLAY_OPTION_NUM, 0, 0))
 		return FALSE;
 
     displayPrivateIndex = allocateDisplayPrivateIndex ();

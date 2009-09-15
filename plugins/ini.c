@@ -1048,7 +1048,10 @@ iniFileModified (const char *name,
 		if(!strcmp("core", plugin))
 			iniLoadOptionsFromFile (d, options, NULL, screen);
 		else
-			iniLoadOptionsFromFile (d, options, plugin, screen);
+		{
+			if (strcmp(plugin, "png"))
+				iniLoadOptionsFromFile (d, options, plugin, screen);
+		}
     }
    
 	eet_close(optionFile);
