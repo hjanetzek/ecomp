@@ -699,7 +699,23 @@ eventLoop (void)
 	     lastPointerY = pointerY;
 	  }
 
-	if (replaceCurrentWm) continue;
+	if (replaceCurrentWm)
+	{
+	    if (timeouts)
+	    {
+		if (timeouts->left > 0)
+		    doPoll (timeouts->left);
+
+		gettimeofday (&tv, 0);
+
+		handleTimeouts (&tv);
+	    }
+	    else
+	    {
+		doPoll (1000);
+	    }
+	    continue;
+	}
 
 	for (s = display->screens; s; s = s->next)
 	  {
