@@ -748,199 +748,199 @@ eventLoop (void)
 	       timeToNextRedraw = s->timeLeft;
 	  }
 
-	if (damageMask)
+	if (!damageMask)
 	  {
-	     time = timeToNextRedraw;
-	     if (time)
-	       time = doPoll (time);
+	    if (timeouts)
+	      {
+		if (timeouts->left > 0)
+		  doPoll (timeouts->left);
 
-	     if (time == 0)
-	       {
-		  gettimeofday (&tv, 0);
+		gettimeofday (&tv, 0);
 
-		  if (timeouts)
-		    handleTimeouts (&tv);
-
-		  for (s = display->screens; s; s = s->next)
-		    {
-		       if (!s->damageMask || s->timeLeft > timeToNextRedraw)
-			 continue;
-
-		       targetScreen = s;
-
-		       timeDiff = TIMEVALDIFF (&tv, &s->lastRedraw);
-
-		       /* handle clock rollback */
-		       if (timeDiff < 0)
-			 timeDiff = 0;
-
-		       makeScreenCurrent (s);
-
-		       if (s->slowAnimations)
-			 {
-			    (*s->preparePaintScreen)
-			      (s, s->idle ? 2 : (timeDiff * 2) / s->redrawTime);
-			 }
-		       else
-			 {
-			    (*s->preparePaintScreen) (s, s->idle ? s->redrawTime : timeDiff);
-			 }
-					
-		       /* substract top most overlay window region */
-		       if (s->overlayWindowCount)
-			 {
-			    for (w = s->reverseWindows; w; w = w->prev)
-			      {
-				 if (w->destroyed || w->invisible)
-				   continue;
-
-				 if (!w->redirected)
-				   XSubtractRegion (s->damage, w->region,
-						    s->damage);
-
-				 break;
-			      }
-
-			    if (s->damageMask & COMP_SCREEN_DAMAGE_ALL_MASK)
-			      {
-				 s->damageMask &= ~COMP_SCREEN_DAMAGE_ALL_MASK;
-				 s->damageMask |= COMP_SCREEN_DAMAGE_REGION_MASK;
-			      }
-			 }
-
-		       if (s->damageMask & COMP_SCREEN_DAMAGE_REGION_MASK)
-			 {
-			    XIntersectRegion (s->damage, &s->region, tmpRegion);
-
-			    if (tmpRegion->numRects	 == 1		 &&
-				tmpRegion->rects->x1 == 0		 &&
-				tmpRegion->rects->y1 == 0		 &&
-				tmpRegion->rects->x2 == s->width &&
-				tmpRegion->rects->y2 == s->height)
-			      damageScreen (s);
-			 }
-
-		       EMPTY_REGION (s->damage);
-
-		       mask = s->damageMask;
-		       s->damageMask = 0;
-
-		       if (s->clearBuffers)
-			 {
-			    if (mask & COMP_SCREEN_DAMAGE_ALL_MASK)
-			      glClear (GL_COLOR_BUFFER_BIT);
-			 }
-
-		       (*s->paintScreen) (s, s->outputDev,
-					  s->nOutputDev,
-					  mask);
-
-		       targetScreen = NULL;
-		       targetOutput = &s->outputDev[0];
-
-		       waitForVideoSync (s);
-
-		       if (mask & COMP_SCREEN_DAMAGE_ALL_MASK)
-			 {
-			    glXSwapBuffers (display->display, s->output);
-			 }
-		       else
-			 {
-			    BoxPtr pBox;
-			    int	   nBox, y;
-
-			    pBox = tmpRegion->rects;
-			    nBox = tmpRegion->numRects;
-
-			    if (s->copySubBuffer)
-			      {
-				 while (nBox--)
-				   {
-				      y = s->height - pBox->y2;
-
-				      (*s->copySubBuffer)
-					(display->display, s->output,
-					 pBox->x1, y,
-					 pBox->x2 - pBox->x1,
-					 pBox->y2 - pBox->y1);
-
-				      pBox++;
-				   }
-			      }
-			    else
-			      {
-				 glEnable (GL_SCISSOR_TEST);
-				 glDrawBuffer (GL_FRONT);
-
-				 while (nBox--)
-				   {
-				      y = s->height - pBox->y2;
-
-				      glBitmap (0, 0, 0, 0, pBox->x1 - s->rasterX,
-						y - s->rasterY, NULL);
-
-				      s->rasterX = pBox->x1;
-				      s->rasterY = y;
-
-				      glScissor (pBox->x1, y,
-						 pBox->x2 - pBox->x1,
-						 pBox->y2 - pBox->y1);
-
-				      glCopyPixels (pBox->x1, y,
-						    pBox->x2 - pBox->x1,
-						    pBox->y2 - pBox->y1,
-						    GL_COLOR);
-
-				      pBox++;
-				   }
-
-				 glDrawBuffer (GL_BACK);
-				 glDisable (GL_SCISSOR_TEST);
-				 glFlush ();
-			      }
-			 }
-
-		       s->lastRedraw = tv;
-
-		       (*s->donePaintScreen) (s);
-
-		       /* remove destroyed windows */
-		       while (s->pendingDestroys)
-			 {
-			    CompWindow *w;
-
-			    for (w = s->windows; w; w = w->next)
-			      {
-				 if (w->destroyed)
-				   {
-				      addWindowDamage (w);
-				      removeWindow (w);
-				      break;
-				   }
-			      }
-
-			    s->pendingDestroys--;
-			 }
-					
-		       s->idle = FALSE;
-		    }
-	       }
+		handleTimeouts (&tv);
+	      }
+	    else
+	      {
+		doPoll (1000);
+	      }
+	    
+	    continue;
 	  }
-	else
+	
+	time = timeToNextRedraw;
+	if (time)
+	  time = doPoll (time);
+
+	if (time)
+	  continue;
+	
+	gettimeofday (&tv, 0);
+
+	if (timeouts)
+	  handleTimeouts (&tv);
+
+	for (s = display->screens; s; s = s->next)
 	  {
-	     if (timeouts)
+	     if (!s->damageMask || s->timeLeft > timeToNextRedraw)
+	       continue;
+
+	     targetScreen = s;
+
+	     timeDiff = TIMEVALDIFF (&tv, &s->lastRedraw);
+
+	     /* handle clock rollback */
+	     if (timeDiff < 0)
+	       timeDiff = 0;
+
+	     makeScreenCurrent (s);
+
+	     if (s->slowAnimations)
 	       {
-		  if (timeouts->left > 0)
-		    doPoll (timeouts->left);
-
-		  gettimeofday (&tv, 0);
-
-		  handleTimeouts (&tv);
+		  (*s->preparePaintScreen)
+		    (s, s->idle ? 2 : (timeDiff * 2) / s->redrawTime);
 	       }
 	     else
 	       {
-		  doPoll (1000);
+		  (*s->preparePaintScreen) (s, s->idle ? s->redrawTime : timeDiff);
 	       }
+					
+	     /* substract top most overlay window region */
+	     if (s->overlayWindowCount)
+	       {
+		  for (w = s->reverseWindows; w; w = w->prev)
+		    {
+		       if (w->destroyed || w->invisible)
+			 continue;
+
+		       if (!w->redirected)
+			 XSubtractRegion (s->damage, w->region,
+					  s->damage);
+
+		       break;
+		    }
+
+		  if (s->damageMask & COMP_SCREEN_DAMAGE_ALL_MASK)
+		    {
+		       s->damageMask &= ~COMP_SCREEN_DAMAGE_ALL_MASK;
+		       s->damageMask |= COMP_SCREEN_DAMAGE_REGION_MASK;
+		    }
+	       }
+
+	     if (s->damageMask & COMP_SCREEN_DAMAGE_REGION_MASK)
+	       {
+		  XIntersectRegion (s->damage, &s->region, tmpRegion);
+
+		  if (tmpRegion->numRects	 == 1		 &&
+		      tmpRegion->rects->x1 == 0		 &&
+		      tmpRegion->rects->y1 == 0		 &&
+		      tmpRegion->rects->x2 == s->width &&
+		      tmpRegion->rects->y2 == s->height)
+		    damageScreen (s);
+	       }
+
+	     EMPTY_REGION (s->damage);
+
+	     mask = s->damageMask;
+	     s->damageMask = 0;
+
+	     if (s->clearBuffers)
+	       {
+		  if (mask & COMP_SCREEN_DAMAGE_ALL_MASK)
+		    glClear (GL_COLOR_BUFFER_BIT);
+	       }
+
+	     (*s->paintScreen) (s, s->outputDev,
+				s->nOutputDev,
+				mask);
+
+	     targetScreen = NULL;
+	     targetOutput = &s->outputDev[0];
+
+	     waitForVideoSync (s);
+
+	     if (mask & COMP_SCREEN_DAMAGE_ALL_MASK)
+	       {
+		  glXSwapBuffers (display->display, s->output);
+	       }
+	     else
+	       {
+		  BoxPtr pBox;
+		  int	   nBox, y;
+
+		  pBox = tmpRegion->rects;
+		  nBox = tmpRegion->numRects;
+
+		  if (s->copySubBuffer)
+		    {
+		       while (nBox--)
+			 {
+			    y = s->height - pBox->y2;
+
+			    (*s->copySubBuffer)
+			      (display->display, s->output,
+			       pBox->x1, y,
+			       pBox->x2 - pBox->x1,
+			       pBox->y2 - pBox->y1);
+
+			    pBox++;
+			 }
+		    }
+		  else
+		    {
+		       glEnable (GL_SCISSOR_TEST);
+		       glDrawBuffer (GL_FRONT);
+
+		       while (nBox--)
+			 {
+			    y = s->height - pBox->y2;
+
+			    glBitmap (0, 0, 0, 0, pBox->x1 - s->rasterX,
+				      y - s->rasterY, NULL);
+
+			    s->rasterX = pBox->x1;
+			    s->rasterY = y;
+
+			    glScissor (pBox->x1, y,
+				       pBox->x2 - pBox->x1,
+				       pBox->y2 - pBox->y1);
+
+			    glCopyPixels (pBox->x1, y,
+					  pBox->x2 - pBox->x1,
+					  pBox->y2 - pBox->y1,
+					  GL_COLOR);
+
+			    pBox++;
+			 }
+
+		       glDrawBuffer (GL_BACK);
+		       glDisable (GL_SCISSOR_TEST);
+		       glFlush ();
+		    }
+	       }
+
+	     s->lastRedraw = tv;
+
+	     (*s->donePaintScreen) (s);
+
+	     /* remove destroyed windows */
+	     while (s->pendingDestroys)
+	       {
+		  CompWindow *w;
+
+		  for (w = s->windows; w; w = w->next)
+		    {
+		       if (w->destroyed)
+			 {
+			    addWindowDamage (w);
+			    removeWindow (w);
+			    break;
+			 }
+		    }
+
+		  s->pendingDestroys--;
+	       }
+					
+	     s->idle = FALSE;
 	  }
      }
 }
@@ -1037,11 +1037,12 @@ Bool
 addDisplay (char *name)
 {
    CompDisplay *d;
-   Display		*dpy;
-   int	 i;
-   int		compositeMajor, compositeMinor;
-   int		firstScreen, lastScreen;
-
+   Display *dpy;
+   int  i;
+   int	compositeMajor, compositeMinor;
+   int  firstScreen, lastScreen;
+   Time wmSnTimestamp = 0;
+   
    d = &compDisplay;
 
    if (displayPrivateLen)
@@ -1166,10 +1167,10 @@ addDisplay (char *name)
    d->currentDesktopAtom	= XInternAtom (dpy, "_NET_CURRENT_DESKTOP", 0);
    d->numberOfDesktopsAtom = XInternAtom (dpy, "_NET_NUMBER_OF_DESKTOPS", 0);
 
-   d->winStateAtom			= XInternAtom (dpy, "_NET_WM_STATE", 0);
+   d->winStateAtom	       	= XInternAtom (dpy, "_NET_WM_STATE", 0);
    d->winStateModalAtom		=
      XInternAtom (dpy, "_NET_WM_STATE_MODAL", 0);
-   d->winStateStickyAtom		=
+   d->winStateStickyAtom	=
      XInternAtom (dpy, "_NET_WM_STATE_STICKY", 0);
    d->winStateMaximizedVertAtom	=
      XInternAtom (dpy, "_NET_WM_STATE_MAXIMIZED_VERT", 0);
@@ -1305,16 +1306,10 @@ addDisplay (char *name)
    for (i = firstScreen; i <= lastScreen; i++)
      {
 	Window			 newCmSnOwner = None;
-	Atom			 wmSnAtom = 0, cmSnAtom = 0;
-	Time			 wmSnTimestamp = 0;
-	XSetWindowAttributes attr;
+	Atom			 cmSnAtom = 0;
+	XSetWindowAttributes     attr;
 	Window			 currentCmSnOwner;
 	char			 buf[128];
-
-	sprintf (buf, "WM_S%d", i);
-	wmSnAtom = XInternAtom (dpy, buf, 0);
-
-	/* currentWmSnOwner = XGetSelectionOwner (dpy, wmSnAtom); */
 
 	sprintf (buf, "_NET_WM_CM_S%d", i);
 	cmSnAtom = XInternAtom (dpy, buf, 0);
@@ -1355,8 +1350,8 @@ addDisplay (char *name)
 
 	XSelectInput (dpy, XRootWindow (dpy, i),
 		      SubstructureNotifyMask |
-		      StructureNotifyMask	 |
-		      PropertyChangeMask	 |
+		      StructureNotifyMask    |
+		      PropertyChangeMask     |
 		      ExposureMask);
 
 	if (compCheckForError (dpy))
@@ -1369,7 +1364,7 @@ addDisplay (char *name)
 	     continue;
 	  }
 
-	if (!addScreen (d, i, newCmSnOwner, wmSnAtom, wmSnTimestamp))
+	if (!addScreen (d, i))
 	  {
 	     compLogMessage (d, "core", CompLogLevelError,
 	     		     "Failed to manage screen: %d", i);
@@ -1392,26 +1387,10 @@ addDisplay (char *name)
    return TRUE;
 }
 
-/* Time
- * getCurrentTimeFromDisplay (CompDisplay *d)
- * {
- *	   XEvent event;
- *
- *	   XChangeProperty (d->display, d->screens->grabWindow,
- *			 XA_PRIMARY, XA_STRING, 8,
- *			 PropModeAppend, NULL, 0);
- *
- *	   XWindowEvent (d->display, d->screens->grabWindow,
- *		  PropertyChangeMask,
- *		  &event);
- *
- *	   return event.xproperty.time;
- * } */
-
 void
 focusDefaultWindow (CompDisplay *d)
 {
-   /* printf("focusDefaultWindow - remove this call\n"); */
+
 }
 
 CompScreen *
@@ -1644,16 +1623,4 @@ void
 fileWatchRemoved (CompDisplay *display, CompFileWatch *fileWatch)
 {
 }
-
-/* CompCursor *
- * findCursorAtDisplay (CompDisplay *display)
- * {
- *    CompScreen *s;
- * 
- *    for (s = display->screens; s; s = s->next)
- *      if (s->cursors)
- *        return s->cursors;
- * 
- *    return NULL;
- * } */
 

@@ -546,50 +546,6 @@ scaleaddonScalePaintDecoration (CompWindow              *w,
 	    scaleaddonDrawWindowTitle (w);
     }
 }
-/* removed addScreenAction -> TODO add this as eco action for scale */
-/* static void
- * scaleaddonHandleEcompEvent (CompDisplay *d,
- * 			     char        *pluginName,
- * 			     char        *eventName,
- * 			     CompOption  *option,
- * 			     int         nOption)
- * {
- *     ADDON_DISPLAY(d);
- * 
- *     UNWRAP (ad, d, handleEcompEvent);
- *     (*d->handleEcompEvent) (d, pluginName, eventName, option, nOption);
- *     WRAP (ad, d, handleEcompEvent, scaleaddonHandleEcompEvent);
- * 
- * 
- *     
- *     if ((strcmp (pluginName, "scale") == 0) &&
- *     	(strcmp (eventName, "activate") == 0))
- *     {
- *     	Window xid = getIntOptionNamed (option, nOption, "root", 0);
- *     	Bool activated = getIntOptionNamed (option, nOption, "activated", FALSE);
- *     	CompScreen *s = findScreenAtDisplay (d, xid);
- *     
- *     	if (s)
- *     	{
- *     	    if (activated)
- *     	    {
- *     		addScreenAction (s, scaleaddonGetZoom (s->display));
- *     	    }
- *     	    else
- *     	    {
- *     		CompWindow *w;
- *     
- *     		for (w = s->windows; w; w = w->next)
- *     		{
- *     		    ADDON_WINDOW (w);
- *     		    aw->rescaled = FALSE;
- *     		}
- *     
- *     		removeScreenAction (s, scaleaddonGetZoom (s->display));
- *     	    }
- *     	}
- *     }
- * } */
 
 /**
  * experimental organic layout method

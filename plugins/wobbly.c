@@ -1663,7 +1663,7 @@ sendMoveResizeWindowMessage (CompWindow *w)
    xev.xclient.data.l[0] = ECOMORPH_ECOMP_WINDOW_MOVE;
    xev.xclient.data.l[1] = w->attrib.x + (w->screen->x * w->screen->width);
    xev.xclient.data.l[2] = w->attrib.y + (w->screen->y * w->screen->height);
-   xev.xclient.data.l[3] = 0;
+   xev.xclient.data.l[3] = 1;
    xev.xclient.data.l[4] = 0;
    
    XSendEvent (w->screen->display->display,

@@ -90,6 +90,8 @@ isScaleWin(CompWindow *w)
 {
    if (!w->clientId || !w->clientMapped) return FALSE;
 
+   if (w->destroyed) return FALSE;
+   
    SCALE_SCREEN(w->screen);
 
    if (ss->type == ScaleTypeNormal)

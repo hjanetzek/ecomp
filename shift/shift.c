@@ -207,9 +207,11 @@ isShiftWin (CompWindow *w)
 
     if (!w->clientId) return FALSE;
 
+	if (w->destroyed) return FALSE;
+	
     if (w->state & CompWindowStateSkipTaskbarMask)
 		return FALSE;
-
+	
     if (!w->mapNum ||
 		w->state & CompWindowStateHiddenMask ||
 		w->state & CompWindowStateShadedMask)

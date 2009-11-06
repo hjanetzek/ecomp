@@ -2144,10 +2144,7 @@ hideOutputWindow (CompScreen *s);
 
 Bool
 addScreen (CompDisplay *display,
-	   int	       screenNum,
-	   Window      wmSnSelectionWindow,
-	   Atom	       wmSnAtom,
-	   Time	       wmSnTimestamp);
+	   int	       screenNum);
 
 void
 damageScreenRegion (CompScreen *screen,
@@ -2199,16 +2196,6 @@ removeScreenGrab (CompScreen *s,
 Bool
 otherScreenGrabExist (CompScreen *s, ...);
 
-/* Bool
- * addScreenAction (CompScreen *s,
- * 		 CompAction *action);
- * 
- * void
- * removeScreenAction (CompScreen *s,
- * 		    CompAction *action);
- * 
- * void
- * updatePassiveGrabs (CompScreen *s); */
 
 void
 updateWorkareaForScreen (CompScreen *s);
@@ -2219,19 +2206,6 @@ updateClientListForScreen (CompScreen *s);
 Window
 getActiveWindow (CompDisplay *display,
 		 Window      root);
-
-/* void */
-/* toolkitAction (CompScreen *s, */
-/* 	       Atom	  toolkitAction, */
-/* 	       Time       eventTime, */
-/* 	       Window	  window, */
-/* 	       long	  data0, */
-/* 	       long	  data1, */
-/* 	       long	  data2); */
-
-void
-runCommand (CompScreen *s,
-	    const char *command);
 
 void
 moveScreenViewport (CompScreen *s,
@@ -2248,22 +2222,6 @@ moveWindowToViewportPosition (CompWindow *w,
 			      int	 x,
 			      int        y,
 			      Bool       sync);
-
-/* CompGroup *
- * addGroupToScreen (CompScreen *s,
- * 		  Window     id);
- * void
- * removeGroupFromScreen (CompScreen *s,
- * 		       CompGroup  *group);
- * 
- * CompGroup *
- * findGroupAtScreen (CompScreen *s,
- * 		   Window     id); */
-
-/* void
- * applyStartupProperties (CompScreen *screen,
- * 			CompWindow *window); */
-
 void
 sendWindowActivationRequest (CompScreen *s,
 			     Window	id);
@@ -2275,14 +2233,6 @@ screenTexEnvMode (CompScreen *s,
 void
 screenLighting (CompScreen *s,
 		Bool       lighting);
-
-/* void
- * enableScreenEdge (CompScreen *s,
- * 		  int	     edge);
- * 
- * void
- * disableScreenEdge (CompScreen *s,
- * 		   int	      edge); */
 
 Window
 getTopWindow (CompScreen *s);
@@ -2349,13 +2299,6 @@ outputDeviceForGeometry (CompScreen *s,
 
 Bool
 updateDefaultIcon (CompScreen *screen);
-
-/* CompCursor *
- * findCursorAtScreen (CompScreen *screen);
- * 
- * CompCursorImage *
- * findCursorImageAtScreen (CompScreen    *screen,
- * 			 unsigned long serial); */
 
 void
 setCurrentActiveWindowHistory (CompScreen *s,
@@ -2496,13 +2439,6 @@ struct _CompWindow {
     int	     nIcon;
 
     XWindowChanges saveWc;
-    int		   saveMask;
-
-  /*XSyncCounter  syncCounter;
-    XSyncValue	  syncValue;
-    XSyncAlarm	  syncAlarm;
-    unsigned long syncAlarmConnection;
-    unsigned int  syncWaitHandle; */
 
     Bool syncWait;
     int	 syncX;
