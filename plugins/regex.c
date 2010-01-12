@@ -294,21 +294,21 @@ regexHandleEvent (CompDisplay *d,
     {
 	CompWindow *w;
 
-	if (event->xproperty.atom == XA_WM_NAME)
-	{
-	    w = findWindowAtDisplay (d, event->xproperty.window);
-	    if (w)
-	    {
-		REGEX_WINDOW (w);
-
-		if (rw->title)
-		    free (rw->title);
-
-		rw->title = regexGetWindowTitle (w);
-
-		(*d->matchPropertyChanged) (d, w);
-	    }
-	}
+	/* if (event->xproperty.atom == XA_WM_NAME)
+	 * {
+	 *     w = findWindowAtDisplay (d, event->xproperty.window);
+	 *     if (w)
+	 *     {
+	 * 	REGEX_WINDOW (w);
+	 * 
+	 * 	if (rw->title)
+	 * 	    free (rw->title);
+	 * 
+	 * 	rw->title = regexGetWindowTitle (w);
+	 * 
+	 * 	(*d->matchPropertyChanged) (d, w);
+	 *     }
+	 * } */
 	if (event->xproperty.atom == rd->roleAtom)
 	{
 	    w = findWindowAtDisplay (d, event->xproperty.window);
