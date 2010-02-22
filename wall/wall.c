@@ -1190,7 +1190,7 @@ wallPaintTransformedOutput (CompScreen              *s,
 	      * 	  else 
 	      * 	    gx = (float)s->vsize + gx;
 	      *   } */
-	     printf("%1.3f \t-  %1.3f, %1.3f\n", gx, fx, px);
+//	     printf("%1.3f \t-  %1.3f, %1.3f\n", gx, fx, px);
 	     
 	     for (w = s->windows; w; w = w->next)
 	       {
@@ -1201,13 +1201,13 @@ wallPaintTransformedOutput (CompScreen              *s,
 			   w->initialViewportY == ws->fromY)
 			 {
 			    moveWindow(w, fx, fy, FALSE, FALSE);
-			    printf("from - %d\n", w->attrib.x);
+			    //printf("from - %d\n", w->attrib.x);
 			 }
 		       else if (w->initialViewportX == ws->gotoX &&
 				w->initialViewportY == ws->gotoY)
 			 {
 			    moveWindow(w, gx, gy, FALSE, FALSE);
-			    printf("goto - %d\n", w->attrib.x);
+			    //printf("goto - %d\n", w->attrib.x);
 			 }
 		    }
 	       }

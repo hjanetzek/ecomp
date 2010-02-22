@@ -1310,6 +1310,9 @@ mapWindow (CompWindow *w)
 
    w->attrib.map_state = IsViewable;
 
+   w->clientMapped = 1;
+   
+   
    w->invisible = TRUE;
    w->damaged = FALSE;
    w->alive = TRUE;
