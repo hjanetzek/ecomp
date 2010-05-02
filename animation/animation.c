@@ -3865,8 +3865,14 @@ static void animWindowResizeNotify(CompWindow * w, int dx, int dy, int dwidth, i
 	    CompWindowTypeTooltipMask |
 	    CompWindowTypeNotificationMask |
 	    CompWindowTypeComboMask |
-	    CompWindowTypeDndMask))))
+	    CompWindowTypeDndMask |
+	    CompWindowTypeUnknownMask |
+	    CompWindowTypeNormalMask |
+	    CompWindowTypeDialogMask
+	       ))))
     {
+	/* printf("resize !!!! \n"); */
+
 	if (aw->polygonSet && !aw->animInitialized)
 	{
 	    // to refresh polygon coords

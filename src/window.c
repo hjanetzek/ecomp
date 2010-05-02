@@ -1312,7 +1312,6 @@ mapWindow (CompWindow *w)
 
    w->clientMapped = 1;
    
-   
    w->invisible = TRUE;
    w->damaged = FALSE;
    w->alive = TRUE;

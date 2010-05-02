@@ -23,10 +23,10 @@
  * Author: David Reveman <davidr@novell.com>
  * hacks by: Hannes Janetzek <hannes.janetzek@gmail.com>
  */
-//do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)
+//
 #define A(x)
-#define D(x)
-#define C(x)
+#define D(x) //do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)
+#define C(x) //do { printf(__FILE__ ":%d:\t", __LINE__); printf x; fflush(stdout); } while(0)
 #define E(x)
 
 
@@ -152,42 +152,6 @@ handleEvent (CompDisplay *d, XEvent	*event)
    CompScreen *s;
    CompWindow *w;
 
-   /* switch (event->type) {
-    * case ButtonPress:
-    *	D(("ButtonPress event\n"));
-    *
-    *	s = findScreenAtDisplay (d, event->xbutton.root);
-    *	if (s)
-    *		setCurrentOutput (s, outputDeviceForPoint (s,
-    *							   event->xbutton.x_root,
-    *							   event->xbutton.y_root));
-    *	break;
-    * case MotionNotify:
-    *	s = findScreenAtDisplay (d, event->xmotion.root);
-    *	if (s)
-    *		setCurrentOutput (s, outputDeviceForPoint (s,
-    *							   event->xmotion.x_root,
-    *							   event->xmotion.y_root));
-    *	break;
-    * case KeyPress:
-    *	D(("KeyPress event\n"));
-    *
-    *	w = findWindowAtDisplay (d, d->activeWindow);
-    *	if (w)
-    *		setCurrentOutput (w->screen, outputDeviceForWindow (w));
-    * default:
-    *	break;
-    * } */
-
-   /*TODO check where this is used */
-   /* if (handleActionEvent (d, event))
-    * {
-    *	if (!d->screens->maxGrab)
-    *		XAllowEvents (d->display, AsyncPointer, event->xbutton.time);
-    *
-    *	return;
-    * } */
-
    switch (event->type) {
     case Expose:
        D(("0x%x : Expose event\n", (unsigned int)event->xexpose.window));
@@ -244,7 +208,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 	 }
        break;
     case ConfigureNotify:
-       C(("0x%x : ConfigureNotify event ", (unsigned int)event->xconfigure.window));
+       C(("0x%x : ConfigureNotify event \n", (unsigned int)event->xconfigure.window));
 
        w = findWindowAtDisplay (d, event->xconfigure.window);
        if (w)
@@ -451,7 +415,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 	    if (type == ECOMORPH_EVENT_RESTART) /* RESTART */
 	      {				
 		 unsigned int restart = event->xclient.data.l[2];
-		 printf("event restart %d\n", restart);
+		 C(("event restart %d\n", restart));
 				
 		 replaceCurrentWm = restart;
 		 if(replaceCurrentWm)
@@ -466,7 +430,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		   {
 		      unsigned int mapped = event->xclient.data.l[2];
 		      w->clientMapped = mapped;
-		      /* printf("map_event %p %d\n", win, mapped); */
+		      C(("______________map_event %p %d________________\n", w, mapped));
 
 		      if(mapped)
 			{
@@ -552,8 +516,9 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		
        else if (event->xclient.message_type == d->winActiveAtom)
 	 {
-	    w = findWindowAtDisplay (d, event->xclient.window);
-	    if (w)
+	     w = findWindowAtDisplay (d, event->xclient.window);
+	     C(("win active event %p %d\n", w, (int)event->xclient.data.l[0]));
+	     if (w)
 	      {
 		 if (event->xclient.data.l[0] == 0) //||
 		   {
@@ -611,7 +576,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		 value.i = h;
 		 s->setScreenOption(s,"hsize", &value);
 
-		 printf("got desktop geometry %d %d\n", v, h);
+		 C(("got desktop geometry %d %d\n", v, h));
 				
 	      }
 	 }
@@ -632,7 +597,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		   lastDamagedWindow = w;
 	      }
 
-	    if (w)
+	    if (w && (!w->clientId || w->clientMapped))
 	      {
 		 w->texture->oldMipmaps = TRUE;
 
