@@ -428,18 +428,18 @@ handleEvent (CompDisplay *d, XEvent	*event)
 	      {
 		 if(type == ECOMORPH_EVENT_MAPPED)
 		   {
-		      unsigned int mapped = event->xclient.data.l[2];
-		      w->clientMapped = mapped;
-		      C(("______________map_event %p %d________________\n", w, mapped));
-
-		      if(mapped)
-			{
-			   resizeWindow (w, w->serverX, w->serverY,
-					 w->serverWidth, w->serverHeight, 0);
-
-			   handleWindowDamageRect
-			     (w, 0, 0, w->attrib.width, w->attrib.height);
-			}
+		    /*   unsigned int mapped = event->xclient.data.l[2];
+		     *   w->clientMapped = mapped;
+		     *   C(("______________map_event %p %d________________\n", w, mapped));
+			 * 
+		     *   if(mapped)
+			 * {
+			 *    resizeWindow (w, w->serverX, w->serverY,
+			 * 		 w->serverWidth, w->serverHeight, 0);
+			 * 
+			 *    handleWindowDamageRect
+			 *      (w, 0, 0, w->attrib.width, w->attrib.height);
+			 * } */
 		      break;
 		   }
 		 else if(type == ECOMORPH_EVENT_DESK)
@@ -597,7 +597,7 @@ handleEvent (CompDisplay *d, XEvent	*event)
 		   lastDamagedWindow = w;
 	      }
 
-	    if (w && (!w->clientId || w->clientMapped))
+	    if (w)// && (!w->clientId || w->clientMapped))
 	      {
 		 w->texture->oldMipmaps = TRUE;
 
