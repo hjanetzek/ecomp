@@ -36,18 +36,18 @@
 #include <Eina.h>
 #include <Eet.h>
 
-#define MAX_OPTION_LENGTH	1024
-#define HOME_OPTIONDIR	   ".ecomp"
-#define CORE_NAME			"core"
+#define MAX_OPTION_LENGTH 1024
+#define HOME_OPTIONDIR    ".ecomp"
+#define CORE_NAME         "core"
 
-#define GET_INI_DISPLAY(d)									\
-	((IniDisplay *) (d)->privates[displayPrivateIndex].ptr)
-#define INI_DISPLAY(d)							\
-	IniDisplay *id = GET_INI_DISPLAY (d)
-#define GET_INI_SCREEN(s, id)									\
-	((IniScreen *) (s)->privates[(id)->screenPrivateIndex].ptr)
-#define INI_SCREEN(s)													\
-	IniScreen *is = GET_INI_SCREEN (s, GET_INI_DISPLAY (s->display))
+#define GET_INI_DISPLAY(d) \
+  ((IniDisplay *)(d)->privates[displayPrivateIndex].ptr)
+#define INI_DISPLAY(d) \
+  IniDisplay * id = GET_INI_DISPLAY (d)
+#define GET_INI_SCREEN(s, id) \
+  ((IniScreen *)(s)->privates[(id)->screenPrivateIndex].ptr)
+#define INI_SCREEN(s) \
+  IniScreen * is = GET_INI_SCREEN (s, GET_INI_DISPLAY (s->display))
 
 #define NUM_OPTIONS(s) (sizeof ((s)->opt) / sizeof (CompOption))
 
@@ -55,1340 +55,1358 @@ static int displayPrivateIndex;
 
 static CompMetadata iniMetadata;
 
-static Bool iniSaveOptions (CompDisplay *d,
-							int			screen,
-							char		*plugin);
+static Bool iniSaveOptions(CompDisplay *d,
+                           int          screen,
+                           char        *plugin);
 
 static Eet_Data_Descriptor *edd_group, *edd_option;
 
-
 typedef struct _Option
 {
-	int type;
+   int        type;
 
-	int intValue;
-	double doubleValue;
-	char *stringValue;
-	Eina_List *listValue;
+   int        intValue;
+   double     doubleValue;
+   char      *stringValue;
+   Eina_List *listValue;
 }Option;
 
 typedef struct _Group
 {
-	Eina_Hash *data;
+   Eina_Hash *data;
 }Group;
 
-
-
-static Eina_Hash*
+static Eina_Hash *
 eet_eina_hash_add(Eina_Hash *hash, const char *key, const void *data)
 {
-	if (!hash) hash = eina_hash_string_superfast_new(NULL);
-	if (!hash) return NULL;
+   if (!hash) hash = eina_hash_string_superfast_new(NULL);
+   if (!hash) return NULL;
 
-	eina_hash_add(hash, key, data);
-	return hash;
+   eina_hash_add(hash, key, data);
+   return hash;
 }
-
 
 /*
  * IniFileData
  */
 typedef struct _IniFileData IniFileData;
-struct _IniFileData {
-	char		 *filename;
-	char		 *plugin;
-	int			 screen;
+struct _IniFileData
+{
+   char        *filename;
+   char        *plugin;
+   int          screen;
 
-	Bool		 blockWrites;
-	Bool		 blockReads;
+   Bool         blockWrites;
+   Bool         blockReads;
 
-	IniFileData		 *next;
-	IniFileData		 *prev;
+   IniFileData *next;
+   IniFileData *prev;
 };
 
 /*
  * IniDisplay
  */
-typedef struct _IniDisplay {
-	int						  screenPrivateIndex;
+typedef struct _IniDisplay
+{
+   int                           screenPrivateIndex;
 
-	CompFileWatchHandle		  directoryWatch;
-	int locked;
+   CompFileWatchHandle           directoryWatch;
+   int                           locked;
 
-	InitPluginForDisplayProc	  initPluginForDisplay;
-	SetDisplayOptionProc	  setDisplayOption;
-	SetDisplayOptionForPluginProc setDisplayOptionForPlugin;
+   InitPluginForDisplayProc      initPluginForDisplay;
+   SetDisplayOptionProc          setDisplayOption;
+   SetDisplayOptionForPluginProc setDisplayOptionForPlugin;
 
-	IniFileData			*fileData;
+   IniFileData                  *fileData;
 } IniDisplay;
 
 /*
  * IniScreeen
  */
-typedef struct _IniScreen {
-	InitPluginForScreenProc		   initPluginForScreen;
-	SetScreenOptionProc		   setScreenOption;
-	SetScreenOptionForPluginProc   setScreenOptionForPlugin;
+typedef struct _IniScreen
+{
+   InitPluginForScreenProc      initPluginForScreen;
+   SetScreenOptionProc          setScreenOption;
+   SetScreenOptionForPluginProc setScreenOptionForPlugin;
 } IniScreen;
-
 
 /* static IniFileData *
  * iniGetFileDataFromFilename (CompDisplay *d,
- * 			    const char *filename)
+ *          const char *filename)
  * {
  *   int len, i;
  *   int pluginSep = 0, screenSep = 0;
  *   char *pluginStr, *screenStr;
  *   IniFileData *fd;
- * 
+ *
  *   INI_DISPLAY (d);
- * 
+ *
  *   if (!filename)
  *     return NULL;
- * 
+ *
  *   len = strlen (filename);
- * 
+ *
  *   if (len < (strlen(FILE_SUFFIX) + 2))
  *     return NULL;
- * 
+ *
  *   if ((filename[0]=='.') || (filename[len-1]=='~'))
  *     return NULL;
- * 
+ *
  *   for (fd = id->fileData; fd; fd = fd->next)
  *     if (strcmp (fd->filename, filename) == 0)
  *       return fd;
- * 
+ *
  *   for (i=0; i<len; i++)
  *     {
  *       if (filename[i] == '-')
- * 	{
- * 	  if (!pluginSep)
- * 	    pluginSep = i-1;
- * 	  else
- * 	    return NULL; /\*found a second dash *\/
- * 	}
+ *  {
+ *    if (!pluginSep)
+ *      pluginSep = i-1;
+ *    else
+ *      return NULL; /\*found a second dash *\/
+ *  }
  *       else if (filename[i] == '.')
- * 	{
- * 	  if (!screenSep)
- * 	    screenSep = i-1;
- * 	  else
- * 	    return NULL; /\*found a second dot *\/
- * 	}
+ *  {
+ *    if (!screenSep)
+ *      screenSep = i-1;
+ *    else
+ *      return NULL; /\*found a second dot *\/
+ *  }
  *     }
- * 
+ *
  *   if (!pluginSep || !screenSep)
  *     return NULL;
- * 
+ *
  *   /\* If we get here then there is no fd in the display variable *\/
  *   IniFileData *newFd = malloc (sizeof (IniFileData));
  *   if (!newFd)
  *     return NULL;
- * 
+ *
  *   /\* fd is NULL here, see condition "fd" in first for-loop *\/
  *   /\* if (fd)
  *      fd->next = newFd;
  *      else
  *   *\/
  *   id->fileData = newFd;
- * 
+ *
  *   newFd->prev = fd;
  *   newFd->next = NULL;
- * 
+ *
  *   newFd->filename = strdup (filename);
- * 
+ *
  *   pluginStr = calloc (1, sizeof (char) * pluginSep + 2);
  *   if (!pluginStr)
  *     return NULL;
- * 
+ *
  *   screenStr = calloc (1, sizeof (char) * (screenSep - pluginSep));
  *   if (!screenStr) {
  *     free(pluginStr);
  *     return NULL;
  *   }
- * 
+ *
  *   strncpy (pluginStr, filename, pluginSep + 1);
  *   strncpy (screenStr, &filename[pluginSep+2], (screenSep - pluginSep) - 1);
- * 
+ *
  *   if (strcmp (pluginStr, CORE_NAME) == 0)
  *     newFd->plugin = NULL;
  *   else
  *     newFd->plugin = strdup (pluginStr);
- * 
+ *
  *   if (strcmp (screenStr, "allscreens") == 0)
  *     newFd->screen = -1;
  *   else
  *     newFd->screen = atoi(&screenStr[6]);
- * 
+ *
  *   newFd->blockReads  = FALSE;
  *   newFd->blockWrites = FALSE;
- * 
+ *
  *   free (pluginStr);
  *   free (screenStr);
- * 
+ *
  *   return newFd;
  * } */
 
 static char *
-iniOptionValueToString (CompOptionValue *value, CompOptionType type)
+iniOptionValueToString(CompOptionValue *value, CompOptionType type)
 {
-	char tmp[MAX_OPTION_LENGTH];
-	tmp[0] = '\0';
+   char tmp[MAX_OPTION_LENGTH];
+   tmp[0] = '\0';
 
-	switch (type)
-	{
-		/* case CompOptionTypeBool:
-		 * case CompOptionTypeInt:
-		 * 	snprintf(tmp, 256, "%i", (int)value->i);
-		 * 	break;
-		 * case CompOptionTypeFloat:
-		 * 	snprintf(tmp, 256, "%f", value->f);
-		 * 	break; */
-	case CompOptionTypeString:
-		snprintf (tmp, MAX_OPTION_LENGTH, "%s", strdup (value->s));
-		break;
-	case CompOptionTypeColor:
-		snprintf (tmp, 10, "%s", colorToString (value->c));
-		break;
-	case CompOptionTypeMatch:
-	{
-		char *s = matchToString (&value->match);
-		snprintf (tmp, MAX_OPTION_LENGTH, "%s", s);
-		free(s);
-	}
-	break;
-	default:
-		break;
-	}
+   switch (type)
+     {
+        /* case CompOptionTypeBool:
+         * case CompOptionTypeInt:
+         *  snprintf(tmp, 256, "%i", (int)value->i);
+         *  break;
+         * case CompOptionTypeFloat:
+         *  snprintf(tmp, 256, "%f", value->f);
+         *  break; */
+        case CompOptionTypeString:
+          snprintf (tmp, MAX_OPTION_LENGTH, "%s", strdup (value->s));
+          break;
 
-	return strdup (tmp);
+        case CompOptionTypeColor:
+          snprintf (tmp, 10, "%s", colorToString (value->c));
+          break;
+
+        case CompOptionTypeMatch:
+        {
+           char *s = matchToString (&value->match);
+           snprintf (tmp, MAX_OPTION_LENGTH, "%s", s);
+           free(s);
+        }
+        break;
+
+        default:
+          break;
+     }
+
+   return strdup (tmp);
 }
 
 static Bool
-iniGetHomeDir (char **homeDir)
+iniGetHomeDir(char **homeDir)
 {
-	char *home = NULL, *tmp;
+   char *home = NULL, *tmp;
 
-	home = getenv ("HOME");
-	if (home)
-	{
-		tmp = malloc (strlen (home) + strlen (HOME_OPTIONDIR) + 2);
-		if (tmp)
-		{
-			sprintf (tmp, "%s/%s", home, HOME_OPTIONDIR);
-			(*homeDir) = strdup (tmp);
-			free (tmp);
+   home = getenv ("HOME");
+   if (home)
+     {
+        tmp = malloc (strlen (home) + strlen (HOME_OPTIONDIR) + 2);
+        if (tmp)
+          {
+             sprintf (tmp, "%s/%s", home, HOME_OPTIONDIR);
+             (*homeDir) = strdup (tmp);
+             free (tmp);
 
-			return TRUE;
-		}
-	}
+             return TRUE;
+          }
+     }
 
-	return FALSE;
+   return FALSE;
 }
 
 static Bool
-iniGetFilename (CompDisplay *d,
-				int screen,
-				char *plugin,
-				char **filename)
+iniGetFilename(CompDisplay *d,
+               int          screen,
+               char        *plugin,
+               char       **filename)
 {
-	CompScreen *s;
-	int		   len;
-	char	   *fn = NULL, *screenStr;
+   CompScreen *s;
+   int len;
+   char *fn = NULL, *screenStr;
 
-	screenStr = malloc (sizeof(char) * 12);
-	if (!screenStr)
-		return FALSE;
+   screenStr = malloc (sizeof(char) * 12);
+   if (!screenStr)
+     return FALSE;
 
-	if (screen > -1)
-	{
-		for (s = d->screens; s ; s = s->next)
-			if (s && (s->screenNum == screen))
-				break;
+   if (screen > -1)
+     {
+        for (s = d->screens; s; s = s->next)
+          if (s && (s->screenNum == screen))
+            break;
 
-		if (!s)
-		{
-			compLogMessage (d, "ini", CompLogLevelWarn,
-							"Invalid screen number passed " \
-							"to iniGetFilename %d", screen);
-			free(screenStr);
-			return FALSE;
-		}
-		snprintf (screenStr, 12, "screen%d", screen);
-	}
-	else
-	{
-		strncpy (screenStr, "allscreens", 12);
-	}
+        if (!s)
+          {
+             compLogMessage (d, "ini", CompLogLevelWarn,
+                             "Invalid screen number passed " \
+                             "to iniGetFilename %d", screen);
+             free(screenStr);
+             return FALSE;
+          }
+        snprintf (screenStr, 12, "screen%d", screen);
+     }
+   else
+     {
+        strncpy (screenStr, "allscreens", 12);
+     }
 
-	len = strlen (screenStr) + 2;
+   len = strlen (screenStr) + 2;
 
-	if (plugin)
-		len += strlen (plugin);
-	else
-		len += strlen (CORE_NAME);
+   if (plugin)
+     len += strlen (plugin);
+   else
+     len += strlen (CORE_NAME);
 
-	fn = malloc (sizeof (char) * len);
-	if (fn)
-	{
-		sprintf (fn, "%s-%s",
-				 plugin ? plugin : CORE_NAME, screenStr);
+   fn = malloc (sizeof (char) * len);
+   if (fn)
+     {
+        sprintf (fn, "%s-%s",
+                 plugin ? plugin : CORE_NAME, screenStr);
 
-		*filename = strdup (fn);
+        *filename = strdup (fn);
 
-		free (screenStr);
-		free (fn);
+        free (screenStr);
+        free (fn);
 
-		return TRUE;
-	}
+        return TRUE;
+     }
 
-	free (screenStr);
+   free (screenStr);
 
-	return FALSE;
+   return FALSE;
 }
-
-
 
 static Bool
-iniMakeDirectories (void)
+iniMakeDirectories(void)
 {
-	char *homeDir;
+   char *homeDir;
 
-	if (iniGetHomeDir (&homeDir))
-	{
-		mkdir (homeDir, 0700);
-		free (homeDir);
+   if (iniGetHomeDir (&homeDir))
+     {
+        mkdir (homeDir, 0700);
+        free (homeDir);
 
-		return TRUE;
-	}
-	else
-	{
-		compLogMessage (NULL, "ini", CompLogLevelWarn,
-						"Could not get HOME environmental variable");
-		return FALSE;
-	}
+        return TRUE;
+     }
+   else
+     {
+        compLogMessage (NULL, "ini", CompLogLevelWarn,
+                        "Could not get HOME environmental variable");
+        return FALSE;
+     }
 }
 
-#define OPT_SCREEN		   0
-#define OPT_DISPLAY		   1
+#define OPT_SCREEN         0
+#define OPT_DISPLAY        1
 #define OPT_PLUGIN_SCREEN  2
 #define OPT_PLUGIN_DISPLAY 3
 
 typedef struct _IniOptData
 {
-	int type;
-	CompScreen *s;
-	CompDisplay *d;
-	CompOption *option;
-	int nOption;
-	char *plugin;
-
+   int          type;
+   CompScreen  *s;
+   CompDisplay *d;
+   CompOption  *option;
+   int          nOption;
+   char        *plugin;
 }IniOptData;
 
 static Bool
 iniGetOptList(Option *listOpt, CompListValue *list, CompOptionType type)
 {
-	Eina_List *l;
-	Option *opt;
-	int count = eina_list_count(listOpt->listValue);
-	int i = 0;
+   Eina_List *l;
+   Option *opt;
+   int count = eina_list_count(listOpt->listValue);
+   int i = 0;
 
-	if (count == 0)
-		return FALSE;
+   if (count == 0)
+     return FALSE;
 
-	list->nValue = count;
-	list->value = malloc (sizeof (CompOptionValue) * count);
-	/* printf(" - >"); */
-	for (l = listOpt->listValue; l; l = l->next, i++)
-	{
-		opt = l->data;
-		switch (type)
-		{
-		case CompOptionTypeString:
-			list->value[i].s = strdup (opt->stringValue);
-			break;
-		case CompOptionTypeBool:
-			list->value[i].b = (Bool) opt->intValue;
-			break;
-		case CompOptionTypeInt:
-			list->value[i].i = opt->intValue;
-			break;
-		case CompOptionTypeFloat:
-			list->value[i].f = (float) opt->doubleValue;
-			break;
-		case CompOptionTypeMatch:
-			if (opt->stringValue)
-			{
-			matchInit (&list->value[i].match);
-			matchAddFromString (&list->value[i].match, opt->stringValue);
-			}
-			break;
-		default:
-			break;
-		}
-	}
+   list->nValue = count;
+   list->value = malloc (sizeof (CompOptionValue) * count);
+   /* printf(" - >"); */
+   for (l = listOpt->listValue; l; l = l->next, i++)
+     {
+        opt = l->data;
+        switch (type)
+          {
+           case CompOptionTypeString:
+             list->value[i].s = strdup (opt->stringValue);
+             break;
 
-	return TRUE;
+           case CompOptionTypeBool:
+             list->value[i].b = (Bool)opt->intValue;
+             break;
+
+           case CompOptionTypeInt:
+             list->value[i].i = opt->intValue;
+             break;
+
+           case CompOptionTypeFloat:
+             list->value[i].f = (float)opt->doubleValue;
+             break;
+
+           case CompOptionTypeMatch:
+             if (opt->stringValue)
+               {
+                  matchInit (&list->value[i].match);
+                  matchAddFromString (&list->value[i].match, opt->stringValue);
+               }
+             break;
+
+           default:
+             break;
+          }
+     }
+
+   return TRUE;
 }
 
 static Eina_Bool
 iniFreeGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 {
-	Option *opt = data;
+   Option *opt = data;
 
-	if (opt->stringValue) free (opt->stringValue);
-	if (opt->listValue)
-	{
-		Option *item;
-		EINA_LIST_FREE(opt->listValue, item)
-		{
-			if (item->stringValue) free (item->stringValue);
-			free(item);
-		}
-	}
+   if (opt->stringValue) free (opt->stringValue);
+   if (opt->listValue)
+     {
+        Option *item;
+        EINA_LIST_FREE(opt->listValue, item)
+          {
+             if (item->stringValue) free (item->stringValue);
+             free(item);
+          }
+     }
 
-	free(opt);
+   free(opt);
 
-	return 1;
+   return 1;
 }
-
 
 static Eina_Bool
 iniLoadGroup(const Eina_Hash *hash, const void *key, void *data, void *fdata)
 {
-	IniOptData *od = (IniOptData *) fdata;
-	Option *opt = data;
-	char *optionName = (char *) key, *optionValue;
+   IniOptData *od = (IniOptData *)fdata;
+   Option *opt = data;
+   char *optionName = (char *)key, *optionValue;
 
-	CompOption *option = od->option;
-	int nOption = od->nOption;
-	CompScreen *s = od->s;
-	CompDisplay *d = od->d;
-	char *plugin = od->plugin;
+   CompOption *option = od->option;
+   int nOption = od->nOption;
+   CompScreen *s = od->s;
+   CompDisplay *d = od->d;
+   char *plugin = od->plugin;
 
-	CompOption *o;
-	CompOptionValue value;
-	int hasValue = FALSE, status;
+   CompOption *o;
+   CompOptionValue value;
+   int hasValue = FALSE, status;
 
-	optionValue = opt->stringValue;
+   optionValue = opt->stringValue;
 
-	o = compFindOption (option, nOption, optionName, 0);
-	if (o)
-	{
-		value = o->value;
+   o = compFindOption (option, nOption, optionName, 0);
+   if (o)
+     {
+        value = o->value;
 
-		switch (o->type)
-		{
-		case CompOptionTypeBool:
-			hasValue = TRUE;
-			value.b = (Bool) opt->intValue;
-			break;
-		case CompOptionTypeInt:
-			hasValue = TRUE;
-			value.i = opt->intValue;
-			break;
-		case CompOptionTypeFloat:
-			hasValue = TRUE;
-			value.f = (float) opt->doubleValue;
-			break;
-		case CompOptionTypeString:
-			hasValue = TRUE;
-			value.s = strdup (opt->stringValue);
-			break;
-		case CompOptionTypeColor:
-			hasValue = stringToColor (optionValue, value.c);
-			break;
-		case CompOptionTypeList:
-			hasValue = iniGetOptList(opt, &value.list, value.list.type);
-			break;
-		case CompOptionTypeMatch:
+        switch (o->type)
+          {
+           case CompOptionTypeBool:
+             hasValue = TRUE;
+             value.b = (Bool)opt->intValue;
+             break;
 
-			if (optionValue){				
-			hasValue = TRUE;
-			matchInit (&value.match);
-			matchAddFromString (&value.match, optionValue);
-			}
-			
-			break;
-		default:
-			break;
-		}
+           case CompOptionTypeInt:
+             hasValue = TRUE;
+             value.i = opt->intValue;
+             break;
 
-		if (hasValue)
-		{
-			switch(od->type)
-			{
-			case OPT_PLUGIN_SCREEN:
-				status = (*s->setScreenOptionForPlugin) (s, plugin, optionName, &value);
-				break;
-			case OPT_PLUGIN_DISPLAY:
-				status = (*d->setDisplayOptionForPlugin) (d, plugin, optionName, &value);
-				break;
-			case OPT_SCREEN:
-				status = (*s->setScreenOption) (s, optionName, &value);
-				break;
-			case OPT_DISPLAY:
-				status = (*d->setDisplayOption) (d, optionName, &value);
-				break;
-			default:
-				break;
-			}
+           case CompOptionTypeFloat:
+             hasValue = TRUE;
+             value.f = (float)opt->doubleValue;
+             break;
 
-			if (o->type == CompOptionTypeMatch)
-			{
-				matchFini (&value.match);
-			}
-		}
-	}
+           case CompOptionTypeString:
+             hasValue = TRUE;
+             value.s = strdup (opt->stringValue);
+             break;
 
-	return 1;
+           case CompOptionTypeColor:
+             hasValue = stringToColor (optionValue, value.c);
+             break;
+
+           case CompOptionTypeList:
+             hasValue = iniGetOptList(opt, &value.list, value.list.type);
+             break;
+
+           case CompOptionTypeMatch:
+
+             if (optionValue)
+               {
+                  hasValue = TRUE;
+                  matchInit (&value.match);
+                  matchAddFromString (&value.match, optionValue);
+               }
+
+             break;
+
+           default:
+             break;
+          }
+
+        if (hasValue)
+          {
+             switch(od->type)
+               {
+                case OPT_PLUGIN_SCREEN:
+                  status = (*s->setScreenOptionForPlugin)(s, plugin, optionName, &value);
+                  break;
+
+                case OPT_PLUGIN_DISPLAY:
+                  status = (*d->setDisplayOptionForPlugin)(d, plugin, optionName, &value);
+                  break;
+
+                case OPT_SCREEN:
+                  status = (*s->setScreenOption)(s, optionName, &value);
+                  break;
+
+                case OPT_DISPLAY:
+                  status = (*d->setDisplayOption)(d, optionName, &value);
+                  break;
+
+                default:
+                  break;
+               }
+
+             if (o->type == CompOptionTypeMatch)
+               {
+                  matchFini (&value.match);
+               }
+          }
+     }
+
+   return 1;
 }
 
 static Bool
-iniLoadOptionsFromFile (CompDisplay *d, Group *options, char *plugin, int screen)
+iniLoadOptionsFromFile(CompDisplay *d, Group *options, char *plugin, int screen)
 {
-	CompOption		*option = NULL;
-	CompScreen		*s = NULL;
-	CompPlugin		*p = NULL;
-	int				nOption; //, nOptionRead = 0;
-	IniOptData od;
+   CompOption *option = NULL;
+   CompScreen *s = NULL;
+   CompPlugin *p = NULL;
+   int nOption;                                  //, nOptionRead = 0;
+   IniOptData od;
 
-	if (plugin)
-	{
-		p = findActivePlugin (plugin);
-		if (!p)
-		{
-			compLogMessage (d, "ini", CompLogLevelWarn,
-							"Could not find running plugin " \
-							"%s (iniLoadOptionsFromFile)", plugin);
-			return FALSE;
-		}
-	}
+   if (plugin)
+     {
+        p = findActivePlugin (plugin);
+        if (!p)
+          {
+             compLogMessage (d, "ini", CompLogLevelWarn,
+                             "Could not find running plugin " \
+                             "%s (iniLoadOptionsFromFile)", plugin);
+             return FALSE;
+          }
+     }
 
-	if (screen > -1)
-	{
-		for (s = d->screens; s; s = s->next)
-			if (s && s->screenNum == screen)
-				break;
+   if (screen > -1)
+     {
+        for (s = d->screens; s; s = s->next)
+          if (s && s->screenNum == screen)
+            break;
 
-		if (!s)
-		{
-			compLogMessage (d, "ini", CompLogLevelWarn,
-							"Invalid screen number passed to " \
-							"iniLoadOptionsFromFile %d", screen);
-			return FALSE;
-		}
-	}
+        if (!s)
+          {
+             compLogMessage (d, "ini", CompLogLevelWarn,
+                             "Invalid screen number passed to " \
+                             "iniLoadOptionsFromFile %d", screen);
+             return FALSE;
+          }
+     }
 
-	if (plugin && p)
-	{
-		if (s && p->vTable->getScreenOptions)
-		{
-			option = (*p->vTable->getScreenOptions) (p, s, &nOption);
-			od.type = OPT_PLUGIN_SCREEN;
-		}
-		else if (p->vTable->getDisplayOptions)
-		{
-			option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
-			od.type = OPT_PLUGIN_DISPLAY;
-		}
+   if (plugin && p)
+     {
+        if (s && p->vTable->getScreenOptions)
+          {
+             option = (*p->vTable->getScreenOptions)(p, s, &nOption);
+             od.type = OPT_PLUGIN_SCREEN;
+          }
+        else if (p->vTable->getDisplayOptions)
+          {
+             option = (*p->vTable->getDisplayOptions)(p, d, &nOption);
+             od.type = OPT_PLUGIN_DISPLAY;
+          }
 
-		od.plugin = plugin;
-	}
-	else
-	{
-		if (s)
-		{
-			option = compGetScreenOptions (s, &nOption);
-			od.type = OPT_SCREEN;
-		}
-		else
-		{
-			option = compGetDisplayOptions (d, &nOption);
-			od.type = OPT_DISPLAY;
-		}
-	}
+        od.plugin = plugin;
+     }
+   else
+     {
+        if (s)
+          {
+             option = compGetScreenOptions (s, &nOption);
+             od.type = OPT_SCREEN;
+          }
+        else
+          {
+             option = compGetDisplayOptions (d, &nOption);
+             od.type = OPT_DISPLAY;
+          }
+     }
 
-	od.d = d;
-	od.s = s;
-	od.option = option;
-	od.nOption = nOption;
+   od.d = d;
+   od.s = s;
+   od.option = option;
+   od.nOption = nOption;
 
-	if (options->data)
-		eina_hash_foreach(options->data, iniLoadGroup, &od);
-	if (options->data)
-		eina_hash_foreach(options->data, iniFreeGroup, NULL);
+   if (options->data)
+     eina_hash_foreach(options->data, iniLoadGroup, &od);
+   if (options->data)
+     eina_hash_foreach(options->data, iniFreeGroup, NULL);
 
-	free (options);
-	
-	return TRUE;
+   free (options);
+
+   return TRUE;
 }
 
 static Bool
-iniSaveOptions (CompDisplay *d,
-				int			screen,
-				char		*plugin)
+iniSaveOptions(CompDisplay *d,
+               int          screen,
+               char        *plugin)
 {
-	return TRUE;
-	
-	INI_DISPLAY(d);
-	if (id->locked) return TRUE;
+   return TRUE;
 
-	CompScreen *s = NULL;
-	CompOption *option;
-	int		   nOption = 0;
-	char	   *filename, *directory, *fullPath, *strVal = NULL;
+   INI_DISPLAY(d);
+   if (id->locked) return TRUE;
 
-	if (screen > -1)
-	{
-		for (s = d->screens; s; s = s->next)
-			if (s && s->screenNum == screen)
-				break;
+   CompScreen *s = NULL;
+   CompOption *option;
+   int nOption = 0;
+   char *filename, *directory, *fullPath, *strVal = NULL;
 
-		if (!s)
-		{
-			compLogMessage (d, "ini", CompLogLevelWarn,
-							"Invalid screen number passed to " \
-							"iniSaveOptions %d", screen);
-			return FALSE;
-		}
-	}
+   if (screen > -1)
+     {
+        for (s = d->screens; s; s = s->next)
+          if (s && s->screenNum == screen)
+            break;
 
-	if (plugin)
-	{
-		CompPlugin *p;
-		p = findActivePlugin (plugin);
-		if (!p)
-			return FALSE;
+        if (!s)
+          {
+             compLogMessage (d, "ini", CompLogLevelWarn,
+                             "Invalid screen number passed to " \
+                             "iniSaveOptions %d", screen);
+             return FALSE;
+          }
+     }
 
-		if (s)
-			option = (*p->vTable->getScreenOptions) (p, s, &nOption);
-		else
-			option = (*p->vTable->getDisplayOptions) (p, d, &nOption);
-	}
-	else
-	{
-		/* core (general) setting */
-		if (s)
-			option = compGetScreenOptions (s, &nOption);
-		else
-			option = compGetDisplayOptions (d, &nOption);
-	}
+   if (plugin)
+     {
+        CompPlugin *p;
+        p = findActivePlugin (plugin);
+        if (!p)
+          return FALSE;
 
-	if (!option)
-		return FALSE;
+        if (s)
+          option = (*p->vTable->getScreenOptions)(p, s, &nOption);
+        else
+          option = (*p->vTable->getDisplayOptions)(p, d, &nOption);
+     }
+   else
+     {
+        /* core (general) setting */
+         if (s)
+           option = compGetScreenOptions (s, &nOption);
+         else
+           option = compGetDisplayOptions (d, &nOption);
+     }
 
-	if (!iniGetFilename (d, screen, plugin, &filename))
-		return FALSE;
+   if (!option)
+     return FALSE;
 
-	if (!iniGetHomeDir (&directory))
-		return FALSE;
+   if (!iniGetFilename (d, screen, plugin, &filename))
+     return FALSE;
 
-	fullPath = malloc (sizeof (char) * (strlen (directory) + 10));
-	sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
-	printf("open write %s\n", filename);
+   if (!iniGetHomeDir (&directory))
+     return FALSE;
 
-	Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ_WRITE);
-	Group *options = eet_data_read(optionFile, edd_group, filename);
-	Option *opt;
-	if (!options)
-	{
-		/* printf("calloc options\n"); */
-		options = calloc (1, sizeof (Group));
-	}
+   fullPath = malloc (sizeof (char) * (strlen (directory) + 10));
+   sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
+   printf("open write %s\n", filename);
 
-	if (!optionFile)
-	{
-		compLogMessage (d, "ini", CompLogLevelError,
-						"Failed to write to %s, check you " \
-						"have the correct permissions", fullPath);
-		free (filename);
-		free (directory);
-		free (fullPath);
-		return FALSE;
-	}
+   Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ_WRITE);
+   Group *options = eet_data_read(optionFile, edd_group, filename);
+   Option *opt;
+   if (!options)
+     {
+        /* printf("calloc options\n"); */
+         options = calloc (1, sizeof (Group));
+     }
 
-	Bool status;
+   if (!optionFile)
+     {
+        compLogMessage (d, "ini", CompLogLevelError,
+                        "Failed to write to %s, check you " \
+                        "have the correct permissions", fullPath);
+        free (filename);
+        free (directory);
+        free (fullPath);
+        return FALSE;
+     }
 
-	while (nOption--)
-	{
-		status = FALSE;
-		int i;
+   Bool status;
 
-		switch (option->type)
-		{
-		case CompOptionTypeBool:
-			if (!(opt = eina_hash_find(options->data, option->name)))
-			{
-				opt = calloc(1, sizeof(Option));
-				opt->type = option->type;
-				options->data = eet_eina_hash_add(options->data, option->name, opt);
-			}
-			opt->intValue = (int) option->value.b;
-			break;
-		case CompOptionTypeInt:
-			if (!(opt = eina_hash_find(options->data, option->name)))
-			{
-				opt = calloc(1, sizeof(Option));
-				opt->type = option->type;
-				options->data = eet_eina_hash_add(options->data, option->name, opt);
-			}
-			opt->intValue = option->value.i;
-			break;
-		case CompOptionTypeFloat:
-			if (!(opt = eina_hash_find(options->data, option->name)))
-			{
-				opt = calloc(1, sizeof(Option));
-				opt->type = option->type;
-				options->data = eet_eina_hash_add(options->data, option->name, opt);
-			}
-			opt->doubleValue = (double) option->value.f;
-			break;			
-		case CompOptionTypeString:
-		case CompOptionTypeColor:
-		case CompOptionTypeMatch:
-			strVal = iniOptionValueToString (&option->value, option->type);
-			if (strVal)
-			{
-				if (!(opt = eina_hash_find(options->data, option->name)))
-				{
-					opt = calloc(1, sizeof(Option));
-					opt->type = option->type;
-					options->data = eet_eina_hash_add(options->data, option->name, opt);
-				}
-				else if (opt->stringValue)
-					free (opt->stringValue);
+   while (nOption--)
+     {
+        status = FALSE;
+        int i;
 
-				opt->stringValue = strVal;
-			}
-			break;
-		case CompOptionTypeList:
-			switch (option->value.list.type)
-			{
-			case CompOptionTypeBool:
-			case CompOptionTypeInt:
-			case CompOptionTypeFloat:
-			case CompOptionTypeString:
-			case CompOptionTypeColor:
-			case CompOptionTypeMatch:
-			{
-				char *itemVal;
+        switch (option->type)
+          {
+           case CompOptionTypeBool:
+             if (!(opt = eina_hash_find(options->data, option->name)))
+               {
+                  opt = calloc(1, sizeof(Option));
+                  opt->type = option->type;
+                  options->data = eet_eina_hash_add(options->data, option->name, opt);
+               }
+             opt->intValue = (int)option->value.b;
+             break;
 
-				if (!(opt = eina_hash_find(options->data, option->name)))
-				{
-					opt = calloc(1, sizeof(Option));
-					opt->type = CompOptionTypeList;
-					options->data = eet_eina_hash_add(options->data, option->name, opt);
-				}
+           case CompOptionTypeInt:
+             if (!(opt = eina_hash_find(options->data, option->name)))
+               {
+                  opt = calloc(1, sizeof(Option));
+                  opt->type = option->type;
+                  options->data = eet_eina_hash_add(options->data, option->name, opt);
+               }
+             opt->intValue = option->value.i;
+             break;
 
-				Option *item;
-				CompListValue *list = &option->value.list;
-				
-				EINA_LIST_FREE(opt->listValue, item)
-				{
-					if (item->stringValue) free (item->stringValue);
-					free(item);
-				}
-					
-				for (i = 0; i < list->nValue; i++)
-				{
-					Option *o;
+           case CompOptionTypeFloat:
+             if (!(opt = eina_hash_find(options->data, option->name)))
+               {
+                  opt = calloc(1, sizeof(Option));
+                  opt->type = option->type;
+                  options->data = eet_eina_hash_add(options->data, option->name, opt);
+               }
+             opt->doubleValue = (double)option->value.f;
+             break;
 
-					switch (list->type)
-					{
-					case CompOptionTypeString:
-					case CompOptionTypeMatch:
-						itemVal = iniOptionValueToString (&list->value[i],
-														  list->type);					
-						if (itemVal)
-						{
-							o = calloc(1, sizeof(Option));
-							o->type = list->type;
-							o->stringValue = itemVal;
-							opt->listValue = eina_list_append(opt->listValue, o);
-						}
-						break;
-					case CompOptionTypeBool:
-						o = calloc(1, sizeof(Option));
-						o->type = list->type;
-						o->intValue = (int) list->value[i].b;
-						opt->listValue = eina_list_append(opt->listValue, o);
-						break;
-					case CompOptionTypeInt:
-						o = calloc(1, sizeof(Option));
-						o->type = list->type;
-						o->intValue = list->value[i].i;
-						opt->listValue = eina_list_append(opt->listValue, o);
-						break;
-					case CompOptionTypeFloat:
-						o = calloc(1, sizeof(Option));
-						o->type = list->type;
-						o->doubleValue = (double) list->value[i].f;
-						opt->listValue = eina_list_append(opt->listValue, o);
-						break;			
-					default:
-						break;
-					}
-				}
-				
-				break;
-			}
-			default:
-				compLogMessage (d, "ini", CompLogLevelWarn,
-								"Unknown list option type %d, %s\n",
-								option->value.list.type,
-								optionTypeToString (option->value.list.type));
-				break;
-			}
-			break;
-		default:
-			break;
-		}
+           case CompOptionTypeString:
+           case CompOptionTypeColor:
+           case CompOptionTypeMatch:
+             strVal = iniOptionValueToString (&option->value, option->type);
+             if (strVal)
+               {
+                  if (!(opt = eina_hash_find(options->data, option->name)))
+                    {
+                       opt = calloc(1, sizeof(Option));
+                       opt->type = option->type;
+                       options->data = eet_eina_hash_add(options->data, option->name, opt);
+                    }
+                  else if (opt->stringValue)
+                    free (opt->stringValue);
 
-		option++;
-	}
+                  opt->stringValue = strVal;
+               }
+             break;
 
-	if (!eet_data_write(optionFile, edd_group, filename, options, 1))
-		fprintf(stderr, "Error writing data!\n");
+           case CompOptionTypeList:
+             switch (option->value.list.type)
+               {
+                case CompOptionTypeBool:
+                case CompOptionTypeInt:
+                case CompOptionTypeFloat:
+                case CompOptionTypeString:
+                case CompOptionTypeColor:
+                case CompOptionTypeMatch:
+                {
+                   char *itemVal;
 
-	eet_close(optionFile);
+                   if (!(opt = eina_hash_find(options->data, option->name)))
+                     {
+                        opt = calloc(1, sizeof(Option));
+                        opt->type = CompOptionTypeList;
+                        options->data = eet_eina_hash_add(options->data, option->name, opt);
+                     }
 
-	if (options->data)
-		eina_hash_foreach(options->data, iniFreeGroup, NULL);
+                   Option *item;
+                   CompListValue *list = &option->value.list;
 
-	free (options);	
-	free (fullPath);
-	free (filename);
-	free (directory);
-	
-	return TRUE;
+                   EINA_LIST_FREE(opt->listValue, item)
+                     {
+                        if (item->stringValue) free (item->stringValue);
+                        free(item);
+                     }
+
+                   for (i = 0; i < list->nValue; i++)
+                     {
+                        Option *o;
+
+                        switch (list->type)
+                          {
+                           case CompOptionTypeString:
+                           case CompOptionTypeMatch:
+                             itemVal = iniOptionValueToString (&list->value[i],
+                                                               list->type);
+                             if (itemVal)
+                               {
+                                  o = calloc(1, sizeof(Option));
+                                  o->type = list->type;
+                                  o->stringValue = itemVal;
+                                  opt->listValue = eina_list_append(opt->listValue, o);
+                               }
+                             break;
+
+                           case CompOptionTypeBool:
+                             o = calloc(1, sizeof(Option));
+                             o->type = list->type;
+                             o->intValue = (int)list->value[i].b;
+                             opt->listValue = eina_list_append(opt->listValue, o);
+                             break;
+
+                           case CompOptionTypeInt:
+                             o = calloc(1, sizeof(Option));
+                             o->type = list->type;
+                             o->intValue = list->value[i].i;
+                             opt->listValue = eina_list_append(opt->listValue, o);
+                             break;
+
+                           case CompOptionTypeFloat:
+                             o = calloc(1, sizeof(Option));
+                             o->type = list->type;
+                             o->doubleValue = (double)list->value[i].f;
+                             opt->listValue = eina_list_append(opt->listValue, o);
+                             break;
+
+                           default:
+                             break;
+                          }
+                     }
+
+                   break;
+                }
+
+                default:
+                  compLogMessage (d, "ini", CompLogLevelWarn,
+                                  "Unknown list option type %d, %s\n",
+                                  option->value.list.type,
+                                  optionTypeToString (option->value.list.type));
+                  break;
+               }
+             break;
+
+           default:
+             break;
+          }
+
+        option++;
+     }
+
+   if (!eet_data_write(optionFile, edd_group, filename, options, 1))
+     fprintf(stderr, "Error writing data!\n");
+
+   eet_close(optionFile);
+
+   if (options->data)
+     eina_hash_foreach(options->data, iniFreeGroup, NULL);
+
+   free (options);
+   free (fullPath);
+   free (filename);
+   free (directory);
+
+   return TRUE;
 }
 
 /* taken from ecore_file */
 static int
 copyFile(const char *src, const char *dst)
 {
-	FILE               *f1, *f2;
-	char                buf[16384];
-	char                realpath1[4096];
-	char                realpath2[4096];
-	size_t              num;
-	int                 ret = 1;
+   FILE *f1, *f2;
+   char buf[16384];
+   char realpath1[4096];
+   char realpath2[4096];
+   size_t num;
+   int ret = 1;
 
-	if (!realpath(src, realpath1)) return 0;
-	if (realpath(dst, realpath2) && !strcmp(realpath1, realpath2)) return 0;
+   if (!realpath(src, realpath1)) return 0;
+   if (realpath(dst, realpath2) && !strcmp(realpath1, realpath2)) return 0;
 
-	f1 = fopen(src, "rb");
-	if (!f1) return 0;
-	f2 = fopen(dst, "wb");
-	if (!f2)
-	{
-		fclose(f1);
-		return 0;
-	}
-	while ((num = fread(buf, 1, sizeof(buf), f1)) > 0)
-	{
-		if (fwrite(buf, 1, num, f2) != num) ret = 0;
-	}
-	fclose(f1);
-	fclose(f2);
-	return ret;
+   f1 = fopen(src, "rb");
+   if (!f1) return 0;
+   f2 = fopen(dst, "wb");
+   if (!f2)
+     {
+        fclose(f1);
+        return 0;
+     }
+   while ((num = fread(buf, 1, sizeof(buf), f1)) > 0)
+     {
+        if (fwrite(buf, 1, num, f2) != num) ret = 0;
+     }
+   fclose(f1);
+   fclose(f2);
+   return ret;
 }
 
-
 static Bool
-iniLoadOptions (CompDisplay *d, int screen, char *plugin)
+iniLoadOptions(CompDisplay *d, int screen, char *plugin)
 {
-	char *filename, *directory, *fullPath;
-	Group *options;
+   char *filename, *directory, *fullPath;
+   Group *options;
 
-	INI_DISPLAY (d);
+   INI_DISPLAY (d);
 
-	filename = directory = NULL;
+   filename = directory = NULL;
 
-	if (!iniGetFilename (d, screen, plugin, &filename))
-		return FALSE;
+   if (!iniGetFilename (d, screen, plugin, &filename))
+     return FALSE;
 
-	if (!iniGetHomeDir (&directory))
-	{
-		free (filename);
-		return FALSE;
-	}
+   if (!iniGetHomeDir (&directory))
+     {
+        free (filename);
+        return FALSE;
+     }
 
-	fullPath = malloc (sizeof (char) * (strlen (directory) + 11));
-	sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
+   fullPath = malloc (sizeof (char) * (strlen (directory) + 11));
+   sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
 
-	Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
+   Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 
-	if (!optionFile && iniMakeDirectories ())
-	{
-		char *tmpPath = malloc (sizeof (char) * (strlen (METADATADIR) + 11));
-		sprintf (tmpPath, "%s/%s", METADATADIR, "ecomp.eet");
-		printf("load defaults: %s\n", tmpPath);
-		
-		if (copyFile(tmpPath, fullPath))
-			optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
-	}
-	
-	if (!optionFile) goto error;
+   if (!optionFile && iniMakeDirectories ())
+     {
+        char *tmpPath = malloc (sizeof (char) * (strlen (METADATADIR) + 11));
+        sprintf (tmpPath, "%s/%s", METADATADIR, "ecomp.eet");
+        printf("load defaults: %s\n", tmpPath);
 
-	printf("open read %s\n", filename);
+        if (copyFile(tmpPath, fullPath))
+          optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
+     }
 
-	optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
+   if (!optionFile) goto error;
 
+   printf("open read %s\n", filename);
 
-	if (!optionFile) goto error;
+   optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 
-	options = eet_data_read(optionFile, edd_group, filename);
+   if (!optionFile) goto error;
 
-	if (!options)
-	{
-		eet_close(optionFile);
-		goto error;
-	}
+   options = eet_data_read(optionFile, edd_group, filename);
 
-	id->locked = TRUE;
-	iniLoadOptionsFromFile (d, options, plugin, screen);
-	id->locked = FALSE;
+   if (!options)
+     {
+        eet_close(optionFile);
+        goto error;
+     }
 
-	eet_close(optionFile);
+   id->locked = TRUE;
+   iniLoadOptionsFromFile (d, options, plugin, screen);
+   id->locked = FALSE;
 
-	free (filename);
-	free (directory);
-	free (fullPath);
-	return TRUE;
+   eet_close(optionFile);
+
+   free (filename);
+   free (directory);
+   free (fullPath);
+   return TRUE;
 
 error:
-	free (filename);
-	free (directory);
-	free (fullPath);
-	return FALSE;
+   free (filename);
+   free (directory);
+   free (fullPath);
+   return FALSE;
 }
 
 static void
-iniFileModified (const char *name,
-				 void *closure)
+iniFileModified(const char *name,
+                void       *closure)
 {
-	CompDisplay *d;
+   CompDisplay *d;
 
+   d = (CompDisplay *)closure;
 
-	d = (CompDisplay *) closure;
+   char *filename, *directory, *fullPath;
+   Group *options;
 
+   INI_DISPLAY (d);
 
-	char *filename, *directory, *fullPath;
-	Group *options;
+   if (id->locked) return;
 
-	INI_DISPLAY (d);
+   filename = directory = NULL;
 
+   if (!iniGetHomeDir (&directory))
+     {
+        free (filename);
+        return;
+     }
 
-	if (id->locked) return;
+   id->locked = TRUE;
 
-	filename = directory = NULL;
+   fullPath = malloc (sizeof (char) * (strlen (directory) + 11));
+   sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
 
-	if (!iniGetHomeDir (&directory))
-    {
-		free (filename);
-		return;
-    }
+   Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 
-	id->locked = TRUE;
+   if (!optionFile)
+     {
+        goto error;
+     }
 
-	fullPath = malloc (sizeof (char) * (strlen (directory) + 11));
-	sprintf (fullPath, "%s/%s", directory, "ecomp.eet");
+   printf("open read %s\n", fullPath);
 
-	Eet_File *optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
+   optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
 
-	if (!optionFile) {
-		goto error;
-	}
-	
-	printf("open read %s\n", fullPath);
+   if (!optionFile) goto error;
 
-	optionFile = eet_open(fullPath, EET_FILE_MODE_READ);
+   char **list;
+   int num, i;
 
+   list = eet_list(optionFile, "*", &num);
+   if (!list)
+     {
+        eet_close(optionFile);
+        goto error;
+     }
 
-	if (!optionFile) goto error;
+   /* XXX we have only one for now */
+   int screen = 0;
+   char plugin[32];
 
-	char **list;
-	int num, i;
-  
-	list = eet_list(optionFile, "*", &num);
-	if (!list)
-    {
-		eet_close(optionFile);
-		goto error;
-    }
+   for (i = 0; i < num; i++)
+     {
+        options = eet_data_read(optionFile, edd_group, list[i]);
 
-	/* XXX we have only one for now */
-	int screen = 0;;  
-	char plugin[32];
-  
-	for (i = 0; i < num; i++)
-    {
-		options = eet_data_read(optionFile, edd_group, list[i]);
+        if (!options)
+          {
+             eet_close(optionFile);
+             goto error;
+          }
 
-		if (!options)
-		{
-			eet_close(optionFile);
-			goto error;
-		}
+        if(strstr(list[i], "screen0"))
+          screen = 0;
+        else
+          screen = -1;
 
-		if(strstr(list[i], "screen0"))
-			screen = 0;
-		else
-			screen = -1;
-    
-		char *end = list[i];
-		int len = 1;
-	  
-		while (*end++ != '-') len++;
-	  
-		snprintf(plugin, len, "%s", list[i]);
-		/* printf("plug: %s - %d\n", plugin, screen); */
-    
-		if(!strcmp("core", plugin))
-			iniLoadOptionsFromFile (d, options, NULL, screen);
-		else
-		{
-			if (strcmp(plugin, "png"))
-				iniLoadOptionsFromFile (d, options, plugin, screen);
-		}
-    }
-   
-	eet_close(optionFile);
+        char *end = list[i];
+        int len = 1;
+
+        while (*end++ != '-') len++;
+
+        snprintf(plugin, len, "%s", list[i]);
+        /* printf("plug: %s - %d\n", plugin, screen); */
+
+        if(!strcmp("core", plugin))
+          iniLoadOptionsFromFile (d, options, NULL, screen);
+        else
+          {
+             if (strcmp(plugin, "png"))
+               iniLoadOptionsFromFile (d, options, plugin, screen);
+          }
+     }
+
+   eet_close(optionFile);
 
 error:
-	id->locked = FALSE;
-	free (filename);
-	free (directory);
-	free (fullPath);
+   id->locked = FALSE;
+   free (filename);
+   free (directory);
+   free (fullPath);
 }
-
 
 /*
-  CORE FUNCTIONS
-*/
+   CORE FUNCTIONS
+ */
 
 static Bool
-iniInitPluginForDisplay (CompPlugin	 *p,
-						 CompDisplay *d)
+iniInitPluginForDisplay(CompPlugin  *p,
+                        CompDisplay *d)
 {
-	Bool status;
+   Bool status;
 
-	INI_DISPLAY (d);
+   INI_DISPLAY (d);
 
-	UNWRAP (id, d, initPluginForDisplay);
-	status = (*d->initPluginForDisplay) (p, d);
-	WRAP (id, d, initPluginForDisplay, iniInitPluginForDisplay);
+   UNWRAP (id, d, initPluginForDisplay);
+   status = (*d->initPluginForDisplay)(p, d);
+   WRAP (id, d, initPluginForDisplay, iniInitPluginForDisplay);
 
-	if (status && p->vTable->getDisplayOptions)
-	{
-		iniLoadOptions (d, -1, p->vTable->name);
-	}
-	else if (!status)
-	{
-		compLogMessage (d, "ini", CompLogLevelWarn,
-						"Plugin '%s' failed to initialize " \
-						"display settings", p->vTable->name);
-	}
+   if (status && p->vTable->getDisplayOptions)
+     {
+        iniLoadOptions (d, -1, p->vTable->name);
+     }
+   else if (!status)
+     {
+        compLogMessage (d, "ini", CompLogLevelWarn,
+                        "Plugin '%s' failed to initialize " \
+                        "display settings", p->vTable->name);
+     }
 
-	return status;
+   return status;
 }
 
 static Bool
-iniInitPluginForScreen (CompPlugin *p,
-						CompScreen *s)
+iniInitPluginForScreen(CompPlugin *p,
+                       CompScreen *s)
 {
-	Bool status;
+   Bool status;
 
-	INI_SCREEN (s);
+   INI_SCREEN (s);
 
-	UNWRAP (is, s, initPluginForScreen);
-	status = (*s->initPluginForScreen) (p, s);
-	WRAP (is, s, initPluginForScreen, iniInitPluginForScreen);
+   UNWRAP (is, s, initPluginForScreen);
+   status = (*s->initPluginForScreen)(p, s);
+   WRAP (is, s, initPluginForScreen, iniInitPluginForScreen);
 
-	if (status && p->vTable->getScreenOptions)
-	{
-		iniLoadOptions (s->display, s->screenNum, p->vTable->name);
-	}
-	else if (!status)
-	{
-		compLogMessage (s->display, "ini", CompLogLevelWarn,
-						"Plugin '%s' failed to initialize " \
-						"screen %d settings", p->vTable->name, s->screenNum);
-	}
+   if (status && p->vTable->getScreenOptions)
+     {
+        iniLoadOptions (s->display, s->screenNum, p->vTable->name);
+     }
+   else if (!status)
+     {
+        compLogMessage (s->display, "ini", CompLogLevelWarn,
+                        "Plugin '%s' failed to initialize " \
+                        "screen %d settings", p->vTable->name, s->screenNum);
+     }
 
-	return status;
+   return status;
 }
 
 static Bool
-iniSetScreenOption (CompScreen *s, char *name, CompOptionValue *value)
+iniSetScreenOption(CompScreen *s, char *name, CompOptionValue *value)
 {
-	Bool status;
+   Bool status;
 
-	INI_SCREEN (s);
+   INI_SCREEN (s);
 
-	UNWRAP (is, s, setScreenOption);
-	status = (*s->setScreenOption) (s, name, value);
-	WRAP (is, s, setScreenOption, iniSetScreenOption);
+   UNWRAP (is, s, setScreenOption);
+   status = (*s->setScreenOption)(s, name, value);
+   WRAP (is, s, setScreenOption, iniSetScreenOption);
 
-	if (status)
-	{
-		iniSaveOptions (s->display, s->screenNum, NULL);
-	}
+   if (status)
+     {
+        iniSaveOptions (s->display, s->screenNum, NULL);
+     }
 
-	return status;
+   return status;
 }
 
 static Bool
-iniSetDisplayOption (CompDisplay *d, char *name, CompOptionValue *value)
+iniSetDisplayOption(CompDisplay *d, char *name, CompOptionValue *value)
 {
-	Bool status;
+   Bool status;
 
-	INI_DISPLAY (d);
+   INI_DISPLAY (d);
 
-	UNWRAP (id, d, setDisplayOption);
-	status = (*d->setDisplayOption) (d, name, value);
-	WRAP (id, d, setDisplayOption, iniSetDisplayOption);
+   UNWRAP (id, d, setDisplayOption);
+   status = (*d->setDisplayOption)(d, name, value);
+   WRAP (id, d, setDisplayOption, iniSetDisplayOption);
 
-	if (status)
-	{
-		iniSaveOptions (d, -1, NULL);
-	}
+   if (status)
+     {
+        iniSaveOptions (d, -1, NULL);
+     }
 
-	return status;
+   return status;
 }
 
 static Bool
-iniSetDisplayOptionForPlugin (CompDisplay	  *d,
-							  char		  *plugin,
-							  char		  *name,
-							  CompOptionValue *value)
+iniSetDisplayOptionForPlugin(CompDisplay     *d,
+                             char            *plugin,
+                             char            *name,
+                             CompOptionValue *value)
 {
-	Bool status;
+   Bool status;
 
-	INI_DISPLAY (d);
+   INI_DISPLAY (d);
 
-	UNWRAP (id, d, setDisplayOptionForPlugin);
-	status = (*d->setDisplayOptionForPlugin) (d, plugin, name, value);
-	WRAP (id, d, setDisplayOptionForPlugin, iniSetDisplayOptionForPlugin);
+   UNWRAP (id, d, setDisplayOptionForPlugin);
+   status = (*d->setDisplayOptionForPlugin)(d, plugin, name, value);
+   WRAP (id, d, setDisplayOptionForPlugin, iniSetDisplayOptionForPlugin);
 
-	if (status)
-	{
-		CompPlugin *p;
+   if (status)
+     {
+        CompPlugin *p;
 
-		p = findActivePlugin (plugin);
-		if (p && p->vTable->getDisplayOptions)
-			iniSaveOptions (d, -1, plugin);
-	}
+        p = findActivePlugin (plugin);
+        if (p && p->vTable->getDisplayOptions)
+          iniSaveOptions (d, -1, plugin);
+     }
 
-	return status;
+   return status;
 }
 
 static Bool
-iniSetScreenOptionForPlugin (CompScreen		 *s,
-							 char		 *plugin,
-							 char		 *name,
-							 CompOptionValue *value)
+iniSetScreenOptionForPlugin(CompScreen      *s,
+                            char            *plugin,
+                            char            *name,
+                            CompOptionValue *value)
 {
-	Bool status;
+   Bool status;
 
-	INI_SCREEN (s);
+   INI_SCREEN (s);
 
-	UNWRAP (is, s, setScreenOptionForPlugin);
-	status = (*s->setScreenOptionForPlugin) (s, plugin, name, value);
-	WRAP (is, s, setScreenOptionForPlugin, iniSetScreenOptionForPlugin);
+   UNWRAP (is, s, setScreenOptionForPlugin);
+   status = (*s->setScreenOptionForPlugin)(s, plugin, name, value);
+   WRAP (is, s, setScreenOptionForPlugin, iniSetScreenOptionForPlugin);
 
-	if (status)
-	{
-		CompPlugin *p;
+   if (status)
+     {
+        CompPlugin *p;
 
-		p = findActivePlugin (plugin);
-		if (p && p->vTable->getScreenOptions)
-			iniSaveOptions (s->display, s->screenNum, plugin);
-	}
+        p = findActivePlugin (plugin);
+        if (p && p->vTable->getScreenOptions)
+          iniSaveOptions (s->display, s->screenNum, plugin);
+     }
 
-	return status;
+   return status;
 }
 
 static Bool
-iniInitDisplay (CompPlugin *p, CompDisplay *d)
+iniInitDisplay(CompPlugin *p, CompDisplay *d)
 {
-	IniDisplay *id;
-	char *homeDir;
+   IniDisplay *id;
+   char *homeDir;
 
-	id = malloc (sizeof (IniDisplay));
-	if (!id)
-		return FALSE;
+   id = malloc (sizeof (IniDisplay));
+   if (!id)
+     return FALSE;
 
-	id->screenPrivateIndex = allocateScreenPrivateIndex (d);
-	if (id->screenPrivateIndex < 0)
-	{
-		free (id);
-		return FALSE;
-	}
+   id->screenPrivateIndex = allocateScreenPrivateIndex (d);
+   if (id->screenPrivateIndex < 0)
+     {
+        free (id);
+        return FALSE;
+     }
 
-	id->directoryWatch = 0;
+   id->directoryWatch = 0;
 
-	id->locked = FALSE;
+   id->locked = FALSE;
 
-	WRAP (id, d, initPluginForDisplay, iniInitPluginForDisplay);
-	WRAP (id, d, setDisplayOption, iniSetDisplayOption);
-	WRAP (id, d, setDisplayOptionForPlugin, iniSetDisplayOptionForPlugin);
+   WRAP (id, d, initPluginForDisplay, iniInitPluginForDisplay);
+   WRAP (id, d, setDisplayOption, iniSetDisplayOption);
+   WRAP (id, d, setDisplayOptionForPlugin, iniSetDisplayOptionForPlugin);
 
-	d->privates[displayPrivateIndex].ptr = id;
+   d->privates[displayPrivateIndex].ptr = id;
 
-	iniLoadOptions (d, -1, NULL);
+   iniLoadOptions (d, -1, NULL);
 
-	if (iniGetHomeDir (&homeDir))
-	{
-		id->directoryWatch = addFileWatch (d, homeDir,
-										   NOTIFY_DELETE_MASK |
-										   NOTIFY_CREATE_MASK |
-										   NOTIFY_MODIFY_MASK,
-										   iniFileModified, (void *) d);
-		free (homeDir);
-	}
+   if (iniGetHomeDir (&homeDir))
+     {
+        id->directoryWatch = addFileWatch (d, homeDir,
+                                           NOTIFY_DELETE_MASK |
+                                           NOTIFY_CREATE_MASK |
+                                           NOTIFY_MODIFY_MASK,
+                                           iniFileModified, (void *)d);
+        free (homeDir);
+     }
 
-	return TRUE;
+   return TRUE;
 }
 
 static void
-iniFiniDisplay (CompPlugin *p, CompDisplay *d)
+iniFiniDisplay(CompPlugin *p, CompDisplay *d)
 {
-	INI_DISPLAY (d);
+   INI_DISPLAY (d);
 
-	if (id->directoryWatch)
-		removeFileWatch (d, id->directoryWatch);
+   if (id->directoryWatch)
+     removeFileWatch (d, id->directoryWatch);
 
-	freeScreenPrivateIndex (d, id->screenPrivateIndex);
+   freeScreenPrivateIndex (d, id->screenPrivateIndex);
 
-	UNWRAP (id, d, initPluginForDisplay);
-	UNWRAP (id, d, setDisplayOption);
-	UNWRAP (id, d, setDisplayOptionForPlugin);
+   UNWRAP (id, d, initPluginForDisplay);
+   UNWRAP (id, d, setDisplayOption);
+   UNWRAP (id, d, setDisplayOptionForPlugin);
 
-	free (id);
+   free (id);
 }
 
 static Bool
-iniInitScreen (CompPlugin *p, CompScreen *s)
+iniInitScreen(CompPlugin *p, CompScreen *s)
 {
-	IniScreen *is;
+   IniScreen *is;
 
-	INI_DISPLAY (s->display);
+   INI_DISPLAY (s->display);
 
-	is = malloc (sizeof (IniScreen));
-	if (!is)
-		return FALSE;
+   is = malloc (sizeof (IniScreen));
+   if (!is)
+     return FALSE;
 
-	s->privates[id->screenPrivateIndex].ptr = is;
+   s->privates[id->screenPrivateIndex].ptr = is;
 
-	WRAP (is, s, initPluginForScreen, iniInitPluginForScreen);
-	WRAP (is, s, setScreenOption, iniSetScreenOption);
-	WRAP (is, s, setScreenOptionForPlugin, iniSetScreenOptionForPlugin);
+   WRAP (is, s, initPluginForScreen, iniInitPluginForScreen);
+   WRAP (is, s, setScreenOption, iniSetScreenOption);
+   WRAP (is, s, setScreenOptionForPlugin, iniSetScreenOptionForPlugin);
 
-	iniLoadOptions (s->display, s->screenNum, NULL);
+   iniLoadOptions (s->display, s->screenNum, NULL);
 
-	return TRUE;
+   return TRUE;
 }
 
 static void
-iniFiniScreen (CompPlugin *p, CompScreen *s)
+iniFiniScreen(CompPlugin *p, CompScreen *s)
 {
-	INI_SCREEN (s);
+   INI_SCREEN (s);
 
-	UNWRAP (is, s, initPluginForScreen);
-	UNWRAP (is, s, setScreenOption);
-	UNWRAP (is, s, setScreenOptionForPlugin);
+   UNWRAP (is, s, initPluginForScreen);
+   UNWRAP (is, s, setScreenOption);
+   UNWRAP (is, s, setScreenOptionForPlugin);
 
-	free (is);
+   free (is);
 }
 
 static Bool
-iniInit (CompPlugin *p)
+iniInit(CompPlugin *p)
 {
-	if (!compInitPluginMetadataFromInfo (&iniMetadata, p->vTable->name,
-										 0, 0, 0, 0))
-		return FALSE;
+   if (!compInitPluginMetadataFromInfo (&iniMetadata, p->vTable->name,
+                                        0, 0, 0, 0))
+     return FALSE;
 
-	displayPrivateIndex = allocateDisplayPrivateIndex ();
-	if (displayPrivateIndex < 0)
-	{
-		compFiniMetadata (&iniMetadata);
-		return FALSE;
-	}
+   displayPrivateIndex = allocateDisplayPrivateIndex ();
+   if (displayPrivateIndex < 0)
+     {
+        compFiniMetadata (&iniMetadata);
+        return FALSE;
+     }
 
-	eina_init();
-	eet_init();
+   eina_init();
+   eet_init();
 
-	/* Option option;
-	 * Group  group; */
+   /* Option option;
+    * Group  group; */
 
-	edd_group = eet_data_descriptor_new("group", sizeof(Group),
-										NULL, NULL, NULL, NULL,
-										(void  (*) (void *, int (*) (void *, const char *, void *, void *), void *))eina_hash_foreach,
-										(void *(*) (void *, const char *, void *))eet_eina_hash_add,
-										(void  (*) (void *))eina_hash_free);
+   edd_group = eet_data_descriptor_new("group", sizeof(Group),
+                                       NULL, NULL, NULL, NULL,
+                                       (void (*)(void *, int (*)(void *, const char *, void *, void *), void *))eina_hash_foreach,
+                                       (void *(*)(void *, const char *, void *))eet_eina_hash_add,
+                                       (void (*)(void *))eina_hash_free);
 
-	edd_option = eet_data_descriptor_new("option", sizeof(Option),
-										 (void *(*) (void *))eina_list_next,
-										 (void *(*) (void *, void *)) eina_list_append,
-										 (void *(*) (void *))eina_list_data_get,
-										 (void *(*) (void *))eina_list_free,
-										 NULL, NULL, NULL);
+   edd_option = eet_data_descriptor_new("option", sizeof(Option),
+                                        (void *(*)(void *))eina_list_next,
+                                        (void *(*)(void *, void *))eina_list_append,
+                                        (void *(*)(void *))eina_list_data_get,
+                                        (void *(*)(void *))eina_list_free,
+                                        NULL, NULL, NULL);
 
-	EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "type",	 type,		  EET_T_INT);
-	EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "int",	 intValue,	  EET_T_INT);
-	EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "double",	 doubleValue, EET_T_DOUBLE);
-	EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "string",	 stringValue, EET_T_STRING);
-	EET_DATA_DESCRIPTOR_ADD_LIST (edd_option, Option, "list",	 listValue,	  edd_option);
+   EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "type", type, EET_T_INT);
+   EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "int", intValue, EET_T_INT);
+   EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "double", doubleValue, EET_T_DOUBLE);
+   EET_DATA_DESCRIPTOR_ADD_BASIC(edd_option, Option, "string", stringValue, EET_T_STRING);
+   EET_DATA_DESCRIPTOR_ADD_LIST (edd_option, Option, "list", listValue, edd_option);
 
-	EET_DATA_DESCRIPTOR_ADD_HASH (edd_group,  Group,  "options", data, edd_option);
+   EET_DATA_DESCRIPTOR_ADD_HASH (edd_group, Group, "options", data, edd_option);
 
-	compAddMetadataFromFile (&iniMetadata, p->vTable->name);
+   compAddMetadataFromFile (&iniMetadata, p->vTable->name);
 
-	return TRUE;
+   return TRUE;
 }
 
 static void
-iniFini (CompPlugin *p)
+iniFini(CompPlugin *p)
 {
-	if (displayPrivateIndex >= 0)
-		freeDisplayPrivateIndex (displayPrivateIndex);
-	eet_shutdown();
-	eina_shutdown();
-
+   if (displayPrivateIndex >= 0)
+     freeDisplayPrivateIndex (displayPrivateIndex);
+   eet_shutdown();
+   eina_shutdown();
 }
 
 static int
-iniGetVersion (CompPlugin *plugin, int	version)
+iniGetVersion(CompPlugin *plugin, int version)
 {
-	return ABIVERSION;
+   return ABIVERSION;
 }
 
 static CompMetadata *
-iniGetMetadata (CompPlugin *plugin)
+iniGetMetadata(CompPlugin *plugin)
 {
-	return &iniMetadata;
+   return &iniMetadata;
 }
 
 CompPluginVTable iniVTable = {
-	"ini",
-	iniGetVersion,
-	iniGetMetadata,
-	iniInit,
-	iniFini,
-	iniInitDisplay,
-	iniFiniDisplay,
-	iniInitScreen,
-	iniFiniScreen,
-	0,
-	0,
-	0,
-	0
+   "ini",
+   iniGetVersion,
+   iniGetMetadata,
+   iniInit,
+   iniFini,
+   iniInitDisplay,
+   iniFiniDisplay,
+   iniInitScreen,
+   iniFiniScreen,
+   0,
+   0,
+   0,
+   0
 };
 
 CompPluginVTable *
-getCompPluginInfo (void)
+getCompPluginInfo(void)
 {
-	return &iniVTable;
+   return &iniVTable;
 }
+

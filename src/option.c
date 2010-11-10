@@ -31,739 +31,764 @@
 
 #include <ecomp.h>
 
-struct _Modifier {
-    char *name;
-    int  modifier;
+struct _Modifier
+{
+   char *name;
+   int   modifier;
 } modifiers[] = {
-    { "<Shift>",      ShiftMask		 },
-    { "<Control>",    ControlMask	 },
-    { "<Mod1>",	      Mod1Mask		 },
-    { "<Mod2>",	      Mod2Mask		 },
-    { "<Mod3>",	      Mod3Mask		 },
-    { "<Mod4>",	      Mod4Mask		 },
-    { "<Mod5>",	      Mod5Mask		 },
-    { "<Alt>",	      CompAltMask        },
-    { "<Meta>",	      CompMetaMask       },
-    { "<Super>",      CompSuperMask      },
-    { "<Hyper>",      CompHyperMask	 },
-    { "<ModeSwitch>", CompModeSwitchMask },
+   { "<Shift>", ShiftMask          },
+   { "<Control>", ControlMask        },
+   { "<Mod1>", Mod1Mask           },
+   { "<Mod2>", Mod2Mask           },
+   { "<Mod3>", Mod3Mask           },
+   { "<Mod4>", Mod4Mask           },
+   { "<Mod5>", Mod5Mask           },
+   { "<Alt>", CompAltMask        },
+   { "<Meta>", CompMetaMask       },
+   { "<Super>", CompSuperMask      },
+   { "<Hyper>", CompHyperMask      },
+   { "<ModeSwitch>", CompModeSwitchMask },
 };
 
 #define N_MODIFIERS (sizeof (modifiers) / sizeof (struct _Modifier))
 
 static char *edgeName[] = {
-    "Left",
-    "Right",
-    "Top",
-    "Bottom",
-    "TopLeft",
-    "TopRight",
-    "BottomLeft",
-    "BottomRight"
+   "Left",
+   "Right",
+   "Top",
+   "Bottom",
+   "TopLeft",
+   "TopRight",
+   "BottomLeft",
+   "BottomRight"
 };
 
 static void
-finiOptionValue (CompOptionValue *v,
-		 CompOptionType  type)
+finiOptionValue(CompOptionValue *v,
+                CompOptionType   type)
 {
-    int i;
+   int i;
 
-    switch (type) {
-    case CompOptionTypeString:
-	if (v->s)
-	    free (v->s);
-	break;
-    case CompOptionTypeMatch:
-	matchFini (&v->match);
-	break;
-    case CompOptionTypeList:
-	for (i = 0; i < v->list.nValue; i++)
-	    finiOptionValue (&v->list.value[i], v->list.type);
-    default:
-	break;
-    }
+   switch (type) {
+      case CompOptionTypeString:
+        if (v->s)
+          free (v->s);
+        break;
+
+      case CompOptionTypeMatch:
+        matchFini (&v->match);
+        break;
+
+      case CompOptionTypeList:
+        for (i = 0; i < v->list.nValue; i++)
+          finiOptionValue (&v->list.value[i], v->list.type);
+
+      default:
+        break;
+     }
 }
 
 void
-compInitOption (CompOption *o)
+compInitOption(CompOption *o)
 {
-    memset (o, 0, sizeof (CompOption));
+   memset (o, 0, sizeof (CompOption));
 }
 
 void
-compFiniOption (CompOption *o)
+compFiniOption(CompOption *o)
 {
-    finiOptionValue (&o->value, o->type);
+   finiOptionValue (&o->value, o->type);
 }
 
 CompOption *
-compFindOption (CompOption *option,
-		int	    nOption,
-		char	    *name,
-		int	    *index)
+compFindOption(CompOption *option,
+               int         nOption,
+               char       *name,
+               int        *index)
 {
-    int i;
+   int i;
 
-    for (i = 0; i < nOption; i++)
-    {
-	if (strcmp (option[i].name, name) == 0)
-	{
-	    if (index)
-		*index = i;
+   for (i = 0; i < nOption; i++)
+     {
+        if (strcmp (option[i].name, name) == 0)
+          {
+             if (index)
+               *index = i;
 
-	    return &option[i];
-	}
-    }
+             return &option[i];
+          }
+     }
 
-    return 0;
+   return 0;
 }
 
 Bool
-compSetBoolOption (CompOption	   *option,
-		   CompOptionValue *value)
+compSetBoolOption(CompOption      *option,
+                  CompOptionValue *value)
 {
-    int b;
+   int b;
 
-    b = (value->b) ? TRUE : FALSE;
+   b = (value->b) ? TRUE : FALSE;
 
-    if (option->value.b == b)
-	return FALSE;
+   if (option->value.b == b)
+     return FALSE;
 
-    option->value.b = b;
+   option->value.b = b;
 
-    return TRUE;
+   return TRUE;
 }
 
 Bool
-compSetIntOption (CompOption	  *option,
-		  CompOptionValue *value)
+compSetIntOption(CompOption      *option,
+                 CompOptionValue *value)
 {
-    if (value->i < option->rest.i.min ||
-	value->i > option->rest.i.max ||
-	value->i == option->value.i)
-	return FALSE;
+   if (value->i < option->rest.i.min ||
+       value->i > option->rest.i.max ||
+       value->i == option->value.i)
+     return FALSE;
 
-    option->value.i = value->i;
+   option->value.i = value->i;
 
-    return TRUE;
+   return TRUE;
 }
 
 Bool
-compSetFloatOption (CompOption	    *option,
-		    CompOptionValue *value)
+compSetFloatOption(CompOption      *option,
+                   CompOptionValue *value)
 {
-    float v, p;
+   float v, p;
 
-    /* Workaround for float rounding errors */
-    static float equalRange = 1e-5;
+   /* Workaround for float rounding errors */
+   static float equalRange = 1e-5;
 
-    int sign = (value->f < 0 ? -1 : 1);
+   int sign = (value->f < 0 ? -1 : 1);
 
-    p = 1.0f / option->rest.f.precision;
-    v = ((int) (value->f * p + sign * 0.5f)) / p;
+   p = 1.0f / option->rest.f.precision;
+   v = ((int)(value->f * p + sign * 0.5f)) / p;
 
-    if (v < (option->rest.f.min - equalRange) ||
-	v > (option->rest.f.max + equalRange))
-	return FALSE;
+   if (v < (option->rest.f.min - equalRange) ||
+       v > (option->rest.f.max + equalRange))
+     return FALSE;
 
-    if (v > (option->value.f - equalRange) &&
-	v < (option->value.f + equalRange))
-	return FALSE;
+   if (v > (option->value.f - equalRange) &&
+       v < (option->value.f + equalRange))
+     return FALSE;
 
-    option->value.f = v;
+   option->value.f = v;
 
-    return TRUE;
+   return TRUE;
 }
 
 Bool
-compSetStringOption (CompOption	     *option,
-		     CompOptionValue *value)
+compSetStringOption(CompOption      *option,
+                    CompOptionValue *value)
 {
-    char *s;
+   char *s;
 
-    s = value->s;
-    if (!s)
-	s = "";
+   s = value->s;
+   if (!s)
+     s = "";
 
-    if (option->value.s == s)
-	return FALSE;
+   if (option->value.s == s)
+     return FALSE;
 
-    if (option->value.s && s)
-    {
-	if (strcmp (option->value.s, s) == 0)
-	    return FALSE;
-    }
+   if (option->value.s && s)
+     {
+        if (strcmp (option->value.s, s) == 0)
+          return FALSE;
+     }
 
-    if (option->value.s)
-	free (option->value.s);
+   if (option->value.s)
+     free (option->value.s);
 
-    option->value.s = strdup (s);
+   option->value.s = strdup (s);
 
-    return TRUE;
+   return TRUE;
 }
 
 Bool
-compSetColorOption (CompOption	    *option,
-		    CompOptionValue *value)
+compSetColorOption(CompOption      *option,
+                   CompOptionValue *value)
 {
-    if (memcmp (value->c, option->value.c, sizeof (value->c)) == 0)
-	return FALSE;
+   if (memcmp (value->c, option->value.c, sizeof (value->c)) == 0)
+     return FALSE;
 
-    memcpy (option->value.c, value->c, sizeof (value->c));
+   memcpy (option->value.c, value->c, sizeof (value->c));
 
-    return TRUE;
+   return TRUE;
 }
 
 Bool
-compSetActionOption (CompOption      *option,
-		     CompOptionValue *value)
+compSetActionOption(CompOption      *option,
+                    CompOptionValue *value)
 {
-    CompAction *action = &option->value.action;
+   CompAction *action = &option->value.action;
 
-    if (value->action.type     == action->type &&
-	value->action.bell     == action->bell &&
-	value->action.edgeMask == action->edgeMask)
-    {
-	Bool equal = TRUE;
+   if (value->action.type == action->type &&
+       value->action.bell == action->bell &&
+       value->action.edgeMask == action->edgeMask)
+     {
+        Bool equal = TRUE;
 
-	if (value->action.type & CompBindingTypeButton)
-	{
-	    if (action->button.button    != value->action.button.button ||
-		action->button.modifiers != value->action.button.modifiers)
-		equal = FALSE;
-	}
+        if (value->action.type & CompBindingTypeButton)
+          {
+             if (action->button.button != value->action.button.button ||
+                 action->button.modifiers != value->action.button.modifiers)
+               equal = FALSE;
+          }
 
-	if (value->action.type & CompBindingTypeKey)
-	{
-	    if (action->key.keycode   != value->action.key.keycode ||
-		action->key.modifiers != value->action.key.modifiers)
-		equal = FALSE;
-	}
+        if (value->action.type & CompBindingTypeKey)
+          {
+             if (action->key.keycode != value->action.key.keycode ||
+                 action->key.modifiers != value->action.key.modifiers)
+               equal = FALSE;
+          }
 
-	if (value->action.type & CompBindingTypeEdgeButton)
-	{
-	    if (action->edgeButton != value->action.edgeButton)
-		equal = FALSE;
-	}
+        if (value->action.type & CompBindingTypeEdgeButton)
+          {
+             if (action->edgeButton != value->action.edgeButton)
+               equal = FALSE;
+          }
 
-	if (equal)
-	    return FALSE;
-    }
+        if (equal)
+          return FALSE;
+     }
 
-    *action = value->action;
+   *action = value->action;
 
-    return TRUE;
+   return TRUE;
 }
 
 Bool
-compSetMatchOption (CompOption      *option,
-		    CompOptionValue *value)
+compSetMatchOption(CompOption      *option,
+                   CompOptionValue *value)
 {
-    CompDisplay *display = option->value.match.display;
-    CompMatch	match;
+   CompDisplay *display = option->value.match.display;
+   CompMatch match;
 
-    if (matchEqual (&option->value.match, &value->match))
-	return FALSE;
+   if (matchEqual (&option->value.match, &value->match))
+     return FALSE;
 
-    if (!matchCopy (&match, &value->match))
-	return FALSE;
+   if (!matchCopy (&match, &value->match))
+     return FALSE;
 
-    matchFini (&option->value.match);
+   matchFini (&option->value.match);
 
-    option->value.match.op  = match.op;
-    option->value.match.nOp = match.nOp;
+   option->value.match.op = match.op;
+   option->value.match.nOp = match.nOp;
 
-    if (display)
-	matchUpdate (display, &option->value.match);
+   if (display)
+     matchUpdate (display, &option->value.match);
 
-    return TRUE;
+   return TRUE;
 }
 
 Bool
-compSetOptionList (CompOption      *option,
-		   CompOptionValue *value)
+compSetOptionList(CompOption      *option,
+                  CompOptionValue *value)
 {
-    CompOption o;
-    Bool       status = FALSE;
-    int        i, min;
+   CompOption o;
+   Bool status = FALSE;
+   int i, min;
 
-    if (value->list.nValue != option->value.list.nValue)
-    {
-	CompOptionValue *v;
+   if (value->list.nValue != option->value.list.nValue)
+     {
+        CompOptionValue *v;
 
-	v = malloc (sizeof (CompOptionValue) * value->list.nValue);
-	if (!v)
-	    return FALSE;
+        v = malloc (sizeof (CompOptionValue) * value->list.nValue);
+        if (!v)
+          return FALSE;
 
-	min = MIN (value->list.nValue, option->value.list.nValue);
+        min = MIN (value->list.nValue, option->value.list.nValue);
 
-	for (i = min; i < option->value.list.nValue; i++)
-	{
-	    switch (option->value.list.type) {
-	    case CompOptionTypeString:
-		if (option->value.list.value[i].s)
-		    free (option->value.list.value[i].s);
-		break;
-	    case CompOptionTypeMatch:
-		matchFini (&option->value.list.value[i].match);
-	    default:
-		break;
-	    }
-	}
+        for (i = min; i < option->value.list.nValue; i++)
+          {
+             switch (option->value.list.type) {
+                case CompOptionTypeString:
+                  if (option->value.list.value[i].s)
+                    free (option->value.list.value[i].s);
+                  break;
 
-	memset (v, 0, sizeof (CompOptionValue) * value->list.nValue);
+                case CompOptionTypeMatch:
+                  matchFini (&option->value.list.value[i].match);
 
-	if (min)
-	    memcpy (v, option->value.list.value,
-		    sizeof (CompOptionValue) * min);
+                default:
+                  break;
+               }
+          }
 
-	if (option->value.list.value)
-	    free (option->value.list.value);
+        memset (v, 0, sizeof (CompOptionValue) * value->list.nValue);
 
-	option->value.list.value = v;
-	option->value.list.nValue = value->list.nValue;
+        if (min)
+          memcpy (v, option->value.list.value,
+                  sizeof (CompOptionValue) * min);
 
-	status = TRUE;
-    }
+        if (option->value.list.value)
+          free (option->value.list.value);
 
-    o = *option;
-    o.type = option->value.list.type;
+        option->value.list.value = v;
+        option->value.list.nValue = value->list.nValue;
 
-    for (i = 0; i < value->list.nValue; i++)
-    {
-	o.value = option->value.list.value[i];
+        status = TRUE;
+     }
 
-	switch (o.type) {
-	case CompOptionTypeBool:
-	    status |= compSetBoolOption (&o, &value->list.value[i]);
-	    break;
-	case CompOptionTypeInt:
-	    status |= compSetIntOption (&o, &value->list.value[i]);
-	    break;
-	case CompOptionTypeFloat:
-	    status |= compSetFloatOption (&o, &value->list.value[i]);
-	    break;
-	case CompOptionTypeString:
-	    status |= compSetStringOption (&o, &value->list.value[i]);
-	    break;
-	case CompOptionTypeColor:
-	    status |= compSetColorOption (&o, &value->list.value[i]);
-	    break;
-	case CompOptionTypeMatch:
-	    status |= compSetMatchOption (&o, &value->list.value[i]);
-	default:
-	    break;
-	}
+   o = *option;
+   o.type = option->value.list.type;
 
-	option->value.list.value[i] = o.value;
-    }
+   for (i = 0; i < value->list.nValue; i++)
+     {
+        o.value = option->value.list.value[i];
 
-    return status;
+        switch (o.type) {
+           case CompOptionTypeBool:
+             status |= compSetBoolOption (&o, &value->list.value[i]);
+             break;
+
+           case CompOptionTypeInt:
+             status |= compSetIntOption (&o, &value->list.value[i]);
+             break;
+
+           case CompOptionTypeFloat:
+             status |= compSetFloatOption (&o, &value->list.value[i]);
+             break;
+
+           case CompOptionTypeString:
+             status |= compSetStringOption (&o, &value->list.value[i]);
+             break;
+
+           case CompOptionTypeColor:
+             status |= compSetColorOption (&o, &value->list.value[i]);
+             break;
+
+           case CompOptionTypeMatch:
+             status |= compSetMatchOption (&o, &value->list.value[i]);
+
+           default:
+             break;
+          }
+
+        option->value.list.value[i] = o.value;
+     }
+
+   return status;
 }
 
 Bool
-compSetOption (CompOption      *option,
-	       CompOptionValue *value)
+compSetOption(CompOption      *option,
+              CompOptionValue *value)
 {
-    switch (option->type) {
-    case CompOptionTypeBool:
-	return compSetBoolOption (option, value);
-    case CompOptionTypeInt:
-	return compSetIntOption (option, value);
-    case CompOptionTypeFloat:
-	return compSetFloatOption (option, value);
-    case CompOptionTypeString:
-	return compSetStringOption (option, value);
-    case CompOptionTypeColor:
-	return compSetColorOption (option, value);
-    case CompOptionTypeMatch:
-	return compSetMatchOption (option, value);
-    /* case CompOptionTypeAction:
-     * 	return compSetActionOption (option, value); */
-    case CompOptionTypeList:
-	return compSetOptionList (option, value);
-    }
+   switch (option->type) {
+      case CompOptionTypeBool:
+        return compSetBoolOption (option, value);
 
-    return FALSE;
+      case CompOptionTypeInt:
+        return compSetIntOption (option, value);
+
+      case CompOptionTypeFloat:
+        return compSetFloatOption (option, value);
+
+      case CompOptionTypeString:
+        return compSetStringOption (option, value);
+
+      case CompOptionTypeColor:
+        return compSetColorOption (option, value);
+
+      case CompOptionTypeMatch:
+        return compSetMatchOption (option, value);
+
+      /* case CompOptionTypeAction:
+       *  return compSetActionOption (option, value); */
+      case CompOptionTypeList:
+        return compSetOptionList (option, value);
+     }
+
+   return FALSE;
 }
 
 unsigned int
-compWindowTypeMaskFromStringList (CompOptionValue *value)
+compWindowTypeMaskFromStringList(CompOptionValue *value)
 {
-    int		 i;
-    unsigned int mask = 0;
+   int i;
+   unsigned int mask = 0;
 
-    for (i = 0; i < value->list.nValue; i++)
-	mask |= windowTypeFromString (value->list.value[i].s);
+   for (i = 0; i < value->list.nValue; i++)
+     mask |= windowTypeFromString (value->list.value[i].s);
 
-    return mask;
+   return mask;
 }
 
 Bool
-getBoolOptionNamed (CompOption *option,
-		    int	       nOption,
-		    char       *name,
-		    Bool       defaultValue)
+getBoolOptionNamed(CompOption *option,
+                   int         nOption,
+                   char       *name,
+                   Bool        defaultValue)
 {
-    while (nOption--)
-    {
-	if (option->type == CompOptionTypeBool)
-	    if (strcmp (option->name, name) == 0)
-		return option->value.b;
+   while (nOption--)
+     {
+        if (option->type == CompOptionTypeBool)
+          if (strcmp (option->name, name) == 0)
+            return option->value.b;
 
-	option++;
-    }
+        option++;
+     }
 
-    return defaultValue;
+   return defaultValue;
 }
 
 int
-getIntOptionNamed (CompOption *option,
-		   int	      nOption,
-		   char	      *name,
-		   int	      defaultValue)
+getIntOptionNamed(CompOption *option,
+                  int         nOption,
+                  char       *name,
+                  int         defaultValue)
 {
-    while (nOption--)
-    {
-	if (option->type == CompOptionTypeInt)
-	    if (strcmp (option->name, name) == 0)
-		return option->value.i;
+   while (nOption--)
+     {
+        if (option->type == CompOptionTypeInt)
+          if (strcmp (option->name, name) == 0)
+            return option->value.i;
 
-	option++;
-    }
+        option++;
+     }
 
-    return defaultValue;
+   return defaultValue;
 }
 
 float
-getFloatOptionNamed (CompOption *option,
-		     int	nOption,
-		     char	*name,
-		     float	defaultValue)
+getFloatOptionNamed(CompOption *option,
+                    int         nOption,
+                    char       *name,
+                    float       defaultValue)
 {
-    while (nOption--)
-    {
-	if (option->type == CompOptionTypeFloat)
-	    if (strcmp (option->name, name) == 0)
-		return option->value.f;
+   while (nOption--)
+     {
+        if (option->type == CompOptionTypeFloat)
+          if (strcmp (option->name, name) == 0)
+            return option->value.f;
 
-	option++;
-    }
+        option++;
+     }
 
-    return defaultValue;
+   return defaultValue;
 }
 
 char *
-getStringOptionNamed (CompOption *option,
-		      int	 nOption,
-		      char	 *name,
-		      char	 *defaultValue)
+getStringOptionNamed(CompOption *option,
+                     int         nOption,
+                     char       *name,
+                     char       *defaultValue)
 {
-    while (nOption--)
-    {
-	if (option->type == CompOptionTypeString)
-	    if (strcmp (option->name, name) == 0)
-		return option->value.s;
+   while (nOption--)
+     {
+        if (option->type == CompOptionTypeString)
+          if (strcmp (option->name, name) == 0)
+            return option->value.s;
 
-	option++;
-    }
+        option++;
+     }
 
-    return defaultValue;
+   return defaultValue;
 }
 
 unsigned short *
-getColorOptionNamed (CompOption	    *option,
-		     int	    nOption,
-		     char	    *name,
-		     unsigned short *defaultValue)
+getColorOptionNamed(CompOption     *option,
+                    int             nOption,
+                    char           *name,
+                    unsigned short *defaultValue)
 {
-    while (nOption--)
-    {
-	if (option->type == CompOptionTypeColor)
-	    if (strcmp (option->name, name) == 0)
-		return option->value.c;
+   while (nOption--)
+     {
+        if (option->type == CompOptionTypeColor)
+          if (strcmp (option->name, name) == 0)
+            return option->value.c;
 
-	option++;
-    }
+        option++;
+     }
 
-    return defaultValue;
+   return defaultValue;
 }
 
 CompMatch *
-getMatchOptionNamed (CompOption	*option,
-		     int	nOption,
-		     char	*name,
-		     CompMatch  *defaultValue)
+getMatchOptionNamed(CompOption *option,
+                    int         nOption,
+                    char       *name,
+                    CompMatch  *defaultValue)
 {
-    while (nOption--)
-    {
-	if (option->type == CompOptionTypeMatch)
-	    if (strcmp (option->name, name) == 0)
-		return &option->value.match;
+   while (nOption--)
+     {
+        if (option->type == CompOptionTypeMatch)
+          if (strcmp (option->name, name) == 0)
+            return &option->value.match;
 
-	option++;
-    }
+        option++;
+     }
 
-    return defaultValue;
+   return defaultValue;
 }
 
 static char *
-stringAppend (char *s,
-	      char *a)
+stringAppend(char *s,
+             char *a)
 {
-    char *r;
-    int  len;
+   char *r;
+   int len;
 
-    len = strlen (a);
+   len = strlen (a);
 
-    if (s)
-	len += strlen (s);
+   if (s)
+     len += strlen (s);
 
-    r = malloc (len + 1);
-    if (r)
-    {
-	if (s)
-	{
-	    sprintf (r, "%s%s", s, a);
-	    free (s);
-	}
-	else
-	{
-	    sprintf (r, "%s", a);
-	}
+   r = malloc (len + 1);
+   if (r)
+     {
+        if (s)
+          {
+             sprintf (r, "%s%s", s, a);
+             free (s);
+          }
+        else
+          {
+             sprintf (r, "%s", a);
+          }
 
-	s = r;
-    }
+        s = r;
+     }
 
-    return s;
+   return s;
 }
 
 static char *
-modifiersToString (CompDisplay  *d,
-		   unsigned int modMask)
+modifiersToString(CompDisplay *d,
+                  unsigned int modMask)
 {
-    char *binding = NULL;
-    int  i;
+   char *binding = NULL;
+   int i;
 
-    for (i = 0; i < N_MODIFIERS; i++)
-    {
-	if (modMask & modifiers[i].modifier)
-	    binding = stringAppend (binding, modifiers[i].name);
-    }
+   for (i = 0; i < N_MODIFIERS; i++)
+     {
+        if (modMask & modifiers[i].modifier)
+          binding = stringAppend (binding, modifiers[i].name);
+     }
 
-    return binding;
+   return binding;
 }
 
 char *
-keyBindingToString (CompDisplay    *d,
-		    CompKeyBinding *key)
+keyBindingToString(CompDisplay    *d,
+                   CompKeyBinding *key)
 {
-    char *binding;
+   char *binding;
 
-    binding = modifiersToString (d, key->modifiers);
+   binding = modifiersToString (d, key->modifiers);
 
-    if (key->keycode != 0)
-    {
-	KeySym keysym;
-	char   *keyname;
+   if (key->keycode != 0)
+     {
+        KeySym keysym;
+        char *keyname;
 
-	keysym  = XKeycodeToKeysym (d->display, key->keycode, 0);
-	keyname = XKeysymToString (keysym);
+        keysym = XKeycodeToKeysym (d->display, key->keycode, 0);
+        keyname = XKeysymToString (keysym);
 
-	if (keyname)
-	{
-	    binding = stringAppend (binding, keyname);
-	}
-	else
-	{
-	    char keyCodeStr[256];
+        if (keyname)
+          {
+             binding = stringAppend (binding, keyname);
+          }
+        else
+          {
+             char keyCodeStr[256];
 
-	    snprintf (keyCodeStr, 256, "0x%x", key->keycode);
-	    binding = stringAppend (binding, keyCodeStr);
-	}
-    }
+             snprintf (keyCodeStr, 256, "0x%x", key->keycode);
+             binding = stringAppend (binding, keyCodeStr);
+          }
+     }
 
-    return binding;
+   return binding;
 }
 
 char *
-buttonBindingToString (CompDisplay       *d,
-		       CompButtonBinding *button)
+buttonBindingToString(CompDisplay       *d,
+                      CompButtonBinding *button)
 {
-    char *binding;
-    char buttonStr[256];
+   char *binding;
+   char buttonStr[256];
 
-    binding = modifiersToString (d, button->modifiers);
+   binding = modifiersToString (d, button->modifiers);
 
-    snprintf (buttonStr, 256, "Button%d", button->button);
-    binding = stringAppend (binding, buttonStr);
+   snprintf (buttonStr, 256, "Button%d", button->button);
+   binding = stringAppend (binding, buttonStr);
 
-    return binding;
+   return binding;
 }
 
 static unsigned int
-stringToModifiers (CompDisplay *d,
-		   const char  *binding)
+stringToModifiers(CompDisplay *d,
+                  const char  *binding)
 {
-    unsigned int mods = 0;
-    int		 i;
+   unsigned int mods = 0;
+   int i;
 
-    for (i = 0; i < N_MODIFIERS; i++)
-    {
-	if (strstr (binding, modifiers[i].name))
-	    mods |= modifiers[i].modifier;
-    }
+   for (i = 0; i < N_MODIFIERS; i++)
+     {
+        if (strstr (binding, modifiers[i].name))
+          mods |= modifiers[i].modifier;
+     }
 
-    return mods;
+   return mods;
 }
 
 Bool
-stringToKeyBinding (CompDisplay    *d,
-		    const char     *binding,
-		    CompKeyBinding *key)
+stringToKeyBinding(CompDisplay    *d,
+                   const char     *binding,
+                   CompKeyBinding *key)
 {
-    char	  *ptr;
-    unsigned int  mods;
-    KeySym	  keysym;
+   char *ptr;
+   unsigned int mods;
+   KeySym keysym;
 
-    mods = stringToModifiers (d, binding);
+   mods = stringToModifiers (d, binding);
 
-    ptr = strrchr (binding, '>');
-    if (ptr)
-	binding = ptr + 1;
+   ptr = strrchr (binding, '>');
+   if (ptr)
+     binding = ptr + 1;
 
-    while (*binding && !isalnum (*binding))
-	binding++;
+   while (*binding && !isalnum (*binding))
+     binding++;
 
-    if (!*binding)
-    {
-	if (mods)
-	{
-	    key->keycode   = 0;
-	    key->modifiers = mods;
+   if (!*binding)
+     {
+        if (mods)
+          {
+             key->keycode = 0;
+             key->modifiers = mods;
 
-	    return TRUE;
-	}
+             return TRUE;
+          }
 
-	return FALSE;
-    }
+        return FALSE;
+     }
 
-    keysym = XStringToKeysym (binding);
-    if (keysym != NoSymbol)
-    {
-	KeyCode keycode;
+   keysym = XStringToKeysym (binding);
+   if (keysym != NoSymbol)
+     {
+        KeyCode keycode;
 
-	keycode = XKeysymToKeycode (d->display, keysym);
-	if (keycode)
-	{
-	    key->keycode   = keycode;
-	    key->modifiers = mods;
+        keycode = XKeysymToKeycode (d->display, keysym);
+        if (keycode)
+          {
+             key->keycode = keycode;
+             key->modifiers = mods;
 
-	    return TRUE;
-	}
-    }
+             return TRUE;
+          }
+     }
 
-    if (strncmp (binding, "0x", 2) == 0)
-    {
-	key->keycode   = strtol (binding, NULL, 0);
-	key->modifiers = mods;
+   if (strncmp (binding, "0x", 2) == 0)
+     {
+        key->keycode = strtol (binding, NULL, 0);
+        key->modifiers = mods;
 
-	return TRUE;
-    }
+        return TRUE;
+     }
 
-    return FALSE;
+   return FALSE;
 }
 
 Bool
-stringToButtonBinding (CompDisplay	 *d,
-		       const char	 *binding,
-		       CompButtonBinding *button)
+stringToButtonBinding(CompDisplay       *d,
+                      const char        *binding,
+                      CompButtonBinding *button)
 {
-    char	 *ptr;
-    unsigned int mods;
+   char *ptr;
+   unsigned int mods;
 
-    mods = stringToModifiers (d, binding);
+   mods = stringToModifiers (d, binding);
 
-    ptr = strrchr (binding, '>');
-    if (ptr)
-	binding = ptr + 1;
+   ptr = strrchr (binding, '>');
+   if (ptr)
+     binding = ptr + 1;
 
-    while (*binding && !isalnum (*binding))
-	binding++;
+   while (*binding && !isalnum (*binding))
+     binding++;
 
-    if (strncmp (binding, "Button", strlen ("Button")) == 0)
-    {
-	int buttonNum;
+   if (strncmp (binding, "Button", strlen ("Button")) == 0)
+     {
+        int buttonNum;
 
-	if (sscanf (binding + strlen ("Button"), "%d", &buttonNum) == 1)
-	{
-	    button->button    = buttonNum;
-	    button->modifiers = mods;
+        if (sscanf (binding + strlen ("Button"), "%d", &buttonNum) == 1)
+          {
+             button->button = buttonNum;
+             button->modifiers = mods;
 
-	    return TRUE;
-	}
-    }
+             return TRUE;
+          }
+     }
 
-    return FALSE;
+   return FALSE;
 }
 
 char *
-edgeToString (unsigned int edge)
+edgeToString(unsigned int edge)
 {
-    return edgeName[edge];
+   return edgeName[edge];
 }
 
 Bool
-stringToColor (const char     *color,
-	       unsigned short *rgba)
+stringToColor(const char     *color,
+              unsigned short *rgba)
 {
-    int c[4];
+   int c[4];
 
-    if (sscanf (color, "#%2x%2x%2x%2x", &c[0], &c[1], &c[2], &c[3]) == 4)
-    {
-	rgba[0] = c[0] << 8 | c[0];
-	rgba[1] = c[1] << 8 | c[1];
-	rgba[2] = c[2] << 8 | c[2];
-	rgba[3] = c[3] << 8 | c[3];
+   if (sscanf (color, "#%2x%2x%2x%2x", &c[0], &c[1], &c[2], &c[3]) == 4)
+     {
+        rgba[0] = c[0] << 8 | c[0];
+        rgba[1] = c[1] << 8 | c[1];
+        rgba[2] = c[2] << 8 | c[2];
+        rgba[3] = c[3] << 8 | c[3];
 
-	return TRUE;
-    }
+        return TRUE;
+     }
 
-    return FALSE;
+   return FALSE;
 }
 
 char *
-colorToString (unsigned short *rgba)
+colorToString(unsigned short *rgba)
 {
-    char tmp[256];
+   char tmp[256];
 
-    snprintf (tmp, 256, "#%.2x%.2x%.2x%.2x",
-	      rgba[0] / 256, rgba[1] / 256, rgba[2] / 256, rgba[3] / 256);
+   snprintf (tmp, 256, "#%.2x%.2x%.2x%.2x",
+             rgba[0] / 256, rgba[1] / 256, rgba[2] / 256, rgba[3] / 256);
 
-    return strdup (tmp);
+   return strdup (tmp);
 }
 
 char *
-optionTypeToString (CompOptionType type)
+optionTypeToString(CompOptionType type)
 {
-    switch (type) {
-    /* case CompOptionTypeAction:
-     * 	return "action"; */
-    case CompOptionTypeMatch:
-	return "match";
-    case CompOptionTypeBool:
-	return "bool";
-    case CompOptionTypeInt:
-	return "int";
-    case CompOptionTypeFloat:
-	return "float";
-    case CompOptionTypeString:
-	return "string";
-    case CompOptionTypeColor:
-	return "color";
-    case CompOptionTypeList:
-	return "list";
-    }
+   switch (type) {
+        /* case CompOptionTypeAction:
+         *  return "action"; */
+        case CompOptionTypeMatch:
+          return "match";
 
-    return "unknown";
+        case CompOptionTypeBool:
+          return "bool";
+
+        case CompOptionTypeInt:
+          return "int";
+
+        case CompOptionTypeFloat:
+          return "float";
+
+        case CompOptionTypeString:
+          return "string";
+
+        case CompOptionTypeColor:
+          return "color";
+
+        case CompOptionTypeList:
+          return "list";
+     }
+
+   return "unknown";
 }
+

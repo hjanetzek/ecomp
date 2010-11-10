@@ -26,406 +26,449 @@ static CompPluginVTable *cubereflexPluginVTable = NULL;
 CompPluginVTable cubereflexOptionsVTable;
 
 #define GET_CUBEREFLEX_OPTIONS_DISPLAY(d) \
-        ((CubereflexOptionsDisplay *) (d)->privates[displayPrivateIndex].ptr)
+  ((CubereflexOptionsDisplay *)(d)->privates[displayPrivateIndex].ptr)
 
 #define CUBEREFLEX_OPTIONS_DISPLAY(d) \
-        CubereflexOptionsDisplay *od = GET_CUBEREFLEX_OPTIONS_DISPLAY (d)
+  CubereflexOptionsDisplay * od = GET_CUBEREFLEX_OPTIONS_DISPLAY (d)
 
 #define GET_CUBEREFLEX_OPTIONS_SCREEN(s, od) \
-        ((CubereflexOptionsScreen *) (s)->privates[(od)->screenPrivateIndex].ptr)
+  ((CubereflexOptionsScreen *)(s)->privates[(od)->screenPrivateIndex].ptr)
 
 #define CUBEREFLEX_OPTIONS_SCREEN(s) \
-        CubereflexOptionsScreen *os = GET_CUBEREFLEX_OPTIONS_SCREEN (s, GET_CUBEREFLEX_OPTIONS_DISPLAY (s->display))
+  CubereflexOptionsScreen * os = GET_CUBEREFLEX_OPTIONS_SCREEN (s, GET_CUBEREFLEX_OPTIONS_DISPLAY (s->display))
 
 typedef struct _CubereflexOptionsDisplay
 {
-    int screenPrivateIndex;
-
+   int screenPrivateIndex;
 } CubereflexOptionsDisplay;
 
 typedef struct _CubereflexOptionsScreen
 {
-    CompOption opt[CubereflexScreenOptionNum];
-    cubereflexScreenOptionChangeNotifyProc notify[CubereflexScreenOptionNum];
+   CompOption                             opt[CubereflexScreenOptionNum];
+   cubereflexScreenOptionChangeNotifyProc notify[CubereflexScreenOptionNum];
 } CubereflexOptionsScreen;
 
-unsigned short * cubereflexGetGroundColor1 (CompScreen *s)
+unsigned short *
+cubereflexGetGroundColor1(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor1].value.c;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor1].value.c;
 }
 
-unsigned short cubereflexGetGroundColor1Red (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor1Red(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor1].value.c[0];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor1].value.c[0];
 }
 
-unsigned short cubereflexGetGroundColor1Green (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor1Green(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor1].value.c[1];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor1].value.c[1];
 }
 
-unsigned short cubereflexGetGroundColor1Blue (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor1Blue(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor1].value.c[2];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor1].value.c[2];
 }
 
-unsigned short cubereflexGetGroundColor1Alpha (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor1Alpha(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor1].value.c[3];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor1].value.c[3];
 }
 
-CompOption * cubereflexGetGroundColor1Option (CompScreen *s)
+CompOption *
+cubereflexGetGroundColor1Option(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[CubereflexScreenOptionGroundColor1];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[CubereflexScreenOptionGroundColor1];
 }
 
-void cubereflexSetGroundColor1Notify (CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
+void
+cubereflexSetGroundColor1Notify(CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    os->notify[CubereflexScreenOptionGroundColor1] = notify;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   os->notify[CubereflexScreenOptionGroundColor1] = notify;
 }
 
-unsigned short * cubereflexGetGroundColor2 (CompScreen *s)
+unsigned short *
+cubereflexGetGroundColor2(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor2].value.c;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor2].value.c;
 }
 
-unsigned short cubereflexGetGroundColor2Red (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor2Red(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor2].value.c[0];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor2].value.c[0];
 }
 
-unsigned short cubereflexGetGroundColor2Green (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor2Green(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor2].value.c[1];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor2].value.c[1];
 }
 
-unsigned short cubereflexGetGroundColor2Blue (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor2Blue(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor2].value.c[2];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor2].value.c[2];
 }
 
-unsigned short cubereflexGetGroundColor2Alpha (CompScreen *s)
+unsigned short
+cubereflexGetGroundColor2Alpha(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundColor2].value.c[3];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundColor2].value.c[3];
 }
 
-CompOption * cubereflexGetGroundColor2Option (CompScreen *s)
+CompOption *
+cubereflexGetGroundColor2Option(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[CubereflexScreenOptionGroundColor2];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[CubereflexScreenOptionGroundColor2];
 }
 
-void cubereflexSetGroundColor2Notify (CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
+void
+cubereflexSetGroundColor2Notify(CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    os->notify[CubereflexScreenOptionGroundColor2] = notify;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   os->notify[CubereflexScreenOptionGroundColor2] = notify;
 }
 
-float cubereflexGetGroundSize (CompScreen *s)
+float
+cubereflexGetGroundSize(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionGroundSize].value.f;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionGroundSize].value.f;
 }
 
-CompOption * cubereflexGetGroundSizeOption (CompScreen *s)
+CompOption *
+cubereflexGetGroundSizeOption(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[CubereflexScreenOptionGroundSize];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[CubereflexScreenOptionGroundSize];
 }
 
-void cubereflexSetGroundSizeNotify (CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
+void
+cubereflexSetGroundSizeNotify(CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    os->notify[CubereflexScreenOptionGroundSize] = notify;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   os->notify[CubereflexScreenOptionGroundSize] = notify;
 }
 
-float cubereflexGetIntensity (CompScreen *s)
+float
+cubereflexGetIntensity(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionIntensity].value.f;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionIntensity].value.f;
 }
 
-CompOption * cubereflexGetIntensityOption (CompScreen *s)
+CompOption *
+cubereflexGetIntensityOption(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[CubereflexScreenOptionIntensity];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[CubereflexScreenOptionIntensity];
 }
 
-void cubereflexSetIntensityNotify (CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
+void
+cubereflexSetIntensityNotify(CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    os->notify[CubereflexScreenOptionIntensity] = notify;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   os->notify[CubereflexScreenOptionIntensity] = notify;
 }
 
-Bool cubereflexGetAutoZoom (CompScreen *s)
+Bool
+cubereflexGetAutoZoom(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionAutoZoom].value.b;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionAutoZoom].value.b;
 }
 
-CompOption * cubereflexGetAutoZoomOption (CompScreen *s)
+CompOption *
+cubereflexGetAutoZoomOption(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[CubereflexScreenOptionAutoZoom];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[CubereflexScreenOptionAutoZoom];
 }
 
-void cubereflexSetAutoZoomNotify (CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
+void
+cubereflexSetAutoZoomNotify(CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    os->notify[CubereflexScreenOptionAutoZoom] = notify;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   os->notify[CubereflexScreenOptionAutoZoom] = notify;
 }
 
-Bool cubereflexGetZoomManualOnly (CompScreen *s)
+Bool
+cubereflexGetZoomManualOnly(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionZoomManualOnly].value.b;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionZoomManualOnly].value.b;
 }
 
-CompOption * cubereflexGetZoomManualOnlyOption (CompScreen *s)
+CompOption *
+cubereflexGetZoomManualOnlyOption(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[CubereflexScreenOptionZoomManualOnly];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[CubereflexScreenOptionZoomManualOnly];
 }
 
-void cubereflexSetZoomManualOnlyNotify (CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
+void
+cubereflexSetZoomManualOnlyNotify(CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    os->notify[CubereflexScreenOptionZoomManualOnly] = notify;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   os->notify[CubereflexScreenOptionZoomManualOnly] = notify;
 }
 
-int cubereflexGetMode (CompScreen *s)
+int
+cubereflexGetMode(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return os->opt[CubereflexScreenOptionMode].value.i;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return os->opt[CubereflexScreenOptionMode].value.i;
 }
 
-CompOption * cubereflexGetModeOption (CompScreen *s)
+CompOption *
+cubereflexGetModeOption(CompScreen *s)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[CubereflexScreenOptionMode];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[CubereflexScreenOptionMode];
 }
 
-void cubereflexSetModeNotify (CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
+void
+cubereflexSetModeNotify(CompScreen *s, cubereflexScreenOptionChangeNotifyProc notify)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    os->notify[CubereflexScreenOptionMode] = notify;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   os->notify[CubereflexScreenOptionMode] = notify;
 }
 
-CompOption * cubereflexGetScreenOption (CompScreen *s, CubereflexScreenOptions num)
+CompOption *
+cubereflexGetScreenOption(CompScreen *s, CubereflexScreenOptions num)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    return &os->opt[num];
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   return &os->opt[num];
 }
 
 static const CompMetadataOptionInfo cubereflexOptionsScreenOptionInfo[] = {
-    { "ground_color1", "color", 0, 0, 0 },
-    { "ground_color2", "color", 0, 0, 0 },
-    { "ground_size", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
-    { "intensity", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
-    { "auto_zoom", "bool", 0, 0, 0 },
-    { "zoom_manual_only", "bool", 0, 0, 0 },
-    { "mode", "int", "<min>0</min><max>3</max>", 0, 0 },
+   { "ground_color1", "color", 0, 0, 0 },
+   { "ground_color2", "color", 0, 0, 0 },
+   { "ground_size", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
+   { "intensity", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
+   { "auto_zoom", "bool", 0, 0, 0 },
+   { "zoom_manual_only", "bool", 0, 0, 0 },
+   { "mode", "int", "<min>0</min><max>3</max>", 0, 0 },
 };
 
-static Bool cubereflexOptionsSetScreenOption (CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
+static Bool
+cubereflexOptionsSetScreenOption(CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    CompOption *o;
-    int        index;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   CompOption *o;
+   int index;
 
-    o = compFindOption (os->opt, CubereflexScreenOptionNum, name, &index);
+   o = compFindOption (os->opt, CubereflexScreenOptionNum, name, &index);
 
-    if (!o)
-        return FALSE;
+   if (!o)
+     return FALSE;
 
-    switch (index)
-    {
-     case CubereflexScreenOptionGroundColor1:
+   switch (index)
+     {
+      case CubereflexScreenOptionGroundColor1:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[CubereflexScreenOptionGroundColor1])
-                (*os->notify[CubereflexScreenOptionGroundColor1]) (s, o, CubereflexScreenOptionGroundColor1);
-            return TRUE;
-        }
+          {
+             if (os->notify[CubereflexScreenOptionGroundColor1])
+               (*os->notify[CubereflexScreenOptionGroundColor1])(s, o, CubereflexScreenOptionGroundColor1);
+             return TRUE;
+          }
         break;
-     case CubereflexScreenOptionGroundColor2:
+
+      case CubereflexScreenOptionGroundColor2:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[CubereflexScreenOptionGroundColor2])
-                (*os->notify[CubereflexScreenOptionGroundColor2]) (s, o, CubereflexScreenOptionGroundColor2);
-            return TRUE;
-        }
+          {
+             if (os->notify[CubereflexScreenOptionGroundColor2])
+               (*os->notify[CubereflexScreenOptionGroundColor2])(s, o, CubereflexScreenOptionGroundColor2);
+             return TRUE;
+          }
         break;
-     case CubereflexScreenOptionGroundSize:
+
+      case CubereflexScreenOptionGroundSize:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[CubereflexScreenOptionGroundSize])
-                (*os->notify[CubereflexScreenOptionGroundSize]) (s, o, CubereflexScreenOptionGroundSize);
-            return TRUE;
-        }
+          {
+             if (os->notify[CubereflexScreenOptionGroundSize])
+               (*os->notify[CubereflexScreenOptionGroundSize])(s, o, CubereflexScreenOptionGroundSize);
+             return TRUE;
+          }
         break;
-     case CubereflexScreenOptionIntensity:
+
+      case CubereflexScreenOptionIntensity:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[CubereflexScreenOptionIntensity])
-                (*os->notify[CubereflexScreenOptionIntensity]) (s, o, CubereflexScreenOptionIntensity);
-            return TRUE;
-        }
+          {
+             if (os->notify[CubereflexScreenOptionIntensity])
+               (*os->notify[CubereflexScreenOptionIntensity])(s, o, CubereflexScreenOptionIntensity);
+             return TRUE;
+          }
         break;
-     case CubereflexScreenOptionAutoZoom:
+
+      case CubereflexScreenOptionAutoZoom:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[CubereflexScreenOptionAutoZoom])
-                (*os->notify[CubereflexScreenOptionAutoZoom]) (s, o, CubereflexScreenOptionAutoZoom);
-            return TRUE;
-        }
+          {
+             if (os->notify[CubereflexScreenOptionAutoZoom])
+               (*os->notify[CubereflexScreenOptionAutoZoom])(s, o, CubereflexScreenOptionAutoZoom);
+             return TRUE;
+          }
         break;
-     case CubereflexScreenOptionZoomManualOnly:
+
+      case CubereflexScreenOptionZoomManualOnly:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[CubereflexScreenOptionZoomManualOnly])
-                (*os->notify[CubereflexScreenOptionZoomManualOnly]) (s, o, CubereflexScreenOptionZoomManualOnly);
-            return TRUE;
-        }
+          {
+             if (os->notify[CubereflexScreenOptionZoomManualOnly])
+               (*os->notify[CubereflexScreenOptionZoomManualOnly])(s, o, CubereflexScreenOptionZoomManualOnly);
+             return TRUE;
+          }
         break;
-     case CubereflexScreenOptionMode:
+
+      case CubereflexScreenOptionMode:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[CubereflexScreenOptionMode])
-                (*os->notify[CubereflexScreenOptionMode]) (s, o, CubereflexScreenOptionMode);
-            return TRUE;
-        }
+          {
+             if (os->notify[CubereflexScreenOptionMode])
+               (*os->notify[CubereflexScreenOptionMode])(s, o, CubereflexScreenOptionMode);
+             return TRUE;
+          }
         break;
-    default:
+
+      default:
         break;
-    }
-    return FALSE;
+     }
+   return FALSE;
 }
 
-static CompOption * cubereflexOptionsGetScreenOptions (CompPlugin *plugin, CompScreen *s, int *count)
+static CompOption *
+cubereflexOptionsGetScreenOptions(CompPlugin *plugin, CompScreen *s, int *count)
 {
-    CUBEREFLEX_OPTIONS_SCREEN(s);
-    *count = CubereflexScreenOptionNum;
-    return os->opt;
+   CUBEREFLEX_OPTIONS_SCREEN(s);
+   *count = CubereflexScreenOptionNum;
+   return os->opt;
 }
 
-static Bool cubereflexOptionsInitScreen (CompPlugin *p, CompScreen *s)
+static Bool
+cubereflexOptionsInitScreen(CompPlugin *p, CompScreen *s)
 {
-    CubereflexOptionsScreen *os;
-    
-    CUBEREFLEX_OPTIONS_DISPLAY (s->display);
+   CubereflexOptionsScreen *os;
 
-    os = calloc (1, sizeof(CubereflexOptionsScreen));
-    if (!os)
-        return FALSE;
+   CUBEREFLEX_OPTIONS_DISPLAY (s->display);
 
-    s->privates[od->screenPrivateIndex].ptr = os;
+   os = calloc (1, sizeof(CubereflexOptionsScreen));
+   if (!os)
+     return FALSE;
 
-    if (!compInitScreenOptionsFromMetadata (s, &cubereflexOptionsMetadata, cubereflexOptionsScreenOptionInfo, os->opt, CubereflexScreenOptionNum))
-    {
+   s->privates[od->screenPrivateIndex].ptr = os;
+
+   if (!compInitScreenOptionsFromMetadata (s, &cubereflexOptionsMetadata, cubereflexOptionsScreenOptionInfo, os->opt, CubereflexScreenOptionNum))
+     {
         free (os);
         return FALSE;
-    }
-    if (cubereflexPluginVTable && cubereflexPluginVTable->initScreen)
-        return cubereflexPluginVTable->initScreen (p, s);
-    return TRUE;
+     }
+   if (cubereflexPluginVTable && cubereflexPluginVTable->initScreen)
+     return cubereflexPluginVTable->initScreen (p, s);
+   return TRUE;
 }
 
-static void cubereflexOptionsFiniScreen (CompPlugin *p, CompScreen *s)
+static void
+cubereflexOptionsFiniScreen(CompPlugin *p, CompScreen *s)
 {
-    if (cubereflexPluginVTable && cubereflexPluginVTable->finiScreen)
-        return cubereflexPluginVTable->finiScreen (p, s);
+   if (cubereflexPluginVTable && cubereflexPluginVTable->finiScreen)
+     return cubereflexPluginVTable->finiScreen (p, s);
 
-    CUBEREFLEX_OPTIONS_SCREEN (s);
+   CUBEREFLEX_OPTIONS_SCREEN (s);
 
+   compFiniScreenOptions (s, os->opt, CubereflexScreenOptionNum);
 
-    compFiniScreenOptions (s, os->opt, CubereflexScreenOptionNum);
-
-    free (os);
+   free (os);
 }
 
-static Bool cubereflexOptionsInitDisplay (CompPlugin *p, CompDisplay *d)
+static Bool
+cubereflexOptionsInitDisplay(CompPlugin *p, CompDisplay *d)
 {
-    CubereflexOptionsDisplay *od;
-   
-    
-    od = calloc (1, sizeof(CubereflexOptionsDisplay));
-    if (!od)
-        return FALSE;
+   CubereflexOptionsDisplay *od;
 
-    od->screenPrivateIndex = allocateScreenPrivateIndex(d);
-    if (od->screenPrivateIndex < 0)
-    {
+   od = calloc (1, sizeof(CubereflexOptionsDisplay));
+   if (!od)
+     return FALSE;
+
+   od->screenPrivateIndex = allocateScreenPrivateIndex(d);
+   if (od->screenPrivateIndex < 0)
+     {
         free(od);
         return FALSE;
-    }
+     }
 
-    d->privates[displayPrivateIndex].ptr = od;
+   d->privates[displayPrivateIndex].ptr = od;
 
-        if (cubereflexPluginVTable && cubereflexPluginVTable->initDisplay)
-        return cubereflexPluginVTable->initDisplay (p, d);
-    return TRUE;
+   if (cubereflexPluginVTable && cubereflexPluginVTable->initDisplay)
+     return cubereflexPluginVTable->initDisplay (p, d);
+   return TRUE;
 }
 
-static void cubereflexOptionsFiniDisplay (CompPlugin *p, CompDisplay *d)
+static void
+cubereflexOptionsFiniDisplay(CompPlugin *p, CompDisplay *d)
 {
-    if (cubereflexPluginVTable && cubereflexPluginVTable->finiDisplay)
-        return cubereflexPluginVTable->finiDisplay (p, d);
+   if (cubereflexPluginVTable && cubereflexPluginVTable->finiDisplay)
+     return cubereflexPluginVTable->finiDisplay (p, d);
 
-    CUBEREFLEX_OPTIONS_DISPLAY (d);
+   CUBEREFLEX_OPTIONS_DISPLAY (d);
 
-    freeScreenPrivateIndex(d, od->screenPrivateIndex);
-    free (od);
+   freeScreenPrivateIndex(d, od->screenPrivateIndex);
+   free (od);
 }
 
-static Bool cubereflexOptionsInit (CompPlugin *p)
+static Bool
+cubereflexOptionsInit(CompPlugin *p)
 {
-    displayPrivateIndex = allocateDisplayPrivateIndex();
-    if (displayPrivateIndex < 0)
-        return FALSE;
+   displayPrivateIndex = allocateDisplayPrivateIndex();
+   if (displayPrivateIndex < 0)
+     return FALSE;
 
-    if (!compInitPluginMetadataFromInfo (&cubereflexOptionsMetadata, "cubereflex",0, 0, cubereflexOptionsScreenOptionInfo, CubereflexScreenOptionNum))
-        return FALSE;
+   if (!compInitPluginMetadataFromInfo (&cubereflexOptionsMetadata, "cubereflex", 0, 0, cubereflexOptionsScreenOptionInfo, CubereflexScreenOptionNum))
+     return FALSE;
 
-    compAddMetadataFromFile (&cubereflexOptionsMetadata, "cubereflex");
-    if (cubereflexPluginVTable && cubereflexPluginVTable->init)
-        return cubereflexPluginVTable->init (p);
-    return TRUE;
+   compAddMetadataFromFile (&cubereflexOptionsMetadata, "cubereflex");
+   if (cubereflexPluginVTable && cubereflexPluginVTable->init)
+     return cubereflexPluginVTable->init (p);
+   return TRUE;
 }
 
-static void cubereflexOptionsFini (CompPlugin *p)
+static void
+cubereflexOptionsFini(CompPlugin *p)
 {
-    if (cubereflexPluginVTable && cubereflexPluginVTable->fini)
-        return cubereflexPluginVTable->fini (p);
+   if (cubereflexPluginVTable && cubereflexPluginVTable->fini)
+     return cubereflexPluginVTable->fini (p);
 
-    if (displayPrivateIndex >= 0)
-        freeDisplayPrivateIndex(displayPrivateIndex);
+   if (displayPrivateIndex >= 0)
+     freeDisplayPrivateIndex(displayPrivateIndex);
 
-    compFiniMetadata (&cubereflexOptionsMetadata);
+   compFiniMetadata (&cubereflexOptionsMetadata);
 }
 
 static CompMetadata *
-cubereflexOptionsGetMetadata (CompPlugin *plugin)
+cubereflexOptionsGetMetadata(CompPlugin *plugin)
 {
-    return &cubereflexOptionsMetadata;
+   return &cubereflexOptionsMetadata;
 }
 
-CompPluginVTable *getCompPluginInfo (void)
+CompPluginVTable *
+getCompPluginInfo(void)
 {
-    if (!cubereflexPluginVTable)
-    {
+   if (!cubereflexPluginVTable)
+     {
         cubereflexPluginVTable = cubereflexOptionsGetCompPluginInfo ();
         memcpy(&cubereflexOptionsVTable, cubereflexPluginVTable, sizeof(CompPluginVTable));
         cubereflexOptionsVTable.getMetadata = cubereflexOptionsGetMetadata;
@@ -436,9 +479,8 @@ CompPluginVTable *getCompPluginInfo (void)
         cubereflexOptionsVTable.initScreen = cubereflexOptionsInitScreen;
         cubereflexOptionsVTable.finiScreen = cubereflexOptionsFiniScreen;
         cubereflexOptionsVTable.getScreenOptions = cubereflexOptionsGetScreenOptions;
-	cubereflexOptionsVTable.setScreenOption = cubereflexOptionsSetScreenOption;
-	
-    }
-    return &cubereflexOptionsVTable;
+        cubereflexOptionsVTable.setScreenOption = cubereflexOptionsSetScreenOption;
+     }
+   return &cubereflexOptionsVTable;
 }
 

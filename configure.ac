@@ -129,7 +129,7 @@ ECOMP_REQUIRES="xcomposite \
 		 libxml-2.0 \
 		 libxslt \
 		 pango \
-		 eina-0 \
+		 eina \
 		 eet"
 
 

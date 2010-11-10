@@ -43,61 +43,62 @@
 static GLushort
 fxFocusFadeComputeOpacity(CompWindow *w, float progress, float opacity, Bool front)
 {
-    ANIM_WINDOW(w);
+   ANIM_WINDOW(w);
 
-    float multiplier;
+   float multiplier;
 
-    // Reverse behavior if lowering (i.e. not raising)
-    if (aw->restackInfo && !aw->restackInfo->raised)
-	front = !front;
+   // Reverse behavior if lowering (i.e. not raising)
+   if (aw->restackInfo && !aw->restackInfo->raised)
+     front = !front;
 
-    if (w->alpha || (front && opacity >= 0.91f))
-	multiplier = decelerateProgress(progress);
-    else if (opacity > 0.94f)
-	multiplier = decelerateProgressCustom(progress, 0.55, 1.32);
-    else if (opacity >= 0.91f && opacity < 0.94f)
-	multiplier = decelerateProgressCustom(progress, 0.62, 0.92);
-    else if (opacity >= 0.89f && opacity < 0.91f)
-	multiplier = decelerateProgress(progress);
-    else if (opacity >= 0.84f && opacity < 0.89f)
-	multiplier = decelerateProgressCustom(progress, 0.64, 0.80);
-    else if (opacity >= 0.79f && opacity < 0.84f)
-	multiplier = decelerateProgressCustom(progress, 0.67, 0.77);
-    else if (opacity >= 0.54f && opacity < 0.79f)
-	multiplier = decelerateProgressCustom(progress, 0.61, 0.69);
-    else
-	multiplier = progress;//decelerateProgressCustom(progress, 0.71, 0.73);
+   if (w->alpha || (front && opacity >= 0.91f))
+     multiplier = decelerateProgress(progress);
+   else if (opacity > 0.94f)
+     multiplier = decelerateProgressCustom(progress, 0.55, 1.32);
+   else if (opacity >= 0.91f && opacity < 0.94f)
+     multiplier = decelerateProgressCustom(progress, 0.62, 0.92);
+   else if (opacity >= 0.89f && opacity < 0.91f)
+     multiplier = decelerateProgress(progress);
+   else if (opacity >= 0.84f && opacity < 0.89f)
+     multiplier = decelerateProgressCustom(progress, 0.64, 0.80);
+   else if (opacity >= 0.79f && opacity < 0.84f)
+     multiplier = decelerateProgressCustom(progress, 0.67, 0.77);
+   else if (opacity >= 0.54f && opacity < 0.79f)
+     multiplier = decelerateProgressCustom(progress, 0.61, 0.69);
+   else
+     multiplier = progress;  //decelerateProgressCustom(progress, 0.71, 0.73);
 
-    multiplier = 1 - multiplier;
-    float finalOpacity = opacity * multiplier;
-    finalOpacity = MIN(finalOpacity, 1);
-    finalOpacity = MAX(finalOpacity, 0);
+   multiplier = 1 - multiplier;
+   float finalOpacity = opacity * multiplier;
+   finalOpacity = MIN(finalOpacity, 1);
+   finalOpacity = MAX(finalOpacity, 0);
 
-    return (GLushort)(finalOpacity * OPAQUE);
+   return (GLushort)(finalOpacity * OPAQUE);
 }
 
 void
-fxFocusFadeUpdateWindowAttrib(AnimScreen * as,
-			      CompWindow * w,
-			      WindowPaintAttrib * wAttrib)
+fxFocusFadeUpdateWindowAttrib(AnimScreen        *as,
+                              CompWindow        *w,
+                              WindowPaintAttrib *wAttrib)
 {
-    ANIM_WINDOW(w);
+   ANIM_WINDOW(w);
 
-    float forwardProgress = defaultAnimProgress(aw);
-    float opacity = aw->storedOpacity / (float)OPAQUE;
-    wAttrib->opacity =
-	fxFocusFadeComputeOpacity(w, forwardProgress, opacity, TRUE);
+   float forwardProgress = defaultAnimProgress(aw);
+   float opacity = aw->storedOpacity / (float)OPAQUE;
+   wAttrib->opacity =
+     fxFocusFadeComputeOpacity(w, forwardProgress, opacity, TRUE);
 }
 
 void
-fxFocusFadeUpdateWindowAttrib2(AnimScreen * as,
-			       CompWindow * w,
-			       WindowPaintAttrib * wAttrib)
+fxFocusFadeUpdateWindowAttrib2(AnimScreen        *as,
+                               CompWindow        *w,
+                               WindowPaintAttrib *wAttrib)
 {
-    ANIM_WINDOW(w);
-    
-    float forwardProgress = defaultAnimProgress(aw);
-    float opacity = aw->storedOpacity / (float)OPAQUE;
-    wAttrib->opacity =
-	fxFocusFadeComputeOpacity(w, 1 - forwardProgress, opacity, FALSE);
+   ANIM_WINDOW(w);
+
+   float forwardProgress = defaultAnimProgress(aw);
+   float opacity = aw->storedOpacity / (float)OPAQUE;
+   wAttrib->opacity =
+     fxFocusFadeComputeOpacity(w, 1 - forwardProgress, opacity, FALSE);
 }
+

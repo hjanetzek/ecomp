@@ -38,119 +38,118 @@
 
 // =====================  Effect: Horizontal Folds  =========================
 
-
 void
 fxHorizontalFoldsInitGrid(AnimScreen *as,
-			  AnimWindow *aw,
-			  int *gridWidth, int *gridHeight)
+                          AnimWindow *aw,
+                          int *gridWidth, int *gridHeight)
 {
-    *gridWidth = 2;
-    if (aw->curWindowEvent == WindowEventShade ||
-	aw->curWindowEvent == WindowEventUnshade)
-	*gridHeight = 3 + 2 *	
-	    animGetI(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_NUM_FOLDS);
-    else
-	*gridHeight = 1 + 2 *
-	    animGetI(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_NUM_FOLDS);
+   *gridWidth = 2;
+   if (aw->curWindowEvent == WindowEventShade ||
+       aw->curWindowEvent == WindowEventUnshade)
+     *gridHeight = 3 + 2 *
+       animGetI(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_NUM_FOLDS);
+   else
+     *gridHeight = 1 + 2 *
+       animGetI(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_NUM_FOLDS);
 }
 
 static void
-fxHorizontalFoldsModelStepObject(CompWindow * w,
-				 Model * model,
-				 Object * object,
-				 float forwardProgress,
-				 float curveMaxAmp, int rowNo)
+fxHorizontalFoldsModelStepObject(CompWindow *w,
+                                 Model *model,
+                                 Object *object,
+                                 float forwardProgress,
+                                 float curveMaxAmp, int rowNo)
 {
-    ANIM_WINDOW(w);
+   ANIM_WINDOW(w);
 
-    float origx = w->attrib.x + (WIN_W(w) * object->gridPosition.x -
-				 w->output.left) * model->scale.x;
-    float origy = w->attrib.y + (WIN_H(w) * object->gridPosition.y -
-				 w->output.top) * model->scale.y;
+   float origx = w->attrib.x + (WIN_W(w) * object->gridPosition.x -
+                                w->output.left) * model->scale.x;
+   float origy = w->attrib.y + (WIN_H(w) * object->gridPosition.y -
+                                w->output.top) * model->scale.y;
 
-    if (aw->curWindowEvent == WindowEventShade ||
-	aw->curWindowEvent == WindowEventUnshade)
-    {
-	// Execute shade mode
+   if (aw->curWindowEvent == WindowEventShade ||
+       aw->curWindowEvent == WindowEventUnshade)
+     {
+        // Execute shade mode
 
-	float relDistToFoldCenter = (rowNo % 2 == 1 ? 0.5 : 0);
+          float relDistToFoldCenter = (rowNo % 2 == 1 ? 0.5 : 0);
 
-	if (object->gridPosition.y == 0)
-	{
-	    object->position.x = origx;
-	    object->position.y = WIN_Y(w);
-	}
-	else if (object->gridPosition.y == 1)
-	{
-	    object->position.x = origx;
-	    object->position.y =
-		(1 - forwardProgress) * origy +
-		forwardProgress *
-		(WIN_Y(w) + model->topHeight + model->bottomHeight);
-	}
-	else
-	{
-	    object->position.x =
-		origx + sin(forwardProgress * M_PI / 2) *
-		(0.5 -
-		 object->gridPosition.x) * 2 * model->scale.x *
-		(curveMaxAmp -
-		 curveMaxAmp * 4 * relDistToFoldCenter *
-		 relDistToFoldCenter);
-	    object->position.y =
-		(1 - forwardProgress) * origy +
-		forwardProgress * (WIN_Y(w) + model->topHeight);
-	}
-    }
-    else
-    {							// Execute normal mode
+          if (object->gridPosition.y == 0)
+            {
+               object->position.x = origx;
+               object->position.y = WIN_Y(w);
+            }
+          else if (object->gridPosition.y == 1)
+            {
+               object->position.x = origx;
+               object->position.y =
+                 (1 - forwardProgress) * origy +
+                 forwardProgress *
+                 (WIN_Y(w) + model->topHeight + model->bottomHeight);
+            }
+          else
+            {
+               object->position.x =
+                 origx + sin(forwardProgress * M_PI / 2) *
+                 (0.5 -
+                  object->gridPosition.x) * 2 * model->scale.x *
+                 (curveMaxAmp -
+                  curveMaxAmp * 4 * relDistToFoldCenter *
+                  relDistToFoldCenter);
+               object->position.y =
+                 (1 - forwardProgress) * origy +
+                 forwardProgress * (WIN_Y(w) + model->topHeight);
+            }
+     }
+   else
+     { // Execute normal mode
+         float relDistToFoldCenter;
 
-	float relDistToFoldCenter;
+         relDistToFoldCenter = (rowNo % 2 == 0 ? 0.5 : 0);
 
-	relDistToFoldCenter = (rowNo % 2 == 0 ? 0.5 : 0);
-
-	object->position.x =
-	    origx + sin(forwardProgress * M_PI / 2) *
-	    (0.5 - object->gridPosition.x) * 2 * model->scale.x *
-	    (curveMaxAmp - curveMaxAmp * 4 *
-	     relDistToFoldCenter * relDistToFoldCenter);
-	object->position.y =
-	    (1 - forwardProgress) * origy +
-	    forwardProgress * (BORDER_Y(w) + BORDER_H(w) / 2.0);
-    }
+         object->position.x =
+           origx + sin(forwardProgress * M_PI / 2) *
+           (0.5 - object->gridPosition.x) * 2 * model->scale.x *
+           (curveMaxAmp - curveMaxAmp * 4 *
+            relDistToFoldCenter * relDistToFoldCenter);
+         object->position.y =
+           (1 - forwardProgress) * origy +
+           forwardProgress * (BORDER_Y(w) + BORDER_H(w) / 2.0);
+     }
 }
 
 Bool
-fxHorizontalFoldsModelStep(CompScreen * s, CompWindow * w, float time)
+fxHorizontalFoldsModelStep(CompScreen *s, CompWindow *w, float time)
 {
-    if (!defaultAnimStep(s, w, time))
-	return FALSE;
+   if (!defaultAnimStep(s, w, time))
+     return FALSE;
 
-    ANIM_SCREEN(s);
-    ANIM_WINDOW(w);
+   ANIM_SCREEN(s);
+   ANIM_WINDOW(w);
 
-    Model *model = aw->model;
+   Model *model = aw->model;
 
-    float forwardProgress;
-    if ((aw->curWindowEvent == WindowEventMinimize ||
-	 aw->curWindowEvent == WindowEventUnminimize) &&
-	animGetB(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_Z2TOM))
-    {
-	float dummy;
-	fxZoomAnimProgress(as, aw, &forwardProgress, &dummy, TRUE);
-    }
-    else
-	forwardProgress = defaultAnimProgress(aw);
+   float forwardProgress;
+   if ((aw->curWindowEvent == WindowEventMinimize ||
+        aw->curWindowEvent == WindowEventUnminimize) &&
+       animGetB(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_Z2TOM))
+     {
+        float dummy;
+        fxZoomAnimProgress(as, aw, &forwardProgress, &dummy, TRUE);
+     }
+   else
+     forwardProgress = defaultAnimProgress(aw);
 
-    int i;
-    for (i = 0; i < model->numObjects; i++)
-	fxHorizontalFoldsModelStepObject(w, 
-					 model,
-					 &model->objects[i],
-					 forwardProgress,
-					 animGetF(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_AMP) *
-					 WIN_W(w),
-					 i / model->gridWidth);
+   int i;
+   for (i = 0; i < model->numObjects; i++)
+     fxHorizontalFoldsModelStepObject(w,
+                                      model,
+                                      &model->objects[i],
+                                      forwardProgress,
+                                      animGetF(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_AMP) *
+                                      WIN_W(w),
+                                      i / model->gridWidth);
 
-    return TRUE;
+   return TRUE;
 }
+

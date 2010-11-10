@@ -39,146 +39,148 @@
 // =====================  Effect: Curved Fold  =========================
 
 static void
-fxCurvedFoldModelStepObject(CompWindow * w,
-			    Model * model,
-			    Object * object,
-			    float forwardProgress, float curveMaxAmp)
+fxCurvedFoldModelStepObject(CompWindow *w,
+                            Model *model,
+                            Object *object,
+                            float forwardProgress, float curveMaxAmp)
 {
-    ANIM_WINDOW(w);
+   ANIM_WINDOW(w);
 
-    float origx = w->attrib.x + (WIN_W(w) * object->gridPosition.x -
-				 w->output.left) * model->scale.x;
-    float origy = w->attrib.y + (WIN_H(w) * object->gridPosition.y -
-				 w->output.top) * model->scale.y;
+   float origx = w->attrib.x + (WIN_W(w) * object->gridPosition.x -
+                                w->output.left) * model->scale.x;
+   float origy = w->attrib.y + (WIN_H(w) * object->gridPosition.y -
+                                w->output.top) * model->scale.y;
 
-    if (aw->curWindowEvent == WindowEventShade ||
-	aw->curWindowEvent == WindowEventUnshade)
-    {
-	// Execute shade mode
+   if (aw->curWindowEvent == WindowEventShade ||
+       aw->curWindowEvent == WindowEventUnshade)
+     {
+        // Execute shade mode
 
-	// find position in window contents
-	// (window contents correspond to 0.0-1.0 range)
-	float relPosInWinContents =
-	    (object->gridPosition.y * WIN_H(w) -
-	     model->topHeight) / w->height;
-	float relDistToCenter = fabs(relPosInWinContents - 0.5);
+          // find position in window contents
+          // (window contents correspond to 0.0-1.0 range)
+              float relPosInWinContents =
+                (object->gridPosition.y * WIN_H(w) -
+                 model->topHeight) / w->height;
+              float relDistToCenter = fabs(relPosInWinContents - 0.5);
 
-	if (object->gridPosition.y == 0)
-	{
-	    object->position.x = origx;
-	    object->position.y = WIN_Y(w);
-	}
-	else if (object->gridPosition.y == 1)
-	{
-	    object->position.x = origx;
-	    object->position.y = 
-		(1 - forwardProgress) * origy +
-		forwardProgress *
-		(WIN_Y(w) + model->topHeight + model->bottomHeight);
-	}
-	else
-	{
-	    object->position.x =
-		origx + sin(forwardProgress * M_PI / 2) *
-		(0.5 - object->gridPosition.x) * 2 * model->scale.x *
-		curveMaxAmp *
-		(1 - pow (pow(2 * relDistToCenter, 1.3), 2));
-	    object->position.y =
-		(1 - forwardProgress) * origy +
-		forwardProgress * (WIN_Y(w) + model->topHeight);
-	}
-    }
-    else
-    {
-	// Execute normal mode
+              if (object->gridPosition.y == 0)
+                {
+                   object->position.x = origx;
+                   object->position.y = WIN_Y(w);
+                }
+              else if (object->gridPosition.y == 1)
+                {
+                   object->position.x = origx;
+                   object->position.y =
+                     (1 - forwardProgress) * origy +
+                     forwardProgress *
+                     (WIN_Y(w) + model->topHeight + model->bottomHeight);
+                }
+              else
+                {
+                   object->position.x =
+                     origx + sin(forwardProgress * M_PI / 2) *
+                     (0.5 - object->gridPosition.x) * 2 * model->scale.x *
+                     curveMaxAmp *
+                     (1 - pow (pow(2 * relDistToCenter, 1.3), 2));
+                   object->position.y =
+                     (1 - forwardProgress) * origy +
+                     forwardProgress * (WIN_Y(w) + model->topHeight);
+                }
+     }
+   else
+     {
+        // Execute normal mode
 
-	// find position within window borders
-	// (border contents correspond to 0.0-1.0 range)
-	float relPosInWinBorders =
-	    (object->gridPosition.y * WIN_H(w) -
-	     (w->output.top - w->input.top)) / BORDER_H(w);
-	float relDistToCenter = fabs(relPosInWinBorders - 0.5);
+          // find position within window borders
+          // (border contents correspond to 0.0-1.0 range)
+              float relPosInWinBorders =
+                (object->gridPosition.y * WIN_H(w) -
+                 (w->output.top - w->input.top)) / BORDER_H(w);
+              float relDistToCenter = fabs(relPosInWinBorders - 0.5);
 
-	// prevent top & bottom shadows from extending too much
-	if (relDistToCenter > 0.5)
-	    relDistToCenter = 0.5;
+     // prevent top & bottom shadows from extending too much
+              if (relDistToCenter > 0.5)
+                relDistToCenter = 0.5;
 
-	object->position.x =
-	    origx + sin(forwardProgress * M_PI / 2) *
-	    (0.5 - object->gridPosition.x) * 2 * model->scale.x *
-	    curveMaxAmp *
-	    (1 - pow (pow(2 * relDistToCenter, 1.3), 2));
-	object->position.y =
-	    (1 - forwardProgress) * origy +
-	    forwardProgress * (BORDER_Y(w) + BORDER_H(w) / 2.0);
-    }
+              object->position.x =
+                origx + sin(forwardProgress * M_PI / 2) *
+                (0.5 - object->gridPosition.x) * 2 * model->scale.x *
+                curveMaxAmp *
+                (1 - pow (pow(2 * relDistToCenter, 1.3), 2));
+              object->position.y =
+                (1 - forwardProgress) * origy +
+                forwardProgress * (BORDER_Y(w) + BORDER_H(w) / 2.0);
+     }
 }
 
-Bool fxCurvedFoldModelStep(CompScreen * s, CompWindow * w, float time)
+Bool
+fxCurvedFoldModelStep(CompScreen *s, CompWindow *w, float time)
 {
-    if (!defaultAnimStep(s, w, time))
-	return FALSE;
+   if (!defaultAnimStep(s, w, time))
+     return FALSE;
 
-    ANIM_SCREEN(s);
-    ANIM_WINDOW(w);
+   ANIM_SCREEN(s);
+   ANIM_WINDOW(w);
 
-    Model *model = aw->model;
+   Model *model = aw->model;
 
-    float forwardProgress;
-    if ((aw->curWindowEvent == WindowEventMinimize ||
-	 aw->curWindowEvent == WindowEventUnminimize) &&
-	animGetB(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_Z2TOM))
-    {
-	float dummy;
-	fxZoomAnimProgress(as, aw, &forwardProgress, &dummy, TRUE);
-    }
-    else
-	forwardProgress = defaultAnimProgress(aw);
+   float forwardProgress;
+   if ((aw->curWindowEvent == WindowEventMinimize ||
+        aw->curWindowEvent == WindowEventUnminimize) &&
+       animGetB(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_Z2TOM))
+     {
+        float dummy;
+        fxZoomAnimProgress(as, aw, &forwardProgress, &dummy, TRUE);
+     }
+   else
+     forwardProgress = defaultAnimProgress(aw);
 
-    float curveMaxAmp =
-	animGetF(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_AMP) * WIN_W(w) *
-	pow(WIN_H(w) / (s->height * 1.2f), 0.7);
-    int i;
-    for (i = 0; i < model->numObjects; i++)
-	fxCurvedFoldModelStepObject
-	    (w, 
-	     model,
-	     &model->objects[i],
-	     forwardProgress,
-	     curveMaxAmp);
+   float curveMaxAmp =
+     animGetF(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_AMP) * WIN_W(w) *
+     pow(WIN_H(w) / (s->height * 1.2f), 0.7);
+   int i;
+   for (i = 0; i < model->numObjects; i++)
+     fxCurvedFoldModelStepObject
+       (w,
+       model,
+       &model->objects[i],
+       forwardProgress,
+       curveMaxAmp);
 
-    return TRUE;
+   return TRUE;
 }
 
 void
-fxFoldUpdateWindowAttrib(AnimScreen * as,
-			 CompWindow * w,
-			 WindowPaintAttrib * wAttrib)
+fxFoldUpdateWindowAttrib(AnimScreen        *as,
+                         CompWindow        *w,
+                         WindowPaintAttrib *wAttrib)
 {
-    ANIM_WINDOW(w);
+   ANIM_WINDOW(w);
 
-    if (aw->curWindowEvent == WindowEventOpen ||
-	aw->curWindowEvent == WindowEventClose ||
-	((aw->curWindowEvent == WindowEventMinimize ||
-	  aw->curWindowEvent == WindowEventUnminimize) &&
-	 ((aw->curAnimEffect == AnimEffectCurvedFold &&
-	   !animGetB(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_Z2TOM)) ||
-	  (aw->curAnimEffect == AnimEffectHorizontalFolds &&
-	   !animGetB(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_Z2TOM)))))
-    {
-	float forwardProgress = defaultAnimProgress(aw);
+   if (aw->curWindowEvent == WindowEventOpen ||
+       aw->curWindowEvent == WindowEventClose ||
+       ((aw->curWindowEvent == WindowEventMinimize ||
+         aw->curWindowEvent == WindowEventUnminimize) &&
+        ((aw->curAnimEffect == AnimEffectCurvedFold &&
+          !animGetB(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_Z2TOM)) ||
+          (aw->curAnimEffect == AnimEffectHorizontalFolds &&
+           !animGetB(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_Z2TOM)))))
+     {
+        float forwardProgress = defaultAnimProgress(aw);
 
-	wAttrib->opacity =
-	    (GLushort) (aw->storedOpacity * (1 - forwardProgress));
-    }
-    else if ((aw->curWindowEvent == WindowEventMinimize ||
-	      aw->curWindowEvent == WindowEventUnminimize) &&
-	     ((aw->curAnimEffect == AnimEffectCurvedFold &&
-	       animGetB(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_Z2TOM)) ||
-	      (aw->curAnimEffect == AnimEffectHorizontalFolds &&
-	       animGetB(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_Z2TOM))))
-    {
-	fxZoomUpdateWindowAttrib(as, w, wAttrib);
-    }
-    // if shade/unshade don't do anything
+        wAttrib->opacity =
+          (GLushort)(aw->storedOpacity * (1 - forwardProgress));
+     }
+   else if ((aw->curWindowEvent == WindowEventMinimize ||
+             aw->curWindowEvent == WindowEventUnminimize) &&
+            ((aw->curAnimEffect == AnimEffectCurvedFold &&
+              animGetB(as, aw, ANIM_SCREEN_OPTION_CURVED_FOLD_Z2TOM)) ||
+             (aw->curAnimEffect == AnimEffectHorizontalFolds &&
+               animGetB(as, aw, ANIM_SCREEN_OPTION_HORIZONTAL_FOLDS_Z2TOM))))
+     {
+        fxZoomUpdateWindowAttrib(as, w, wAttrib);
+     }
+   // if shade/unshade don't do anything
 }
+

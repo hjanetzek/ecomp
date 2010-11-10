@@ -26,568 +26,635 @@ static CompPluginVTable *thumbnailPluginVTable = NULL;
 CompPluginVTable thumbnailOptionsVTable;
 
 #define GET_THUMBNAIL_OPTIONS_DISPLAY(d) \
-        ((ThumbnailOptionsDisplay *) (d)->privates[displayPrivateIndex].ptr)
+  ((ThumbnailOptionsDisplay *)(d)->privates[displayPrivateIndex].ptr)
 
 #define THUMBNAIL_OPTIONS_DISPLAY(d) \
-        ThumbnailOptionsDisplay *od = GET_THUMBNAIL_OPTIONS_DISPLAY (d)
+  ThumbnailOptionsDisplay * od = GET_THUMBNAIL_OPTIONS_DISPLAY (d)
 
 #define GET_THUMBNAIL_OPTIONS_SCREEN(s, od) \
-        ((ThumbnailOptionsScreen *) (s)->privates[(od)->screenPrivateIndex].ptr)
+  ((ThumbnailOptionsScreen *)(s)->privates[(od)->screenPrivateIndex].ptr)
 
 #define THUMBNAIL_OPTIONS_SCREEN(s) \
-        ThumbnailOptionsScreen *os = GET_THUMBNAIL_OPTIONS_SCREEN (s, GET_THUMBNAIL_OPTIONS_DISPLAY (s->display))
+  ThumbnailOptionsScreen * os = GET_THUMBNAIL_OPTIONS_SCREEN (s, GET_THUMBNAIL_OPTIONS_DISPLAY (s->display))
 
 typedef struct _ThumbnailOptionsDisplay
 {
-    int screenPrivateIndex;
-
+   int screenPrivateIndex;
 } ThumbnailOptionsDisplay;
 
 typedef struct _ThumbnailOptionsScreen
 {
-    CompOption opt[ThumbnailScreenOptionNum];
-    thumbnailScreenOptionChangeNotifyProc notify[ThumbnailScreenOptionNum];
+   CompOption                            opt[ThumbnailScreenOptionNum];
+   thumbnailScreenOptionChangeNotifyProc notify[ThumbnailScreenOptionNum];
 } ThumbnailOptionsScreen;
 
-int thumbnailGetThumbSize (CompScreen *s)
+int
+thumbnailGetThumbSize(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionThumbSize].value.i;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionThumbSize].value.i;
 }
 
-CompOption * thumbnailGetThumbSizeOption (CompScreen *s)
+CompOption *
+thumbnailGetThumbSizeOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionThumbSize];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionThumbSize];
 }
 
-void thumbnailSetThumbSizeNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetThumbSizeNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionThumbSize] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionThumbSize] = notify;
 }
 
-int thumbnailGetShowDelay (CompScreen *s)
+int
+thumbnailGetShowDelay(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionShowDelay].value.i;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionShowDelay].value.i;
 }
 
-CompOption * thumbnailGetShowDelayOption (CompScreen *s)
+CompOption *
+thumbnailGetShowDelayOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionShowDelay];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionShowDelay];
 }
 
-void thumbnailSetShowDelayNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetShowDelayNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionShowDelay] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionShowDelay] = notify;
 }
 
-int thumbnailGetBorder (CompScreen *s)
+int
+thumbnailGetBorder(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionBorder].value.i;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionBorder].value.i;
 }
 
-CompOption * thumbnailGetBorderOption (CompScreen *s)
+CompOption *
+thumbnailGetBorderOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionBorder];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionBorder];
 }
 
-void thumbnailSetBorderNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetBorderNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionBorder] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionBorder] = notify;
 }
 
-unsigned short * thumbnailGetThumbColor (CompScreen *s)
+unsigned short *
+thumbnailGetThumbColor(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionThumbColor].value.c;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionThumbColor].value.c;
 }
 
-unsigned short thumbnailGetThumbColorRed (CompScreen *s)
+unsigned short
+thumbnailGetThumbColorRed(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionThumbColor].value.c[0];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionThumbColor].value.c[0];
 }
 
-unsigned short thumbnailGetThumbColorGreen (CompScreen *s)
+unsigned short
+thumbnailGetThumbColorGreen(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionThumbColor].value.c[1];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionThumbColor].value.c[1];
 }
 
-unsigned short thumbnailGetThumbColorBlue (CompScreen *s)
+unsigned short
+thumbnailGetThumbColorBlue(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionThumbColor].value.c[2];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionThumbColor].value.c[2];
 }
 
-unsigned short thumbnailGetThumbColorAlpha (CompScreen *s)
+unsigned short
+thumbnailGetThumbColorAlpha(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionThumbColor].value.c[3];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionThumbColor].value.c[3];
 }
 
-CompOption * thumbnailGetThumbColorOption (CompScreen *s)
+CompOption *
+thumbnailGetThumbColorOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionThumbColor];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionThumbColor];
 }
 
-void thumbnailSetThumbColorNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetThumbColorNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionThumbColor] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionThumbColor] = notify;
 }
 
-float thumbnailGetFadeSpeed (CompScreen *s)
+float
+thumbnailGetFadeSpeed(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFadeSpeed].value.f;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFadeSpeed].value.f;
 }
 
-CompOption * thumbnailGetFadeSpeedOption (CompScreen *s)
+CompOption *
+thumbnailGetFadeSpeedOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionFadeSpeed];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionFadeSpeed];
 }
 
-void thumbnailSetFadeSpeedNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetFadeSpeedNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionFadeSpeed] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionFadeSpeed] = notify;
 }
 
-Bool thumbnailGetCurrentViewport (CompScreen *s)
+Bool
+thumbnailGetCurrentViewport(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionCurrentViewport].value.b;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionCurrentViewport].value.b;
 }
 
-CompOption * thumbnailGetCurrentViewportOption (CompScreen *s)
+CompOption *
+thumbnailGetCurrentViewportOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionCurrentViewport];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionCurrentViewport];
 }
 
-void thumbnailSetCurrentViewportNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetCurrentViewportNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionCurrentViewport] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionCurrentViewport] = notify;
 }
 
-Bool thumbnailGetAlwaysOnTop (CompScreen *s)
+Bool
+thumbnailGetAlwaysOnTop(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionAlwaysOnTop].value.b;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionAlwaysOnTop].value.b;
 }
 
-CompOption * thumbnailGetAlwaysOnTopOption (CompScreen *s)
+CompOption *
+thumbnailGetAlwaysOnTopOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionAlwaysOnTop];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionAlwaysOnTop];
 }
 
-void thumbnailSetAlwaysOnTopNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetAlwaysOnTopNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionAlwaysOnTop] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionAlwaysOnTop] = notify;
 }
 
-Bool thumbnailGetWindowLike (CompScreen *s)
+Bool
+thumbnailGetWindowLike(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionWindowLike].value.b;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionWindowLike].value.b;
 }
 
-CompOption * thumbnailGetWindowLikeOption (CompScreen *s)
+CompOption *
+thumbnailGetWindowLikeOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionWindowLike];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionWindowLike];
 }
 
-void thumbnailSetWindowLikeNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetWindowLikeNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionWindowLike] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionWindowLike] = notify;
 }
 
-Bool thumbnailGetMipmap (CompScreen *s)
+Bool
+thumbnailGetMipmap(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionMipmap].value.b;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionMipmap].value.b;
 }
 
-CompOption * thumbnailGetMipmapOption (CompScreen *s)
+CompOption *
+thumbnailGetMipmapOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionMipmap];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionMipmap];
 }
 
-void thumbnailSetMipmapNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetMipmapNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionMipmap] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionMipmap] = notify;
 }
 
-Bool thumbnailGetTitleEnabled (CompScreen *s)
+Bool
+thumbnailGetTitleEnabled(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionTitleEnabled].value.b;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionTitleEnabled].value.b;
 }
 
-CompOption * thumbnailGetTitleEnabledOption (CompScreen *s)
+CompOption *
+thumbnailGetTitleEnabledOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionTitleEnabled];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionTitleEnabled];
 }
 
-void thumbnailSetTitleEnabledNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetTitleEnabledNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionTitleEnabled] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionTitleEnabled] = notify;
 }
 
-Bool thumbnailGetFontBold (CompScreen *s)
+Bool
+thumbnailGetFontBold(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFontBold].value.b;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFontBold].value.b;
 }
 
-CompOption * thumbnailGetFontBoldOption (CompScreen *s)
+CompOption *
+thumbnailGetFontBoldOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionFontBold];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionFontBold];
 }
 
-void thumbnailSetFontBoldNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetFontBoldNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionFontBold] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionFontBold] = notify;
 }
 
-int thumbnailGetFontSize (CompScreen *s)
+int
+thumbnailGetFontSize(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFontSize].value.i;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFontSize].value.i;
 }
 
-CompOption * thumbnailGetFontSizeOption (CompScreen *s)
+CompOption *
+thumbnailGetFontSizeOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionFontSize];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionFontSize];
 }
 
-void thumbnailSetFontSizeNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetFontSizeNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionFontSize] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionFontSize] = notify;
 }
 
-unsigned short * thumbnailGetFontColor (CompScreen *s)
+unsigned short *
+thumbnailGetFontColor(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFontColor].value.c;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFontColor].value.c;
 }
 
-unsigned short thumbnailGetFontColorRed (CompScreen *s)
+unsigned short
+thumbnailGetFontColorRed(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFontColor].value.c[0];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFontColor].value.c[0];
 }
 
-unsigned short thumbnailGetFontColorGreen (CompScreen *s)
+unsigned short
+thumbnailGetFontColorGreen(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFontColor].value.c[1];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFontColor].value.c[1];
 }
 
-unsigned short thumbnailGetFontColorBlue (CompScreen *s)
+unsigned short
+thumbnailGetFontColorBlue(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFontColor].value.c[2];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFontColor].value.c[2];
 }
 
-unsigned short thumbnailGetFontColorAlpha (CompScreen *s)
+unsigned short
+thumbnailGetFontColorAlpha(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return os->opt[ThumbnailScreenOptionFontColor].value.c[3];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return os->opt[ThumbnailScreenOptionFontColor].value.c[3];
 }
 
-CompOption * thumbnailGetFontColorOption (CompScreen *s)
+CompOption *
+thumbnailGetFontColorOption(CompScreen *s)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[ThumbnailScreenOptionFontColor];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[ThumbnailScreenOptionFontColor];
 }
 
-void thumbnailSetFontColorNotify (CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
+void
+thumbnailSetFontColorNotify(CompScreen *s, thumbnailScreenOptionChangeNotifyProc notify)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    os->notify[ThumbnailScreenOptionFontColor] = notify;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   os->notify[ThumbnailScreenOptionFontColor] = notify;
 }
 
-CompOption * thumbnailGetScreenOption (CompScreen *s, ThumbnailScreenOptions num)
+CompOption *
+thumbnailGetScreenOption(CompScreen *s, ThumbnailScreenOptions num)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    return &os->opt[num];
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   return &os->opt[num];
 }
 
 static const CompMetadataOptionInfo thumbnailOptionsScreenOptionInfo[] = {
-    { "thumb_size", "int", "<min>50</min><max>1500</max>", 0, 0 },
-    { "show_delay", "int", "<min>100</min><max>10000</max>", 0, 0 },
-    { "border", "int", "<min>1</min><max>32</max>", 0, 0 },
-    { "thumb_color", "color", 0, 0, 0 },
-    { "fade_speed", "float", "<min>0.0</min><max>5.0</max>", 0, 0 },
-    { "current_viewport", "bool", 0, 0, 0 },
-    { "always_on_top", "bool", 0, 0, 0 },
-    { "window_like", "bool", 0, 0, 0 },
-    { "mipmap", "bool", 0, 0, 0 },
-    { "title_enabled", "bool", 0, 0, 0 },
-    { "font_bold", "bool", 0, 0, 0 },
-    { "font_size", "int", "<min>6</min><max>36</max>", 0, 0 },
-    { "font_color", "color", 0, 0, 0 },
+   { "thumb_size", "int", "<min>50</min><max>1500</max>", 0, 0 },
+   { "show_delay", "int", "<min>100</min><max>10000</max>", 0, 0 },
+   { "border", "int", "<min>1</min><max>32</max>", 0, 0 },
+   { "thumb_color", "color", 0, 0, 0 },
+   { "fade_speed", "float", "<min>0.0</min><max>5.0</max>", 0, 0 },
+   { "current_viewport", "bool", 0, 0, 0 },
+   { "always_on_top", "bool", 0, 0, 0 },
+   { "window_like", "bool", 0, 0, 0 },
+   { "mipmap", "bool", 0, 0, 0 },
+   { "title_enabled", "bool", 0, 0, 0 },
+   { "font_bold", "bool", 0, 0, 0 },
+   { "font_size", "int", "<min>6</min><max>36</max>", 0, 0 },
+   { "font_color", "color", 0, 0, 0 },
 };
 
-static Bool thumbnailOptionsSetScreenOption (CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
+static Bool
+thumbnailOptionsSetScreenOption(CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    CompOption *o;
-    int        index;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   CompOption *o;
+   int index;
 
-    o = compFindOption (os->opt, ThumbnailScreenOptionNum, name, &index);
+   o = compFindOption (os->opt, ThumbnailScreenOptionNum, name, &index);
 
-    if (!o)
-        return FALSE;
+   if (!o)
+     return FALSE;
 
-    switch (index)
-    {
-     case ThumbnailScreenOptionThumbSize:
+   switch (index)
+     {
+      case ThumbnailScreenOptionThumbSize:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionThumbSize])
-                (*os->notify[ThumbnailScreenOptionThumbSize]) (s, o, ThumbnailScreenOptionThumbSize);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionThumbSize])
+               (*os->notify[ThumbnailScreenOptionThumbSize])(s, o, ThumbnailScreenOptionThumbSize);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionShowDelay:
+
+      case ThumbnailScreenOptionShowDelay:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionShowDelay])
-                (*os->notify[ThumbnailScreenOptionShowDelay]) (s, o, ThumbnailScreenOptionShowDelay);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionShowDelay])
+               (*os->notify[ThumbnailScreenOptionShowDelay])(s, o, ThumbnailScreenOptionShowDelay);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionBorder:
+
+      case ThumbnailScreenOptionBorder:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionBorder])
-                (*os->notify[ThumbnailScreenOptionBorder]) (s, o, ThumbnailScreenOptionBorder);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionBorder])
+               (*os->notify[ThumbnailScreenOptionBorder])(s, o, ThumbnailScreenOptionBorder);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionThumbColor:
+
+      case ThumbnailScreenOptionThumbColor:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionThumbColor])
-                (*os->notify[ThumbnailScreenOptionThumbColor]) (s, o, ThumbnailScreenOptionThumbColor);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionThumbColor])
+               (*os->notify[ThumbnailScreenOptionThumbColor])(s, o, ThumbnailScreenOptionThumbColor);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionFadeSpeed:
+
+      case ThumbnailScreenOptionFadeSpeed:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionFadeSpeed])
-                (*os->notify[ThumbnailScreenOptionFadeSpeed]) (s, o, ThumbnailScreenOptionFadeSpeed);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionFadeSpeed])
+               (*os->notify[ThumbnailScreenOptionFadeSpeed])(s, o, ThumbnailScreenOptionFadeSpeed);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionCurrentViewport:
+
+      case ThumbnailScreenOptionCurrentViewport:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionCurrentViewport])
-                (*os->notify[ThumbnailScreenOptionCurrentViewport]) (s, o, ThumbnailScreenOptionCurrentViewport);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionCurrentViewport])
+               (*os->notify[ThumbnailScreenOptionCurrentViewport])(s, o, ThumbnailScreenOptionCurrentViewport);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionAlwaysOnTop:
+
+      case ThumbnailScreenOptionAlwaysOnTop:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionAlwaysOnTop])
-                (*os->notify[ThumbnailScreenOptionAlwaysOnTop]) (s, o, ThumbnailScreenOptionAlwaysOnTop);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionAlwaysOnTop])
+               (*os->notify[ThumbnailScreenOptionAlwaysOnTop])(s, o, ThumbnailScreenOptionAlwaysOnTop);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionWindowLike:
+
+      case ThumbnailScreenOptionWindowLike:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionWindowLike])
-                (*os->notify[ThumbnailScreenOptionWindowLike]) (s, o, ThumbnailScreenOptionWindowLike);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionWindowLike])
+               (*os->notify[ThumbnailScreenOptionWindowLike])(s, o, ThumbnailScreenOptionWindowLike);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionMipmap:
+
+      case ThumbnailScreenOptionMipmap:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionMipmap])
-                (*os->notify[ThumbnailScreenOptionMipmap]) (s, o, ThumbnailScreenOptionMipmap);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionMipmap])
+               (*os->notify[ThumbnailScreenOptionMipmap])(s, o, ThumbnailScreenOptionMipmap);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionTitleEnabled:
+
+      case ThumbnailScreenOptionTitleEnabled:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionTitleEnabled])
-                (*os->notify[ThumbnailScreenOptionTitleEnabled]) (s, o, ThumbnailScreenOptionTitleEnabled);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionTitleEnabled])
+               (*os->notify[ThumbnailScreenOptionTitleEnabled])(s, o, ThumbnailScreenOptionTitleEnabled);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionFontBold:
+
+      case ThumbnailScreenOptionFontBold:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionFontBold])
-                (*os->notify[ThumbnailScreenOptionFontBold]) (s, o, ThumbnailScreenOptionFontBold);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionFontBold])
+               (*os->notify[ThumbnailScreenOptionFontBold])(s, o, ThumbnailScreenOptionFontBold);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionFontSize:
+
+      case ThumbnailScreenOptionFontSize:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionFontSize])
-                (*os->notify[ThumbnailScreenOptionFontSize]) (s, o, ThumbnailScreenOptionFontSize);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionFontSize])
+               (*os->notify[ThumbnailScreenOptionFontSize])(s, o, ThumbnailScreenOptionFontSize);
+             return TRUE;
+          }
         break;
-     case ThumbnailScreenOptionFontColor:
+
+      case ThumbnailScreenOptionFontColor:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[ThumbnailScreenOptionFontColor])
-                (*os->notify[ThumbnailScreenOptionFontColor]) (s, o, ThumbnailScreenOptionFontColor);
-            return TRUE;
-        }
+          {
+             if (os->notify[ThumbnailScreenOptionFontColor])
+               (*os->notify[ThumbnailScreenOptionFontColor])(s, o, ThumbnailScreenOptionFontColor);
+             return TRUE;
+          }
         break;
-    default:
+
+      default:
         break;
-    }
-    return FALSE;
+     }
+   return FALSE;
 }
 
-static CompOption * thumbnailOptionsGetScreenOptions (CompPlugin *plugin, CompScreen *s, int *count)
+static CompOption *
+thumbnailOptionsGetScreenOptions(CompPlugin *plugin, CompScreen *s, int *count)
 {
-    THUMBNAIL_OPTIONS_SCREEN(s);
-    *count = ThumbnailScreenOptionNum;
-    return os->opt;
+   THUMBNAIL_OPTIONS_SCREEN(s);
+   *count = ThumbnailScreenOptionNum;
+   return os->opt;
 }
 
-static Bool thumbnailOptionsInitScreen (CompPlugin *p, CompScreen *s)
+static Bool
+thumbnailOptionsInitScreen(CompPlugin *p, CompScreen *s)
 {
-    ThumbnailOptionsScreen *os;
-    
-    THUMBNAIL_OPTIONS_DISPLAY (s->display);
+   ThumbnailOptionsScreen *os;
 
-    os = calloc (1, sizeof(ThumbnailOptionsScreen));
-    if (!os)
-        return FALSE;
+   THUMBNAIL_OPTIONS_DISPLAY (s->display);
 
-    s->privates[od->screenPrivateIndex].ptr = os;
+   os = calloc (1, sizeof(ThumbnailOptionsScreen));
+   if (!os)
+     return FALSE;
 
-    if (!compInitScreenOptionsFromMetadata (s, &thumbnailOptionsMetadata, thumbnailOptionsScreenOptionInfo, os->opt, ThumbnailScreenOptionNum))
-    {
+   s->privates[od->screenPrivateIndex].ptr = os;
+
+   if (!compInitScreenOptionsFromMetadata (s, &thumbnailOptionsMetadata, thumbnailOptionsScreenOptionInfo, os->opt, ThumbnailScreenOptionNum))
+     {
         free (os);
         return FALSE;
-    }
-    if (thumbnailPluginVTable && thumbnailPluginVTable->initScreen)
-        return thumbnailPluginVTable->initScreen (p, s);
-    return TRUE;
+     }
+   if (thumbnailPluginVTable && thumbnailPluginVTable->initScreen)
+     return thumbnailPluginVTable->initScreen (p, s);
+   return TRUE;
 }
 
-static void thumbnailOptionsFiniScreen (CompPlugin *p, CompScreen *s)
+static void
+thumbnailOptionsFiniScreen(CompPlugin *p, CompScreen *s)
 {
-    if (thumbnailPluginVTable && thumbnailPluginVTable->finiScreen)
-        return thumbnailPluginVTable->finiScreen (p, s);
+   if (thumbnailPluginVTable && thumbnailPluginVTable->finiScreen)
+     return thumbnailPluginVTable->finiScreen (p, s);
 
-    THUMBNAIL_OPTIONS_SCREEN (s);
+   THUMBNAIL_OPTIONS_SCREEN (s);
 
+   compFiniScreenOptions (s, os->opt, ThumbnailScreenOptionNum);
 
-    compFiniScreenOptions (s, os->opt, ThumbnailScreenOptionNum);
-
-    free (os);
+   free (os);
 }
 
-static Bool thumbnailOptionsInitDisplay (CompPlugin *p, CompDisplay *d)
+static Bool
+thumbnailOptionsInitDisplay(CompPlugin *p, CompDisplay *d)
 {
-    ThumbnailOptionsDisplay *od;
-   
-    
-    od = calloc (1, sizeof(ThumbnailOptionsDisplay));
-    if (!od)
-        return FALSE;
+   ThumbnailOptionsDisplay *od;
 
-    od->screenPrivateIndex = allocateScreenPrivateIndex(d);
-    if (od->screenPrivateIndex < 0)
-    {
+   od = calloc (1, sizeof(ThumbnailOptionsDisplay));
+   if (!od)
+     return FALSE;
+
+   od->screenPrivateIndex = allocateScreenPrivateIndex(d);
+   if (od->screenPrivateIndex < 0)
+     {
         free(od);
         return FALSE;
-    }
+     }
 
-    d->privates[displayPrivateIndex].ptr = od;
+   d->privates[displayPrivateIndex].ptr = od;
 
-        if (thumbnailPluginVTable && thumbnailPluginVTable->initDisplay)
-        return thumbnailPluginVTable->initDisplay (p, d);
-    return TRUE;
+   if (thumbnailPluginVTable && thumbnailPluginVTable->initDisplay)
+     return thumbnailPluginVTable->initDisplay (p, d);
+   return TRUE;
 }
 
-static void thumbnailOptionsFiniDisplay (CompPlugin *p, CompDisplay *d)
+static void
+thumbnailOptionsFiniDisplay(CompPlugin *p, CompDisplay *d)
 {
-    if (thumbnailPluginVTable && thumbnailPluginVTable->finiDisplay)
-        return thumbnailPluginVTable->finiDisplay (p, d);
+   if (thumbnailPluginVTable && thumbnailPluginVTable->finiDisplay)
+     return thumbnailPluginVTable->finiDisplay (p, d);
 
-    THUMBNAIL_OPTIONS_DISPLAY (d);
+   THUMBNAIL_OPTIONS_DISPLAY (d);
 
-    freeScreenPrivateIndex(d, od->screenPrivateIndex);
-    free (od);
+   freeScreenPrivateIndex(d, od->screenPrivateIndex);
+   free (od);
 }
 
-static Bool thumbnailOptionsInit (CompPlugin *p)
+static Bool
+thumbnailOptionsInit(CompPlugin *p)
 {
-    displayPrivateIndex = allocateDisplayPrivateIndex();
-    if (displayPrivateIndex < 0)
-        return FALSE;
+   displayPrivateIndex = allocateDisplayPrivateIndex();
+   if (displayPrivateIndex < 0)
+     return FALSE;
 
-    if (!compInitPluginMetadataFromInfo (&thumbnailOptionsMetadata, "thumbnail",0, 0, thumbnailOptionsScreenOptionInfo, ThumbnailScreenOptionNum))
-        return FALSE;
+   if (!compInitPluginMetadataFromInfo (&thumbnailOptionsMetadata, "thumbnail", 0, 0, thumbnailOptionsScreenOptionInfo, ThumbnailScreenOptionNum))
+     return FALSE;
 
-    compAddMetadataFromFile (&thumbnailOptionsMetadata, "thumbnail");
-    if (thumbnailPluginVTable && thumbnailPluginVTable->init)
-        return thumbnailPluginVTable->init (p);
-    return TRUE;
+   compAddMetadataFromFile (&thumbnailOptionsMetadata, "thumbnail");
+   if (thumbnailPluginVTable && thumbnailPluginVTable->init)
+     return thumbnailPluginVTable->init (p);
+   return TRUE;
 }
 
-static void thumbnailOptionsFini (CompPlugin *p)
+static void
+thumbnailOptionsFini(CompPlugin *p)
 {
-    if (thumbnailPluginVTable && thumbnailPluginVTable->fini)
-        return thumbnailPluginVTable->fini (p);
+   if (thumbnailPluginVTable && thumbnailPluginVTable->fini)
+     return thumbnailPluginVTable->fini (p);
 
-    if (displayPrivateIndex >= 0)
-        freeDisplayPrivateIndex(displayPrivateIndex);
+   if (displayPrivateIndex >= 0)
+     freeDisplayPrivateIndex(displayPrivateIndex);
 
-    compFiniMetadata (&thumbnailOptionsMetadata);
+   compFiniMetadata (&thumbnailOptionsMetadata);
 }
 
 static CompMetadata *
-thumbnailOptionsGetMetadata (CompPlugin *plugin)
+thumbnailOptionsGetMetadata(CompPlugin *plugin)
 {
-    return &thumbnailOptionsMetadata;
+   return &thumbnailOptionsMetadata;
 }
 
-CompPluginVTable *getCompPluginInfo (void)
+CompPluginVTable *
+getCompPluginInfo(void)
 {
-    if (!thumbnailPluginVTable)
-    {
+   if (!thumbnailPluginVTable)
+     {
         thumbnailPluginVTable = thumbnailOptionsGetCompPluginInfo ();
         memcpy(&thumbnailOptionsVTable, thumbnailPluginVTable, sizeof(CompPluginVTable));
         thumbnailOptionsVTable.getMetadata = thumbnailOptionsGetMetadata;
@@ -598,9 +665,8 @@ CompPluginVTable *getCompPluginInfo (void)
         thumbnailOptionsVTable.initScreen = thumbnailOptionsInitScreen;
         thumbnailOptionsVTable.finiScreen = thumbnailOptionsFiniScreen;
         thumbnailOptionsVTable.getScreenOptions = thumbnailOptionsGetScreenOptions;
-	thumbnailOptionsVTable.setScreenOption = thumbnailOptionsSetScreenOption;
-	
-    }
-    return &thumbnailOptionsVTable;
+        thumbnailOptionsVTable.setScreenOption = thumbnailOptionsSetScreenOption;
+     }
+   return &thumbnailOptionsVTable;
 }
 

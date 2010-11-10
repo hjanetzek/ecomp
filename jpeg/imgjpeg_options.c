@@ -26,196 +26,209 @@ static CompPluginVTable *imgjpegPluginVTable = NULL;
 CompPluginVTable imgjpegOptionsVTable;
 
 #define GET_IMGJPEG_OPTIONS_DISPLAY(d) \
-        ((ImgjpegOptionsDisplay *) (d)->privates[displayPrivateIndex].ptr)
+  ((ImgjpegOptionsDisplay *)(d)->privates[displayPrivateIndex].ptr)
 
 #define IMGJPEG_OPTIONS_DISPLAY(d) \
-        ImgjpegOptionsDisplay *od = GET_IMGJPEG_OPTIONS_DISPLAY (d)
+  ImgjpegOptionsDisplay * od = GET_IMGJPEG_OPTIONS_DISPLAY (d)
 
 #define GET_IMGJPEG_OPTIONS_SCREEN(s, od) \
-        ((ImgjpegOptionsScreen *) (s)->privates[(od)->screenPrivateIndex].ptr)
+  ((ImgjpegOptionsScreen *)(s)->privates[(od)->screenPrivateIndex].ptr)
 
 #define IMGJPEG_OPTIONS_SCREEN(s) \
-        ImgjpegOptionsScreen *os = GET_IMGJPEG_OPTIONS_SCREEN (s, GET_IMGJPEG_OPTIONS_DISPLAY (s->display))
+  ImgjpegOptionsScreen * os = GET_IMGJPEG_OPTIONS_SCREEN (s, GET_IMGJPEG_OPTIONS_DISPLAY (s->display))
 
 typedef struct _ImgjpegOptionsDisplay
 {
-    int screenPrivateIndex;
+   int                                  screenPrivateIndex;
 
-    CompOption opt[ImgjpegDisplayOptionNum];
-    imgjpegDisplayOptionChangeNotifyProc notify[ImgjpegDisplayOptionNum];
+   CompOption                           opt[ImgjpegDisplayOptionNum];
+   imgjpegDisplayOptionChangeNotifyProc notify[ImgjpegDisplayOptionNum];
 } ImgjpegOptionsDisplay;
 
 typedef struct _ImgjpegOptionsScreen
 {
 } ImgjpegOptionsScreen;
 
-int imgjpegGetQuality (CompDisplay *d)
+int
+imgjpegGetQuality(CompDisplay *d)
 {
-    IMGJPEG_OPTIONS_DISPLAY(d);
-    return od->opt[ImgjpegDisplayOptionQuality].value.i;
+   IMGJPEG_OPTIONS_DISPLAY(d);
+   return od->opt[ImgjpegDisplayOptionQuality].value.i;
 }
 
-CompOption * imgjpegGetQualityOption (CompDisplay *d)
+CompOption *
+imgjpegGetQualityOption(CompDisplay *d)
 {
-    IMGJPEG_OPTIONS_DISPLAY(d);
-    return &od->opt[ImgjpegDisplayOptionQuality];
+   IMGJPEG_OPTIONS_DISPLAY(d);
+   return &od->opt[ImgjpegDisplayOptionQuality];
 }
 
-void imgjpegSetQualityNotify (CompDisplay *d, imgjpegDisplayOptionChangeNotifyProc notify)
+void
+imgjpegSetQualityNotify(CompDisplay *d, imgjpegDisplayOptionChangeNotifyProc notify)
 {
-    IMGJPEG_OPTIONS_DISPLAY(d);
-    od->notify[ImgjpegDisplayOptionQuality] = notify;
+   IMGJPEG_OPTIONS_DISPLAY(d);
+   od->notify[ImgjpegDisplayOptionQuality] = notify;
 }
 
-CompOption * imgjpegGetDisplayOption (CompDisplay *d, ImgjpegDisplayOptions num)
+CompOption *
+imgjpegGetDisplayOption(CompDisplay *d, ImgjpegDisplayOptions num)
 {
-    IMGJPEG_OPTIONS_DISPLAY(d);
-    return &od->opt[num];
+   IMGJPEG_OPTIONS_DISPLAY(d);
+   return &od->opt[num];
 }
 
 static const CompMetadataOptionInfo imgjpegOptionsDisplayOptionInfo[] = {
-    { "quality", "int", "<min>0</min><max>100</max>", 0, 0 },
+   { "quality", "int", "<min>0</min><max>100</max>", 0, 0 },
 };
 
-static Bool imgjpegOptionsSetDisplayOption (CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
+static Bool
+imgjpegOptionsSetDisplayOption(CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
 {
-    IMGJPEG_OPTIONS_DISPLAY(d);
-    CompOption *o;
-    int        index;
+   IMGJPEG_OPTIONS_DISPLAY(d);
+   CompOption *o;
+   int index;
 
-    o = compFindOption (od->opt, ImgjpegDisplayOptionNum, name, &index);
+   o = compFindOption (od->opt, ImgjpegDisplayOptionNum, name, &index);
 
-    if (!o)
-        return FALSE;
+   if (!o)
+     return FALSE;
 
-    switch (index)
-    {
-     case ImgjpegDisplayOptionQuality:
+   switch (index)
+     {
+      case ImgjpegDisplayOptionQuality:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[ImgjpegDisplayOptionQuality])
-                (*od->notify[ImgjpegDisplayOptionQuality]) (d, o, ImgjpegDisplayOptionQuality);
-            return TRUE;
-        }
+          {
+             if (od->notify[ImgjpegDisplayOptionQuality])
+               (*od->notify[ImgjpegDisplayOptionQuality])(d, o, ImgjpegDisplayOptionQuality);
+             return TRUE;
+          }
         break;
-    default:
+
+      default:
         break;
-    }
-    return FALSE;
+     }
+   return FALSE;
 }
 
-static CompOption * imgjpegOptionsGetDisplayOptions (CompPlugin *plugin, CompDisplay *d, int *count)
+static CompOption *
+imgjpegOptionsGetDisplayOptions(CompPlugin *plugin, CompDisplay *d, int *count)
 {
-    IMGJPEG_OPTIONS_DISPLAY(d);
-    *count = ImgjpegDisplayOptionNum;
-    return od->opt;
+   IMGJPEG_OPTIONS_DISPLAY(d);
+   *count = ImgjpegDisplayOptionNum;
+   return od->opt;
 }
 
-static Bool imgjpegOptionsInitScreen (CompPlugin *p, CompScreen *s)
+static Bool
+imgjpegOptionsInitScreen(CompPlugin *p, CompScreen *s)
 {
-    ImgjpegOptionsScreen *os;
-    
-    IMGJPEG_OPTIONS_DISPLAY (s->display);
+   ImgjpegOptionsScreen *os;
 
-    os = calloc (1, sizeof(ImgjpegOptionsScreen));
-    if (!os)
-        return FALSE;
+   IMGJPEG_OPTIONS_DISPLAY (s->display);
 
-    s->privates[od->screenPrivateIndex].ptr = os;
+   os = calloc (1, sizeof(ImgjpegOptionsScreen));
+   if (!os)
+     return FALSE;
 
-        if (imgjpegPluginVTable && imgjpegPluginVTable->initScreen)
-        return imgjpegPluginVTable->initScreen (p, s);
-    return TRUE;
+   s->privates[od->screenPrivateIndex].ptr = os;
+
+   if (imgjpegPluginVTable && imgjpegPluginVTable->initScreen)
+     return imgjpegPluginVTable->initScreen (p, s);
+   return TRUE;
 }
 
-static void imgjpegOptionsFiniScreen (CompPlugin *p, CompScreen *s)
+static void
+imgjpegOptionsFiniScreen(CompPlugin *p, CompScreen *s)
 {
-    if (imgjpegPluginVTable && imgjpegPluginVTable->finiScreen)
-        return imgjpegPluginVTable->finiScreen (p, s);
+   if (imgjpegPluginVTable && imgjpegPluginVTable->finiScreen)
+     return imgjpegPluginVTable->finiScreen (p, s);
 
-    IMGJPEG_OPTIONS_SCREEN (s);
+   IMGJPEG_OPTIONS_SCREEN (s);
 
-    free (os);
+   free (os);
 }
 
-static Bool imgjpegOptionsInitDisplay (CompPlugin *p, CompDisplay *d)
+static Bool
+imgjpegOptionsInitDisplay(CompPlugin *p, CompDisplay *d)
 {
-    ImgjpegOptionsDisplay *od;
-   
-    
-    od = calloc (1, sizeof(ImgjpegOptionsDisplay));
-    if (!od)
-        return FALSE;
+   ImgjpegOptionsDisplay *od;
 
-    od->screenPrivateIndex = allocateScreenPrivateIndex(d);
-    if (od->screenPrivateIndex < 0)
-    {
+   od = calloc (1, sizeof(ImgjpegOptionsDisplay));
+   if (!od)
+     return FALSE;
+
+   od->screenPrivateIndex = allocateScreenPrivateIndex(d);
+   if (od->screenPrivateIndex < 0)
+     {
         free(od);
         return FALSE;
-    }
+     }
 
-    d->privates[displayPrivateIndex].ptr = od;
+   d->privates[displayPrivateIndex].ptr = od;
 
-    if (!compInitDisplayOptionsFromMetadata (d, &imgjpegOptionsMetadata, imgjpegOptionsDisplayOptionInfo, od->opt, ImgjpegDisplayOptionNum))
-    {
+   if (!compInitDisplayOptionsFromMetadata (d, &imgjpegOptionsMetadata, imgjpegOptionsDisplayOptionInfo, od->opt, ImgjpegDisplayOptionNum))
+     {
         free (od);
         return FALSE;
-    }
-    if (imgjpegPluginVTable && imgjpegPluginVTable->initDisplay)
-        return imgjpegPluginVTable->initDisplay (p, d);
-    return TRUE;
+     }
+   if (imgjpegPluginVTable && imgjpegPluginVTable->initDisplay)
+     return imgjpegPluginVTable->initDisplay (p, d);
+   return TRUE;
 }
 
-static void imgjpegOptionsFiniDisplay (CompPlugin *p, CompDisplay *d)
+static void
+imgjpegOptionsFiniDisplay(CompPlugin *p, CompDisplay *d)
 {
-    if (imgjpegPluginVTable && imgjpegPluginVTable->finiDisplay)
-        return imgjpegPluginVTable->finiDisplay (p, d);
+   if (imgjpegPluginVTable && imgjpegPluginVTable->finiDisplay)
+     return imgjpegPluginVTable->finiDisplay (p, d);
 
-    IMGJPEG_OPTIONS_DISPLAY (d);
+   IMGJPEG_OPTIONS_DISPLAY (d);
 
-    freeScreenPrivateIndex(d, od->screenPrivateIndex);
+   freeScreenPrivateIndex(d, od->screenPrivateIndex);
 
-    compFiniDisplayOptions (d, od->opt, ImgjpegDisplayOptionNum);
+   compFiniDisplayOptions (d, od->opt, ImgjpegDisplayOptionNum);
 
-    free (od);
+   free (od);
 }
 
-static Bool imgjpegOptionsInit (CompPlugin *p)
+static Bool
+imgjpegOptionsInit(CompPlugin *p)
 {
-    displayPrivateIndex = allocateDisplayPrivateIndex();
-    if (displayPrivateIndex < 0)
-        return FALSE;
+   displayPrivateIndex = allocateDisplayPrivateIndex();
+   if (displayPrivateIndex < 0)
+     return FALSE;
 
-    if (!compInitPluginMetadataFromInfo (&imgjpegOptionsMetadata, "imgjpeg",imgjpegOptionsDisplayOptionInfo, ImgjpegDisplayOptionNum, 0, 0))
-        return FALSE;
+   if (!compInitPluginMetadataFromInfo (&imgjpegOptionsMetadata, "imgjpeg", imgjpegOptionsDisplayOptionInfo, ImgjpegDisplayOptionNum, 0, 0))
+     return FALSE;
 
-    compAddMetadataFromFile (&imgjpegOptionsMetadata, "imgjpeg");
-    if (imgjpegPluginVTable && imgjpegPluginVTable->init)
-        return imgjpegPluginVTable->init (p);
-    return TRUE;
+   compAddMetadataFromFile (&imgjpegOptionsMetadata, "imgjpeg");
+   if (imgjpegPluginVTable && imgjpegPluginVTable->init)
+     return imgjpegPluginVTable->init (p);
+   return TRUE;
 }
 
-static void imgjpegOptionsFini (CompPlugin *p)
+static void
+imgjpegOptionsFini(CompPlugin *p)
 {
-    if (imgjpegPluginVTable && imgjpegPluginVTable->fini)
-        return imgjpegPluginVTable->fini (p);
+   if (imgjpegPluginVTable && imgjpegPluginVTable->fini)
+     return imgjpegPluginVTable->fini (p);
 
-    if (displayPrivateIndex >= 0)
-        freeDisplayPrivateIndex(displayPrivateIndex);
+   if (displayPrivateIndex >= 0)
+     freeDisplayPrivateIndex(displayPrivateIndex);
 
-    compFiniMetadata (&imgjpegOptionsMetadata);
+   compFiniMetadata (&imgjpegOptionsMetadata);
 }
 
 static CompMetadata *
-imgjpegOptionsGetMetadata (CompPlugin *plugin)
+imgjpegOptionsGetMetadata(CompPlugin *plugin)
 {
-    return &imgjpegOptionsMetadata;
+   return &imgjpegOptionsMetadata;
 }
 
-CompPluginVTable *getCompPluginInfo (void)
+CompPluginVTable *
+getCompPluginInfo(void)
 {
-    if (!imgjpegPluginVTable)
-    {
+   if (!imgjpegPluginVTable)
+     {
         imgjpegPluginVTable = imgjpegOptionsGetCompPluginInfo ();
         memcpy(&imgjpegOptionsVTable, imgjpegPluginVTable, sizeof(CompPluginVTable));
         imgjpegOptionsVTable.getMetadata = imgjpegOptionsGetMetadata;
@@ -226,9 +239,8 @@ CompPluginVTable *getCompPluginInfo (void)
         imgjpegOptionsVTable.initScreen = imgjpegOptionsInitScreen;
         imgjpegOptionsVTable.finiScreen = imgjpegOptionsFiniScreen;
         imgjpegOptionsVTable.getDisplayOptions = imgjpegOptionsGetDisplayOptions;
-	imgjpegOptionsVTable.setDisplayOption = imgjpegOptionsSetDisplayOption;
-	
-    }
-    return &imgjpegOptionsVTable;
+        imgjpegOptionsVTable.setDisplayOption = imgjpegOptionsSetDisplayOption;
+     }
+   return &imgjpegOptionsVTable;
 }
 

@@ -26,913 +26,1032 @@ static CompPluginVTable *wallPluginVTable = NULL;
 CompPluginVTable wallOptionsVTable;
 
 #define GET_WALL_OPTIONS_DISPLAY(d) \
-        ((WallOptionsDisplay *) (d)->privates[displayPrivateIndex].ptr)
+  ((WallOptionsDisplay *)(d)->privates[displayPrivateIndex].ptr)
 
 #define WALL_OPTIONS_DISPLAY(d) \
-        WallOptionsDisplay *od = GET_WALL_OPTIONS_DISPLAY (d)
+  WallOptionsDisplay * od = GET_WALL_OPTIONS_DISPLAY (d)
 
 #define GET_WALL_OPTIONS_SCREEN(s, od) \
-        ((WallOptionsScreen *) (s)->privates[(od)->screenPrivateIndex].ptr)
+  ((WallOptionsScreen *)(s)->privates[(od)->screenPrivateIndex].ptr)
 
 #define WALL_OPTIONS_SCREEN(s) \
-        WallOptionsScreen *os = GET_WALL_OPTIONS_SCREEN (s, GET_WALL_OPTIONS_DISPLAY (s->display))
+  WallOptionsScreen * os = GET_WALL_OPTIONS_SCREEN (s, GET_WALL_OPTIONS_DISPLAY (s->display))
 
 typedef struct _WallOptionsDisplay
 {
-    int screenPrivateIndex;
+   int                               screenPrivateIndex;
 
-    CompOption opt[WallDisplayOptionNum];
-    wallDisplayOptionChangeNotifyProc notify[WallDisplayOptionNum];
+   CompOption                        opt[WallDisplayOptionNum];
+   wallDisplayOptionChangeNotifyProc notify[WallDisplayOptionNum];
 } WallOptionsDisplay;
 
 typedef struct _WallOptionsScreen
 {
-    CompOption opt[WallScreenOptionNum];
-    wallScreenOptionChangeNotifyProc notify[WallScreenOptionNum];
+   CompOption                       opt[WallScreenOptionNum];
+   wallScreenOptionChangeNotifyProc notify[WallScreenOptionNum];
 } WallOptionsScreen;
 
-Bool wallGetShowSwitcher (CompDisplay *d)
+Bool
+wallGetShowSwitcher(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionShowSwitcher].value.b;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionShowSwitcher].value.b;
 }
 
-CompOption * wallGetShowSwitcherOption (CompDisplay *d)
+CompOption *
+wallGetShowSwitcherOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionShowSwitcher];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionShowSwitcher];
 }
 
-void wallSetShowSwitcherNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetShowSwitcherNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionShowSwitcher] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionShowSwitcher] = notify;
 }
 
-Bool wallGetMiniscreen (CompDisplay *d)
+Bool
+wallGetMiniscreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionMiniscreen].value.b;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionMiniscreen].value.b;
 }
 
-CompOption * wallGetMiniscreenOption (CompDisplay *d)
+CompOption *
+wallGetMiniscreenOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionMiniscreen];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionMiniscreen];
 }
 
-void wallSetMiniscreenNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetMiniscreenNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionMiniscreen] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionMiniscreen] = notify;
 }
 
-float wallGetPreviewTimeout (CompDisplay *d)
+float
+wallGetPreviewTimeout(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionPreviewTimeout].value.f;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionPreviewTimeout].value.f;
 }
 
-CompOption * wallGetPreviewTimeoutOption (CompDisplay *d)
+CompOption *
+wallGetPreviewTimeoutOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionPreviewTimeout];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionPreviewTimeout];
 }
 
-void wallSetPreviewTimeoutNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetPreviewTimeoutNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionPreviewTimeout] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionPreviewTimeout] = notify;
 }
 
-int wallGetEdgeRadius (CompDisplay *d)
+int
+wallGetEdgeRadius(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionEdgeRadius].value.i;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionEdgeRadius].value.i;
 }
 
-CompOption * wallGetEdgeRadiusOption (CompDisplay *d)
+CompOption *
+wallGetEdgeRadiusOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionEdgeRadius];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionEdgeRadius];
 }
 
-void wallSetEdgeRadiusNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetEdgeRadiusNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionEdgeRadius] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionEdgeRadius] = notify;
 }
 
-unsigned short * wallGetOutlineColor (CompDisplay *d)
+unsigned short *
+wallGetOutlineColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionOutlineColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionOutlineColor].value.c;
 }
 
-unsigned short wallGetOutlineColorRed (CompDisplay *d)
+unsigned short
+wallGetOutlineColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionOutlineColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionOutlineColor].value.c[0];
 }
 
-unsigned short wallGetOutlineColorGreen (CompDisplay *d)
+unsigned short
+wallGetOutlineColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionOutlineColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionOutlineColor].value.c[1];
 }
 
-unsigned short wallGetOutlineColorBlue (CompDisplay *d)
+unsigned short
+wallGetOutlineColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionOutlineColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionOutlineColor].value.c[2];
 }
 
-unsigned short wallGetOutlineColorAlpha (CompDisplay *d)
+unsigned short
+wallGetOutlineColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionOutlineColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionOutlineColor].value.c[3];
 }
 
-CompOption * wallGetOutlineColorOption (CompDisplay *d)
+CompOption *
+wallGetOutlineColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionOutlineColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionOutlineColor];
 }
 
-void wallSetOutlineColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetOutlineColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionOutlineColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionOutlineColor] = notify;
 }
 
-unsigned short * wallGetBackgroundGradientBaseColor (CompDisplay *d)
+unsigned short *
+wallGetBackgroundGradientBaseColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c;
 }
 
-unsigned short wallGetBackgroundGradientBaseColorRed (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientBaseColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[0];
 }
 
-unsigned short wallGetBackgroundGradientBaseColorGreen (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientBaseColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[1];
 }
 
-unsigned short wallGetBackgroundGradientBaseColorBlue (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientBaseColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[2];
 }
 
-unsigned short wallGetBackgroundGradientBaseColorAlpha (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientBaseColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientBaseColor].value.c[3];
 }
 
-CompOption * wallGetBackgroundGradientBaseColorOption (CompDisplay *d)
+CompOption *
+wallGetBackgroundGradientBaseColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionBackgroundGradientBaseColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionBackgroundGradientBaseColor];
 }
 
-void wallSetBackgroundGradientBaseColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetBackgroundGradientBaseColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionBackgroundGradientBaseColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionBackgroundGradientBaseColor] = notify;
 }
 
-unsigned short * wallGetBackgroundGradientHighlightColor (CompDisplay *d)
+unsigned short *
+wallGetBackgroundGradientHighlightColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c;
 }
 
-unsigned short wallGetBackgroundGradientHighlightColorRed (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientHighlightColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[0];
 }
 
-unsigned short wallGetBackgroundGradientHighlightColorGreen (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientHighlightColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[1];
 }
 
-unsigned short wallGetBackgroundGradientHighlightColorBlue (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientHighlightColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[2];
 }
 
-unsigned short wallGetBackgroundGradientHighlightColorAlpha (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientHighlightColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientHighlightColor].value.c[3];
 }
 
-CompOption * wallGetBackgroundGradientHighlightColorOption (CompDisplay *d)
+CompOption *
+wallGetBackgroundGradientHighlightColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionBackgroundGradientHighlightColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionBackgroundGradientHighlightColor];
 }
 
-void wallSetBackgroundGradientHighlightColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetBackgroundGradientHighlightColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionBackgroundGradientHighlightColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionBackgroundGradientHighlightColor] = notify;
 }
 
-unsigned short * wallGetBackgroundGradientShadowColor (CompDisplay *d)
+unsigned short *
+wallGetBackgroundGradientShadowColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c;
 }
 
-unsigned short wallGetBackgroundGradientShadowColorRed (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientShadowColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[0];
 }
 
-unsigned short wallGetBackgroundGradientShadowColorGreen (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientShadowColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[1];
 }
 
-unsigned short wallGetBackgroundGradientShadowColorBlue (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientShadowColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[2];
 }
 
-unsigned short wallGetBackgroundGradientShadowColorAlpha (CompDisplay *d)
+unsigned short
+wallGetBackgroundGradientShadowColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionBackgroundGradientShadowColor].value.c[3];
 }
 
-CompOption * wallGetBackgroundGradientShadowColorOption (CompDisplay *d)
+CompOption *
+wallGetBackgroundGradientShadowColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionBackgroundGradientShadowColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionBackgroundGradientShadowColor];
 }
 
-void wallSetBackgroundGradientShadowColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetBackgroundGradientShadowColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionBackgroundGradientShadowColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionBackgroundGradientShadowColor] = notify;
 }
 
-unsigned short * wallGetThumbGradientBaseColor (CompDisplay *d)
+unsigned short *
+wallGetThumbGradientBaseColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c;
 }
 
-unsigned short wallGetThumbGradientBaseColorRed (CompDisplay *d)
+unsigned short
+wallGetThumbGradientBaseColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[0];
 }
 
-unsigned short wallGetThumbGradientBaseColorGreen (CompDisplay *d)
+unsigned short
+wallGetThumbGradientBaseColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[1];
 }
 
-unsigned short wallGetThumbGradientBaseColorBlue (CompDisplay *d)
+unsigned short
+wallGetThumbGradientBaseColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[2];
 }
 
-unsigned short wallGetThumbGradientBaseColorAlpha (CompDisplay *d)
+unsigned short
+wallGetThumbGradientBaseColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientBaseColor].value.c[3];
 }
 
-CompOption * wallGetThumbGradientBaseColorOption (CompDisplay *d)
+CompOption *
+wallGetThumbGradientBaseColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionThumbGradientBaseColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionThumbGradientBaseColor];
 }
 
-void wallSetThumbGradientBaseColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetThumbGradientBaseColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionThumbGradientBaseColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionThumbGradientBaseColor] = notify;
 }
 
-unsigned short * wallGetThumbGradientHighlightColor (CompDisplay *d)
+unsigned short *
+wallGetThumbGradientHighlightColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c;
 }
 
-unsigned short wallGetThumbGradientHighlightColorRed (CompDisplay *d)
+unsigned short
+wallGetThumbGradientHighlightColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[0];
 }
 
-unsigned short wallGetThumbGradientHighlightColorGreen (CompDisplay *d)
+unsigned short
+wallGetThumbGradientHighlightColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[1];
 }
 
-unsigned short wallGetThumbGradientHighlightColorBlue (CompDisplay *d)
+unsigned short
+wallGetThumbGradientHighlightColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[2];
 }
 
-unsigned short wallGetThumbGradientHighlightColorAlpha (CompDisplay *d)
+unsigned short
+wallGetThumbGradientHighlightColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbGradientHighlightColor].value.c[3];
 }
 
-CompOption * wallGetThumbGradientHighlightColorOption (CompDisplay *d)
+CompOption *
+wallGetThumbGradientHighlightColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionThumbGradientHighlightColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionThumbGradientHighlightColor];
 }
 
-void wallSetThumbGradientHighlightColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetThumbGradientHighlightColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionThumbGradientHighlightColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionThumbGradientHighlightColor] = notify;
 }
 
-unsigned short * wallGetThumbHighlightGradientBaseColor (CompDisplay *d)
+unsigned short *
+wallGetThumbHighlightGradientBaseColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c;
 }
 
-unsigned short wallGetThumbHighlightGradientBaseColorRed (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientBaseColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[0];
 }
 
-unsigned short wallGetThumbHighlightGradientBaseColorGreen (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientBaseColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[1];
 }
 
-unsigned short wallGetThumbHighlightGradientBaseColorBlue (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientBaseColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[2];
 }
 
-unsigned short wallGetThumbHighlightGradientBaseColorAlpha (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientBaseColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientBaseColor].value.c[3];
 }
 
-CompOption * wallGetThumbHighlightGradientBaseColorOption (CompDisplay *d)
+CompOption *
+wallGetThumbHighlightGradientBaseColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionThumbHighlightGradientBaseColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionThumbHighlightGradientBaseColor];
 }
 
-void wallSetThumbHighlightGradientBaseColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetThumbHighlightGradientBaseColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionThumbHighlightGradientBaseColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionThumbHighlightGradientBaseColor] = notify;
 }
 
-unsigned short * wallGetThumbHighlightGradientShadowColor (CompDisplay *d)
+unsigned short *
+wallGetThumbHighlightGradientShadowColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c;
 }
 
-unsigned short wallGetThumbHighlightGradientShadowColorRed (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientShadowColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[0];
 }
 
-unsigned short wallGetThumbHighlightGradientShadowColorGreen (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientShadowColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[1];
 }
 
-unsigned short wallGetThumbHighlightGradientShadowColorBlue (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientShadowColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[2];
 }
 
-unsigned short wallGetThumbHighlightGradientShadowColorAlpha (CompDisplay *d)
+unsigned short
+wallGetThumbHighlightGradientShadowColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionThumbHighlightGradientShadowColor].value.c[3];
 }
 
-CompOption * wallGetThumbHighlightGradientShadowColorOption (CompDisplay *d)
+CompOption *
+wallGetThumbHighlightGradientShadowColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionThumbHighlightGradientShadowColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionThumbHighlightGradientShadowColor];
 }
 
-void wallSetThumbHighlightGradientShadowColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetThumbHighlightGradientShadowColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionThumbHighlightGradientShadowColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionThumbHighlightGradientShadowColor] = notify;
 }
 
-unsigned short * wallGetArrowBaseColor (CompDisplay *d)
+unsigned short *
+wallGetArrowBaseColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowBaseColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowBaseColor].value.c;
 }
 
-unsigned short wallGetArrowBaseColorRed (CompDisplay *d)
+unsigned short
+wallGetArrowBaseColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowBaseColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowBaseColor].value.c[0];
 }
 
-unsigned short wallGetArrowBaseColorGreen (CompDisplay *d)
+unsigned short
+wallGetArrowBaseColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowBaseColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowBaseColor].value.c[1];
 }
 
-unsigned short wallGetArrowBaseColorBlue (CompDisplay *d)
+unsigned short
+wallGetArrowBaseColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowBaseColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowBaseColor].value.c[2];
 }
 
-unsigned short wallGetArrowBaseColorAlpha (CompDisplay *d)
+unsigned short
+wallGetArrowBaseColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowBaseColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowBaseColor].value.c[3];
 }
 
-CompOption * wallGetArrowBaseColorOption (CompDisplay *d)
+CompOption *
+wallGetArrowBaseColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionArrowBaseColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionArrowBaseColor];
 }
 
-void wallSetArrowBaseColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetArrowBaseColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionArrowBaseColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionArrowBaseColor] = notify;
 }
 
-unsigned short * wallGetArrowShadowColor (CompDisplay *d)
+unsigned short *
+wallGetArrowShadowColor(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowShadowColor].value.c;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowShadowColor].value.c;
 }
 
-unsigned short wallGetArrowShadowColorRed (CompDisplay *d)
+unsigned short
+wallGetArrowShadowColorRed(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowShadowColor].value.c[0];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowShadowColor].value.c[0];
 }
 
-unsigned short wallGetArrowShadowColorGreen (CompDisplay *d)
+unsigned short
+wallGetArrowShadowColorGreen(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowShadowColor].value.c[1];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowShadowColor].value.c[1];
 }
 
-unsigned short wallGetArrowShadowColorBlue (CompDisplay *d)
+unsigned short
+wallGetArrowShadowColorBlue(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowShadowColor].value.c[2];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowShadowColor].value.c[2];
 }
 
-unsigned short wallGetArrowShadowColorAlpha (CompDisplay *d)
+unsigned short
+wallGetArrowShadowColorAlpha(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionArrowShadowColor].value.c[3];
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionArrowShadowColor].value.c[3];
 }
 
-CompOption * wallGetArrowShadowColorOption (CompDisplay *d)
+CompOption *
+wallGetArrowShadowColorOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionArrowShadowColor];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionArrowShadowColor];
 }
 
-void wallSetArrowShadowColorNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetArrowShadowColorNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionArrowShadowColor] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionArrowShadowColor] = notify;
 }
 
-Bool wallGetMoveBackground (CompDisplay *d)
+Bool
+wallGetMoveBackground(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionMoveBackground].value.b;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionMoveBackground].value.b;
 }
 
-CompOption * wallGetMoveBackgroundOption (CompDisplay *d)
+CompOption *
+wallGetMoveBackgroundOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionMoveBackground];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionMoveBackground];
 }
 
-void wallSetMoveBackgroundNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetMoveBackgroundNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionMoveBackground] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionMoveBackground] = notify;
 }
 
-float wallGetSlideDuration (CompDisplay *d)
+float
+wallGetSlideDuration(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return od->opt[WallDisplayOptionSlideDuration].value.f;
+   WALL_OPTIONS_DISPLAY(d);
+   return od->opt[WallDisplayOptionSlideDuration].value.f;
 }
 
-CompOption * wallGetSlideDurationOption (CompDisplay *d)
+CompOption *
+wallGetSlideDurationOption(CompDisplay *d)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[WallDisplayOptionSlideDuration];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[WallDisplayOptionSlideDuration];
 }
 
-void wallSetSlideDurationNotify (CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
+void
+wallSetSlideDurationNotify(CompDisplay *d, wallDisplayOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    od->notify[WallDisplayOptionSlideDuration] = notify;
+   WALL_OPTIONS_DISPLAY(d);
+   od->notify[WallDisplayOptionSlideDuration] = notify;
 }
 
-int wallGetMmmode (CompScreen *s)
+int
+wallGetMmmode(CompScreen *s)
 {
-    WALL_OPTIONS_SCREEN(s);
-    return os->opt[WallScreenOptionMmmode].value.i;
+   WALL_OPTIONS_SCREEN(s);
+   return os->opt[WallScreenOptionMmmode].value.i;
 }
 
-CompOption * wallGetMmmodeOption (CompScreen *s)
+CompOption *
+wallGetMmmodeOption(CompScreen *s)
 {
-    WALL_OPTIONS_SCREEN(s);
-    return &os->opt[WallScreenOptionMmmode];
+   WALL_OPTIONS_SCREEN(s);
+   return &os->opt[WallScreenOptionMmmode];
 }
 
-void wallSetMmmodeNotify (CompScreen *s, wallScreenOptionChangeNotifyProc notify)
+void
+wallSetMmmodeNotify(CompScreen *s, wallScreenOptionChangeNotifyProc notify)
 {
-    WALL_OPTIONS_SCREEN(s);
-    os->notify[WallScreenOptionMmmode] = notify;
+   WALL_OPTIONS_SCREEN(s);
+   os->notify[WallScreenOptionMmmode] = notify;
 }
 
-CompOption * wallGetDisplayOption (CompDisplay *d, WallDisplayOptions num)
+CompOption *
+wallGetDisplayOption(CompDisplay *d, WallDisplayOptions num)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    return &od->opt[num];
+   WALL_OPTIONS_DISPLAY(d);
+   return &od->opt[num];
 }
 
-CompOption * wallGetScreenOption (CompScreen *s, WallScreenOptions num)
+CompOption *
+wallGetScreenOption(CompScreen *s, WallScreenOptions num)
 {
-    WALL_OPTIONS_SCREEN(s);
-    return &os->opt[num];
+   WALL_OPTIONS_SCREEN(s);
+   return &os->opt[num];
 }
 
 static const CompMetadataOptionInfo wallOptionsDisplayOptionInfo[] = {
-    { "show_switcher", "bool", 0, 0, 0 },
-    { "miniscreen", "bool", 0, 0, 0 },
-    { "preview_timeout", "float", "<min>0.0</min><max>2.0</max>", 0, 0 },
-    { "edge_radius", "int", "<min>0</min><max>20</max>", 0, 0 },
-    { "outline_color", "color", 0, 0, 0 },
-    { "background_gradient_base_color", "color", 0, 0, 0 },
-    { "background_gradient_highlight_color", "color", 0, 0, 0 },
-    { "background_gradient_shadow_color", "color", 0, 0, 0 },
-    { "thumb_gradient_base_color", "color", 0, 0, 0 },
-    { "thumb_gradient_highlight_color", "color", 0, 0, 0 },
-    { "thumb_highlight_gradient_base_color", "color", 0, 0, 0 },
-    { "thumb_highlight_gradient_shadow_color", "color", 0, 0, 0 },
-    { "arrow_base_color", "color", 0, 0, 0 },
-    { "arrow_shadow_color", "color", 0, 0, 0 },
-    { "move_background", "bool", 0, 0, 0 },
-    { "slide_duration", "float", "<min>0.05</min><max>5.0</max>", 0, 0 },
+   { "show_switcher", "bool", 0, 0, 0 },
+   { "miniscreen", "bool", 0, 0, 0 },
+   { "preview_timeout", "float", "<min>0.0</min><max>2.0</max>", 0, 0 },
+   { "edge_radius", "int", "<min>0</min><max>20</max>", 0, 0 },
+   { "outline_color", "color", 0, 0, 0 },
+   { "background_gradient_base_color", "color", 0, 0, 0 },
+   { "background_gradient_highlight_color", "color", 0, 0, 0 },
+   { "background_gradient_shadow_color", "color", 0, 0, 0 },
+   { "thumb_gradient_base_color", "color", 0, 0, 0 },
+   { "thumb_gradient_highlight_color", "color", 0, 0, 0 },
+   { "thumb_highlight_gradient_base_color", "color", 0, 0, 0 },
+   { "thumb_highlight_gradient_shadow_color", "color", 0, 0, 0 },
+   { "arrow_base_color", "color", 0, 0, 0 },
+   { "arrow_shadow_color", "color", 0, 0, 0 },
+   { "move_background", "bool", 0, 0, 0 },
+   { "slide_duration", "float", "<min>0.05</min><max>5.0</max>", 0, 0 },
 };
 
-static Bool wallOptionsSetDisplayOption (CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
+static Bool
+wallOptionsSetDisplayOption(CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    CompOption *o;
-    int        index;
+   WALL_OPTIONS_DISPLAY(d);
+   CompOption *o;
+   int index;
 
-    o = compFindOption (od->opt, WallDisplayOptionNum, name, &index);
+   o = compFindOption (od->opt, WallDisplayOptionNum, name, &index);
 
-    if (!o)
-        return FALSE;
+   if (!o)
+     return FALSE;
 
-    switch (index)
-    {
-     case WallDisplayOptionShowSwitcher:
+   switch (index)
+     {
+      case WallDisplayOptionShowSwitcher:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionShowSwitcher])
-                (*od->notify[WallDisplayOptionShowSwitcher]) (d, o, WallDisplayOptionShowSwitcher);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionShowSwitcher])
+               (*od->notify[WallDisplayOptionShowSwitcher])(d, o, WallDisplayOptionShowSwitcher);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionMiniscreen:
+
+      case WallDisplayOptionMiniscreen:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionMiniscreen])
-                (*od->notify[WallDisplayOptionMiniscreen]) (d, o, WallDisplayOptionMiniscreen);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionMiniscreen])
+               (*od->notify[WallDisplayOptionMiniscreen])(d, o, WallDisplayOptionMiniscreen);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionPreviewTimeout:
+
+      case WallDisplayOptionPreviewTimeout:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionPreviewTimeout])
-                (*od->notify[WallDisplayOptionPreviewTimeout]) (d, o, WallDisplayOptionPreviewTimeout);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionPreviewTimeout])
+               (*od->notify[WallDisplayOptionPreviewTimeout])(d, o, WallDisplayOptionPreviewTimeout);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionEdgeRadius:
+
+      case WallDisplayOptionEdgeRadius:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionEdgeRadius])
-                (*od->notify[WallDisplayOptionEdgeRadius]) (d, o, WallDisplayOptionEdgeRadius);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionEdgeRadius])
+               (*od->notify[WallDisplayOptionEdgeRadius])(d, o, WallDisplayOptionEdgeRadius);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionOutlineColor:
+
+      case WallDisplayOptionOutlineColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionOutlineColor])
-                (*od->notify[WallDisplayOptionOutlineColor]) (d, o, WallDisplayOptionOutlineColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionOutlineColor])
+               (*od->notify[WallDisplayOptionOutlineColor])(d, o, WallDisplayOptionOutlineColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionBackgroundGradientBaseColor:
+
+      case WallDisplayOptionBackgroundGradientBaseColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionBackgroundGradientBaseColor])
-                (*od->notify[WallDisplayOptionBackgroundGradientBaseColor]) (d, o, WallDisplayOptionBackgroundGradientBaseColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionBackgroundGradientBaseColor])
+               (*od->notify[WallDisplayOptionBackgroundGradientBaseColor])(d, o, WallDisplayOptionBackgroundGradientBaseColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionBackgroundGradientHighlightColor:
+
+      case WallDisplayOptionBackgroundGradientHighlightColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionBackgroundGradientHighlightColor])
-                (*od->notify[WallDisplayOptionBackgroundGradientHighlightColor]) (d, o, WallDisplayOptionBackgroundGradientHighlightColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionBackgroundGradientHighlightColor])
+               (*od->notify[WallDisplayOptionBackgroundGradientHighlightColor])(d, o, WallDisplayOptionBackgroundGradientHighlightColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionBackgroundGradientShadowColor:
+
+      case WallDisplayOptionBackgroundGradientShadowColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionBackgroundGradientShadowColor])
-                (*od->notify[WallDisplayOptionBackgroundGradientShadowColor]) (d, o, WallDisplayOptionBackgroundGradientShadowColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionBackgroundGradientShadowColor])
+               (*od->notify[WallDisplayOptionBackgroundGradientShadowColor])(d, o, WallDisplayOptionBackgroundGradientShadowColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionThumbGradientBaseColor:
+
+      case WallDisplayOptionThumbGradientBaseColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionThumbGradientBaseColor])
-                (*od->notify[WallDisplayOptionThumbGradientBaseColor]) (d, o, WallDisplayOptionThumbGradientBaseColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionThumbGradientBaseColor])
+               (*od->notify[WallDisplayOptionThumbGradientBaseColor])(d, o, WallDisplayOptionThumbGradientBaseColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionThumbGradientHighlightColor:
+
+      case WallDisplayOptionThumbGradientHighlightColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionThumbGradientHighlightColor])
-                (*od->notify[WallDisplayOptionThumbGradientHighlightColor]) (d, o, WallDisplayOptionThumbGradientHighlightColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionThumbGradientHighlightColor])
+               (*od->notify[WallDisplayOptionThumbGradientHighlightColor])(d, o, WallDisplayOptionThumbGradientHighlightColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionThumbHighlightGradientBaseColor:
+
+      case WallDisplayOptionThumbHighlightGradientBaseColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionThumbHighlightGradientBaseColor])
-                (*od->notify[WallDisplayOptionThumbHighlightGradientBaseColor]) (d, o, WallDisplayOptionThumbHighlightGradientBaseColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionThumbHighlightGradientBaseColor])
+               (*od->notify[WallDisplayOptionThumbHighlightGradientBaseColor])(d, o, WallDisplayOptionThumbHighlightGradientBaseColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionThumbHighlightGradientShadowColor:
+
+      case WallDisplayOptionThumbHighlightGradientShadowColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionThumbHighlightGradientShadowColor])
-                (*od->notify[WallDisplayOptionThumbHighlightGradientShadowColor]) (d, o, WallDisplayOptionThumbHighlightGradientShadowColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionThumbHighlightGradientShadowColor])
+               (*od->notify[WallDisplayOptionThumbHighlightGradientShadowColor])(d, o, WallDisplayOptionThumbHighlightGradientShadowColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionArrowBaseColor:
+
+      case WallDisplayOptionArrowBaseColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionArrowBaseColor])
-                (*od->notify[WallDisplayOptionArrowBaseColor]) (d, o, WallDisplayOptionArrowBaseColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionArrowBaseColor])
+               (*od->notify[WallDisplayOptionArrowBaseColor])(d, o, WallDisplayOptionArrowBaseColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionArrowShadowColor:
+
+      case WallDisplayOptionArrowShadowColor:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionArrowShadowColor])
-                (*od->notify[WallDisplayOptionArrowShadowColor]) (d, o, WallDisplayOptionArrowShadowColor);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionArrowShadowColor])
+               (*od->notify[WallDisplayOptionArrowShadowColor])(d, o, WallDisplayOptionArrowShadowColor);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionMoveBackground:
+
+      case WallDisplayOptionMoveBackground:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionMoveBackground])
-                (*od->notify[WallDisplayOptionMoveBackground]) (d, o, WallDisplayOptionMoveBackground);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionMoveBackground])
+               (*od->notify[WallDisplayOptionMoveBackground])(d, o, WallDisplayOptionMoveBackground);
+             return TRUE;
+          }
         break;
-     case WallDisplayOptionSlideDuration:
+
+      case WallDisplayOptionSlideDuration:
         if (compSetDisplayOption (d, o, value))
-        {
-            if (od->notify[WallDisplayOptionSlideDuration])
-                (*od->notify[WallDisplayOptionSlideDuration]) (d, o, WallDisplayOptionSlideDuration);
-            return TRUE;
-        }
+          {
+             if (od->notify[WallDisplayOptionSlideDuration])
+               (*od->notify[WallDisplayOptionSlideDuration])(d, o, WallDisplayOptionSlideDuration);
+             return TRUE;
+          }
         break;
-    default:
+
+      default:
         break;
-    }
-    return FALSE;
+     }
+   return FALSE;
 }
 
-static CompOption * wallOptionsGetDisplayOptions (CompPlugin *plugin, CompDisplay *d, int *count)
+static CompOption *
+wallOptionsGetDisplayOptions(CompPlugin *plugin, CompDisplay *d, int *count)
 {
-    WALL_OPTIONS_DISPLAY(d);
-    *count = WallDisplayOptionNum;
-    return od->opt;
+   WALL_OPTIONS_DISPLAY(d);
+   *count = WallDisplayOptionNum;
+   return od->opt;
 }
 
 static const CompMetadataOptionInfo wallOptionsScreenOptionInfo[] = {
-    { "mmmode", "int", "<min>0</min><max>1</max>", 0, 0 },
+   { "mmmode", "int", "<min>0</min><max>1</max>", 0, 0 },
 };
 
-static Bool wallOptionsSetScreenOption (CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
+static Bool
+wallOptionsSetScreenOption(CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
 {
-    WALL_OPTIONS_SCREEN(s);
-    CompOption *o;
-    int        index;
+   WALL_OPTIONS_SCREEN(s);
+   CompOption *o;
+   int index;
 
-    o = compFindOption (os->opt, WallScreenOptionNum, name, &index);
+   o = compFindOption (os->opt, WallScreenOptionNum, name, &index);
 
-    if (!o)
-        return FALSE;
+   if (!o)
+     return FALSE;
 
-    switch (index)
-    {
-     case WallScreenOptionMmmode:
+   switch (index)
+     {
+      case WallScreenOptionMmmode:
         if (compSetScreenOption (s, o, value))
-        {
-            if (os->notify[WallScreenOptionMmmode])
-                (*os->notify[WallScreenOptionMmmode]) (s, o, WallScreenOptionMmmode);
-            return TRUE;
-        }
+          {
+             if (os->notify[WallScreenOptionMmmode])
+               (*os->notify[WallScreenOptionMmmode])(s, o, WallScreenOptionMmmode);
+             return TRUE;
+          }
         break;
-    default:
+
+      default:
         break;
-    }
-    return FALSE;
+     }
+   return FALSE;
 }
 
-static CompOption * wallOptionsGetScreenOptions (CompPlugin *plugin, CompScreen *s, int *count)
+static CompOption *
+wallOptionsGetScreenOptions(CompPlugin *plugin, CompScreen *s, int *count)
 {
-    WALL_OPTIONS_SCREEN(s);
-    *count = WallScreenOptionNum;
-    return os->opt;
+   WALL_OPTIONS_SCREEN(s);
+   *count = WallScreenOptionNum;
+   return os->opt;
 }
 
-static Bool wallOptionsInitScreen (CompPlugin *p, CompScreen *s)
+static Bool
+wallOptionsInitScreen(CompPlugin *p, CompScreen *s)
 {
-    WallOptionsScreen *os;
-    
-    WALL_OPTIONS_DISPLAY (s->display);
+   WallOptionsScreen *os;
 
-    os = calloc (1, sizeof(WallOptionsScreen));
-    if (!os)
-        return FALSE;
+   WALL_OPTIONS_DISPLAY (s->display);
 
-    s->privates[od->screenPrivateIndex].ptr = os;
+   os = calloc (1, sizeof(WallOptionsScreen));
+   if (!os)
+     return FALSE;
 
-    if (!compInitScreenOptionsFromMetadata (s, &wallOptionsMetadata, wallOptionsScreenOptionInfo, os->opt, WallScreenOptionNum))
-    {
+   s->privates[od->screenPrivateIndex].ptr = os;
+
+   if (!compInitScreenOptionsFromMetadata (s, &wallOptionsMetadata, wallOptionsScreenOptionInfo, os->opt, WallScreenOptionNum))
+     {
         free (os);
         return FALSE;
-    }
-    if (wallPluginVTable && wallPluginVTable->initScreen)
-        return wallPluginVTable->initScreen (p, s);
-    return TRUE;
+     }
+   if (wallPluginVTable && wallPluginVTable->initScreen)
+     return wallPluginVTable->initScreen (p, s);
+   return TRUE;
 }
 
-static void wallOptionsFiniScreen (CompPlugin *p, CompScreen *s)
+static void
+wallOptionsFiniScreen(CompPlugin *p, CompScreen *s)
 {
-    if (wallPluginVTable && wallPluginVTable->finiScreen)
-        return wallPluginVTable->finiScreen (p, s);
+   if (wallPluginVTable && wallPluginVTable->finiScreen)
+     return wallPluginVTable->finiScreen (p, s);
 
-    WALL_OPTIONS_SCREEN (s);
+   WALL_OPTIONS_SCREEN (s);
 
+   compFiniScreenOptions (s, os->opt, WallScreenOptionNum);
 
-    compFiniScreenOptions (s, os->opt, WallScreenOptionNum);
-
-    free (os);
+   free (os);
 }
 
-static Bool wallOptionsInitDisplay (CompPlugin *p, CompDisplay *d)
+static Bool
+wallOptionsInitDisplay(CompPlugin *p, CompDisplay *d)
 {
-    WallOptionsDisplay *od;
-   
-    
-    od = calloc (1, sizeof(WallOptionsDisplay));
-    if (!od)
-        return FALSE;
+   WallOptionsDisplay *od;
 
-    od->screenPrivateIndex = allocateScreenPrivateIndex(d);
-    if (od->screenPrivateIndex < 0)
-    {
+   od = calloc (1, sizeof(WallOptionsDisplay));
+   if (!od)
+     return FALSE;
+
+   od->screenPrivateIndex = allocateScreenPrivateIndex(d);
+   if (od->screenPrivateIndex < 0)
+     {
         free(od);
         return FALSE;
-    }
+     }
 
-    d->privates[displayPrivateIndex].ptr = od;
+   d->privates[displayPrivateIndex].ptr = od;
 
-    if (!compInitDisplayOptionsFromMetadata (d, &wallOptionsMetadata, wallOptionsDisplayOptionInfo, od->opt, WallDisplayOptionNum))
-    {
+   if (!compInitDisplayOptionsFromMetadata (d, &wallOptionsMetadata, wallOptionsDisplayOptionInfo, od->opt, WallDisplayOptionNum))
+     {
         free (od);
         return FALSE;
-    }
-    if (wallPluginVTable && wallPluginVTable->initDisplay)
-        return wallPluginVTable->initDisplay (p, d);
-    return TRUE;
+     }
+   if (wallPluginVTable && wallPluginVTable->initDisplay)
+     return wallPluginVTable->initDisplay (p, d);
+   return TRUE;
 }
 
-static void wallOptionsFiniDisplay (CompPlugin *p, CompDisplay *d)
+static void
+wallOptionsFiniDisplay(CompPlugin *p, CompDisplay *d)
 {
-    if (wallPluginVTable && wallPluginVTable->finiDisplay)
-        return wallPluginVTable->finiDisplay (p, d);
+   if (wallPluginVTable && wallPluginVTable->finiDisplay)
+     return wallPluginVTable->finiDisplay (p, d);
 
-    WALL_OPTIONS_DISPLAY (d);
+   WALL_OPTIONS_DISPLAY (d);
 
-    freeScreenPrivateIndex(d, od->screenPrivateIndex);
+   freeScreenPrivateIndex(d, od->screenPrivateIndex);
 
-    compFiniDisplayOptions (d, od->opt, WallDisplayOptionNum);
+   compFiniDisplayOptions (d, od->opt, WallDisplayOptionNum);
 
-    free (od);
+   free (od);
 }
 
-static Bool wallOptionsInit (CompPlugin *p)
+static Bool
+wallOptionsInit(CompPlugin *p)
 {
-    displayPrivateIndex = allocateDisplayPrivateIndex();
-    if (displayPrivateIndex < 0)
-        return FALSE;
+   displayPrivateIndex = allocateDisplayPrivateIndex();
+   if (displayPrivateIndex < 0)
+     return FALSE;
 
-    if (!compInitPluginMetadataFromInfo (&wallOptionsMetadata, "wall",wallOptionsDisplayOptionInfo, WallDisplayOptionNum, wallOptionsScreenOptionInfo, WallScreenOptionNum))
-        return FALSE;
+   if (!compInitPluginMetadataFromInfo (&wallOptionsMetadata, "wall", wallOptionsDisplayOptionInfo, WallDisplayOptionNum, wallOptionsScreenOptionInfo, WallScreenOptionNum))
+     return FALSE;
 
-    compAddMetadataFromFile (&wallOptionsMetadata, "wall");
-    if (wallPluginVTable && wallPluginVTable->init)
-        return wallPluginVTable->init (p);
-    return TRUE;
+   compAddMetadataFromFile (&wallOptionsMetadata, "wall");
+   if (wallPluginVTable && wallPluginVTable->init)
+     return wallPluginVTable->init (p);
+   return TRUE;
 }
 
-static void wallOptionsFini (CompPlugin *p)
+static void
+wallOptionsFini(CompPlugin *p)
 {
-    if (wallPluginVTable && wallPluginVTable->fini)
-        return wallPluginVTable->fini (p);
+   if (wallPluginVTable && wallPluginVTable->fini)
+     return wallPluginVTable->fini (p);
 
-    if (displayPrivateIndex >= 0)
-        freeDisplayPrivateIndex(displayPrivateIndex);
+   if (displayPrivateIndex >= 0)
+     freeDisplayPrivateIndex(displayPrivateIndex);
 
-    compFiniMetadata (&wallOptionsMetadata);
+   compFiniMetadata (&wallOptionsMetadata);
 }
 
 static CompMetadata *
-wallOptionsGetMetadata (CompPlugin *plugin)
+wallOptionsGetMetadata(CompPlugin *plugin)
 {
-    return &wallOptionsMetadata;
+   return &wallOptionsMetadata;
 }
 
-CompPluginVTable *getCompPluginInfo (void)
+CompPluginVTable *
+getCompPluginInfo(void)
 {
-    if (!wallPluginVTable)
-    {
+   if (!wallPluginVTable)
+     {
         wallPluginVTable = wallOptionsGetCompPluginInfo ();
         memcpy(&wallOptionsVTable, wallPluginVTable, sizeof(CompPluginVTable));
         wallOptionsVTable.getMetadata = wallOptionsGetMetadata;
@@ -943,11 +1062,10 @@ CompPluginVTable *getCompPluginInfo (void)
         wallOptionsVTable.initScreen = wallOptionsInitScreen;
         wallOptionsVTable.finiScreen = wallOptionsFiniScreen;
         wallOptionsVTable.getDisplayOptions = wallOptionsGetDisplayOptions;
-	wallOptionsVTable.setDisplayOption = wallOptionsSetDisplayOption;
-	wallOptionsVTable.getScreenOptions = wallOptionsGetScreenOptions;
-	wallOptionsVTable.setScreenOption = wallOptionsSetScreenOption;
-	
-    }
-    return &wallOptionsVTable;
+        wallOptionsVTable.setDisplayOption = wallOptionsSetDisplayOption;
+        wallOptionsVTable.getScreenOptions = wallOptionsGetScreenOptions;
+        wallOptionsVTable.setScreenOption = wallOptionsSetScreenOption;
+     }
+   return &wallOptionsVTable;
 }
 

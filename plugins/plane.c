@@ -41,257 +41,256 @@ static int displayPrivateIndex;
 
 enum
 {
-    PLANE_N_DISPLAY_OPTIONS
+   PLANE_N_DISPLAY_OPTIONS
 };
 
-typedef struct _PlaneDisplay {
-    int			screenPrivateIndex;
-    HandleEventProc	handleEvent;
+typedef struct _PlaneDisplay
+{
+   int             screenPrivateIndex;
+   HandleEventProc handleEvent;
 
-    CompOption		opt[PLANE_N_DISPLAY_OPTIONS];
+   CompOption      opt[PLANE_N_DISPLAY_OPTIONS];
 } PlaneDisplay;
 
-typedef struct _PlaneScreen {
-    int windowPrivateIndex;
-
+typedef struct _PlaneScreen
+{
+   int windowPrivateIndex;
 } PlaneScreen;
 
-#define GET_PLANE_DISPLAY(d)				       \
-    ((PlaneDisplay *) (d)->privates[displayPrivateIndex].ptr)
+#define GET_PLANE_DISPLAY(d) \
+  ((PlaneDisplay *)(d)->privates[displayPrivateIndex].ptr)
 
-#define PLANE_DISPLAY(d)		       \
-    PlaneDisplay *pd = GET_PLANE_DISPLAY (d)
+#define PLANE_DISPLAY(d) \
+  PlaneDisplay * pd = GET_PLANE_DISPLAY (d)
 
-#define GET_PLANE_SCREEN(s, pd)				   \
-    ((PlaneScreen *) (s)->privates[(pd)->screenPrivateIndex].ptr)
+#define GET_PLANE_SCREEN(s, pd) \
+  ((PlaneScreen *)(s)->privates[(pd)->screenPrivateIndex].ptr)
 
-#define PLANE_SCREEN(s)						      \
-    PlaneScreen *ps = GET_PLANE_SCREEN (s, GET_PLANE_DISPLAY (s->display))
+#define PLANE_SCREEN(s) \
+  PlaneScreen * ps = GET_PLANE_SCREEN (s, GET_PLANE_DISPLAY (s->display))
 
 #define NUM_OPTIONS(s) (sizeof ((s)->opt) / sizeof (CompOption))
 
-
 static void
-planeHandleEvent (CompDisplay *d,
-		  XEvent      *event)
+planeHandleEvent(CompDisplay *d,
+                 XEvent      *event)
 {
-    CompScreen *s;
+   CompScreen *s;
 
-    PLANE_DISPLAY (d);
+   PLANE_DISPLAY (d);
 
-    switch (event->type) {
-    case ClientMessage:
-      if (event->xclient.message_type == d->desktopViewportAtom)
-	{
-	  if (event->xclient.data.l[0]) break;
-	  
-	    int dx, dy;
+   switch (event->type) {
+      case ClientMessage:
+        if (event->xclient.message_type == d->desktopViewportAtom)
+          {
+             if (event->xclient.data.l[0]) break;
 
-	    s = findScreenAtDisplay (d, event->xclient.window);
-	    if (!s)
-		break;
+             int dx, dy;
 
-	    if (otherScreenGrabExist (s, "plane", "switcher", "move", 0))
-		break;
+             s = findScreenAtDisplay (d, event->xclient.window);
+             if (!s)
+               break;
 
-	    dx = (event->xclient.data.l[1] / s->width) - s->x;
-	    dy = (event->xclient.data.l[2] / s->height) - s->y;
+             if (otherScreenGrabExist (s, "plane", "switcher", "move", 0))
+               break;
 
-	    if (!dx && !dy)
-		break;
-	    moveScreenViewport (s, -dx, -dy, TRUE);
-	}
-	break;
+             dx = (event->xclient.data.l[1] / s->width) - s->x;
+             dy = (event->xclient.data.l[2] / s->height) - s->y;
 
-    default:
-	break;
-    }
+             if (!dx && !dy)
+               break;
+             moveScreenViewport (s, -dx, -dy, TRUE);
+          }
+        break;
 
-    UNWRAP (pd, d, handleEvent);
-    (*d->handleEvent) (d, event);
-    WRAP (pd, d, handleEvent, planeHandleEvent);
+      default:
+        break;
+     }
+
+   UNWRAP (pd, d, handleEvent);
+   (*d->handleEvent)(d, event);
+   WRAP (pd, d, handleEvent, planeHandleEvent);
 }
 
-
 static CompOption *
-planeGetDisplayOptions (CompPlugin  *plugin,
-			CompDisplay *display,
-			int	    *count)
+planeGetDisplayOptions(CompPlugin  *plugin,
+                       CompDisplay *display,
+                       int         *count)
 {
-    PLANE_DISPLAY (display);
+   PLANE_DISPLAY (display);
 
-    *count = NUM_OPTIONS (pd);
-    return pd->opt;
+   *count = NUM_OPTIONS (pd);
+   return pd->opt;
 }
 
 static Bool
-planeSetDisplayOption (CompPlugin      *plugin,
-		       CompDisplay     *display,
-		       char	       *name,
-		       CompOptionValue *value)
+planeSetDisplayOption(CompPlugin      *plugin,
+                      CompDisplay     *display,
+                      char            *name,
+                      CompOptionValue *value)
 {
-    CompOption *o;
+   CompOption *o;
 
-    PLANE_DISPLAY (display);
+   PLANE_DISPLAY (display);
 
-    o = compFindOption (pd->opt, NUM_OPTIONS (pd), name, NULL);
-    if (!o)
-	return FALSE;
+   o = compFindOption (pd->opt, NUM_OPTIONS (pd), name, NULL);
+   if (!o)
+     return FALSE;
 
-    return compSetDisplayOption (display, o, value);
+   return compSetDisplayOption (display, o, value);
 }
-
 
 static const CompMetadataOptionInfo planeDisplayOptionInfo[] = {};
 
 static Bool
-planeInitDisplay (CompPlugin  *p,
-		  CompDisplay *d)
+planeInitDisplay(CompPlugin  *p,
+                 CompDisplay *d)
 {
-    PlaneDisplay *pd;
+   PlaneDisplay *pd;
 
-    pd = malloc (sizeof (PlaneDisplay));
-    if (!pd)
-	return FALSE;
+   pd = malloc (sizeof (PlaneDisplay));
+   if (!pd)
+     return FALSE;
 
-    if (!compInitDisplayOptionsFromMetadata (d,
-					     &planeMetadata,
-					     planeDisplayOptionInfo,
-					     pd->opt,
-					     PLANE_N_DISPLAY_OPTIONS))
-    {
-	free (pd);
-	return FALSE;
-    }
+   if (!compInitDisplayOptionsFromMetadata (d,
+                                            &planeMetadata,
+                                            planeDisplayOptionInfo,
+                                            pd->opt,
+                                            PLANE_N_DISPLAY_OPTIONS))
+     {
+        free (pd);
+        return FALSE;
+     }
 
-    pd->screenPrivateIndex = allocateScreenPrivateIndex (d);
-    if (pd->screenPrivateIndex < 0)
-    {
-	compFiniDisplayOptions (d, pd->opt, PLANE_N_DISPLAY_OPTIONS);
-	free (pd);
-	return FALSE;
-    }
+   pd->screenPrivateIndex = allocateScreenPrivateIndex (d);
+   if (pd->screenPrivateIndex < 0)
+     {
+        compFiniDisplayOptions (d, pd->opt, PLANE_N_DISPLAY_OPTIONS);
+        free (pd);
+        return FALSE;
+     }
 
-    WRAP (pd, d, handleEvent, planeHandleEvent);
+   WRAP (pd, d, handleEvent, planeHandleEvent);
 
-    d->privates[displayPrivateIndex].ptr = pd;
+   d->privates[displayPrivateIndex].ptr = pd;
 
-    return TRUE;
+   return TRUE;
 }
 
 static void
-planeFiniDisplay (CompPlugin  *p,
-		  CompDisplay *d)
+planeFiniDisplay(CompPlugin  *p,
+                 CompDisplay *d)
 {
-    PLANE_DISPLAY (d);
+   PLANE_DISPLAY (d);
 
-    freeScreenPrivateIndex (d, pd->screenPrivateIndex);
+   freeScreenPrivateIndex (d, pd->screenPrivateIndex);
 
-    UNWRAP (pd, d, handleEvent);
+   UNWRAP (pd, d, handleEvent);
 
-    compFiniDisplayOptions (d, pd->opt, PLANE_N_DISPLAY_OPTIONS);
+   compFiniDisplayOptions (d, pd->opt, PLANE_N_DISPLAY_OPTIONS);
 
-    free (pd);
+   free (pd);
 }
 
 static Bool
-planeInitScreen (CompPlugin *p,
-		 CompScreen *s)
+planeInitScreen(CompPlugin *p,
+                CompScreen *s)
 {
-    PlaneScreen *ps;
+   PlaneScreen *ps;
 
-    PLANE_DISPLAY (s->display);
+   PLANE_DISPLAY (s->display);
 
-    ps = malloc (sizeof (PlaneScreen));
-    if (!ps)
-	return FALSE;
+   ps = malloc (sizeof (PlaneScreen));
+   if (!ps)
+     return FALSE;
 
-    ps->windowPrivateIndex = allocateWindowPrivateIndex (s);
-    if (ps->windowPrivateIndex < 0)
-    {
-	free (ps);
-	return FALSE;
-    }
+   ps->windowPrivateIndex = allocateWindowPrivateIndex (s);
+   if (ps->windowPrivateIndex < 0)
+     {
+        free (ps);
+        return FALSE;
+     }
 
-    s->privates[pd->screenPrivateIndex].ptr = ps;
+   s->privates[pd->screenPrivateIndex].ptr = ps;
 
-    return TRUE;
+   return TRUE;
 }
 
 static void
-planeFiniScreen (CompPlugin *p,
-		 CompScreen *s)
+planeFiniScreen(CompPlugin *p,
+                CompScreen *s)
 {
-    PLANE_SCREEN (s);
+   PLANE_SCREEN (s);
 
-    freeWindowPrivateIndex (s, ps->windowPrivateIndex);
+   freeWindowPrivateIndex (s, ps->windowPrivateIndex);
 
-    free (ps);
+   free (ps);
 }
 
 static Bool
-planeInit (CompPlugin *p)
+planeInit(CompPlugin *p)
 {
-    if (!compInitPluginMetadataFromInfo (&planeMetadata,
-					 p->vTable->name,
-					 planeDisplayOptionInfo,
-					 PLANE_N_DISPLAY_OPTIONS,
-					 NULL, 0))
-	return FALSE;
+   if (!compInitPluginMetadataFromInfo (&planeMetadata,
+                                        p->vTable->name,
+                                        planeDisplayOptionInfo,
+                                        PLANE_N_DISPLAY_OPTIONS,
+                                        NULL, 0))
+     return FALSE;
 
-    displayPrivateIndex = allocateDisplayPrivateIndex ();
+   displayPrivateIndex = allocateDisplayPrivateIndex ();
 
-    if (displayPrivateIndex < 0)
-    {
-	compFiniMetadata (&planeMetadata);
-	return FALSE;
-    }
+   if (displayPrivateIndex < 0)
+     {
+        compFiniMetadata (&planeMetadata);
+        return FALSE;
+     }
 
-    compAddMetadataFromFile (&planeMetadata, p->vTable->name);
+   compAddMetadataFromFile (&planeMetadata, p->vTable->name);
 
-    return TRUE;
+   return TRUE;
 }
 
 static void
-planeFini (CompPlugin *p)
+planeFini(CompPlugin *p)
 {
-    freeDisplayPrivateIndex (displayPrivateIndex);
-    compFiniMetadata (&planeMetadata);
+   freeDisplayPrivateIndex (displayPrivateIndex);
+   compFiniMetadata (&planeMetadata);
 }
 
 static int
-planeGetVersion (CompPlugin *plugin,
-		 int	    version)
+planeGetVersion(CompPlugin *plugin,
+                int         version)
 {
-    return ABIVERSION;
+   return ABIVERSION;
 }
 
 static CompMetadata *
-planeGetMetadata (CompPlugin *plugin)
+planeGetMetadata(CompPlugin *plugin)
 {
-    return &planeMetadata;
+   return &planeMetadata;
 }
 
 CompPluginVTable planeVTable = {
-    "plane",
-    planeGetVersion,
-    planeGetMetadata,
-    planeInit,
-    planeFini,
-    planeInitDisplay,
-    planeFiniDisplay,
-    planeInitScreen,
-    planeFiniScreen,
-    0,
-    0,
-    planeGetDisplayOptions,
-    planeSetDisplayOption,
-    NULL, /* planeGetScreenOptions, */
-    NULL  /* planeSetScreenOption, */
+   "plane",
+   planeGetVersion,
+   planeGetMetadata,
+   planeInit,
+   planeFini,
+   planeInitDisplay,
+   planeFiniDisplay,
+   planeInitScreen,
+   planeFiniScreen,
+   0,
+   0,
+   planeGetDisplayOptions,
+   planeSetDisplayOption,
+   NULL,  /* planeGetScreenOptions, */
+   NULL   /* planeSetScreenOption, */
 };
 
 CompPluginVTable *
-getCompPluginInfo (void)
+getCompPluginInfo(void)
 {
-    return &planeVTable;
+   return &planeVTable;
 }
+

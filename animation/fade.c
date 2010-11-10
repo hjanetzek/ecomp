@@ -39,15 +39,14 @@
 // =====================  Effect: Fade  =========================
 
 void
-fxFadeUpdateWindowAttrib(AnimScreen * as,
-			 CompWindow * w,
-			 WindowPaintAttrib * wAttrib)
+fxFadeUpdateWindowAttrib(AnimScreen        *as,
+                         CompWindow        *w,
+                         WindowPaintAttrib *wAttrib)
 {
-    ANIM_WINDOW(w);
+   ANIM_WINDOW(w);
 
-    float forwardProgress = defaultAnimProgress(aw);
+   float forwardProgress = defaultAnimProgress(aw);
 
-    wAttrib->opacity = (GLushort) (aw->storedOpacity * (1 - forwardProgress));
+   wAttrib->opacity = (GLushort)(aw->storedOpacity * (1 - forwardProgress));
 }
-
 
