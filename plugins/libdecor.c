@@ -1419,7 +1419,7 @@ decor_draw_simple(Display         *xdisplay,
                   void            *closure)
 {
    static XRenderColor clear = { 0x0000, 0x0000, 0x0000, 0x0000 };
-   static XRenderColor white = { 0xffff, 0xffff, 0xffff, 0xffff };
+   static XRenderColor white = { 0x0000, 0x0000, 0x0000, 0xcccc };
 
    XRenderFillRectangle (xdisplay, PictOpSrc, picture, &clear,
                          0,

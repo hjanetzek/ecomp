@@ -60,7 +60,7 @@ typedef struct _DecorTexture
    struct _DecorTexture *next;
    int                   refCount;
    Pixmap                pixmap;
-   Damage                damage;
+   /* Damage                damage; */
    CompTexture           texture;
 } DecorTexture;
 
@@ -278,8 +278,8 @@ decorGetTexture(CompScreen *screen, Pixmap pixmap)
    if (!dd->opt[DECOR_DISPLAY_OPTION_MIPMAP].value.b)
      texture->texture.mipmap = FALSE;
 
-   texture->damage = XDamageCreate(screen->display->display, pixmap,
-                                   XDamageReportRawRectangles);
+   /* texture->damage = XDamageCreate(screen->display->display, pixmap,
+    *                                 XDamageReportRawRectangles); */
 
    texture->refCount = 1;
    texture->pixmap = pixmap;
@@ -380,9 +380,9 @@ computeQuadBox(decor_quad_t *q, int width, int height,
    *return_y2 = y2;
 
    if (return_sx)
-     *return_sx = sx;
+       *return_sx = sx;
    if (return_sy)
-     *return_sy = sy;
+       *return_sy = sy;
 }
 
 static void
@@ -456,10 +456,10 @@ setDecorationMatrices(CompWindow *w)
         wd->quad[i].matrix.x0 = x0 * b.xx + y0 * b.xy + b.x0;
         wd->quad[i].matrix.y0 = x0 * b.yx + y0 * b.yy + b.y0;
 
-        wd->quad[i].matrix.xx *= wd->quad[i].sx;
-        wd->quad[i].matrix.yx *= wd->quad[i].sx;
-        wd->quad[i].matrix.xy *= wd->quad[i].sy;
-        wd->quad[i].matrix.yy *= wd->quad[i].sy;
+        wd->quad[i].matrix.xx = (wd->quad[i].matrix.xx * wd->quad[i].sx);
+        wd->quad[i].matrix.yx = (wd->quad[i].matrix.yx * wd->quad[i].sx);
+	wd->quad[i].matrix.xy = (wd->quad[i].matrix.xy * wd->quad[i].sy);
+        wd->quad[i].matrix.yy = (wd->quad[i].matrix.yy * wd->quad[i].sy);
 
         if (wd->decor->quad[i].align & ALIGN_RIGHT)
           x0 = wd->quad[i].box.x2 - wd->quad[i].box.x1;
@@ -478,7 +478,7 @@ setDecorationMatrices(CompWindow *w)
         wd->quad[i].matrix.y0 -=
           y0 * wd->quad[i].matrix.yy +
           x0 * wd->quad[i].matrix.yx;
-
+	
         wd->quad[i].matrix.x0 -=
           wd->quad[i].box.x1 * wd->quad[i].matrix.xx +
           wd->quad[i].box.y1 * wd->quad[i].matrix.xy;
@@ -610,40 +610,40 @@ decorHandleEvent(CompDisplay *d, XEvent *event)
         break;
 
       default:
-        if (event->type == d->damageEvent + XDamageNotify)
-          {
-             XDamageNotifyEvent *de = (XDamageNotifyEvent *)event;
-             DecorTexture *t;
-             DecorWindow *dw;
-             DecorScreen *ds;
-             CompScreen *s;
-
-             for (t = dd->textures; t; t = t->next)
-               {
-                  if (t->pixmap != de->drawable)
-                    continue;
-
-                  t->texture.oldMipmaps = TRUE;
-
-                  for (s = d->screens; s; s = s->next)
-                    {
-                       ds = GET_DECOR_SCREEN(s, dd);
-
-                       for (w = s->windows; w; w = w->next)
-                         {
-                            if (w->attrib.class == InputOnly) continue;
-                            if (/*w->shaded ||*/ w->mapNum)
-                              {
-                                 dw = GET_DECOR_WINDOW(w, ds);
-
-                                 if (dw->wd && dw->wd->decor->texture == t)
-                                   damageWindowOutputExtents(w);
-                              }
-                         }
-                    }
-                  return;
-               }
-          }
+        /* if (event->type == d->damageEvent + XDamageNotify)
+         *   {
+         *      XDamageNotifyEvent *de = (XDamageNotifyEvent *)event;
+         *      DecorTexture *t;
+         *      DecorWindow *dw;
+         *      DecorScreen *ds;
+         *      CompScreen *s;
+	 * 
+         *      for (t = dd->textures; t; t = t->next)
+         *        {
+         *           if (t->pixmap != de->drawable)
+         *             continue;
+	 * 
+         *           t->texture.oldMipmaps = TRUE;
+	 * 
+         *           for (s = d->screens; s; s = s->next)
+         *             {
+         *                ds = GET_DECOR_SCREEN(s, dd);
+	 * 
+         *                for (w = s->windows; w; w = w->next)
+         *                  {
+         *                     if (w->attrib.class == InputOnly) continue;
+         *                     if (/\*w->shaded ||*\/ w->mapNum)
+         *                       {
+         *                          dw = GET_DECOR_WINDOW(w, ds);
+	 * 
+         *                          if (dw->wd && dw->wd->decor->texture == t)
+         *                            damageWindowOutputExtents(w);
+         *                       }
+         *                  }
+         *             }
+         *           return;
+         *        }
+         *   } */
         break;
      }
 
