@@ -26,1125 +26,994 @@ static CompPluginVTable *shiftPluginVTable = NULL;
 CompPluginVTable shiftOptionsVTable;
 
 #define GET_SHIFT_OPTIONS_DISPLAY(d) \
-  ((ShiftOptionsDisplay *)(d)->privates[displayPrivateIndex].ptr)
+        ((ShiftOptionsDisplay *) (d)->privates[displayPrivateIndex].ptr)
 
 #define SHIFT_OPTIONS_DISPLAY(d) \
-  ShiftOptionsDisplay * od = GET_SHIFT_OPTIONS_DISPLAY (d)
+        ShiftOptionsDisplay *od = GET_SHIFT_OPTIONS_DISPLAY (d)
 
 #define GET_SHIFT_OPTIONS_SCREEN(s, od) \
-  ((ShiftOptionsScreen *)(s)->privates[(od)->screenPrivateIndex].ptr)
+        ((ShiftOptionsScreen *) (s)->privates[(od)->screenPrivateIndex].ptr)
 
 #define SHIFT_OPTIONS_SCREEN(s) \
-  ShiftOptionsScreen * os = GET_SHIFT_OPTIONS_SCREEN (s, GET_SHIFT_OPTIONS_DISPLAY (s->display))
+        ShiftOptionsScreen *os = GET_SHIFT_OPTIONS_SCREEN (s, GET_SHIFT_OPTIONS_DISPLAY (s->display))
 
 typedef struct _ShiftOptionsDisplay
 {
-   int screenPrivateIndex;
+    int screenPrivateIndex;
+
 } ShiftOptionsDisplay;
 
 typedef struct _ShiftOptionsScreen
 {
-   CompOption                        opt[ShiftScreenOptionNum];
-   shiftScreenOptionChangeNotifyProc notify[ShiftScreenOptionNum];
+    CompOption opt[ShiftScreenOptionNum];
+    shiftScreenOptionChangeNotifyProc notify[ShiftScreenOptionNum];
 } ShiftOptionsScreen;
 
-float
-shiftGetSpeed(CompScreen *s)
+float shiftGetSpeed (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionSpeed].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionSpeed].value.f;
 }
 
-CompOption *
-shiftGetSpeedOption(CompScreen *s)
+CompOption * shiftGetSpeedOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionSpeed];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionSpeed];
 }
 
-void
-shiftSetSpeedNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetSpeedNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionSpeed] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionSpeed] = notify;
 }
 
-float
-shiftGetShiftSpeed(CompScreen *s)
+float shiftGetShiftSpeed (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionShiftSpeed].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionShiftSpeed].value.f;
 }
 
-CompOption *
-shiftGetShiftSpeedOption(CompScreen *s)
+CompOption * shiftGetShiftSpeedOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionShiftSpeed];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionShiftSpeed];
 }
 
-void
-shiftSetShiftSpeedNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetShiftSpeedNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionShiftSpeed] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionShiftSpeed] = notify;
 }
 
-float
-shiftGetTimestep(CompScreen *s)
+float shiftGetTimestep (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTimestep].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTimestep].value.f;
 }
 
-CompOption *
-shiftGetTimestepOption(CompScreen *s)
+CompOption * shiftGetTimestepOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionTimestep];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionTimestep];
 }
 
-void
-shiftSetTimestepNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetTimestepNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionTimestep] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionTimestep] = notify;
 }
 
-CompMatch *
-shiftGetWindowMatch(CompScreen *s)
+CompMatch * shiftGetWindowMatch (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionWindowMatch].value.match;
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionWindowMatch].value.match;
 }
 
-CompOption *
-shiftGetWindowMatchOption(CompScreen *s)
+CompOption * shiftGetWindowMatchOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionWindowMatch];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionWindowMatch];
 }
 
-void
-shiftSetWindowMatchNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetWindowMatchNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionWindowMatch] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionWindowMatch] = notify;
 }
 
-Bool
-shiftGetMinimized(CompScreen *s)
+Bool shiftGetMinimized (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionMinimized].value.b;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionMinimized].value.b;
 }
 
-CompOption *
-shiftGetMinimizedOption(CompScreen *s)
+CompOption * shiftGetMinimizedOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionMinimized];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionMinimized];
 }
 
-void
-shiftSetMinimizedNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetMinimizedNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionMinimized] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionMinimized] = notify;
 }
 
-float
-shiftGetMouseSpeed(CompScreen *s)
+float shiftGetMouseSpeed (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionMouseSpeed].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionMouseSpeed].value.f;
 }
 
-CompOption *
-shiftGetMouseSpeedOption(CompScreen *s)
+CompOption * shiftGetMouseSpeedOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionMouseSpeed];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionMouseSpeed];
 }
 
-void
-shiftSetMouseSpeedNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetMouseSpeedNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionMouseSpeed] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionMouseSpeed] = notify;
 }
 
-int
-shiftGetClickDuration(CompScreen *s)
+int shiftGetClickDuration (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionClickDuration].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionClickDuration].value.i;
 }
 
-CompOption *
-shiftGetClickDurationOption(CompScreen *s)
+CompOption * shiftGetClickDurationOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionClickDuration];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionClickDuration];
 }
 
-void
-shiftSetClickDurationNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetClickDurationNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionClickDuration] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionClickDuration] = notify;
 }
 
-int
-shiftGetMode(CompScreen *s)
+int shiftGetMode (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionMode].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionMode].value.i;
 }
 
-CompOption *
-shiftGetModeOption(CompScreen *s)
+CompOption * shiftGetModeOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionMode];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionMode];
 }
 
-void
-shiftSetModeNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetModeNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionMode] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionMode] = notify;
 }
 
-int
-shiftGetSize(CompScreen *s)
+int shiftGetSize (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionSize].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionSize].value.i;
 }
 
-CompOption *
-shiftGetSizeOption(CompScreen *s)
+CompOption * shiftGetSizeOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionSize];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionSize];
 }
 
-void
-shiftSetSizeNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetSizeNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionSize] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionSize] = notify;
 }
 
-float
-shiftGetBackgroundIntensity(CompScreen *s)
+float shiftGetBackgroundIntensity (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionBackgroundIntensity].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionBackgroundIntensity].value.f;
 }
 
-CompOption *
-shiftGetBackgroundIntensityOption(CompScreen *s)
+CompOption * shiftGetBackgroundIntensityOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionBackgroundIntensity];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionBackgroundIntensity];
 }
 
-void
-shiftSetBackgroundIntensityNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetBackgroundIntensityNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionBackgroundIntensity] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionBackgroundIntensity] = notify;
 }
 
-Bool
-shiftGetHideAll(CompScreen *s)
+Bool shiftGetHideAll (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionHideAll].value.b;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionHideAll].value.b;
 }
 
-CompOption *
-shiftGetHideAllOption(CompScreen *s)
+CompOption * shiftGetHideAllOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionHideAll];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionHideAll];
 }
 
-void
-shiftSetHideAllNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetHideAllNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionHideAll] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionHideAll] = notify;
 }
 
-Bool
-shiftGetReflection(CompScreen *s)
+Bool shiftGetReflection (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionReflection].value.b;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionReflection].value.b;
 }
 
-CompOption *
-shiftGetReflectionOption(CompScreen *s)
+CompOption * shiftGetReflectionOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionReflection];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionReflection];
 }
 
-void
-shiftSetReflectionNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetReflectionNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionReflection] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionReflection] = notify;
 }
 
-unsigned short *
-shiftGetGroundColor1(CompScreen *s)
+unsigned short * shiftGetGroundColor1 (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor1].value.c;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor1].value.c;
 }
 
-unsigned short
-shiftGetGroundColor1Red(CompScreen *s)
+unsigned short shiftGetGroundColor1Red (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor1].value.c[0];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor1].value.c[0];
 }
 
-unsigned short
-shiftGetGroundColor1Green(CompScreen *s)
+unsigned short shiftGetGroundColor1Green (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor1].value.c[1];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor1].value.c[1];
 }
 
-unsigned short
-shiftGetGroundColor1Blue(CompScreen *s)
+unsigned short shiftGetGroundColor1Blue (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor1].value.c[2];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor1].value.c[2];
 }
 
-unsigned short
-shiftGetGroundColor1Alpha(CompScreen *s)
+unsigned short shiftGetGroundColor1Alpha (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor1].value.c[3];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor1].value.c[3];
 }
 
-CompOption *
-shiftGetGroundColor1Option(CompScreen *s)
+CompOption * shiftGetGroundColor1Option (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionGroundColor1];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionGroundColor1];
 }
 
-void
-shiftSetGroundColor1Notify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetGroundColor1Notify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionGroundColor1] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionGroundColor1] = notify;
 }
 
-unsigned short *
-shiftGetGroundColor2(CompScreen *s)
+unsigned short * shiftGetGroundColor2 (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor2].value.c;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor2].value.c;
 }
 
-unsigned short
-shiftGetGroundColor2Red(CompScreen *s)
+unsigned short shiftGetGroundColor2Red (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor2].value.c[0];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor2].value.c[0];
 }
 
-unsigned short
-shiftGetGroundColor2Green(CompScreen *s)
+unsigned short shiftGetGroundColor2Green (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor2].value.c[1];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor2].value.c[1];
 }
 
-unsigned short
-shiftGetGroundColor2Blue(CompScreen *s)
+unsigned short shiftGetGroundColor2Blue (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor2].value.c[2];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor2].value.c[2];
 }
 
-unsigned short
-shiftGetGroundColor2Alpha(CompScreen *s)
+unsigned short shiftGetGroundColor2Alpha (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundColor2].value.c[3];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundColor2].value.c[3];
 }
 
-CompOption *
-shiftGetGroundColor2Option(CompScreen *s)
+CompOption * shiftGetGroundColor2Option (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionGroundColor2];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionGroundColor2];
 }
 
-void
-shiftSetGroundColor2Notify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetGroundColor2Notify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionGroundColor2] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionGroundColor2] = notify;
 }
 
-float
-shiftGetGroundSize(CompScreen *s)
+float shiftGetGroundSize (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionGroundSize].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionGroundSize].value.f;
 }
 
-CompOption *
-shiftGetGroundSizeOption(CompScreen *s)
+CompOption * shiftGetGroundSizeOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionGroundSize];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionGroundSize];
 }
 
-void
-shiftSetGroundSizeNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetGroundSizeNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionGroundSize] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionGroundSize] = notify;
 }
 
-float
-shiftGetIntensity(CompScreen *s)
+float shiftGetIntensity (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionIntensity].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionIntensity].value.f;
 }
 
-CompOption *
-shiftGetIntensityOption(CompScreen *s)
+CompOption * shiftGetIntensityOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionIntensity];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionIntensity];
 }
 
-void
-shiftSetIntensityNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetIntensityNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionIntensity] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionIntensity] = notify;
 }
 
-int
-shiftGetFlipRotation(CompScreen *s)
+int shiftGetFlipRotation (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionFlipRotation].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionFlipRotation].value.i;
 }
 
-CompOption *
-shiftGetFlipRotationOption(CompScreen *s)
+CompOption * shiftGetFlipRotationOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionFlipRotation];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionFlipRotation];
 }
 
-void
-shiftSetFlipRotationNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetFlipRotationNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionFlipRotation] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionFlipRotation] = notify;
 }
 
-float
-shiftGetCoverOffset(CompScreen *s)
+float shiftGetCoverOffset (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionCoverOffset].value.f;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionCoverOffset].value.f;
 }
 
-CompOption *
-shiftGetCoverOffsetOption(CompScreen *s)
+CompOption * shiftGetCoverOffsetOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionCoverOffset];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionCoverOffset];
 }
 
-void
-shiftSetCoverOffsetNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetCoverOffsetNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionCoverOffset] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionCoverOffset] = notify;
 }
 
-int
-shiftGetOverlayIcon(CompScreen *s)
+int shiftGetOverlayIcon (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionOverlayIcon].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionOverlayIcon].value.i;
 }
 
-CompOption *
-shiftGetOverlayIconOption(CompScreen *s)
+CompOption * shiftGetOverlayIconOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionOverlayIcon];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionOverlayIcon];
 }
 
-void
-shiftSetOverlayIconNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetOverlayIconNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionOverlayIcon] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionOverlayIcon] = notify;
 }
 
-Bool
-shiftGetMipmaps(CompScreen *s)
+Bool shiftGetMipmaps (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionMipmaps].value.b;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionMipmaps].value.b;
 }
 
-CompOption *
-shiftGetMipmapsOption(CompScreen *s)
+CompOption * shiftGetMipmapsOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionMipmaps];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionMipmaps];
 }
 
-void
-shiftSetMipmapsNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetMipmapsNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionMipmaps] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionMipmaps] = notify;
 }
 
-int
-shiftGetMultioutputMode(CompScreen *s)
+int shiftGetMultioutputMode (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionMultioutputMode].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionMultioutputMode].value.i;
 }
 
-CompOption *
-shiftGetMultioutputModeOption(CompScreen *s)
+CompOption * shiftGetMultioutputModeOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionMultioutputMode];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionMultioutputMode];
 }
 
-void
-shiftSetMultioutputModeNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetMultioutputModeNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionMultioutputMode] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionMultioutputMode] = notify;
 }
 
-Bool
-shiftGetWindowTitle(CompScreen *s)
+Bool shiftGetWindowTitle (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionWindowTitle].value.b;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionWindowTitle].value.b;
 }
 
-CompOption *
-shiftGetWindowTitleOption(CompScreen *s)
+CompOption * shiftGetWindowTitleOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionWindowTitle];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionWindowTitle];
 }
 
-void
-shiftSetWindowTitleNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetWindowTitleNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionWindowTitle] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionWindowTitle] = notify;
 }
 
-Bool
-shiftGetTitleFontBold(CompScreen *s)
+Bool shiftGetTitleFontBold (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleFontBold].value.b;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleFontBold].value.b;
 }
 
-CompOption *
-shiftGetTitleFontBoldOption(CompScreen *s)
+CompOption * shiftGetTitleFontBoldOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionTitleFontBold];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionTitleFontBold];
 }
 
-void
-shiftSetTitleFontBoldNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetTitleFontBoldNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionTitleFontBold] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionTitleFontBold] = notify;
 }
 
-int
-shiftGetTitleFontSize(CompScreen *s)
+int shiftGetTitleFontSize (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleFontSize].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleFontSize].value.i;
 }
 
-CompOption *
-shiftGetTitleFontSizeOption(CompScreen *s)
+CompOption * shiftGetTitleFontSizeOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionTitleFontSize];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionTitleFontSize];
 }
 
-void
-shiftSetTitleFontSizeNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetTitleFontSizeNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionTitleFontSize] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionTitleFontSize] = notify;
 }
 
-unsigned short *
-shiftGetTitleBackColor(CompScreen *s)
+unsigned short * shiftGetTitleBackColor (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleBackColor].value.c;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleBackColor].value.c;
 }
 
-unsigned short
-shiftGetTitleBackColorRed(CompScreen *s)
+unsigned short shiftGetTitleBackColorRed (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleBackColor].value.c[0];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleBackColor].value.c[0];
 }
 
-unsigned short
-shiftGetTitleBackColorGreen(CompScreen *s)
+unsigned short shiftGetTitleBackColorGreen (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleBackColor].value.c[1];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleBackColor].value.c[1];
 }
 
-unsigned short
-shiftGetTitleBackColorBlue(CompScreen *s)
+unsigned short shiftGetTitleBackColorBlue (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleBackColor].value.c[2];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleBackColor].value.c[2];
 }
 
-unsigned short
-shiftGetTitleBackColorAlpha(CompScreen *s)
+unsigned short shiftGetTitleBackColorAlpha (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleBackColor].value.c[3];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleBackColor].value.c[3];
 }
 
-CompOption *
-shiftGetTitleBackColorOption(CompScreen *s)
+CompOption * shiftGetTitleBackColorOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionTitleBackColor];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionTitleBackColor];
 }
 
-void
-shiftSetTitleBackColorNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetTitleBackColorNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionTitleBackColor] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionTitleBackColor] = notify;
 }
 
-unsigned short *
-shiftGetTitleFontColor(CompScreen *s)
+unsigned short * shiftGetTitleFontColor (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleFontColor].value.c;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleFontColor].value.c;
 }
 
-unsigned short
-shiftGetTitleFontColorRed(CompScreen *s)
+unsigned short shiftGetTitleFontColorRed (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleFontColor].value.c[0];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleFontColor].value.c[0];
 }
 
-unsigned short
-shiftGetTitleFontColorGreen(CompScreen *s)
+unsigned short shiftGetTitleFontColorGreen (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleFontColor].value.c[1];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleFontColor].value.c[1];
 }
 
-unsigned short
-shiftGetTitleFontColorBlue(CompScreen *s)
+unsigned short shiftGetTitleFontColorBlue (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleFontColor].value.c[2];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleFontColor].value.c[2];
 }
 
-unsigned short
-shiftGetTitleFontColorAlpha(CompScreen *s)
+unsigned short shiftGetTitleFontColorAlpha (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleFontColor].value.c[3];
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleFontColor].value.c[3];
 }
 
-CompOption *
-shiftGetTitleFontColorOption(CompScreen *s)
+CompOption * shiftGetTitleFontColorOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionTitleFontColor];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionTitleFontColor];
 }
 
-void
-shiftSetTitleFontColorNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetTitleFontColorNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionTitleFontColor] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionTitleFontColor] = notify;
 }
 
-int
-shiftGetTitleTextPlacement(CompScreen *s)
+int shiftGetTitleTextPlacement (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return os->opt[ShiftScreenOptionTitleTextPlacement].value.i;
+    SHIFT_OPTIONS_SCREEN(s);
+    return os->opt[ShiftScreenOptionTitleTextPlacement].value.i;
 }
 
-CompOption *
-shiftGetTitleTextPlacementOption(CompScreen *s)
+CompOption * shiftGetTitleTextPlacementOption (CompScreen *s)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[ShiftScreenOptionTitleTextPlacement];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[ShiftScreenOptionTitleTextPlacement];
 }
 
-void
-shiftSetTitleTextPlacementNotify(CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
+void shiftSetTitleTextPlacementNotify (CompScreen *s, shiftScreenOptionChangeNotifyProc notify)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   os->notify[ShiftScreenOptionTitleTextPlacement] = notify;
+    SHIFT_OPTIONS_SCREEN(s);
+    os->notify[ShiftScreenOptionTitleTextPlacement] = notify;
 }
 
-CompOption *
-shiftGetScreenOption(CompScreen *s, ShiftScreenOptions num)
+CompOption * shiftGetScreenOption (CompScreen *s, ShiftScreenOptions num)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   return &os->opt[num];
+    SHIFT_OPTIONS_SCREEN(s);
+    return &os->opt[num];
 }
 
 static const CompMetadataOptionInfo shiftOptionsScreenOptionInfo[] = {
-   { "speed", "float", "<min>0.1</min><max>10.0</max>", 0, 0 },
-   { "shift_speed", "float", "<min>0.1</min><max>5.0</max>", 0, 0 },
-   { "timestep", "float", "<min>0.1</min><max>50.0</max>", 0, 0 },
-   { "window_match", "match", 0, 0, 0 },
-   { "minimized", "bool", 0, 0, 0 },
-   { "mouse_speed", "float", "<min>0.1</min><max>50.0</max>", 0, 0 },
-   { "click_duration", "int", "<min>10</min><max>2000</max>", 0, 0 },
-   { "mode", "int", "<min>0</min><max>1</max>", 0, 0 },
-   { "size", "int", "<min>1</min><max>100</max>", 0, 0 },
-   { "background_intensity", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
-   { "hide_all", "bool", 0, 0, 0 },
-   { "reflection", "bool", 0, 0, 0 },
-   { "ground_color1", "color", 0, 0, 0 },
-   { "ground_color2", "color", 0, 0, 0 },
-   { "ground_size", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
-   { "intensity", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
-   { "flip_rotation", "int", "<min>-80</min><max>80</max>", 0, 0 },
-   { "cover_offset", "float", "<min>-0.4</min><max>0.4</max>", 0, 0 },
-   { "overlay_icon", "int", "<min>0</min><max>2</max>", 0, 0 },
-   { "mipmaps", "bool", 0, 0, 0 },
-   { "multioutput_mode", "int", "<min>0</min><max>2</max>", 0, 0 },
-   { "window_title", "bool", 0, 0, 0 },
-   { "title_font_bold", "bool", 0, 0, 0 },
-   { "title_font_size", "int", "<min>6</min><max>96</max>", 0, 0 },
-   { "title_back_color", "color", 0, 0, 0 },
-   { "title_font_color", "color", 0, 0, 0 },
-   { "title_text_placement", "int", "<min>0</min><max>2</max>", 0, 0 },
+    { "speed", "float", "<min>0.1</min><max>10.0</max>", 0, 0 },
+    { "shift_speed", "float", "<min>0.1</min><max>5.0</max>", 0, 0 },
+    { "timestep", "float", "<min>0.1</min><max>50.0</max>", 0, 0 },
+    { "window_match", "match", 0, 0, 0 },
+    { "minimized", "bool", 0, 0, 0 },
+    { "mouse_speed", "float", "<min>0.1</min><max>50.0</max>", 0, 0 },
+    { "click_duration", "int", "<min>10</min><max>2000</max>", 0, 0 },
+    { "mode", "int", "<min>0</min><max>1</max>", 0, 0 },
+    { "size", "int", "<min>1</min><max>100</max>", 0, 0 },
+    { "background_intensity", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
+    { "hide_all", "bool", 0, 0, 0 },
+    { "reflection", "bool", 0, 0, 0 },
+    { "ground_color1", "color", 0, 0, 0 },
+    { "ground_color2", "color", 0, 0, 0 },
+    { "ground_size", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
+    { "intensity", "float", "<min>0.0</min><max>1.0</max>", 0, 0 },
+    { "flip_rotation", "int", "<min>-80</min><max>80</max>", 0, 0 },
+    { "cover_offset", "float", "<min>-0.4</min><max>0.4</max>", 0, 0 },
+    { "overlay_icon", "int", "<min>0</min><max>2</max>", 0, 0 },
+    { "mipmaps", "bool", 0, 0, 0 },
+    { "multioutput_mode", "int", "<min>0</min><max>2</max>", 0, 0 },
+    { "window_title", "bool", 0, 0, 0 },
+    { "title_font_bold", "bool", 0, 0, 0 },
+    { "title_font_size", "int", "<min>6</min><max>96</max>", 0, 0 },
+    { "title_back_color", "color", 0, 0, 0 },
+    { "title_font_color", "color", 0, 0, 0 },
+    { "title_text_placement", "int", "<min>0</min><max>2</max>", 0, 0 },
 };
 
-static Bool
-shiftOptionsSetScreenOption(CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
+static Bool shiftOptionsSetScreenOption (CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   CompOption *o;
-   int index;
+    SHIFT_OPTIONS_SCREEN(s);
+    CompOption *o;
+    int        index;
 
-   o = compFindOption (os->opt, ShiftScreenOptionNum, name, &index);
+    o = compFindOption (os->opt, ShiftScreenOptionNum, name, &index);
 
-   if (!o)
-     return FALSE;
+    if (!o)
+        return FALSE;
 
-   switch (index)
-     {
-      case ShiftScreenOptionSpeed:
+    switch (index)
+    {
+     case ShiftScreenOptionSpeed:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionSpeed])
-               (*os->notify[ShiftScreenOptionSpeed])(s, o, ShiftScreenOptionSpeed);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionSpeed])
+                (*os->notify[ShiftScreenOptionSpeed]) (s, o, ShiftScreenOptionSpeed);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionShiftSpeed:
+     case ShiftScreenOptionShiftSpeed:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionShiftSpeed])
-               (*os->notify[ShiftScreenOptionShiftSpeed])(s, o, ShiftScreenOptionShiftSpeed);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionShiftSpeed])
+                (*os->notify[ShiftScreenOptionShiftSpeed]) (s, o, ShiftScreenOptionShiftSpeed);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionTimestep:
+     case ShiftScreenOptionTimestep:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionTimestep])
-               (*os->notify[ShiftScreenOptionTimestep])(s, o, ShiftScreenOptionTimestep);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionTimestep])
+                (*os->notify[ShiftScreenOptionTimestep]) (s, o, ShiftScreenOptionTimestep);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionWindowMatch:
+     case ShiftScreenOptionWindowMatch:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionWindowMatch])
-               (*os->notify[ShiftScreenOptionWindowMatch])(s, o, ShiftScreenOptionWindowMatch);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionWindowMatch])
+                (*os->notify[ShiftScreenOptionWindowMatch]) (s, o, ShiftScreenOptionWindowMatch);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionMinimized:
+     case ShiftScreenOptionMinimized:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionMinimized])
-               (*os->notify[ShiftScreenOptionMinimized])(s, o, ShiftScreenOptionMinimized);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionMinimized])
+                (*os->notify[ShiftScreenOptionMinimized]) (s, o, ShiftScreenOptionMinimized);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionMouseSpeed:
+     case ShiftScreenOptionMouseSpeed:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionMouseSpeed])
-               (*os->notify[ShiftScreenOptionMouseSpeed])(s, o, ShiftScreenOptionMouseSpeed);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionMouseSpeed])
+                (*os->notify[ShiftScreenOptionMouseSpeed]) (s, o, ShiftScreenOptionMouseSpeed);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionClickDuration:
+     case ShiftScreenOptionClickDuration:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionClickDuration])
-               (*os->notify[ShiftScreenOptionClickDuration])(s, o, ShiftScreenOptionClickDuration);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionClickDuration])
+                (*os->notify[ShiftScreenOptionClickDuration]) (s, o, ShiftScreenOptionClickDuration);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionMode:
+     case ShiftScreenOptionMode:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionMode])
-               (*os->notify[ShiftScreenOptionMode])(s, o, ShiftScreenOptionMode);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionMode])
+                (*os->notify[ShiftScreenOptionMode]) (s, o, ShiftScreenOptionMode);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionSize:
+     case ShiftScreenOptionSize:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionSize])
-               (*os->notify[ShiftScreenOptionSize])(s, o, ShiftScreenOptionSize);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionSize])
+                (*os->notify[ShiftScreenOptionSize]) (s, o, ShiftScreenOptionSize);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionBackgroundIntensity:
+     case ShiftScreenOptionBackgroundIntensity:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionBackgroundIntensity])
-               (*os->notify[ShiftScreenOptionBackgroundIntensity])(s, o, ShiftScreenOptionBackgroundIntensity);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionBackgroundIntensity])
+                (*os->notify[ShiftScreenOptionBackgroundIntensity]) (s, o, ShiftScreenOptionBackgroundIntensity);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionHideAll:
+     case ShiftScreenOptionHideAll:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionHideAll])
-               (*os->notify[ShiftScreenOptionHideAll])(s, o, ShiftScreenOptionHideAll);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionHideAll])
+                (*os->notify[ShiftScreenOptionHideAll]) (s, o, ShiftScreenOptionHideAll);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionReflection:
+     case ShiftScreenOptionReflection:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionReflection])
-               (*os->notify[ShiftScreenOptionReflection])(s, o, ShiftScreenOptionReflection);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionReflection])
+                (*os->notify[ShiftScreenOptionReflection]) (s, o, ShiftScreenOptionReflection);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionGroundColor1:
+     case ShiftScreenOptionGroundColor1:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionGroundColor1])
-               (*os->notify[ShiftScreenOptionGroundColor1])(s, o, ShiftScreenOptionGroundColor1);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionGroundColor1])
+                (*os->notify[ShiftScreenOptionGroundColor1]) (s, o, ShiftScreenOptionGroundColor1);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionGroundColor2:
+     case ShiftScreenOptionGroundColor2:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionGroundColor2])
-               (*os->notify[ShiftScreenOptionGroundColor2])(s, o, ShiftScreenOptionGroundColor2);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionGroundColor2])
+                (*os->notify[ShiftScreenOptionGroundColor2]) (s, o, ShiftScreenOptionGroundColor2);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionGroundSize:
+     case ShiftScreenOptionGroundSize:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionGroundSize])
-               (*os->notify[ShiftScreenOptionGroundSize])(s, o, ShiftScreenOptionGroundSize);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionGroundSize])
+                (*os->notify[ShiftScreenOptionGroundSize]) (s, o, ShiftScreenOptionGroundSize);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionIntensity:
+     case ShiftScreenOptionIntensity:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionIntensity])
-               (*os->notify[ShiftScreenOptionIntensity])(s, o, ShiftScreenOptionIntensity);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionIntensity])
+                (*os->notify[ShiftScreenOptionIntensity]) (s, o, ShiftScreenOptionIntensity);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionFlipRotation:
+     case ShiftScreenOptionFlipRotation:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionFlipRotation])
-               (*os->notify[ShiftScreenOptionFlipRotation])(s, o, ShiftScreenOptionFlipRotation);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionFlipRotation])
+                (*os->notify[ShiftScreenOptionFlipRotation]) (s, o, ShiftScreenOptionFlipRotation);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionCoverOffset:
+     case ShiftScreenOptionCoverOffset:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionCoverOffset])
-               (*os->notify[ShiftScreenOptionCoverOffset])(s, o, ShiftScreenOptionCoverOffset);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionCoverOffset])
+                (*os->notify[ShiftScreenOptionCoverOffset]) (s, o, ShiftScreenOptionCoverOffset);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionOverlayIcon:
+     case ShiftScreenOptionOverlayIcon:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionOverlayIcon])
-               (*os->notify[ShiftScreenOptionOverlayIcon])(s, o, ShiftScreenOptionOverlayIcon);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionOverlayIcon])
+                (*os->notify[ShiftScreenOptionOverlayIcon]) (s, o, ShiftScreenOptionOverlayIcon);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionMipmaps:
+     case ShiftScreenOptionMipmaps:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionMipmaps])
-               (*os->notify[ShiftScreenOptionMipmaps])(s, o, ShiftScreenOptionMipmaps);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionMipmaps])
+                (*os->notify[ShiftScreenOptionMipmaps]) (s, o, ShiftScreenOptionMipmaps);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionMultioutputMode:
+     case ShiftScreenOptionMultioutputMode:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionMultioutputMode])
-               (*os->notify[ShiftScreenOptionMultioutputMode])(s, o, ShiftScreenOptionMultioutputMode);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionMultioutputMode])
+                (*os->notify[ShiftScreenOptionMultioutputMode]) (s, o, ShiftScreenOptionMultioutputMode);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionWindowTitle:
+     case ShiftScreenOptionWindowTitle:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionWindowTitle])
-               (*os->notify[ShiftScreenOptionWindowTitle])(s, o, ShiftScreenOptionWindowTitle);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionWindowTitle])
+                (*os->notify[ShiftScreenOptionWindowTitle]) (s, o, ShiftScreenOptionWindowTitle);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionTitleFontBold:
+     case ShiftScreenOptionTitleFontBold:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionTitleFontBold])
-               (*os->notify[ShiftScreenOptionTitleFontBold])(s, o, ShiftScreenOptionTitleFontBold);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionTitleFontBold])
+                (*os->notify[ShiftScreenOptionTitleFontBold]) (s, o, ShiftScreenOptionTitleFontBold);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionTitleFontSize:
+     case ShiftScreenOptionTitleFontSize:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionTitleFontSize])
-               (*os->notify[ShiftScreenOptionTitleFontSize])(s, o, ShiftScreenOptionTitleFontSize);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionTitleFontSize])
+                (*os->notify[ShiftScreenOptionTitleFontSize]) (s, o, ShiftScreenOptionTitleFontSize);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionTitleBackColor:
+     case ShiftScreenOptionTitleBackColor:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionTitleBackColor])
-               (*os->notify[ShiftScreenOptionTitleBackColor])(s, o, ShiftScreenOptionTitleBackColor);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionTitleBackColor])
+                (*os->notify[ShiftScreenOptionTitleBackColor]) (s, o, ShiftScreenOptionTitleBackColor);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionTitleFontColor:
+     case ShiftScreenOptionTitleFontColor:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionTitleFontColor])
-               (*os->notify[ShiftScreenOptionTitleFontColor])(s, o, ShiftScreenOptionTitleFontColor);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionTitleFontColor])
+                (*os->notify[ShiftScreenOptionTitleFontColor]) (s, o, ShiftScreenOptionTitleFontColor);
+            return TRUE;
+        }
         break;
-
-      case ShiftScreenOptionTitleTextPlacement:
+     case ShiftScreenOptionTitleTextPlacement:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ShiftScreenOptionTitleTextPlacement])
-               (*os->notify[ShiftScreenOptionTitleTextPlacement])(s, o, ShiftScreenOptionTitleTextPlacement);
-             return TRUE;
-          }
+        {
+            if (os->notify[ShiftScreenOptionTitleTextPlacement])
+                (*os->notify[ShiftScreenOptionTitleTextPlacement]) (s, o, ShiftScreenOptionTitleTextPlacement);
+            return TRUE;
+        }
         break;
-
-      default:
+    default:
         break;
-     }
-   return FALSE;
+    }
+    return FALSE;
 }
 
-static CompOption *
-shiftOptionsGetScreenOptions(CompPlugin *plugin, CompScreen *s, int *count)
+static CompOption * shiftOptionsGetScreenOptions (CompPlugin *plugin, CompScreen *s, int *count)
 {
-   SHIFT_OPTIONS_SCREEN(s);
-   *count = ShiftScreenOptionNum;
-   return os->opt;
+    SHIFT_OPTIONS_SCREEN(s);
+    *count = ShiftScreenOptionNum;
+    return os->opt;
 }
 
-static Bool
-shiftOptionsInitScreen(CompPlugin *p, CompScreen *s)
+static Bool shiftOptionsInitScreen (CompPlugin *p, CompScreen *s)
 {
-   ShiftOptionsScreen *os;
+    ShiftOptionsScreen *os;
+    
+    SHIFT_OPTIONS_DISPLAY (s->display);
 
-   SHIFT_OPTIONS_DISPLAY (s->display);
+    os = calloc (1, sizeof(ShiftOptionsScreen));
+    if (!os)
+        return FALSE;
 
-   os = calloc (1, sizeof(ShiftOptionsScreen));
-   if (!os)
-     return FALSE;
+    s->privates[od->screenPrivateIndex].ptr = os;
 
-   s->privates[od->screenPrivateIndex].ptr = os;
-
-   if (!compInitScreenOptionsFromMetadata (s, &shiftOptionsMetadata, shiftOptionsScreenOptionInfo, os->opt, ShiftScreenOptionNum))
-     {
+    if (!compInitScreenOptionsFromMetadata (s, &shiftOptionsMetadata, shiftOptionsScreenOptionInfo, os->opt, ShiftScreenOptionNum))
+    {
         free (os);
         return FALSE;
-     }
-   if (shiftPluginVTable && shiftPluginVTable->initScreen)
-     return shiftPluginVTable->initScreen (p, s);
-   return TRUE;
+    }
+    if (shiftPluginVTable && shiftPluginVTable->initScreen)
+        return shiftPluginVTable->initScreen (p, s);
+    return TRUE;
 }
 
-static void
-shiftOptionsFiniScreen(CompPlugin *p, CompScreen *s)
+static void shiftOptionsFiniScreen (CompPlugin *p, CompScreen *s)
 {
-   if (shiftPluginVTable && shiftPluginVTable->finiScreen)
-     return shiftPluginVTable->finiScreen (p, s);
+    if (shiftPluginVTable && shiftPluginVTable->finiScreen)
+        return shiftPluginVTable->finiScreen (p, s);
 
-   SHIFT_OPTIONS_SCREEN (s);
+    SHIFT_OPTIONS_SCREEN (s);
 
-   compFiniScreenOptions (s, os->opt, ShiftScreenOptionNum);
 
-   free (os);
+    compFiniScreenOptions (s, os->opt, ShiftScreenOptionNum);
+
+    free (os);
 }
 
-static Bool
-shiftOptionsInitDisplay(CompPlugin *p, CompDisplay *d)
+static Bool shiftOptionsInitDisplay (CompPlugin *p, CompDisplay *d)
 {
-   ShiftOptionsDisplay *od;
+    ShiftOptionsDisplay *od;
+   
+    
+    od = calloc (1, sizeof(ShiftOptionsDisplay));
+    if (!od)
+        return FALSE;
 
-   od = calloc (1, sizeof(ShiftOptionsDisplay));
-   if (!od)
-     return FALSE;
-
-   od->screenPrivateIndex = allocateScreenPrivateIndex(d);
-   if (od->screenPrivateIndex < 0)
-     {
+    od->screenPrivateIndex = allocateScreenPrivateIndex(d);
+    if (od->screenPrivateIndex < 0)
+    {
         free(od);
         return FALSE;
-     }
+    }
 
-   d->privates[displayPrivateIndex].ptr = od;
+    d->privates[displayPrivateIndex].ptr = od;
 
-   if (shiftPluginVTable && shiftPluginVTable->initDisplay)
-     return shiftPluginVTable->initDisplay (p, d);
-   return TRUE;
+        if (shiftPluginVTable && shiftPluginVTable->initDisplay)
+        return shiftPluginVTable->initDisplay (p, d);
+    return TRUE;
 }
 
-static void
-shiftOptionsFiniDisplay(CompPlugin *p, CompDisplay *d)
+static void shiftOptionsFiniDisplay (CompPlugin *p, CompDisplay *d)
 {
-   if (shiftPluginVTable && shiftPluginVTable->finiDisplay)
-     return shiftPluginVTable->finiDisplay (p, d);
+    if (shiftPluginVTable && shiftPluginVTable->finiDisplay)
+        return shiftPluginVTable->finiDisplay (p, d);
 
-   SHIFT_OPTIONS_DISPLAY (d);
+    SHIFT_OPTIONS_DISPLAY (d);
 
-   freeScreenPrivateIndex(d, od->screenPrivateIndex);
-   free (od);
+    freeScreenPrivateIndex(d, od->screenPrivateIndex);
+    free (od);
 }
 
-static Bool
-shiftOptionsInit(CompPlugin *p)
+static Bool shiftOptionsInit (CompPlugin *p)
 {
-   displayPrivateIndex = allocateDisplayPrivateIndex();
-   if (displayPrivateIndex < 0)
-     return FALSE;
+    displayPrivateIndex = allocateDisplayPrivateIndex();
+    if (displayPrivateIndex < 0)
+        return FALSE;
 
-   if (!compInitPluginMetadataFromInfo (&shiftOptionsMetadata, "shift", 0, 0, shiftOptionsScreenOptionInfo, ShiftScreenOptionNum))
-     return FALSE;
+    if (!compInitPluginMetadataFromInfo (&shiftOptionsMetadata, "shift",0, 0, shiftOptionsScreenOptionInfo, ShiftScreenOptionNum))
+        return FALSE;
 
-   compAddMetadataFromFile (&shiftOptionsMetadata, "shift");
-   if (shiftPluginVTable && shiftPluginVTable->init)
-     return shiftPluginVTable->init (p);
-   return TRUE;
+    compAddMetadataFromFile (&shiftOptionsMetadata, "shift");
+    if (shiftPluginVTable && shiftPluginVTable->init)
+        return shiftPluginVTable->init (p);
+    return TRUE;
 }
 
-static void
-shiftOptionsFini(CompPlugin *p)
+static void shiftOptionsFini (CompPlugin *p)
 {
-   if (shiftPluginVTable && shiftPluginVTable->fini)
-     return shiftPluginVTable->fini (p);
+    if (shiftPluginVTable && shiftPluginVTable->fini)
+        return shiftPluginVTable->fini (p);
 
-   if (displayPrivateIndex >= 0)
-     freeDisplayPrivateIndex(displayPrivateIndex);
+    if (displayPrivateIndex >= 0)
+        freeDisplayPrivateIndex(displayPrivateIndex);
 
-   compFiniMetadata (&shiftOptionsMetadata);
+    compFiniMetadata (&shiftOptionsMetadata);
 }
 
 static CompMetadata *
-shiftOptionsGetMetadata(CompPlugin *plugin)
+shiftOptionsGetMetadata (CompPlugin *plugin)
 {
-   return &shiftOptionsMetadata;
+    return &shiftOptionsMetadata;
 }
 
-CompPluginVTable *
-getCompPluginInfo(void)
+CompPluginVTable *getCompPluginInfo (void)
 {
-   if (!shiftPluginVTable)
-     {
+    if (!shiftPluginVTable)
+    {
         shiftPluginVTable = shiftOptionsGetCompPluginInfo ();
         memcpy(&shiftOptionsVTable, shiftPluginVTable, sizeof(CompPluginVTable));
         shiftOptionsVTable.getMetadata = shiftOptionsGetMetadata;
@@ -1155,8 +1024,9 @@ getCompPluginInfo(void)
         shiftOptionsVTable.initScreen = shiftOptionsInitScreen;
         shiftOptionsVTable.finiScreen = shiftOptionsFiniScreen;
         shiftOptionsVTable.getScreenOptions = shiftOptionsGetScreenOptions;
-        shiftOptionsVTable.setScreenOption = shiftOptionsSetScreenOption;
-     }
-   return &shiftOptionsVTable;
+	shiftOptionsVTable.setScreenOption = shiftOptionsSetScreenOption;
+	
+    }
+    return &shiftOptionsVTable;
 }
 

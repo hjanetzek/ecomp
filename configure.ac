@@ -120,17 +120,19 @@ AC_SUBST(imagedir)
 metadatadir=$datadir/ecomp
 AC_SUBST(metadatadir)
 
-ECOMP_REQUIRES="xcomposite \
-		 xfixes	    \
-		 xdamage    \
-		 xrandr	    \
-		 xinerama   \
-		 ice	    \
-		 libxml-2.0 \
-		 libxslt \
-		 pango \
-		 eina \
-		 eet"
+ECOMP_REQUIRES="x11 \
+		xext \
+		xcomposite \
+		xfixes \
+		xdamage \
+		xrandr \
+		xinerama \
+		ice \
+		libxml-2.0 \
+		libxslt \
+		pango \
+		eina \
+		eet"
 
 
 PKG_CHECK_MODULES(ECOMP, $ECOMP_REQUIRES)

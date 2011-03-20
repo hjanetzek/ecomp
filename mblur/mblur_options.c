@@ -26,363 +26,334 @@ static CompPluginVTable *mblurPluginVTable = NULL;
 CompPluginVTable mblurOptionsVTable;
 
 #define GET_MBLUR_OPTIONS_DISPLAY(d) \
-  ((MblurOptionsDisplay *)(d)->privates[displayPrivateIndex].ptr)
+        ((MblurOptionsDisplay *) (d)->privates[displayPrivateIndex].ptr)
 
 #define MBLUR_OPTIONS_DISPLAY(d) \
-  MblurOptionsDisplay * od = GET_MBLUR_OPTIONS_DISPLAY (d)
+        MblurOptionsDisplay *od = GET_MBLUR_OPTIONS_DISPLAY (d)
 
 #define GET_MBLUR_OPTIONS_SCREEN(s, od) \
-  ((MblurOptionsScreen *)(s)->privates[(od)->screenPrivateIndex].ptr)
+        ((MblurOptionsScreen *) (s)->privates[(od)->screenPrivateIndex].ptr)
 
 #define MBLUR_OPTIONS_SCREEN(s) \
-  MblurOptionsScreen * os = GET_MBLUR_OPTIONS_SCREEN (s, GET_MBLUR_OPTIONS_DISPLAY (s->display))
+        MblurOptionsScreen *os = GET_MBLUR_OPTIONS_SCREEN (s, GET_MBLUR_OPTIONS_DISPLAY (s->display))
 
 typedef struct _MblurOptionsDisplay
 {
-   int                                screenPrivateIndex;
+    int screenPrivateIndex;
 
-   CompOption                         opt[MblurDisplayOptionNum];
-   mblurDisplayOptionChangeNotifyProc notify[MblurDisplayOptionNum];
+    CompOption opt[MblurDisplayOptionNum];
+    mblurDisplayOptionChangeNotifyProc notify[MblurDisplayOptionNum];
 } MblurOptionsDisplay;
 
 typedef struct _MblurOptionsScreen
 {
-   CompOption                        opt[MblurScreenOptionNum];
-   mblurScreenOptionChangeNotifyProc notify[MblurScreenOptionNum];
+    CompOption opt[MblurScreenOptionNum];
+    mblurScreenOptionChangeNotifyProc notify[MblurScreenOptionNum];
 } MblurOptionsScreen;
 
-CompAction *
-mblurGetInitiate(CompDisplay *d)
+CompAction * mblurGetInitiate (CompDisplay *d)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   return &od->opt[MblurDisplayOptionInitiate].value.action;
+    MBLUR_OPTIONS_DISPLAY(d);
+    return &od->opt[MblurDisplayOptionInitiate].value.action;
 }
 
-void
-mblurSetInitiateInitiate(CompDisplay *d, CompActionCallBackProc init)
+void mblurSetInitiateInitiate (CompDisplay *d, CompActionCallBackProc init)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   od->opt[MblurDisplayOptionInitiate].value.action.initiate = init;
+    MBLUR_OPTIONS_DISPLAY(d);
+    od->opt[MblurDisplayOptionInitiate].value.action.initiate = init;
 }
 
-void
-mblurSetInitiateTerminate(CompDisplay *d, CompActionCallBackProc term)
+void mblurSetInitiateTerminate (CompDisplay *d, CompActionCallBackProc term)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   od->opt[MblurDisplayOptionInitiate].value.action.terminate = term;
+    MBLUR_OPTIONS_DISPLAY(d);
+    od->opt[MblurDisplayOptionInitiate].value.action.terminate = term;
 }
 
-CompOption *
-mblurGetInitiateOption(CompDisplay *d)
+CompOption * mblurGetInitiateOption (CompDisplay *d)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   return &od->opt[MblurDisplayOptionInitiate];
+    MBLUR_OPTIONS_DISPLAY(d);
+    return &od->opt[MblurDisplayOptionInitiate];
 }
 
-void
-mblurSetInitiateNotify(CompDisplay *d, mblurDisplayOptionChangeNotifyProc notify)
+void mblurSetInitiateNotify (CompDisplay *d, mblurDisplayOptionChangeNotifyProc notify)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   od->notify[MblurDisplayOptionInitiate] = notify;
+    MBLUR_OPTIONS_DISPLAY(d);
+    od->notify[MblurDisplayOptionInitiate] = notify;
 }
 
-int
-mblurGetMode(CompScreen *s)
+int mblurGetMode (CompScreen *s)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   return os->opt[MblurScreenOptionMode].value.i;
+    MBLUR_OPTIONS_SCREEN(s);
+    return os->opt[MblurScreenOptionMode].value.i;
 }
 
-CompOption *
-mblurGetModeOption(CompScreen *s)
+CompOption * mblurGetModeOption (CompScreen *s)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   return &os->opt[MblurScreenOptionMode];
+    MBLUR_OPTIONS_SCREEN(s);
+    return &os->opt[MblurScreenOptionMode];
 }
 
-void
-mblurSetModeNotify(CompScreen *s, mblurScreenOptionChangeNotifyProc notify)
+void mblurSetModeNotify (CompScreen *s, mblurScreenOptionChangeNotifyProc notify)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   os->notify[MblurScreenOptionMode] = notify;
+    MBLUR_OPTIONS_SCREEN(s);
+    os->notify[MblurScreenOptionMode] = notify;
 }
 
-float
-mblurGetStrength(CompScreen *s)
+float mblurGetStrength (CompScreen *s)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   return os->opt[MblurScreenOptionStrength].value.f;
+    MBLUR_OPTIONS_SCREEN(s);
+    return os->opt[MblurScreenOptionStrength].value.f;
 }
 
-CompOption *
-mblurGetStrengthOption(CompScreen *s)
+CompOption * mblurGetStrengthOption (CompScreen *s)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   return &os->opt[MblurScreenOptionStrength];
+    MBLUR_OPTIONS_SCREEN(s);
+    return &os->opt[MblurScreenOptionStrength];
 }
 
-void
-mblurSetStrengthNotify(CompScreen *s, mblurScreenOptionChangeNotifyProc notify)
+void mblurSetStrengthNotify (CompScreen *s, mblurScreenOptionChangeNotifyProc notify)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   os->notify[MblurScreenOptionStrength] = notify;
+    MBLUR_OPTIONS_SCREEN(s);
+    os->notify[MblurScreenOptionStrength] = notify;
 }
 
-Bool
-mblurGetOnTransformedScreen(CompScreen *s)
+Bool mblurGetOnTransformedScreen (CompScreen *s)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   return os->opt[MblurScreenOptionOnTransformedScreen].value.b;
+    MBLUR_OPTIONS_SCREEN(s);
+    return os->opt[MblurScreenOptionOnTransformedScreen].value.b;
 }
 
-CompOption *
-mblurGetOnTransformedScreenOption(CompScreen *s)
+CompOption * mblurGetOnTransformedScreenOption (CompScreen *s)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   return &os->opt[MblurScreenOptionOnTransformedScreen];
+    MBLUR_OPTIONS_SCREEN(s);
+    return &os->opt[MblurScreenOptionOnTransformedScreen];
 }
 
-void
-mblurSetOnTransformedScreenNotify(CompScreen *s, mblurScreenOptionChangeNotifyProc notify)
+void mblurSetOnTransformedScreenNotify (CompScreen *s, mblurScreenOptionChangeNotifyProc notify)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   os->notify[MblurScreenOptionOnTransformedScreen] = notify;
+    MBLUR_OPTIONS_SCREEN(s);
+    os->notify[MblurScreenOptionOnTransformedScreen] = notify;
 }
 
-CompOption *
-mblurGetDisplayOption(CompDisplay *d, MblurDisplayOptions num)
+CompOption * mblurGetDisplayOption (CompDisplay *d, MblurDisplayOptions num)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   return &od->opt[num];
+    MBLUR_OPTIONS_DISPLAY(d);
+    return &od->opt[num];
 }
 
-CompOption *
-mblurGetScreenOption(CompScreen *s, MblurScreenOptions num)
+CompOption * mblurGetScreenOption (CompScreen *s, MblurScreenOptions num)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   return &os->opt[num];
+    MBLUR_OPTIONS_SCREEN(s);
+    return &os->opt[num];
 }
 
 static const CompMetadataOptionInfo mblurOptionsDisplayOptionInfo[] = {
-   { "initiate", "action", 0, 0, 0 },
+    { "initiate", "action", 0, 0, 0 },
 };
 
-static Bool
-mblurOptionsSetDisplayOption(CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
+static Bool mblurOptionsSetDisplayOption (CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   CompOption *o;
-   int index;
+    MBLUR_OPTIONS_DISPLAY(d);
+    CompOption *o;
+    int        index;
 
-   o = compFindOption (od->opt, MblurDisplayOptionNum, name, &index);
+    o = compFindOption (od->opt, MblurDisplayOptionNum, name, &index);
 
-   if (!o)
-     return FALSE;
+    if (!o)
+        return FALSE;
 
-   switch (index)
-     {
-      case MblurDisplayOptionInitiate:
+    switch (index)
+    {
+     case MblurDisplayOptionInitiate:
         if (compSetDisplayOption (d, o, value))
-          {
-             if (od->notify[MblurDisplayOptionInitiate])
-               (*od->notify[MblurDisplayOptionInitiate])(d, o, MblurDisplayOptionInitiate);
-             return TRUE;
-          }
+        {
+            if (od->notify[MblurDisplayOptionInitiate])
+                (*od->notify[MblurDisplayOptionInitiate]) (d, o, MblurDisplayOptionInitiate);
+            return TRUE;
+        }
         break;
-
-      default:
+    default:
         break;
-     }
-   return FALSE;
+    }
+    return FALSE;
 }
 
-static CompOption *
-mblurOptionsGetDisplayOptions(CompPlugin *plugin, CompDisplay *d, int *count)
+static CompOption * mblurOptionsGetDisplayOptions (CompPlugin *plugin, CompDisplay *d, int *count)
 {
-   MBLUR_OPTIONS_DISPLAY(d);
-   *count = MblurDisplayOptionNum;
-   return od->opt;
+    MBLUR_OPTIONS_DISPLAY(d);
+    *count = MblurDisplayOptionNum;
+    return od->opt;
 }
 
 static const CompMetadataOptionInfo mblurOptionsScreenOptionInfo[] = {
-   { "mode", "int", "<min>0</min><max>1</max>", 0, 0 },
-   { "strength", "float", "<min>0.0</min><max>100.0</max>", 0, 0 },
-   { "on_transformed_screen", "bool", 0, 0, 0 },
+    { "mode", "int", "<min>0</min><max>1</max>", 0, 0 },
+    { "strength", "float", "<min>0.0</min><max>100.0</max>", 0, 0 },
+    { "on_transformed_screen", "bool", 0, 0, 0 },
 };
 
-static Bool
-mblurOptionsSetScreenOption(CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
+static Bool mblurOptionsSetScreenOption (CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   CompOption *o;
-   int index;
+    MBLUR_OPTIONS_SCREEN(s);
+    CompOption *o;
+    int        index;
 
-   o = compFindOption (os->opt, MblurScreenOptionNum, name, &index);
+    o = compFindOption (os->opt, MblurScreenOptionNum, name, &index);
 
-   if (!o)
-     return FALSE;
+    if (!o)
+        return FALSE;
 
-   switch (index)
-     {
-      case MblurScreenOptionMode:
+    switch (index)
+    {
+     case MblurScreenOptionMode:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[MblurScreenOptionMode])
-               (*os->notify[MblurScreenOptionMode])(s, o, MblurScreenOptionMode);
-             return TRUE;
-          }
+        {
+            if (os->notify[MblurScreenOptionMode])
+                (*os->notify[MblurScreenOptionMode]) (s, o, MblurScreenOptionMode);
+            return TRUE;
+        }
         break;
-
-      case MblurScreenOptionStrength:
+     case MblurScreenOptionStrength:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[MblurScreenOptionStrength])
-               (*os->notify[MblurScreenOptionStrength])(s, o, MblurScreenOptionStrength);
-             return TRUE;
-          }
+        {
+            if (os->notify[MblurScreenOptionStrength])
+                (*os->notify[MblurScreenOptionStrength]) (s, o, MblurScreenOptionStrength);
+            return TRUE;
+        }
         break;
-
-      case MblurScreenOptionOnTransformedScreen:
+     case MblurScreenOptionOnTransformedScreen:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[MblurScreenOptionOnTransformedScreen])
-               (*os->notify[MblurScreenOptionOnTransformedScreen])(s, o, MblurScreenOptionOnTransformedScreen);
-             return TRUE;
-          }
+        {
+            if (os->notify[MblurScreenOptionOnTransformedScreen])
+                (*os->notify[MblurScreenOptionOnTransformedScreen]) (s, o, MblurScreenOptionOnTransformedScreen);
+            return TRUE;
+        }
         break;
-
-      default:
+    default:
         break;
-     }
-   return FALSE;
+    }
+    return FALSE;
 }
 
-static CompOption *
-mblurOptionsGetScreenOptions(CompPlugin *plugin, CompScreen *s, int *count)
+static CompOption * mblurOptionsGetScreenOptions (CompPlugin *plugin, CompScreen *s, int *count)
 {
-   MBLUR_OPTIONS_SCREEN(s);
-   *count = MblurScreenOptionNum;
-   return os->opt;
+    MBLUR_OPTIONS_SCREEN(s);
+    *count = MblurScreenOptionNum;
+    return os->opt;
 }
 
-static Bool
-mblurOptionsInitScreen(CompPlugin *p, CompScreen *s)
+static Bool mblurOptionsInitScreen (CompPlugin *p, CompScreen *s)
 {
-   MblurOptionsScreen *os;
+    MblurOptionsScreen *os;
+    
+    MBLUR_OPTIONS_DISPLAY (s->display);
 
-   MBLUR_OPTIONS_DISPLAY (s->display);
+    os = calloc (1, sizeof(MblurOptionsScreen));
+    if (!os)
+        return FALSE;
 
-   os = calloc (1, sizeof(MblurOptionsScreen));
-   if (!os)
-     return FALSE;
+    s->privates[od->screenPrivateIndex].ptr = os;
 
-   s->privates[od->screenPrivateIndex].ptr = os;
-
-   if (!compInitScreenOptionsFromMetadata (s, &mblurOptionsMetadata, mblurOptionsScreenOptionInfo, os->opt, MblurScreenOptionNum))
-     {
+    if (!compInitScreenOptionsFromMetadata (s, &mblurOptionsMetadata, mblurOptionsScreenOptionInfo, os->opt, MblurScreenOptionNum))
+    {
         free (os);
         return FALSE;
-     }
-   if (mblurPluginVTable && mblurPluginVTable->initScreen)
-     return mblurPluginVTable->initScreen (p, s);
-   return TRUE;
+    }
+    if (mblurPluginVTable && mblurPluginVTable->initScreen)
+        return mblurPluginVTable->initScreen (p, s);
+    return TRUE;
 }
 
-static void
-mblurOptionsFiniScreen(CompPlugin *p, CompScreen *s)
+static void mblurOptionsFiniScreen (CompPlugin *p, CompScreen *s)
 {
-   if (mblurPluginVTable && mblurPluginVTable->finiScreen)
-     return mblurPluginVTable->finiScreen (p, s);
+    if (mblurPluginVTable && mblurPluginVTable->finiScreen)
+        return mblurPluginVTable->finiScreen (p, s);
 
-   MBLUR_OPTIONS_SCREEN (s);
+    MBLUR_OPTIONS_SCREEN (s);
 
-   compFiniScreenOptions (s, os->opt, MblurScreenOptionNum);
 
-   free (os);
+    compFiniScreenOptions (s, os->opt, MblurScreenOptionNum);
+
+    free (os);
 }
 
-static Bool
-mblurOptionsInitDisplay(CompPlugin *p, CompDisplay *d)
+static Bool mblurOptionsInitDisplay (CompPlugin *p, CompDisplay *d)
 {
-   MblurOptionsDisplay *od;
+    MblurOptionsDisplay *od;
+   
+    
+    od = calloc (1, sizeof(MblurOptionsDisplay));
+    if (!od)
+        return FALSE;
 
-   od = calloc (1, sizeof(MblurOptionsDisplay));
-   if (!od)
-     return FALSE;
-
-   od->screenPrivateIndex = allocateScreenPrivateIndex(d);
-   if (od->screenPrivateIndex < 0)
-     {
+    od->screenPrivateIndex = allocateScreenPrivateIndex(d);
+    if (od->screenPrivateIndex < 0)
+    {
         free(od);
         return FALSE;
-     }
+    }
 
-   d->privates[displayPrivateIndex].ptr = od;
+    d->privates[displayPrivateIndex].ptr = od;
 
-   if (!compInitDisplayOptionsFromMetadata (d, &mblurOptionsMetadata, mblurOptionsDisplayOptionInfo, od->opt, MblurDisplayOptionNum))
-     {
+    if (!compInitDisplayOptionsFromMetadata (d, &mblurOptionsMetadata, mblurOptionsDisplayOptionInfo, od->opt, MblurDisplayOptionNum))
+    {
         free (od);
         return FALSE;
-     }
-   if (mblurPluginVTable && mblurPluginVTable->initDisplay)
-     return mblurPluginVTable->initDisplay (p, d);
-   return TRUE;
+    }
+    if (mblurPluginVTable && mblurPluginVTable->initDisplay)
+        return mblurPluginVTable->initDisplay (p, d);
+    return TRUE;
 }
 
-static void
-mblurOptionsFiniDisplay(CompPlugin *p, CompDisplay *d)
+static void mblurOptionsFiniDisplay (CompPlugin *p, CompDisplay *d)
 {
-   if (mblurPluginVTable && mblurPluginVTable->finiDisplay)
-     return mblurPluginVTable->finiDisplay (p, d);
+    if (mblurPluginVTable && mblurPluginVTable->finiDisplay)
+        return mblurPluginVTable->finiDisplay (p, d);
 
-   MBLUR_OPTIONS_DISPLAY (d);
+    MBLUR_OPTIONS_DISPLAY (d);
 
-   freeScreenPrivateIndex(d, od->screenPrivateIndex);
+    freeScreenPrivateIndex(d, od->screenPrivateIndex);
 
-   compFiniDisplayOptions (d, od->opt, MblurDisplayOptionNum);
+    compFiniDisplayOptions (d, od->opt, MblurDisplayOptionNum);
 
-   free (od);
+    free (od);
 }
 
-static Bool
-mblurOptionsInit(CompPlugin *p)
+static Bool mblurOptionsInit (CompPlugin *p)
 {
-   displayPrivateIndex = allocateDisplayPrivateIndex();
-   if (displayPrivateIndex < 0)
-     return FALSE;
+    displayPrivateIndex = allocateDisplayPrivateIndex();
+    if (displayPrivateIndex < 0)
+        return FALSE;
 
-   if (!compInitPluginMetadataFromInfo (&mblurOptionsMetadata, "mblur", mblurOptionsDisplayOptionInfo, MblurDisplayOptionNum, mblurOptionsScreenOptionInfo, MblurScreenOptionNum))
-     return FALSE;
+    if (!compInitPluginMetadataFromInfo (&mblurOptionsMetadata, "mblur",mblurOptionsDisplayOptionInfo, MblurDisplayOptionNum, mblurOptionsScreenOptionInfo, MblurScreenOptionNum))
+        return FALSE;
 
-   compAddMetadataFromFile (&mblurOptionsMetadata, "mblur");
-   if (mblurPluginVTable && mblurPluginVTable->init)
-     return mblurPluginVTable->init (p);
-   return TRUE;
+    compAddMetadataFromFile (&mblurOptionsMetadata, "mblur");
+    if (mblurPluginVTable && mblurPluginVTable->init)
+        return mblurPluginVTable->init (p);
+    return TRUE;
 }
 
-static void
-mblurOptionsFini(CompPlugin *p)
+static void mblurOptionsFini (CompPlugin *p)
 {
-   if (mblurPluginVTable && mblurPluginVTable->fini)
-     return mblurPluginVTable->fini (p);
+    if (mblurPluginVTable && mblurPluginVTable->fini)
+        return mblurPluginVTable->fini (p);
 
-   if (displayPrivateIndex >= 0)
-     freeDisplayPrivateIndex(displayPrivateIndex);
+    if (displayPrivateIndex >= 0)
+        freeDisplayPrivateIndex(displayPrivateIndex);
 
-   compFiniMetadata (&mblurOptionsMetadata);
+    compFiniMetadata (&mblurOptionsMetadata);
 }
 
 static CompMetadata *
-mblurOptionsGetMetadata(CompPlugin *plugin)
+mblurOptionsGetMetadata (CompPlugin *plugin)
 {
-   return &mblurOptionsMetadata;
+    return &mblurOptionsMetadata;
 }
 
-CompPluginVTable *
-getCompPluginInfo(void)
+CompPluginVTable *getCompPluginInfo (void)
 {
-   if (!mblurPluginVTable)
-     {
+    if (!mblurPluginVTable)
+    {
         mblurPluginVTable = mblurOptionsGetCompPluginInfo ();
         memcpy(&mblurOptionsVTable, mblurPluginVTable, sizeof(CompPluginVTable));
         mblurOptionsVTable.getMetadata = mblurOptionsGetMetadata;
@@ -393,10 +364,11 @@ getCompPluginInfo(void)
         mblurOptionsVTable.initScreen = mblurOptionsInitScreen;
         mblurOptionsVTable.finiScreen = mblurOptionsFiniScreen;
         mblurOptionsVTable.getDisplayOptions = mblurOptionsGetDisplayOptions;
-        mblurOptionsVTable.setDisplayOption = mblurOptionsSetDisplayOption;
-        mblurOptionsVTable.getScreenOptions = mblurOptionsGetScreenOptions;
-        mblurOptionsVTable.setScreenOption = mblurOptionsSetScreenOption;
-     }
-   return &mblurOptionsVTable;
+	mblurOptionsVTable.setDisplayOption = mblurOptionsSetDisplayOption;
+	mblurOptionsVTable.getScreenOptions = mblurOptionsGetScreenOptions;
+	mblurOptionsVTable.setScreenOption = mblurOptionsSetScreenOption;
+	
+    }
+    return &mblurOptionsVTable;
 }
 

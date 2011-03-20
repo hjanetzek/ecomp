@@ -26,678 +26,607 @@ static CompPluginVTable *scaleaddonPluginVTable = NULL;
 CompPluginVTable scaleaddonOptionsVTable;
 
 #define GET_SCALEADDON_OPTIONS_DISPLAY(d) \
-  ((ScaleaddonOptionsDisplay *)(d)->privates[displayPrivateIndex].ptr)
+        ((ScaleaddonOptionsDisplay *) (d)->privates[displayPrivateIndex].ptr)
 
 #define SCALEADDON_OPTIONS_DISPLAY(d) \
-  ScaleaddonOptionsDisplay * od = GET_SCALEADDON_OPTIONS_DISPLAY (d)
+        ScaleaddonOptionsDisplay *od = GET_SCALEADDON_OPTIONS_DISPLAY (d)
 
 #define GET_SCALEADDON_OPTIONS_SCREEN(s, od) \
-  ((ScaleaddonOptionsScreen *)(s)->privates[(od)->screenPrivateIndex].ptr)
+        ((ScaleaddonOptionsScreen *) (s)->privates[(od)->screenPrivateIndex].ptr)
 
 #define SCALEADDON_OPTIONS_SCREEN(s) \
-  ScaleaddonOptionsScreen * os = GET_SCALEADDON_OPTIONS_SCREEN (s, GET_SCALEADDON_OPTIONS_DISPLAY (s->display))
+        ScaleaddonOptionsScreen *os = GET_SCALEADDON_OPTIONS_SCREEN (s, GET_SCALEADDON_OPTIONS_DISPLAY (s->display))
 
 typedef struct _ScaleaddonOptionsDisplay
 {
-   int                                     screenPrivateIndex;
+    int screenPrivateIndex;
 
-   CompOption                              opt[ScaleaddonDisplayOptionNum];
-   scaleaddonDisplayOptionChangeNotifyProc notify[ScaleaddonDisplayOptionNum];
+    CompOption opt[ScaleaddonDisplayOptionNum];
+    scaleaddonDisplayOptionChangeNotifyProc notify[ScaleaddonDisplayOptionNum];
 } ScaleaddonOptionsDisplay;
 
 typedef struct _ScaleaddonOptionsScreen
 {
-   CompOption                             opt[ScaleaddonScreenOptionNum];
-   scaleaddonScreenOptionChangeNotifyProc notify[ScaleaddonScreenOptionNum];
+    CompOption opt[ScaleaddonScreenOptionNum];
+    scaleaddonScreenOptionChangeNotifyProc notify[ScaleaddonScreenOptionNum];
 } ScaleaddonOptionsScreen;
 
-CompAction *
-scaleaddonGetClose(CompDisplay *d)
+CompAction * scaleaddonGetClose (CompDisplay *d)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   return &od->opt[ScaleaddonDisplayOptionClose].value.action;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    return &od->opt[ScaleaddonDisplayOptionClose].value.action;
 }
 
-void
-scaleaddonSetCloseInitiate(CompDisplay *d, CompActionCallBackProc init)
+void scaleaddonSetCloseInitiate (CompDisplay *d, CompActionCallBackProc init)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   od->opt[ScaleaddonDisplayOptionClose].value.action.initiate = init;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    od->opt[ScaleaddonDisplayOptionClose].value.action.initiate = init;
 }
 
-void
-scaleaddonSetCloseTerminate(CompDisplay *d, CompActionCallBackProc term)
+void scaleaddonSetCloseTerminate (CompDisplay *d, CompActionCallBackProc term)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   od->opt[ScaleaddonDisplayOptionClose].value.action.terminate = term;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    od->opt[ScaleaddonDisplayOptionClose].value.action.terminate = term;
 }
 
-CompOption *
-scaleaddonGetCloseOption(CompDisplay *d)
+CompOption * scaleaddonGetCloseOption (CompDisplay *d)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   return &od->opt[ScaleaddonDisplayOptionClose];
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    return &od->opt[ScaleaddonDisplayOptionClose];
 }
 
-void
-scaleaddonSetCloseNotify(CompDisplay *d, scaleaddonDisplayOptionChangeNotifyProc notify)
+void scaleaddonSetCloseNotify (CompDisplay *d, scaleaddonDisplayOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   od->notify[ScaleaddonDisplayOptionClose] = notify;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    od->notify[ScaleaddonDisplayOptionClose] = notify;
 }
 
-CompAction *
-scaleaddonGetZoom(CompDisplay *d)
+CompAction * scaleaddonGetZoom (CompDisplay *d)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   return &od->opt[ScaleaddonDisplayOptionZoom].value.action;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    return &od->opt[ScaleaddonDisplayOptionZoom].value.action;
 }
 
-void
-scaleaddonSetZoomInitiate(CompDisplay *d, CompActionCallBackProc init)
+void scaleaddonSetZoomInitiate (CompDisplay *d, CompActionCallBackProc init)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   od->opt[ScaleaddonDisplayOptionZoom].value.action.initiate = init;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    od->opt[ScaleaddonDisplayOptionZoom].value.action.initiate = init;
 }
 
-void
-scaleaddonSetZoomTerminate(CompDisplay *d, CompActionCallBackProc term)
+void scaleaddonSetZoomTerminate (CompDisplay *d, CompActionCallBackProc term)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   od->opt[ScaleaddonDisplayOptionZoom].value.action.terminate = term;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    od->opt[ScaleaddonDisplayOptionZoom].value.action.terminate = term;
 }
 
-CompOption *
-scaleaddonGetZoomOption(CompDisplay *d)
+CompOption * scaleaddonGetZoomOption (CompDisplay *d)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   return &od->opt[ScaleaddonDisplayOptionZoom];
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    return &od->opt[ScaleaddonDisplayOptionZoom];
 }
 
-void
-scaleaddonSetZoomNotify(CompDisplay *d, scaleaddonDisplayOptionChangeNotifyProc notify)
+void scaleaddonSetZoomNotify (CompDisplay *d, scaleaddonDisplayOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   od->notify[ScaleaddonDisplayOptionZoom] = notify;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    od->notify[ScaleaddonDisplayOptionZoom] = notify;
 }
 
-Bool
-scaleaddonGetWindowTitle(CompScreen *s)
+Bool scaleaddonGetWindowTitle (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionWindowTitle].value.b;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionWindowTitle].value.b;
 }
 
-CompOption *
-scaleaddonGetWindowTitleOption(CompScreen *s)
+CompOption * scaleaddonGetWindowTitleOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionWindowTitle];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionWindowTitle];
 }
 
-void
-scaleaddonSetWindowTitleNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetWindowTitleNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionWindowTitle] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionWindowTitle] = notify;
 }
 
-Bool
-scaleaddonGetTitleBold(CompScreen *s)
+Bool scaleaddonGetTitleBold (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionTitleBold].value.b;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionTitleBold].value.b;
 }
 
-CompOption *
-scaleaddonGetTitleBoldOption(CompScreen *s)
+CompOption * scaleaddonGetTitleBoldOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionTitleBold];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionTitleBold];
 }
 
-void
-scaleaddonSetTitleBoldNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetTitleBoldNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionTitleBold] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionTitleBold] = notify;
 }
 
-int
-scaleaddonGetTitleSize(CompScreen *s)
+int scaleaddonGetTitleSize (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionTitleSize].value.i;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionTitleSize].value.i;
 }
 
-CompOption *
-scaleaddonGetTitleSizeOption(CompScreen *s)
+CompOption * scaleaddonGetTitleSizeOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionTitleSize];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionTitleSize];
 }
 
-void
-scaleaddonSetTitleSizeNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetTitleSizeNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionTitleSize] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionTitleSize] = notify;
 }
 
-int
-scaleaddonGetBorderSize(CompScreen *s)
+int scaleaddonGetBorderSize (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionBorderSize].value.i;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionBorderSize].value.i;
 }
 
-CompOption *
-scaleaddonGetBorderSizeOption(CompScreen *s)
+CompOption * scaleaddonGetBorderSizeOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionBorderSize];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionBorderSize];
 }
 
-void
-scaleaddonSetBorderSizeNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetBorderSizeNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionBorderSize] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionBorderSize] = notify;
 }
 
-unsigned short *
-scaleaddonGetFontColor(CompScreen *s)
+unsigned short * scaleaddonGetFontColor (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionFontColor].value.c;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionFontColor].value.c;
 }
 
-unsigned short
-scaleaddonGetFontColorRed(CompScreen *s)
+unsigned short scaleaddonGetFontColorRed (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionFontColor].value.c[0];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionFontColor].value.c[0];
 }
 
-unsigned short
-scaleaddonGetFontColorGreen(CompScreen *s)
+unsigned short scaleaddonGetFontColorGreen (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionFontColor].value.c[1];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionFontColor].value.c[1];
 }
 
-unsigned short
-scaleaddonGetFontColorBlue(CompScreen *s)
+unsigned short scaleaddonGetFontColorBlue (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionFontColor].value.c[2];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionFontColor].value.c[2];
 }
 
-unsigned short
-scaleaddonGetFontColorAlpha(CompScreen *s)
+unsigned short scaleaddonGetFontColorAlpha (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionFontColor].value.c[3];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionFontColor].value.c[3];
 }
 
-CompOption *
-scaleaddonGetFontColorOption(CompScreen *s)
+CompOption * scaleaddonGetFontColorOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionFontColor];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionFontColor];
 }
 
-void
-scaleaddonSetFontColorNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetFontColorNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionFontColor] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionFontColor] = notify;
 }
 
-unsigned short *
-scaleaddonGetBackColor(CompScreen *s)
+unsigned short * scaleaddonGetBackColor (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionBackColor].value.c;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionBackColor].value.c;
 }
 
-unsigned short
-scaleaddonGetBackColorRed(CompScreen *s)
+unsigned short scaleaddonGetBackColorRed (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionBackColor].value.c[0];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionBackColor].value.c[0];
 }
 
-unsigned short
-scaleaddonGetBackColorGreen(CompScreen *s)
+unsigned short scaleaddonGetBackColorGreen (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionBackColor].value.c[1];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionBackColor].value.c[1];
 }
 
-unsigned short
-scaleaddonGetBackColorBlue(CompScreen *s)
+unsigned short scaleaddonGetBackColorBlue (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionBackColor].value.c[2];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionBackColor].value.c[2];
 }
 
-unsigned short
-scaleaddonGetBackColorAlpha(CompScreen *s)
+unsigned short scaleaddonGetBackColorAlpha (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionBackColor].value.c[3];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionBackColor].value.c[3];
 }
 
-CompOption *
-scaleaddonGetBackColorOption(CompScreen *s)
+CompOption * scaleaddonGetBackColorOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionBackColor];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionBackColor];
 }
 
-void
-scaleaddonSetBackColorNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetBackColorNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionBackColor] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionBackColor] = notify;
 }
 
-Bool
-scaleaddonGetWindowHighlight(CompScreen *s)
+Bool scaleaddonGetWindowHighlight (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionWindowHighlight].value.b;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionWindowHighlight].value.b;
 }
 
-CompOption *
-scaleaddonGetWindowHighlightOption(CompScreen *s)
+CompOption * scaleaddonGetWindowHighlightOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionWindowHighlight];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionWindowHighlight];
 }
 
-void
-scaleaddonSetWindowHighlightNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetWindowHighlightNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionWindowHighlight] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionWindowHighlight] = notify;
 }
 
-unsigned short *
-scaleaddonGetHighlightColor(CompScreen *s)
+unsigned short * scaleaddonGetHighlightColor (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionHighlightColor].value.c;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionHighlightColor].value.c;
 }
 
-unsigned short
-scaleaddonGetHighlightColorRed(CompScreen *s)
+unsigned short scaleaddonGetHighlightColorRed (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[0];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[0];
 }
 
-unsigned short
-scaleaddonGetHighlightColorGreen(CompScreen *s)
+unsigned short scaleaddonGetHighlightColorGreen (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[1];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[1];
 }
 
-unsigned short
-scaleaddonGetHighlightColorBlue(CompScreen *s)
+unsigned short scaleaddonGetHighlightColorBlue (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[2];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[2];
 }
 
-unsigned short
-scaleaddonGetHighlightColorAlpha(CompScreen *s)
+unsigned short scaleaddonGetHighlightColorAlpha (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[3];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionHighlightColor].value.c[3];
 }
 
-CompOption *
-scaleaddonGetHighlightColorOption(CompScreen *s)
+CompOption * scaleaddonGetHighlightColorOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionHighlightColor];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionHighlightColor];
 }
 
-void
-scaleaddonSetHighlightColorNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetHighlightColorNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionHighlightColor] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionHighlightColor] = notify;
 }
 
-int
-scaleaddonGetLayoutMode(CompScreen *s)
+int scaleaddonGetLayoutMode (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return os->opt[ScaleaddonScreenOptionLayoutMode].value.i;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return os->opt[ScaleaddonScreenOptionLayoutMode].value.i;
 }
 
-CompOption *
-scaleaddonGetLayoutModeOption(CompScreen *s)
+CompOption * scaleaddonGetLayoutModeOption (CompScreen *s)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[ScaleaddonScreenOptionLayoutMode];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[ScaleaddonScreenOptionLayoutMode];
 }
 
-void
-scaleaddonSetLayoutModeNotify(CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
+void scaleaddonSetLayoutModeNotify (CompScreen *s, scaleaddonScreenOptionChangeNotifyProc notify)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   os->notify[ScaleaddonScreenOptionLayoutMode] = notify;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    os->notify[ScaleaddonScreenOptionLayoutMode] = notify;
 }
 
-CompOption *
-scaleaddonGetDisplayOption(CompDisplay *d, ScaleaddonDisplayOptions num)
+CompOption * scaleaddonGetDisplayOption (CompDisplay *d, ScaleaddonDisplayOptions num)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   return &od->opt[num];
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    return &od->opt[num];
 }
 
-CompOption *
-scaleaddonGetScreenOption(CompScreen *s, ScaleaddonScreenOptions num)
+CompOption * scaleaddonGetScreenOption (CompScreen *s, ScaleaddonScreenOptions num)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   return &os->opt[num];
+    SCALEADDON_OPTIONS_SCREEN(s);
+    return &os->opt[num];
 }
 
 static const CompMetadataOptionInfo scaleaddonOptionsDisplayOptionInfo[] = {
-   { "close", "action", 0, 0, 0 },
-   { "zoom", "action", 0, 0, 0 },
+    { "close", "action", 0, 0, 0 },
+    { "zoom", "action", 0, 0, 0 },
 };
 
-static Bool
-scaleaddonOptionsSetDisplayOption(CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
+static Bool scaleaddonOptionsSetDisplayOption (CompPlugin *plugin, CompDisplay *d, char *name, CompOptionValue *value)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   CompOption *o;
-   int index;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    CompOption *o;
+    int        index;
 
-   o = compFindOption (od->opt, ScaleaddonDisplayOptionNum, name, &index);
+    o = compFindOption (od->opt, ScaleaddonDisplayOptionNum, name, &index);
 
-   if (!o)
-     return FALSE;
+    if (!o)
+        return FALSE;
 
-   switch (index)
-     {
-      case ScaleaddonDisplayOptionClose:
+    switch (index)
+    {
+     case ScaleaddonDisplayOptionClose:
         if (compSetDisplayOption (d, o, value))
-          {
-             if (od->notify[ScaleaddonDisplayOptionClose])
-               (*od->notify[ScaleaddonDisplayOptionClose])(d, o, ScaleaddonDisplayOptionClose);
-             return TRUE;
-          }
+        {
+            if (od->notify[ScaleaddonDisplayOptionClose])
+                (*od->notify[ScaleaddonDisplayOptionClose]) (d, o, ScaleaddonDisplayOptionClose);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonDisplayOptionZoom:
+     case ScaleaddonDisplayOptionZoom:
         if (compSetDisplayOption (d, o, value))
-          {
-             if (od->notify[ScaleaddonDisplayOptionZoom])
-               (*od->notify[ScaleaddonDisplayOptionZoom])(d, o, ScaleaddonDisplayOptionZoom);
-             return TRUE;
-          }
+        {
+            if (od->notify[ScaleaddonDisplayOptionZoom])
+                (*od->notify[ScaleaddonDisplayOptionZoom]) (d, o, ScaleaddonDisplayOptionZoom);
+            return TRUE;
+        }
         break;
-
-      default:
+    default:
         break;
-     }
-   return FALSE;
+    }
+    return FALSE;
 }
 
-static CompOption *
-scaleaddonOptionsGetDisplayOptions(CompPlugin *plugin, CompDisplay *d, int *count)
+static CompOption * scaleaddonOptionsGetDisplayOptions (CompPlugin *plugin, CompDisplay *d, int *count)
 {
-   SCALEADDON_OPTIONS_DISPLAY(d);
-   *count = ScaleaddonDisplayOptionNum;
-   return od->opt;
+    SCALEADDON_OPTIONS_DISPLAY(d);
+    *count = ScaleaddonDisplayOptionNum;
+    return od->opt;
 }
 
 static const CompMetadataOptionInfo scaleaddonOptionsScreenOptionInfo[] = {
-   { "window_title", "bool", 0, 0, 0 },
-   { "title_bold", "bool", 0, 0, 0 },
-   { "title_size", "int", "<min>6</min><max>48</max>", 0, 0 },
-   { "border_size", "int", "<min>1</min><max>20</max>", 0, 0 },
-   { "font_color", "color", 0, 0, 0 },
-   { "back_color", "color", 0, 0, 0 },
-   { "window_highlight", "bool", 0, 0, 0 },
-   { "highlight_color", "color", 0, 0, 0 },
-   { "layout_mode", "int", "<min>0</min><max>0</max>", 0, 0 },
+    { "window_title", "bool", 0, 0, 0 },
+    { "title_bold", "bool", 0, 0, 0 },
+    { "title_size", "int", "<min>6</min><max>48</max>", 0, 0 },
+    { "border_size", "int", "<min>1</min><max>20</max>", 0, 0 },
+    { "font_color", "color", 0, 0, 0 },
+    { "back_color", "color", 0, 0, 0 },
+    { "window_highlight", "bool", 0, 0, 0 },
+    { "highlight_color", "color", 0, 0, 0 },
+    { "layout_mode", "int", "<min>0</min><max>0</max>", 0, 0 },
 };
 
-static Bool
-scaleaddonOptionsSetScreenOption(CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
+static Bool scaleaddonOptionsSetScreenOption (CompPlugin *plugin, CompScreen *s, char *name, CompOptionValue *value)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   CompOption *o;
-   int index;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    CompOption *o;
+    int        index;
 
-   o = compFindOption (os->opt, ScaleaddonScreenOptionNum, name, &index);
+    o = compFindOption (os->opt, ScaleaddonScreenOptionNum, name, &index);
 
-   if (!o)
-     return FALSE;
+    if (!o)
+        return FALSE;
 
-   switch (index)
-     {
-      case ScaleaddonScreenOptionWindowTitle:
+    switch (index)
+    {
+     case ScaleaddonScreenOptionWindowTitle:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionWindowTitle])
-               (*os->notify[ScaleaddonScreenOptionWindowTitle])(s, o, ScaleaddonScreenOptionWindowTitle);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionWindowTitle])
+                (*os->notify[ScaleaddonScreenOptionWindowTitle]) (s, o, ScaleaddonScreenOptionWindowTitle);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionTitleBold:
+     case ScaleaddonScreenOptionTitleBold:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionTitleBold])
-               (*os->notify[ScaleaddonScreenOptionTitleBold])(s, o, ScaleaddonScreenOptionTitleBold);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionTitleBold])
+                (*os->notify[ScaleaddonScreenOptionTitleBold]) (s, o, ScaleaddonScreenOptionTitleBold);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionTitleSize:
+     case ScaleaddonScreenOptionTitleSize:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionTitleSize])
-               (*os->notify[ScaleaddonScreenOptionTitleSize])(s, o, ScaleaddonScreenOptionTitleSize);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionTitleSize])
+                (*os->notify[ScaleaddonScreenOptionTitleSize]) (s, o, ScaleaddonScreenOptionTitleSize);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionBorderSize:
+     case ScaleaddonScreenOptionBorderSize:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionBorderSize])
-               (*os->notify[ScaleaddonScreenOptionBorderSize])(s, o, ScaleaddonScreenOptionBorderSize);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionBorderSize])
+                (*os->notify[ScaleaddonScreenOptionBorderSize]) (s, o, ScaleaddonScreenOptionBorderSize);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionFontColor:
+     case ScaleaddonScreenOptionFontColor:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionFontColor])
-               (*os->notify[ScaleaddonScreenOptionFontColor])(s, o, ScaleaddonScreenOptionFontColor);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionFontColor])
+                (*os->notify[ScaleaddonScreenOptionFontColor]) (s, o, ScaleaddonScreenOptionFontColor);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionBackColor:
+     case ScaleaddonScreenOptionBackColor:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionBackColor])
-               (*os->notify[ScaleaddonScreenOptionBackColor])(s, o, ScaleaddonScreenOptionBackColor);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionBackColor])
+                (*os->notify[ScaleaddonScreenOptionBackColor]) (s, o, ScaleaddonScreenOptionBackColor);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionWindowHighlight:
+     case ScaleaddonScreenOptionWindowHighlight:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionWindowHighlight])
-               (*os->notify[ScaleaddonScreenOptionWindowHighlight])(s, o, ScaleaddonScreenOptionWindowHighlight);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionWindowHighlight])
+                (*os->notify[ScaleaddonScreenOptionWindowHighlight]) (s, o, ScaleaddonScreenOptionWindowHighlight);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionHighlightColor:
+     case ScaleaddonScreenOptionHighlightColor:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionHighlightColor])
-               (*os->notify[ScaleaddonScreenOptionHighlightColor])(s, o, ScaleaddonScreenOptionHighlightColor);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionHighlightColor])
+                (*os->notify[ScaleaddonScreenOptionHighlightColor]) (s, o, ScaleaddonScreenOptionHighlightColor);
+            return TRUE;
+        }
         break;
-
-      case ScaleaddonScreenOptionLayoutMode:
+     case ScaleaddonScreenOptionLayoutMode:
         if (compSetScreenOption (s, o, value))
-          {
-             if (os->notify[ScaleaddonScreenOptionLayoutMode])
-               (*os->notify[ScaleaddonScreenOptionLayoutMode])(s, o, ScaleaddonScreenOptionLayoutMode);
-             return TRUE;
-          }
+        {
+            if (os->notify[ScaleaddonScreenOptionLayoutMode])
+                (*os->notify[ScaleaddonScreenOptionLayoutMode]) (s, o, ScaleaddonScreenOptionLayoutMode);
+            return TRUE;
+        }
         break;
-
-      default:
+    default:
         break;
-     }
-   return FALSE;
+    }
+    return FALSE;
 }
 
-static CompOption *
-scaleaddonOptionsGetScreenOptions(CompPlugin *plugin, CompScreen *s, int *count)
+static CompOption * scaleaddonOptionsGetScreenOptions (CompPlugin *plugin, CompScreen *s, int *count)
 {
-   SCALEADDON_OPTIONS_SCREEN(s);
-   *count = ScaleaddonScreenOptionNum;
-   return os->opt;
+    SCALEADDON_OPTIONS_SCREEN(s);
+    *count = ScaleaddonScreenOptionNum;
+    return os->opt;
 }
 
-static Bool
-scaleaddonOptionsInitScreen(CompPlugin *p, CompScreen *s)
+static Bool scaleaddonOptionsInitScreen (CompPlugin *p, CompScreen *s)
 {
-   ScaleaddonOptionsScreen *os;
+    ScaleaddonOptionsScreen *os;
+    
+    SCALEADDON_OPTIONS_DISPLAY (s->display);
 
-   SCALEADDON_OPTIONS_DISPLAY (s->display);
+    os = calloc (1, sizeof(ScaleaddonOptionsScreen));
+    if (!os)
+        return FALSE;
 
-   os = calloc (1, sizeof(ScaleaddonOptionsScreen));
-   if (!os)
-     return FALSE;
+    s->privates[od->screenPrivateIndex].ptr = os;
 
-   s->privates[od->screenPrivateIndex].ptr = os;
-
-   if (!compInitScreenOptionsFromMetadata (s, &scaleaddonOptionsMetadata, scaleaddonOptionsScreenOptionInfo, os->opt, ScaleaddonScreenOptionNum))
-     {
+    if (!compInitScreenOptionsFromMetadata (s, &scaleaddonOptionsMetadata, scaleaddonOptionsScreenOptionInfo, os->opt, ScaleaddonScreenOptionNum))
+    {
         free (os);
         return FALSE;
-     }
-   if (scaleaddonPluginVTable && scaleaddonPluginVTable->initScreen)
-     return scaleaddonPluginVTable->initScreen (p, s);
-   return TRUE;
+    }
+    if (scaleaddonPluginVTable && scaleaddonPluginVTable->initScreen)
+        return scaleaddonPluginVTable->initScreen (p, s);
+    return TRUE;
 }
 
-static void
-scaleaddonOptionsFiniScreen(CompPlugin *p, CompScreen *s)
+static void scaleaddonOptionsFiniScreen (CompPlugin *p, CompScreen *s)
 {
-   if (scaleaddonPluginVTable && scaleaddonPluginVTable->finiScreen)
-     return scaleaddonPluginVTable->finiScreen (p, s);
+    if (scaleaddonPluginVTable && scaleaddonPluginVTable->finiScreen)
+        return scaleaddonPluginVTable->finiScreen (p, s);
 
-   SCALEADDON_OPTIONS_SCREEN (s);
+    SCALEADDON_OPTIONS_SCREEN (s);
 
-   compFiniScreenOptions (s, os->opt, ScaleaddonScreenOptionNum);
 
-   free (os);
+    compFiniScreenOptions (s, os->opt, ScaleaddonScreenOptionNum);
+
+    free (os);
 }
 
-static Bool
-scaleaddonOptionsInitDisplay(CompPlugin *p, CompDisplay *d)
+static Bool scaleaddonOptionsInitDisplay (CompPlugin *p, CompDisplay *d)
 {
-   ScaleaddonOptionsDisplay *od;
+    ScaleaddonOptionsDisplay *od;
+   
+    
+    od = calloc (1, sizeof(ScaleaddonOptionsDisplay));
+    if (!od)
+        return FALSE;
 
-   od = calloc (1, sizeof(ScaleaddonOptionsDisplay));
-   if (!od)
-     return FALSE;
-
-   od->screenPrivateIndex = allocateScreenPrivateIndex(d);
-   if (od->screenPrivateIndex < 0)
-     {
+    od->screenPrivateIndex = allocateScreenPrivateIndex(d);
+    if (od->screenPrivateIndex < 0)
+    {
         free(od);
         return FALSE;
-     }
+    }
 
-   d->privates[displayPrivateIndex].ptr = od;
+    d->privates[displayPrivateIndex].ptr = od;
 
-   if (!compInitDisplayOptionsFromMetadata (d, &scaleaddonOptionsMetadata, scaleaddonOptionsDisplayOptionInfo, od->opt, ScaleaddonDisplayOptionNum))
-     {
+    if (!compInitDisplayOptionsFromMetadata (d, &scaleaddonOptionsMetadata, scaleaddonOptionsDisplayOptionInfo, od->opt, ScaleaddonDisplayOptionNum))
+    {
         free (od);
         return FALSE;
-     }
-   if (scaleaddonPluginVTable && scaleaddonPluginVTable->initDisplay)
-     return scaleaddonPluginVTable->initDisplay (p, d);
-   return TRUE;
+    }
+    if (scaleaddonPluginVTable && scaleaddonPluginVTable->initDisplay)
+        return scaleaddonPluginVTable->initDisplay (p, d);
+    return TRUE;
 }
 
-static void
-scaleaddonOptionsFiniDisplay(CompPlugin *p, CompDisplay *d)
+static void scaleaddonOptionsFiniDisplay (CompPlugin *p, CompDisplay *d)
 {
-   if (scaleaddonPluginVTable && scaleaddonPluginVTable->finiDisplay)
-     return scaleaddonPluginVTable->finiDisplay (p, d);
+    if (scaleaddonPluginVTable && scaleaddonPluginVTable->finiDisplay)
+        return scaleaddonPluginVTable->finiDisplay (p, d);
 
-   SCALEADDON_OPTIONS_DISPLAY (d);
+    SCALEADDON_OPTIONS_DISPLAY (d);
 
-   freeScreenPrivateIndex(d, od->screenPrivateIndex);
+    freeScreenPrivateIndex(d, od->screenPrivateIndex);
 
-   compFiniDisplayOptions (d, od->opt, ScaleaddonDisplayOptionNum);
+    compFiniDisplayOptions (d, od->opt, ScaleaddonDisplayOptionNum);
 
-   free (od);
+    free (od);
 }
 
-static Bool
-scaleaddonOptionsInit(CompPlugin *p)
+static Bool scaleaddonOptionsInit (CompPlugin *p)
 {
-   displayPrivateIndex = allocateDisplayPrivateIndex();
-   if (displayPrivateIndex < 0)
-     return FALSE;
+    displayPrivateIndex = allocateDisplayPrivateIndex();
+    if (displayPrivateIndex < 0)
+        return FALSE;
 
-   if (!compInitPluginMetadataFromInfo (&scaleaddonOptionsMetadata, "scaleaddon", scaleaddonOptionsDisplayOptionInfo, ScaleaddonDisplayOptionNum, scaleaddonOptionsScreenOptionInfo, ScaleaddonScreenOptionNum))
-     return FALSE;
+    if (!compInitPluginMetadataFromInfo (&scaleaddonOptionsMetadata, "scaleaddon",scaleaddonOptionsDisplayOptionInfo, ScaleaddonDisplayOptionNum, scaleaddonOptionsScreenOptionInfo, ScaleaddonScreenOptionNum))
+        return FALSE;
 
-   compAddMetadataFromFile (&scaleaddonOptionsMetadata, "scaleaddon");
-   if (scaleaddonPluginVTable && scaleaddonPluginVTable->init)
-     return scaleaddonPluginVTable->init (p);
-   return TRUE;
+    compAddMetadataFromFile (&scaleaddonOptionsMetadata, "scaleaddon");
+    if (scaleaddonPluginVTable && scaleaddonPluginVTable->init)
+        return scaleaddonPluginVTable->init (p);
+    return TRUE;
 }
 
-static void
-scaleaddonOptionsFini(CompPlugin *p)
+static void scaleaddonOptionsFini (CompPlugin *p)
 {
-   if (scaleaddonPluginVTable && scaleaddonPluginVTable->fini)
-     return scaleaddonPluginVTable->fini (p);
+    if (scaleaddonPluginVTable && scaleaddonPluginVTable->fini)
+        return scaleaddonPluginVTable->fini (p);
 
-   if (displayPrivateIndex >= 0)
-     freeDisplayPrivateIndex(displayPrivateIndex);
+    if (displayPrivateIndex >= 0)
+        freeDisplayPrivateIndex(displayPrivateIndex);
 
-   compFiniMetadata (&scaleaddonOptionsMetadata);
+    compFiniMetadata (&scaleaddonOptionsMetadata);
 }
 
 static CompMetadata *
-scaleaddonOptionsGetMetadata(CompPlugin *plugin)
+scaleaddonOptionsGetMetadata (CompPlugin *plugin)
 {
-   return &scaleaddonOptionsMetadata;
+    return &scaleaddonOptionsMetadata;
 }
 
-CompPluginVTable *
-getCompPluginInfo(void)
+CompPluginVTable *getCompPluginInfo (void)
 {
-   if (!scaleaddonPluginVTable)
-     {
+    if (!scaleaddonPluginVTable)
+    {
         scaleaddonPluginVTable = scaleaddonOptionsGetCompPluginInfo ();
         memcpy(&scaleaddonOptionsVTable, scaleaddonPluginVTable, sizeof(CompPluginVTable));
         scaleaddonOptionsVTable.getMetadata = scaleaddonOptionsGetMetadata;
@@ -708,10 +637,11 @@ getCompPluginInfo(void)
         scaleaddonOptionsVTable.initScreen = scaleaddonOptionsInitScreen;
         scaleaddonOptionsVTable.finiScreen = scaleaddonOptionsFiniScreen;
         scaleaddonOptionsVTable.getDisplayOptions = scaleaddonOptionsGetDisplayOptions;
-        scaleaddonOptionsVTable.setDisplayOption = scaleaddonOptionsSetDisplayOption;
-        scaleaddonOptionsVTable.getScreenOptions = scaleaddonOptionsGetScreenOptions;
-        scaleaddonOptionsVTable.setScreenOption = scaleaddonOptionsSetScreenOption;
-     }
-   return &scaleaddonOptionsVTable;
+	scaleaddonOptionsVTable.setDisplayOption = scaleaddonOptionsSetDisplayOption;
+	scaleaddonOptionsVTable.getScreenOptions = scaleaddonOptionsGetScreenOptions;
+	scaleaddonOptionsVTable.setScreenOption = scaleaddonOptionsSetScreenOption;
+	
+    }
+    return &scaleaddonOptionsVTable;
 }
 
