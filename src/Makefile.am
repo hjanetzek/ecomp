@@ -8,7 +8,7 @@ INCLUDES =			     \
 
 bin_PROGRAMS = ecomorph
 
-ecomorph_LDADD = @ECOMP_LIBS@ @GL_LIBS@ -lm
+ecomorph_LDADD = @ECOMP_LIBS@ @GL_LIBS@ -ldl -lm
 ecomorph_LDFLAGS = -export-dynamic
 ecomorph_SOURCES =   \
 	main.c	   \
