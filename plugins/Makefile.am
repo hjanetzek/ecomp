@@ -36,7 +36,7 @@ libblur_la_SOURCES = blur.c libdecor.c
 libregex_la_LDFLAGS = -module -avoid-version -no-undefined
 libregex_la_SOURCES = regex.c
 
-libini_la_LDFLAGS = -module -avoid-version -no-undefined
+libini_la_LDFLAGS = -module -leina -leet -avoid-version -no-undefined
 libini_la_SOURCES = ini.c
 
 if INOTIFY_PLUGIN
